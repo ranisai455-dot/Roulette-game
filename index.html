@@ -298,6 +298,200 @@
     <div id="loginScreenContainer">
         <div class="header-container">
             <div class="trust-banner">100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
+            <div class="roya        #gameLobbyScreen {
+            display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0;
+            background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%);
+            z-index: 20000; flex-direction: column; justify-content: space-between; padding: 3px;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 6px solid #24140c;
+        }
+
+        .lobby-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 6px 10px; border-radius: 10px;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%;
+        }
+
+        .user-profile-widget {
+            display: flex; align-items: center; gap: 6px; background: rgba(0,20,8,0.9);
+            border: 1px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer;
+        }
+        .user-avatar-circle {
+            width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b);
+            border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden;
+        }
+        
+        .wallet-btn-rect { 
+            background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; 
+            padding: 7px 10px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer;
+            box-shadow: 0 0 12px rgba(39, 174, 96, 0.9); text-transform: uppercase; z-index: 100;
+        }
+        .wallet-btn-rect.withdraw { 
+            background: linear-gradient(135deg, #c0392b, #a93226); 
+            box-shadow: 0 0 12px rgba(192, 57, 43, 0.9); 
+        }
+
+        .timer-strip-center {
+            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 13px; font-weight: 900;
+            padding: 4px 12px; border-radius: 8px; border: 2px solid #ffd700; text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(192, 57, 43, 0.9); letter-spacing: 1px;
+        }
+
+        .history-strip-bar {
+            display: flex; justify-content: center; align-items: center; gap: 4px;
+            background: rgba(0, 10, 3, 0.9); border: 1px solid rgba(212, 175, 55, 0.5);
+            padding: 2px; border-radius: 6px; margin: 1px auto; width: 100%; flex-shrink: 0; z-index: 50;
+        }
+        .history-title { font-size: 7px; font-weight: bold; color: #ffd700; margin-right: 4px; text-transform: uppercase; }
+        .history-ball {
+            width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 900; color: #fff;
+            display: flex; align-items: center; justify-content: center; border: 1px solid #ffd700;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+        }
+        .history-ball.red { background: #b03a2e; }
+        .history-ball.black { background: #0b0f15; }
+        .history-ball.green { background: #27ae60; }
+
+        .lobby-wheel-box {
+            position: relative; width: 260px; height: 260px; margin: 2px auto;
+            border: 6px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.9);
+            flex-shrink: 0; z-index: 100;
+        }
+        
+        #lobbyWheelCanvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 50%; }
+
+        .lobby-wheel-hub {
+            position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px;
+            background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110;
+        }
+
+        .game-ball-orbit {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
+            pointer-events: none; z-index: 120;
+            transition: transform 6.0s cubic-bezier(0.15, 0.85, 0.12, 1.0);
+        }
+        .game-ball-orbit::after {
+            content: ""; position: absolute; top: 7px; left: calc(50% - 7px);
+            width: 14px; height: 14px; background: #ffffff; border-radius: 50%;
+            box-shadow: 0 0 15px #fff, 0 0 25px #d4af37, 0 0 35px #0ff;
+        }
+
+        .betting-board-section {
+            background: radial-gradient(circle, #013812 0%, #001205 100%); border-radius: 12px; padding: 5px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; margin-top: 2px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.95); z-index: 50;
+        }
+
+        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+        .table-cell {
+            background: #021a0a; border: 1.5px solid #d4af37; color: #fff; font-size: 11px; font-weight: 900;
+            padding: 6px 0; border-radius: 3px; cursor: pointer; text-align: center; position: relative;
+        }
+        .table-cell.red { background: linear-gradient(135deg, #b03a2e, #78281f); }
+        .table-cell.black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
+        .table-cell.has-bet, .color-btn.has-bet { border: 2.5px solid #fff; box-shadow: 0 0 15px #f1c40f; }
+        .cell-badge { position: absolute; top: -5px; right: -5px; background: #f1c40f; color: #000; font-size: 7px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 5; }
+
+        .color-row { display: flex; gap: 6px; }
+        .color-btn { flex: 1; padding: 8px; font-weight: 900; font-size: 10px; border-radius: 6px; border: 2px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; }
+        .btn-red { background: linear-gradient(135deg, #b03a2e, #78281f); }
+        .btn-green { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
+
+        .chip-selector-row { display: flex; justify-content: center; gap: 6px; align-items: center; }
+        .chip-item {
+            width: 32px; height: 32px; border-radius: 50%; border: 3px dashed #f1c40f; font-weight: 900; font-size: 10px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111;
+        }
+        .chip-item.selected { border: 3px solid #fff; transform: scale(1.15); box-shadow: 0 0 20px #f1c40f; }
+        .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
+        .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
+        .chip-100 { background: linear-gradient(135deg, #27ae60, #1e8449); } 
+        .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
+        .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
+
+        .transfer-btn-small {
+            background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700;
+            padding: 6px 8px; border-radius: 6px; font-size: 8.5px; font-weight: 900; cursor: pointer; text-transform: uppercase;
+        }
+
+        .lobby-action-row { display: flex; justify-content: space-between; align-items: center; }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 4px 10px; font-size: 10px; font-weight: 900; border-radius: 7px; flex-grow: 1; margin: 0 5px; text-align: center; }
+        .clear-btn { background: #b03a2e; color: #fff; padding: 4px 8px; font-size: 9.5px; font-weight: 900; border-radius: 6px; cursor: pointer; border: 1.5px solid #d4af37; }
+
+        .mode-toggle-bar {
+            display: flex; justify-content: center; gap: 5px; background: #000; border: 1px solid #ffd700;
+            padding: 3px; border-radius: 8px; margin-bottom: 3px;
+        }
+        .mode-btn {
+            flex: 1; padding: 5px; font-size: 9px; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; background: #111; color: #888;
+        }
+        .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 10px #2ecc71; }
+        .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 10px #3498db; }
+
+        #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 70000; align-items: center; justify-content: center; }
+        .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 3px solid #ffd700; padding: 22px; border-radius: 16px; width: 290px; text-align: center; color: #fff; box-shadow: 0 0 50px #ffd700; animation: popupScale 0.3s ease-out; }
+
+        #secretAdminModal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(2, 10, 5, 0.98); border: 4px solid #e74c3c; padding: 15px; 
+            z-index: 40000; text-align: center; color: #fff; overflow-y: auto; 
+        }
+        .admin-dashboard-container { max-width: 750px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .admin-box select, .admin-box input { width: 100%; padding: 10px; margin: 5px 0; background: #000; color: #ffd700; border: 1px solid #ffd700; border-radius: 6px; font-weight: bold; text-align: center; font-size: 12px; }
+        
+        .admin-stats-box { background: #111; border: 1.5px solid #333; padding: 12px; border-radius: 8px; text-align: left; font-size: 12px; }
+        .admin-stats-box div { margin-bottom: 5px; }
+
+        .req-item { background: #1a1a1a; border: 1px solid #ffd700; padding: 8px; border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .req-actions button { padding: 5px 10px; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; font-size: 10px; margin-left: 4px; }
+        .btn-approve { background: #27ae60; color: #fff; }
+        .btn-reject { background: #c0392b; color: #fff; }
+
+        #cinematicResultPopup {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.88); z-index: 50000; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .popup-card {
+            background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 25px; border-radius: 20px;
+            width: 85%; max-width: 320px; text-align: center; box-shadow: 0 0 80px #f1c40f;
+            animation: popupScale 0.3s ease-out;
+        }
+        @keyframes popupScale { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 30000; align-items: center; justify-content: center; padding: 10px; }
+        .wallet-modal-content { background: radial-gradient(circle, #003311 0%, #000f04 100%); border: 3px solid #f1c40f; padding: 20px; border-radius: 18px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 0 60px #f1c40f; color: #fff; max-height: 95vh; overflow-y: auto; }
+        
+        .withdraw-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+        .deposit-packages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+        .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 12px 0; font-weight: 900; font-size: 12px; border-radius: 8px; cursor: pointer; }
+        .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 15px #f1c40f; }
+        .wallet-modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 8px; text-align: center; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div id="comingSoonNoticeModal">
+        <div class="coming-soon-card">
+            <h3 style="color:#ffd700; font-size:16px; margin-bottom:8px;">🃏 EXCITING UPDATE! 🃏</h3>
+            <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:6px;">TEEN PATTI REAL MONEY GAME</p>
+            <div style="background:#e74c3c; color:#fff; font-size:12px; font-weight:900; padding:5px; border-radius:6px; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px;">✨ COMING SOON ✨</div>
+            <p style="font-size:8.5px; color:#ccc; margin-bottom:15px;">Get ready for the ultimate card gaming experience with instant deposits & withdrawals!</p>
+            <button onclick="closeComingSoonModal(); startDjMusic();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:8px 20px; border-radius:6px; font-weight:900; font-size:11px; cursor:pointer; text-transform:uppercase;">Continue to Roulette</button>
+        </div>
+    </div>
+
+    <div id="fullscreenWheelBg">
+        <div class="bg-wheel-wrap">
+            <canvas id="loginWheelCanvasBg" width="380" height="380"></canvas>
+            <div class="bg-ball-orbit"></div>
+            <div class="lobby-wheel-hub" style="width: 45px; height: 45px; position:absolute; top:50%; left:50%; margin-top:-22.5px; margin-left:-22.5px; background:radial-gradient(circle, #fff, #d4af37); border-radius:50%; z-index:3;"></div>
+        </div>
+    </div>
+
+    <div id="loginScreenContainer">
+        <div class="header-container">
+            <div class="trust-banner">100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
             <div class="royal-title-wrap">
                 <span class="animated-star-left">⭐ 🌟 ✨</span>
                 <div class="royal-main-title">ROYAL ROULETTE</div>

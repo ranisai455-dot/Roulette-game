@@ -18,17 +18,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            padding: 6px 4px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 4px;
+            overflow-x: hidden;
         }
         
         .top-banner {
             background: linear-gradient(90deg, #112b18, #1b4d27, #112b18);
             border: 1px solid #ffd700;
             border-radius: 4px;
-            padding: 2px 4px;
+            padding: 3px 6px;
             font-size: 9px;
             color: #ffd707;
             text-align: center;
@@ -41,9 +41,10 @@
         }
         .title {
             color: #ffd700;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
             letter-spacing: 1px;
+            text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
         }
         .sub-header {
             display: flex;
@@ -52,7 +53,7 @@
             margin: 2px 0;
             font-size: 8px;
             background: #112b18;
-            padding: 2px;
+            padding: 3px;
             border-radius: 3px;
             border: 1px solid #333;
         }
@@ -62,15 +63,17 @@
             justify-content: space-between;
             width: 100%;
             align-items: center;
+            margin: 2px 0;
         }
         .btn {
             background: linear-gradient(135deg, #28a745, #1e7e34);
             color: white;
             border: 1px solid #ffd700;
-            padding: 4px 12px;
+            padding: 5px 12px;
             border-radius: 4px;
             font-weight: bold;
             font-size: 10px;
+            cursor: pointer;
         }
         .btn-withdraw {
             background: linear-gradient(135deg, #dc3545, #bd2130);
@@ -78,7 +81,7 @@
         .timer-box {
             background: #222;
             border: 1px solid #ffd700;
-            padding: 3px 6px;
+            padding: 4px 10px;
             border-radius: 4px;
             color: #ffd700;
             font-weight: bold;
@@ -88,9 +91,9 @@
         /* Roulette Wheel */
         .wheel-container {
             position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 2px auto;
+            width: 150px;
+            height: 150px;
+            margin: 4px auto;
         }
         .wheel {
             width: 100%;
@@ -110,7 +113,7 @@
                 #2c3e50 233.51deg 243.24deg, #e74c3c 243.24deg 252.97deg, #2c3e50 252.97deg 262.7deg,
                 #e74c3c 262.7deg 272.43deg, #2c3e50 272.43deg 282.16deg, #e74c3c 282.16deg 291.89deg,
                 #2c3e50 291.89deg 301.62deg, #e74c3c 301.62deg 311.35deg, #2c3e50 311.35deg 321.08deg,
-                #e74c3c 321.08deg 330.81deg, #2c3e50 330.81deg 340.54deg, #e74c3c 340.54deg 350.27deg,
+                #e74c3c 321.08deg 330.81deg, #e74c3c 330.81deg 340.54deg, #e74c3c 340.54deg 350.27deg,
                 #2c3e50 350.27deg 360deg
             );
             transition: transform 4.5s cubic-bezier(0.15, 0.75, 0.15, 1);
@@ -120,15 +123,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             background: radial-gradient(circle, #ffd700, #b8860b);
             border-radius: 50%;
             border: 2px solid #fff;
         }
         .ball {
             position: absolute;
-            top: 4px;
+            top: 6px;
             left: 50%;
             transform: translateX(-50%);
             width: 8px;
@@ -141,30 +144,33 @@
         }
 
         .bet-info {
-            font-size: 9px;
+            font-size: 10px;
             color: #ffd700;
+            margin: 2px 0;
+            text-align: center;
         }
 
-        /* Number Grid Table Structure */
+        /* Fixed Number Grid Table Structure */
         .grid-container {
             width: 100%;
             background: #0f2614;
-            border: 1px solid #ffd700;
+            border: 2px solid #ffd700;
             border-radius: 4px;
-            padding: 2px;
+            padding: 3px;
+            margin: 2px 0;
         }
         .number-grid {
             display: grid;
-            grid-template-columns: 24px repeat(12, 1fr);
-            gap: 1px;
+            grid-template-columns: 28px repeat(12, 1fr);
+            gap: 2px;
         }
         .grid-cell {
             background: #1e3d24;
             border: 1px solid #ffd700;
             color: #fff;
             text-align: center;
-            padding: 3px 0;
-            font-size: 9px;
+            padding: 5px 0;
+            font-size: 10px;
             font-weight: bold;
             border-radius: 2px;
         }
@@ -176,12 +182,13 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
+            margin: 3px 0;
+            gap: 4px;
         }
         .s-btn {
             flex: 1;
-            margin: 0 1px;
-            padding: 3px;
-            font-size: 8px;
+            padding: 5px;
+            font-size: 9px;
             font-weight: bold;
             border-radius: 3px;
             border: 1px solid #ffd700;
@@ -192,16 +199,17 @@
         .chip-selector {
             display: flex;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            margin: 3px 0;
         }
         .chip {
-            width: 22px;
-            height: 22px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             border: 2px dashed #ffd700;
             background: #222;
             color: #ffd700;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -210,36 +218,37 @@
         .chip.active {
             border-style: solid;
             background: #444;
+            box-shadow: 0 0 6px #ffd700;
         }
 
         .footer {
-            font-size: 7px;
+            font-size: 8px;
             color: #aaa;
             text-align: center;
             width: 100%;
             background: #050d07;
-            padding: 2px 0;
+            padding: 4px 0;
             border-top: 1px solid #222;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-banner">⚡ 100% TRUSTED • INSTANT WITHDRAWAL ⚡</div>
+    <div class="top-banner">⚡ 100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
 
     <div class="header">
         <div class="title">★★ ROYAL ROULETTE ★★</div>
         <div class="sub-header">
-            <span>🟢 ONLINE: 742</span>
-            <span>🔒 SECURE</span>
-            <span>⚡ 99.4%</span>
+            <span>🟢 ONLINE: 742 VIPs</span>
+            <span>🔒 256-BIT SECURE</span>
+            <span>⚡ PAYOUT: 99.4%</span>
         </div>
     </div>
 
     <div class="action-bar">
-        <button class="btn" onclick="alert('Deposit')">DEPOSIT</button>
-        <div class="timer-box" id="timer">00:40</div>
-        <button class="btn btn-withdraw" onclick="alert('Withdraw')">WITHDRAW</button>
+        <button class="btn" onclick="alert('Deposit Window Opened')">DEPOSIT</button>
+        <div class="timer-box" id="timer">SPIN: 00:40</div>
+        <button class="btn btn-withdraw" onclick="alert('Withdraw Window Opened')">WITHDRAW</button>
     </div>
 
     <div class="wheel-container">
@@ -249,7 +258,7 @@
         </div>
     </div>
 
-    <div class="bet-info">Bet: 390 | Bal: 4610 | Chip: 50</div>
+    <div class="bet-info">Total Bet: 390 | Balance: 4610 | Chip: 50</div>
 
     <div class="grid-container">
         <div class="number-grid">
@@ -275,7 +284,9 @@
     </div>
 
     <div class="footer">
-        🔒 UPI • NETBANKING • VISA | 🛡️ SSL SECURED • 🔞 18+
+        🔒 SECURE PAYMENTS: UPI • NETBANKING • VISA • MASTERCARD<br>
+        🛡️ SSL SECURED • 🔐 RNG CERTIFIED • 🔞 18+ ONLY<br>
+        💬 WhatsApp Support | ✈️ Telegram Support | ⚖️ Fair Play
     </div>
 
     <script>

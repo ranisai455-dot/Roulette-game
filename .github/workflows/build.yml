@@ -1,4 +1,4 @@
-name: Build Android WebView APK
+name: Build WebView APK
 
 on:
   push:
@@ -17,113 +17,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Create Android Project Structure and Build Files
+      - name: Clone Official WebView Template and Inject HTML
         run: |
-          # एंड्रॉइड प्रोजेक्ट का फोल्डर ढांचा तैयार करना
-          mkdir -p android-project/app/src/main/assets
-          mkdir -p android-project/app/src/main/java/com/app/roulette
-          mkdir -p android-project/app/src/main/res/values
+          git clone https://github.com/empoCode/HtmlViewerAndroid.git android-ws
+          cp index.html android-ws/app/src/main/assets/index.html
 
-          # आपकी index.html फाइल को एसेट्स फोल्डर में कॉपी करना
-          cp index.html android-project/app/src/main/assets/index.html
-
-          # AndroidManifest.xml बनाना
-          cat << 'EOF' > android-project/app/src/main/AndroidManifest.xml
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-              package="com.app.roulette">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application
-                  android:label="Roulette Game"
-                  android:usesCleartextTraffic="true"
-                  android:icon="@mipmap/ic_launcher"
-                  android:roundIcon="@mipmap/ic_launcher">
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-
-          # MainActivity.java बनाना जो गेम को WebView में चलाएगा
-          cat << 'EOF' > android-project/app/src/main/java/com/app/roulette/MainActivity.java
-          package com.app.roulette;
-          import android.app.Activity;
-          import android.os.Bundle;
-          import android.webkit.WebView;
-          import android.webkit.WebSettings;
-
-          public class MainActivity extends Activity {
-              WebView webView;
-              @Override
-              protected void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  webView = new WebView(this);
-                  WebSettings settings = webView.getSettings();
-                  settings.setJavaScriptEnabled(true);
-                  settings.setDomStorageEnabled(true);
-                  settings.setLoadWithOverviewMode(true);
-                  settings.setUseWideViewPort(true);
-                  webView.loadUrl("file:///android_asset/index.html");
-                  setContentView(webView);
-              }
-          }
-          EOF
-
-          # app/build.gradle फाइल बनाना
-          cat << 'EOF' > android-project/app/build.gradle
-          plugins {
-              id 'com.android.application'
-          }
-          android {
-              namespace 'com.app.roulette'
-              compileSdk 34
-              defaultConfig {
-                  applicationId "com.app.roulette"
-                  minSdk 21
-                  targetSdk 34
-                  versionCode 1
-                  versionName "1.0"
-              }
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
-              }
-          }
-          dependencies {
-              implementation 'androidx.appcompat:appcompat:1.6.1'
-          }
-          EOF
-
-          # रूट build.gradle फाइल बनाना
-          cat << 'EOF' > android-project/build.gradle
-          plugins {
-              id 'com.android.application' version '8.2.0' apply false
-          }
-          EOF
-
-          # settings.gradle फाइल बनाना
-          cat << 'EOF' > android-project/settings.gradle
-          rootProject.name = "RouletteApp"
-          include ':app'
-          EOF
-
-          # Gradle Wrapper जनरेट करना ताकि सर्वर खुद बिल्ड कर सके
-          cd android-project
-          gradle wrapper --gradle-version 8.5
+      - name: Build APK
+        run: |
+          cd android-ws
           chmod +x gradlew
-
-      - name: Build Debug APK with Gradle
-        run: |
-          cd android-project
           ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: roulette-game-apk
-          path: android-project/app/build/outputs/apk/debug/app-debug.apk
+          name: roulette-apk
+          path: android-ws/app/build/outputs/apk/debug/app-debug.apk

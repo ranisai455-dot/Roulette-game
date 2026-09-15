@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Royal Roulette - Secure Casino</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b1a0f;
+            color: #ffd707;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            padding: 6px 4px;
+        }
+        
+        .top-banner {
+            background: linear-gradient(90deg, #112b18, #1b4d27, #112b18);
+            border: 1px solid #ffd700;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 9px;
+            color: #ffd707;
+            text-align: center;
+            width: 100%;
+        }
 
+        .header {
+            text-align: center;
+            width: 100%;
+        }
+        .title {
+            color: #ffd700;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .sub-header {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 2px 0;
+            font-size: 8px;
+            background: #112b18;
+            padding: 2px;
+            border-radius: 3px;
+            border: 1px solid #333;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+        .btn {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+            border: 1px solid #ffd700;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        .btn-withdraw {
+            background: linear-gradient(135deg, #dc3545, #bd2130);
+        }
+        .timer-box {
+            background: #222;
+            border: 1px solid #ffd700;
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        /* Roulette Wheel */
+        .wheel-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 2px auto;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            position: relative;
+            background: conic-gradient(
+                #008000 0deg 9.73deg, #e74c3c 9.73deg 19.46deg, #2c3e50 19.46deg 29.19deg,
+                #e74c3c 29.19deg 38.92deg, #2c3e50 38.92deg 48.65deg, #e74c3c 48.65deg 58.38deg,
+                #2c3e50 58.38deg 68.11deg, #e74c3c 68.11deg 77.84deg, #2c3e50 77.84deg 87.57deg,
+                #e74c3c 87.57deg 97.3deg, #2c3e50 97.3deg 107.03deg, #e74c3c 107.03deg 116.76deg,
+                #2c3e50 116.76deg 126.49deg, #e74c3c 126.49deg 136.22deg, #2c3e50 136.22deg 145.95deg,
+                #e74c3c 145.95deg 155.68deg, #2c3e50 155.68deg 165.41deg, #e74c3c 165.41deg 175.14deg,
+                #2c3e50 175.14deg 184.86deg, #e74c3c 184.86deg 194.59deg, #2c3e50 194.59deg 204.32deg,
+                #e74c3c 204.32deg 214.05deg, #2c3e50 214.05deg 223.78deg, #e74c3c 223.78deg 233.51deg,
+                #2c3e50 233.51deg 243.24deg, #e74c3c 243.24deg 252.97deg, #2c3e50 252.97deg 262.7deg,
+                #e74c3c 262.7deg 272.43deg, #2c3e50 272.43deg 282.16deg, #e74c3c 282.16deg 291.89deg,
+                #2c3e50 291.89deg 301.62deg, #e74c3c 301.62deg 311.35deg, #2c3e50 311.35deg 321.08deg,
+                #e74c3c 321.08deg 330.81deg, #2c3e50 330.81deg 340.54deg, #e74c3c 340.54deg 350.27deg,
+                #2c3e50 350.27deg 360deg
+            );
+            transition: transform 4.5s cubic-bezier(0.15, 0.75, 0.15, 1);
+        }
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        .ball {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px #000;
+            z-index: 5;
+            transition: transform 4.5s cubic-bezier(0.15, 0.75, 0.15, 1);
+        }
+
+        .bet-info {
+            font-size: 9px;
+            color: #ffd700;
+        }
+
+        /* Number Grid Table Structure */
+        .grid-container {
+            width: 100%;
+            background: #0f2614;
+            border: 1px solid #ffd700;
+            border-radius: 4px;
+            padding: 2px;
+        }
+        .number-grid {
+            display: grid;
+            grid-template-columns: 24px repeat(12, 1fr);
+            gap: 1px;
+        }
+        .grid-cell {
+            background: #1e3d24;
+            border: 1px solid #ffd700;
+            color: #fff;
+            text-align: center;
+            padding: 3px 0;
+            font-size: 9px;
+            font-weight: bold;
+            border-radius: 2px;
+        }
+        .red { background: #b30000; }
+        .black { background: #1a1a1a; }
+        .zero { background: #006600; grid-row: span 3; display: flex; align-items: center; justify-content: center; }
+
+        .special-bets {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .s-btn {
+            flex: 1;
+            margin: 0 1px;
+            padding: 3px;
+            font-size: 8px;
+            font-weight: bold;
+            border-radius: 3px;
+            border: 1px solid #ffd700;
+            color: #fff;
+            text-align: center;
+        }
+
+        .chip-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        .chip {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px dashed #ffd700;
+            background: #222;
+            color: #ffd700;
+            font-size: 9px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chip.active {
+            border-style: solid;
+            background: #444;
+        }
+
+        .footer {
+            font-size: 7px;
+            color: #aaa;
+            text-align: center;
+            width: 100%;
+            background: #050d07;
+            padding: 2px 0;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-banner">⚡ 100% TRUSTED • INSTANT WITHDRAWAL ⚡</div>
+
+    <div class="header">
+        <div class="title">★★ ROYAL ROULETTE ★★</div>
+        <div class="sub-header">
+            <span>🟢 ONLINE: 742</span>
+            <span>🔒 SECURE</span>
+            <span>⚡ 99.4%</span>
+        </div>
+    </div>
+
+    <div class="action-bar">
+        <button class="btn" onclick="alert('Deposit')">DEPOSIT</button>
+        <div class="timer-box" id="timer">00:40</div>
+        <button class="btn btn-withdraw" onclick="alert('Withdraw')">WITHDRAW</button>
+    </div>
+
+    <div class="wheel-container">
+        <div class="ball" id="ball"></div>
+        <div class="wheel" id="wheel">
+            <div class="wheel-center"></div>
+        </div>
+    </div>
+
+    <div class="bet-info">Bet: 390 | Bal: 4610 | Chip: 50</div>
+
+    <div class="grid-container">
+        <div class="number-grid">
+            <div class="grid-cell zero">0</div>
+            <div class="grid-cell red">3</div><div class="grid-cell black">6</div><div class="grid-cell red">9</div><div class="grid-cell red">12</div><div class="grid-cell black">15</div><div class="grid-cell red">18</div><div class="grid-cell red">21</div><div class="grid-cell black">24</div><div class="grid-cell red">27</div><div class="grid-cell black">30</div><div class="grid-cell red">33</div><div class="grid-cell red">36</div>
+            <div class="grid-cell black">2</div><div class="grid-cell red">5</div><div class="grid-cell black">8</div><div class="grid-cell black">11</div><div class="grid-cell red">14</div><div class="grid-cell black">17</div><div class="grid-cell black">20</div><div class="grid-cell red">23</div><div class="grid-cell black">26</div><div class="grid-cell black">29</div><div class="grid-cell red">32</div><div class="grid-cell black">35</div>
+            <div class="grid-cell red">1</div><div class="grid-cell black">4</div><div class="grid-cell red">7</div><div class="grid-cell red">10</div><div class="grid-cell black">13</div><div class="grid-cell red">16</div><div class="grid-cell red">19</div><div class="grid-cell black">22</div><div class="grid-cell red">25</div><div class="grid-cell black">28</div><div class="grid-cell red">31</div><div class="grid-cell black">34</div>
+        </div>
+    </div>
+
+    <div class="special-bets">
+        <div class="s-btn red">RED (2X)</div>
+        <div class="s-btn zero" style="background:#006600;">GREEN (35X)</div>
+        <div class="s-btn black">BLACK (2X)</div>
+    </div>
+
+    <div class="chip-selector">
+        <div class="chip">10</div>
+        <div class="chip active">50</div>
+        <div class="chip">100</div>
+        <div class="chip">500</div>
+        <div class="chip">1K</div>
+    </div>
+
+    <div class="footer">
+        🔒 UPI • NETBANKING • VISA | 🛡️ SSL SECURED • 🔞 18+
+    </div>
+
+    <script>
+        let currentRotation = 0;
+        function spinWheel() {
+            const wheel = document.getElementById('wheel');
+            const ball = document.getElementById('ball');
+            const randomExtra = Math.floor(Math.random() * 360) + 1800;
+            currentRotation += randomExtra;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            ball.style.transform = `translateX(-50%) rotate(-${currentRotation}deg)`;
+        }
+        setInterval(spinWheel, 15000);
+    </script>
+</body>
+</html>

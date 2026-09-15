@@ -298,4 +298,1052 @@
     <div id="loginScreenContainer">
         <div class="header-container">
             <div class="trust-banner">100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
-            <div class="roya
+            <div class="royal-title-wrap">
+                <span class="animated-star-left">⭐ 🌟 ✨</span>
+                <div class="royal-main-title">ROYAL ROULETTE</div>
+                <span class="animated-star-right">✨ 🌟 ⭐</span>
+            </div>
+            <div class="live-stats-bar">
+                <span id="loginOnlineCount">🟢 ONLINE: 742 VIPs</span>
+                <span>🔒 256-BIT SECURE</span>
+                <span>⚡ PAYOUT: 99.4%</span>
+            </div>
+        </div>
+
+        <div class="login-card" id="loginCardBox">
+            <h3>SECURE MEMBER LOGIN</h3>
+            <p>ENTER REGISTERED MOBILE NUMBER</p>
+            
+            <input type="tel" id="inputPhone" placeholder="Mobile Number (10 Digits)" maxlength="10">
+            <input type="text" id="inputOtp" placeholder="Enter OTP / Secret Code" maxlength="15">
+            <button class="login-btn" onclick="requestOtpCode()">GENERATE OTP</button>
+            <button class="login-btn lobby" onclick="verifyLogin(); startDjMusic();">ENTER LOBBY</button>
+        </div>
+
+        <div class="footer-wrap">
+            <div class="payment-gateways">💳 SECURE PAYMENTS: UPI • NETBANKING • VISA • MASTERCARD</div>
+            <div class="trust-badges">🛡️ SSL SECURED • 🔒 RNG CERTIFIED • 🔞 18+ ONLY</div>
+            <div class="legal-links">
+                <a href="https://wa.me/919399267482?text=Hello%20Support" target="_blank">💬 WhatsApp Support</a> | 
+                <a href="https://t.me/RoyalRouletteSupport" target="_blank">✈️ Telegram Support</a> | 
+                <a href="#">Terms</a> | <a href="#">Fair Play</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameLobbyScreen">
+        <div class="lobby-header" id="lobbyHeaderEl">
+            <div class="user-profile-widget" onclick="openProfileModal(); event.stopPropagation();">
+                <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
+                <div>
+                    <div style="font-size:9px; font-weight:900; color:#ffd700;" id="userDisplayPhone">VIP_48921</div>
+                    <div style="font-size:7.5px; color:#2ecc71; font-weight:bold;">Tap for Profile 👆</div>
+                </div>
+            </div>
+
+            <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="timer-strip-center" id="lobbyTimerText">⏳ 02:00</div>
+            </div>
+            <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
+        </div>
+
+        <div class="history-strip-bar" id="historyBarEl">
+            <span class="history-title">History:</span>
+            <div id="historyBallsContainer" style="display: flex; gap: 4px;"></div>
+        </div>
+
+        <div class="lobby-wheel-box" id="mainWheelContainer">
+            <canvas id="lobbyWheelCanvas" width="280" height="280"></canvas>
+            <div class="lobby-wheel-hub"></div>
+            <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
+        </div>
+
+        <div class="betting-board-section" id="bettingBoardArea">
+            <!-- शानदार और सिस्टमैटिक वॉलेट डिजाइन: रियल मनी बड़ा और प्रमिनेंट, टेस्ट मनी छोटा नीचे -->
+            <div style="background: rgba(0,0,0,0.85); padding: 5px; border-radius: 8px; border: 1.5px solid #ffd700; margin-bottom: 2px; display: flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 900; color: #ffd700;">
+                    <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
+                    <span style="background: rgba(39, 174, 96, 0.2); border: 1px solid #2ecc71; padding: 2px 8px; border-radius: 6px;">
+                        💎 REAL MONEY: <span id="playerRealBal" style="color:#2ecc71; font-size: 13px;">₹0</span>
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 8.5px; color: #3498db; font-weight: bold;">
+                    <span>🧪 Testing Demo Coins: <span id="playerTestBal">10000</span> (Free Play)</span>
+                </div>
+            </div>
+
+            <div class="mode-toggle-bar">
+                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode (Demo)</button>
+                <button class="mode-btn" id="modeBtnReal" onclick="switchGameMode('real')">💎 Real Money Mode</button>
+            </div>
+            
+            <div class="grid-table" id="gridTableDiv"></div>
+            
+            <div class="color-row">
+                <button class="color-btn btn-red" id="btnColorRed" onclick="placeTableBet('red', this)">RED (2x)</button>
+                <button class="color-btn btn-green" id="btnColorGreen" onclick="placeTableBet('0', this)">GREEN (35x)</button>
+                <button class="color-btn btn-black" id="btnColorBlack" onclick="placeTableBet('black', this)">BLACK (2x)</button>
+            </div>
+
+            <div class="chip-selector-row">
+                <div class="chip-item chip-10" onclick="selectChip(10, this)">10</div>
+                <div class="chip-item chip-50 selected" onclick="selectChip(50, this)">50</div>
+                <div class="chip-item chip-100" onclick="selectChip(100, this)">100</div>
+                <div class="chip-item chip-500" onclick="selectChip(500, this)">500</div>
+                <div class="chip-item chip-1000" onclick="selectChip(1000, this)">1K</div>
+                <button class="transfer-btn-small" onclick="openTransferModal(); event.stopPropagation();">⇄ Transfer</button>
+            </div>
+            
+            <div class="lobby-action-row">
+                <button class="clear-btn" onclick="clearTableBets()">Clear (Undo)</button>
+                <div class="status-msg-box" id="lobbyStatusMsg">Place bets! Game ready...</div>
+                <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [PLAYER PROFILE & TRANSACTION HISTORY MODAL] -->
+    <div id="playerProfileModal" class="wallet-modal">
+        <div class="wallet-modal-content" style="max-width: 450px;">
+            <h3 style="color:#ffd700; margin-bottom:5px; font-size:18px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
+            <div style="font-size:35px; margin:5px 0;" id="profileAvatarLarge">😎</div>
+            
+            <div style="background:#000; border:1px solid #ffd700; padding:10px; border-radius:10px; text-align:left; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
+                <div>📱 <b>Mobile Number:</b> <span id="profPhone" style="color:#fff;">--</span></div>
+                <div>🆔 <b>VIP Player ID:</b> <span id="profVipId" style="color:#ffd700;">--</span></div>
+                <div>📧 <b>Email Address:</b> <span id="profEmail" style="color:#00ffff;">player_vip@royalcasino.com</span></div>
+                <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-size:14px; font-weight:bold;">0</span></div>
+                <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span> Coins</div>
+            </div>
+
+            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 140px; overflow-y: auto;">
+                <div style="color:#2ecc71; font-weight:bold; font-size:11px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:5px;">📋 Your Deposit & Withdrawal History:</div>
+                <div id="playerTransactionHistoryList" style="font-size:10px; color:#ccc;">No transactions recorded yet.</div>
+            </div>
+
+            <button onclick="closeWalletModals()" class="login-btn" style="padding:10px; font-size:12px; margin-top:10px;">Close Profile</button>
+        </div>
+    </div>
+
+    <!-- [FULL-SCREEN MASTER ADMIN PANEL] -->
+    <div id="secretAdminModal">
+        <div class="admin-dashboard-container">
+            <h2 style="color:#e74c3c; font-size:22px; margin-bottom:5px;">🔒 MASTER ADMIN COMMAND CENTER</h2>
+            <p style="font-size:11px; color:#aaa; margin-bottom:10px;">Anti-Fraud Control: Approve, Reject & Monitor Payouts</p>
+            
+            <div class="admin-stats-box">
+                <div>🟢 Active Players Online: <span id="admActivePlayers" style="color:#2ecc71;">742</span></div>
+                <div>👑 Current Round ID: <span id="admRoundId" style="color:#f1c40f;">0</span></div>
+                <div>💰 Total Table Bet (This Round): <span id="admTotalBet" style="color:#fff;">₹0</span></div>
+                <div>📈 House Profit Margin (5%): <span id="admProfit" style="color:#3498db;">₹0</span></div>
+            </div>
+
+            <div class="admin-stats-box">
+                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:8px;">📥 Live Deposit Requests:</div>
+                <div id="admDepositList" style="max-height: 130px; overflow-y: auto;">No pending deposit requests.</div>
+            </div>
+
+            <div class="admin-stats-box">
+                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:8px;">📤 Live Withdrawal Requests:</div>
+                <div id="admWithdrawList" style="max-height: 130px; overflow-y: auto;">No pending withdrawal requests.</div>
+            </div>
+
+            <div class="admin-stats-box">
+                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:5px;">🎯 Detailed Bets Breakdown:</div>
+                <div id="admDetailedBetsList" style="font-size:11px; color:#ccc; max-height:90px; overflow-y:auto;">No active bets placed yet.</div>
+            </div>
+            
+            <label style="font-size:12px; display:block; margin-top:5px; text-align:left; color:#ffd700;">Rig Next Winning Number:</label>
+            <select id="adminRigSelect">
+                <option value="random">Random (5% House Edge & Safety Mode)</option>
+            </select>
+
+            <button onclick="saveAdminSettings()" class="login-btn" style="background:#27ae60; color:#fff; padding:12px; font-size:14px; margin-top:10px;">Save Admin Settings</button>
+            <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background:#c0392b; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:8px; font-size:13px; cursor:pointer; font-weight:bold;">Close Admin Panel</button>
+        </div>
+    </div>
+
+    <div id="cinematicResultPopup">
+        <div class="popup-card">
+            <h3 style="color:#f1c40f; font-size:16px; margin-bottom:5px;">🎉 WINNING NUMBER 🎉</h3>
+            <div id="popupWinningNumDisplay" style="font-size:48px; font-weight:900; color:#fff; margin:12px 0; text-shadow: 0 0 20px #ffd700;">14 RED</div>
+            <div id="popupPayoutDisplay" style="font-size:14px; font-weight:bold; color:#00ffff; margin-bottom:10px;">You Won 🪙1,800!</div>
+        </div>
+    </div>
+
+    <div id="depositModalBox" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - SECURE DEPOSIT</h3>
+            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Select deposit package & pay via your preferred app</p>
+            
+            <div class="deposit-packages-grid">
+                <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
+                <button class="dep-pkg-btn" onclick="selectDepositPkg(500, this)">₹500</button>
+                <button class="dep-pkg-btn" onclick="selectDepositPkg(1000, this)">₹1000</button>
+                <button class="dep-pkg-btn" onclick="selectDepositPkg(2000, this)">₹2000</button>
+                <button class="dep-pkg-btn" onclick="selectDepositPkg(5000, this)">₹5000</button>
+                <button class="dep-pkg-btn" onclick="selectDepositPkg(10000, this)">₹10000</button>
+            </div>
+
+            <div style="display:flex; gap:8px; margin:15px 0;">
+                <button onclick="payViaApp('gpay')" style="flex:1; background:#1a1a1a; border:1px solid #4285F4; color:#4285F4; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">Google Pay</button>
+                <button onclick="payViaApp('phonepe')" style="flex:1; background:#1a1a1a; border:1px solid #5f259f; color:#a56eff; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">PhonePe</button>
+                <button onclick="payViaApp('paytm')" style="flex:1; background:#1a1a1a; border:1px solid #00b9f1; color:#00b9f1; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">Paytm</button>
+            </div>
+
+            <input type="text" id="utrNumberInput" placeholder="Enter 12-Digit UTR No / Reference No" maxlength="12">
+            <button onclick="submitDepositCoins();" class="login-btn" style="padding:12px; font-size:13px; margin-top:10px;">Submit Deposit (Pending)</button>
+            <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+        </div>
+    </div>
+
+    <div id="withdrawModalBox" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL (2.5% Fee)</h3>
+            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Fast payout directly to your UPI ID or QR Code</p>
+            
+            <div class="withdraw-packages-grid">
+                <button class="wd-pkg-btn selected" onclick="selectWithdrawPkg(500, this)">₹500</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(1000, this)">₹1000</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(2000, this)">₹2000</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(5000, this)">₹5000</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(10000, this)" style="grid-column: span 3;">₹10000</button>
+            </div>
+
+            <input type="number" id="withdrawAmtInput" value="500" placeholder="Amount (Coins)">
+            <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@ybl)">
+            
+            <div style="background:#000; border:1.5px dashed #f1c40f; padding:10px; border-radius:10px; margin:10px 0; text-align:center;">
+                <label style="font-size:11px; color:#ffd700; font-weight:bold; display:block; margin-bottom:5px;">📁 UPLOAD YOUR QR CODE IMAGE (PROOF)</label>
+                <input type="file" id="withdrawQrFile" accept="image/*" style="font-size:11px; color:#fff; width:100%;">
+            </div>
+
+            <p style="font-size:9px; color:#e74c3c; margin:5px 0; font-weight:bold;">Note: 2.5% platform fee will be deducted on payout from Real Balance.</p>
+            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; font-size:13px; margin-top:10px;">Request Withdrawal (Pending Payout)</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+        </div>
+    </div>
+
+    <div id="transferModalBox" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">TRANSFER COINS TO FRIEND</h3>
+            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">10% Platform Fee applies</p>
+            <input type="text" id="transferTargetId" placeholder="Friend's VIP ID">
+            <input type="number" id="transferCoinAmt" placeholder="Coins to Send">
+            <button onclick="executeCoinTransfer()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:12px; font-size:13px; margin-top:10px;">Transfer Now</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+        </div>
+    </div>
+
+    <script>
+        const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+        const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+        const ROUND_TIME = 120;
+
+        let accumulatedBallRotation = 0; 
+        const MERCHANT_UPI = "Q65790824@ybl";
+        const MERCHANT_NAME = "ROYAL ROULETTE";
+        const MASTER_ADMIN_PHONE = "8889865182";
+        const MASTER_ADMIN_SECRET_CODE = "Rani143143";
+
+        let realCoins = 0;
+        let testCoins = 10000;
+        let activeGameMode = 'test';
+        let loggedUserPhone = "";
+        let loggedVipId = "";
+        let loggedAvatar = "😎";
+
+        let audioCtx = null;
+        let djInterval = null;
+        let djGainNode = null;
+
+        function startDjMusic() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (djInterval) clearInterval(djInterval);
+
+            djGainNode = audioCtx.createGain();
+            djGainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            djGainNode.connect(audioCtx.destination);
+
+            let step = 0;
+            djInterval = setInterval(() => {
+                if (!audioCtx) return;
+                try {
+                    let now = audioCtx.currentTime;
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    
+                    osc.type = (step % 4 === 0) ? 'square' : 'sawtooth';
+                    let freqs = [110, 220, 330, 440, 550, 660];
+                    osc.frequency.setValueAtTime(freqs[step % freqs.length], now);
+
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+                    osc.connect(gain);
+                    gain.connect(djGainNode);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                    step++;
+                } catch(e) {}
+            }, 250);
+        }
+
+        function duckMusic(ducking) {
+            if (!djGainNode || !audioCtx) return;
+            try {
+                let now = audioCtx.currentTime;
+                if (ducking) {
+                    djGainNode.gain.linearRampToValueAtTime(0.02, now + 0.3);
+                } else {
+                    djGainNode.gain.linearRampToValueAtTime(0.12, now + 0.5);
+                }
+            } catch(e) {}
+        }
+
+        function playBallRollingSound() {
+            if (!audioCtx) return;
+            duckMusic(true);
+            try {
+                let bufferSize = audioCtx.sampleRate * 6;
+                let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                let data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.5;
+                }
+                let noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                
+                let filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                filter.frequency.linearRampToValueAtTime(300, audioCtx.currentTime + 6);
+
+                let gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 6);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start();
+
+                setTimeout(() => {
+                    duckMusic(false);
+                }, 6000);
+            } catch(e) {
+                setTimeout(() => { duckMusic(false); }, 6000);
+            }
+        }
+
+        function speakVoice(text, isNoMoreBets = false) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.05;
+                utterance.pitch = 1.1;
+                utterance.volume = 1.0;
+
+                if (isNoMoreBets) {
+                    duckMusic(true);
+                    utterance.onend = () => { duckMusic(false); };
+                }
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function payViaApp(appType) {
+            let amount = selectedDepositAmount;
+            let upiUrl = `upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+            if (appType === 'gpay') {
+                window.location.href = `tez://upi/pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+            } else if (appType === 'phonepe') {
+                window.location.href = `phonepe://pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+            } else if (appType === 'paytm') {
+                window.location.href = `paytmmp://pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+            } else {
+                window.location.href = upiUrl;
+            }
+        }
+
+        function drawCanvasWheel(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const outerRadius = cx - 6;
+            const innerRadius = 24; 
+            const arcSize = (2 * Math.PI) / numbersList.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            numbersList.forEach((num, i) => {
+                const angle = i * arcSize - Math.PI / 2;
+                let fillColor = '#0f171e';
+                if (num === 0) fillColor = '#1b5e20';
+                else if (redList.includes(num)) fillColor = '#b03a2e';
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
+                ctx.lineTo(cx, cy);
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+                ctx.lineWidth = 1.2;
+                ctx.strokeStyle = '#ffd700';
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Arial';
+                ctx.fillText(num, outerRadius - 16, 4);
+                ctx.restore();
+            });
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#d4af37';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+        }
+
+        window.onload = () => {
+            drawCanvasWheel('loginWheelCanvasBg');
+            drawCanvasWheel('lobbyWheelCanvas');
+        };
+
+        function closeComingSoonModal() {
+            document.getElementById('comingSoonNoticeModal').style.display = 'none';
+        }
+
+        const adminSelect = document.getElementById('adminRigSelect');
+        numbersList.forEach(num => {
+            let opt = document.createElement('option');
+            opt.value = num;
+            opt.innerText = "Number " + num;
+            adminSelect.appendChild(opt);
+        });
+
+        function saveAdminSettings() {
+            alert("Admin Settings Applied Successfully!");
+            document.getElementById('secretAdminModal').style.display = 'none';
+        }
+
+        function logoutToLogin() {
+            document.getElementById('gameLobbyScreen').style.display = 'none';
+            document.getElementById('secretAdminModal').style.display = 'none';
+            document.getElementById('loginScreenContainer').style.display = 'flex';
+            document.getElementById('fullscreenWheelBg').style.display = 'flex';
+            document.getElementById('inputPhone').value = '';
+            document.getElementById('inputOtp').value = '';
+        }
+
+        function requestOtpCode() {
+            let phone = document.getElementById('inputPhone').value.trim();
+            if (phone.length < 10) {
+                alert("Please enter a valid 10-digit mobile number first!");
+                return;
+            }
+
+            if (phone === MASTER_ADMIN_PHONE) {
+                alert("🔒 Admin Number Detected! (Please type your secret code directly in the box below)");
+            } else {
+                let randomUniqueOtp = Math.floor(100000 + Math.random() * 900000);
+                let otpBox = document.getElementById('inputOtp');
+                alert("📱 Your Secure Verification Code is: " + randomUniqueOtp);
+                otpBox.value = randomUniqueOtp;
+            }
+        }
+
+        // --- पुराना और ट्रस्टेड दिखने वाला ऑटो-इंक्रीमेंट यूनीक VIP ID सिस्टम (शुरुआत VIP_84920 से) ---
+        function getOrCreateUniqueVipId(phone) {
+            let registeredUsers = JSON.parse(localStorage.getItem("casino_registered_users") || "{}");
+            
+            if (registeredUsers[phone]) {
+                return registeredUsers[phone]; 
+            }
+
+            let lastCounter = parseInt(localStorage.getItem("casino_id_counter") || "84919");
+            let newCounter = lastCounter + 1;
+            let uniqueId = "VIP_" + newCounter;
+
+            localStorage.setItem("casino_id_counter", newCounter);
+            registeredUsers[phone] = uniqueId;
+            localStorage.setItem("casino_registered_users", JSON.stringify(registeredUsers));
+
+            return uniqueId;
+        }
+
+        function verifyLogin() {
+            let phone = document.getElementById('inputPhone').value.trim();
+            let otp = document.getElementById('inputOtp').value.trim();
+
+            if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) {
+                document.getElementById('fullscreenWheelBg').style.display = 'none';
+                document.getElementById('loginScreenContainer').style.display = 'none';
+                document.getElementById('gameLobbyScreen').style.display = 'flex';
+                
+                loggedUserPhone = phone;
+                loggedVipId = "ADMIN_001";
+                loggedAvatar = "👑";
+
+                document.getElementById('userDisplayPhone').innerText = loggedVipId;
+                document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
+                updateBalancesDisplay();
+                openAdminPanel();
+                return;
+            }
+
+            if (otp.length < 4) { 
+                alert("Please enter or generate a valid OTP!"); 
+                return; 
+            }
+
+            document.getElementById('fullscreenWheelBg').style.display = 'none';
+            document.getElementById('loginScreenContainer').style.display = 'none';
+            document.getElementById('gameLobbyScreen').style.display = 'flex';
+
+            loggedUserPhone = phone;
+            loggedVipId = getOrCreateUniqueVipId(phone);
+
+            let avatars = ['🦁', '🐯', '🦊', '🐼', '🐨', '🦄', '😎', '🤠'];
+            loggedAvatar = avatars[Math.abs(phone.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % avatars.length];
+
+            document.getElementById('userDisplayPhone').innerText = loggedVipId;
+            document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
+
+            updateBalancesDisplay();
+        }
+
+        function updateBalancesDisplay() {
+            document.getElementById('playerRealBal').innerText = "₹" + realCoins;
+            document.getElementById('playerTestBal').innerText = testCoins;
+
+            document.getElementById('profPhone').innerText = loggedUserPhone;
+            document.getElementById('profVipId').innerText = loggedVipId;
+            document.getElementById('profEmail').innerText = "vip_" + loggedUserPhone + "@royalcasino.com";
+            document.getElementById('profRealBal').innerText = realCoins;
+            document.getElementById('profTestBal').innerText = testCoins;
+            document.getElementById('profileAvatarLarge').innerText = loggedAvatar;
+
+            renderPlayerTransactionHistory();
+        }
+
+        function renderPlayerTransactionHistory() {
+            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+            
+            let userDeps = deposits.filter(d => d.phone === loggedUserPhone);
+            let userWds = withdraws.filter(w => w.phone === loggedUserPhone);
+
+            let html = "";
+            userDeps.forEach(d => {
+                let stColor = d.status === 'Approved' ? '#2ecc71' : '#f39c12';
+                html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr}<br><span style="color:${stColor}; font-weight:bold;">Status: ${d.status} (${d.time})</span></div>`;
+            });
+
+            userWds.forEach(w => {
+                let wColor = w.status === 'Success' ? '#2ecc71' : (w.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
+                html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${wColor}; font-weight:bold;">Status: ${w.status} (${w.time})</span></div>`;
+            });
+
+            if (html === "") {
+                html = "No deposit or withdrawal history yet.";
+            }
+            document.getElementById('playerTransactionHistoryList').innerHTML = html;
+        }
+
+        function openProfileModal() {
+            updateBalancesDisplay();
+            document.getElementById('playerProfileModal').style.display = 'flex';
+        }
+
+        function switchGameMode(mode) {
+            activeGameMode = mode;
+            let testBtn = document.getElementById('modeBtnTest');
+            let realBtn = document.getElementById('modeBtnReal');
+
+            if (mode === 'test') {
+                testBtn.className = "mode-btn active-test";
+                realBtn.className = "mode-btn";
+            } else {
+                realBtn.className = "mode-btn active-real";
+                testBtn.className = "mode-btn";
+            }
+        }
+
+        function openAdminPanel() {
+            let { roundId } = getGlobalRound();
+            let totalBetVal = parseFloat(localStorage.getItem("total_bet_round_" + roundId) || 0);
+            
+            document.getElementById('admRoundId').innerText = roundId;
+            document.getElementById('admTotalBet').innerText = "₹" + totalBetVal;
+            document.getElementById('admProfit').innerText = "₹" + (totalBetVal * 0.05).toFixed(2);
+            document.getElementById('admActivePlayers').innerText = 742 + Math.floor(Math.random() * 20);
+
+            let breakdownKey = "bets_breakdown_" + roundId;
+            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+            let breakdownHtml = "";
+            let hasBets = false;
+
+            for (let k in betsMap) {
+                hasBets = true;
+                breakdownHtml += `<div>🎯 Bet on <b>${k}</b>: ₹${betsMap[k]}</div>`;
+            }
+            if (!hasBets) {
+                breakdownHtml = "No active bets placed in this round yet.";
+            }
+            document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
+
+            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+            let depHtml = "";
+            if (deposits.length > 0) {
+                deposits.forEach((d, idx) => {
+                    let statusColor = d.status === 'Approved' ? '#2ecc71' : (d.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
+                    depHtml += `
+                        <div class="req-item">
+                            <div>📱 <b>${d.phone}</b> | Amt: ₹${d.amount} | UTR: <b>${d.utr}</b><br><span style="color:${statusColor}; font-weight:bold;">Status: ${d.status}</span></div>
+                            <div class="req-actions">
+                                ${d.status === 'Pending' ? `
+                                    <button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button>
+                                    <button class="btn-reject" onclick="rejectDeposit(${idx})">Reject (Fake)</button>
+                                ` : `<span style="color:${statusColor}; font-weight:bold; font-size:11px;">${d.status}</span>`}
+                            </div>
+                        </div>`;
+                });
+            } else {
+                depHtml = "No pending deposit requests.";
+            }
+            document.getElementById('admDepositList').innerHTML = depHtml;
+
+            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+            let wdHtml = "";
+            if (withdraws.length > 0) {
+                withdraws.forEach((w, idx) => {
+                    let wdColor = w.status === 'Success' ? '#2ecc71' : (w.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
+                    wdHtml += `
+                        <div class="req-item">
+                            <div>📱 <b>${w.phone}</b> | Amt: ${w.amount} Coins | UPI: <b>${w.upi}</b><br><span style="color:${wdColor}; font-weight:bold;">Status: ${w.status}</span></div>
+                            <div class="req-actions">
+                                ${w.status.includes('Pending') ? `
+                                    <button class="btn-approve" onclick="successWithdraw(${idx})">Mark Success</button>
+                                    <button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject (Refund)</button>
+                                ` : `<span style="color:${wdColor}; font-weight:bold; font-size:11px;">${w.status}</span>`}
+                            </div>
+                        </div>`;
+                });
+            } else {
+                wdHtml = "No pending withdrawal requests.";
+            }
+            document.getElementById('admWithdrawList').innerHTML = wdHtml;
+
+            document.getElementById('secretAdminModal').style.display = 'block';
+        }
+
+        function approveDeposit(idx) {
+            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+            deposits[idx].status = 'Approved';
+            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+            
+            realCoins += deposits[idx].amount * 2;
+            updateBalancesDisplay();
+            alert("✅ Deposit Approved! Real Coins added to player balance.");
+            openAdminPanel();
+        }
+
+        function rejectDeposit(idx) {
+            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+            deposits[idx].status = 'Rejected (Fake UTR)';
+            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+            alert("❌ Deposit Rejected as Fake UTR/Screenshot!");
+            openAdminPanel();
+        }
+
+        function successWithdraw(idx) {
+            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+            withdraws[idx].status = 'Success';
+            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
+            alert("✅ Withdrawal marked as Paid (Success)!");
+            openAdminPanel();
+        }
+
+        function rejectWithdraw(idx) {
+            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+            let refundedAmt = withdraws[idx].amount;
+            withdraws[idx].status = 'Rejected (Refunded)';
+            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
+            
+            realCoins += refundedAmt;
+            updateBalancesDisplay();
+            alert("❌ Withdrawal Rejected & Real Coins Refunded to Player!");
+            openAdminPanel();
+        }
+
+        const gridTableDiv = document.getElementById('gridTableDiv');
+        [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
+            row.forEach(num => {
+                let cell = document.createElement('div');
+                cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
+                cell.innerText = num;
+                cell.onclick = () => { placeTableBet(num.toString(), cell); };
+                gridTableDiv.appendChild(cell);
+            });
+        });
+
+        let currentActiveChip = 50, userActiveBets = {}, currentTotalBet = 0, isGameSpinning = false;
+        let selectedDepositAmount = 300;
+        let betHistoryStack = [];
+
+        function selectChip(val, el) {
+            currentActiveChip = val;
+            document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function placeTableBet(key, el) {
+            let { timeLeft } = getGlobalRound();
+            if (isGameSpinning || timeLeft <= 10) return;
+
+            if (activeGameMode === 'real') {
+                if (realCoins < currentActiveChip) { alert("Not enough Real Coins! Please deposit first."); return; }
+                realCoins -= currentActiveChip;
+            } else {
+                if (testCoins < currentActiveChip) { alert("Test coins exhausted! Reloading demo coins..."); testCoins = 10000; }
+                testCoins -= currentActiveChip;
+            }
+
+            currentTotalBet += currentActiveChip;
+            if (!userActiveBets[key]) userActiveBets[key] = 0;
+            userActiveBets[key] += currentActiveChip;
+
+            betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
+
+            updateBalancesDisplay();
+            document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+
+            let { roundId } = getGlobalRound();
+            localStorage.setItem("total_bet_round_" + roundId, currentTotalBet);
+            let breakdownKey = "bets_breakdown_" + roundId;
+            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+            betsMap[key] = (betsMap[key] || 0) + currentActiveChip;
+            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
+
+            if (el) {
+                el.classList.add('has-bet');
+                let badge = el.querySelector('.cell-badge');
+                if (!badge) { badge = document.createElement('div'); badge.className = 'cell-badge'; el.appendChild(badge); }
+                badge.innerText = userActiveBets[key];
+            }
+
+            if(document.getElementById('secretAdminModal').style.display === 'block') {
+                openAdminPanel();
+            }
+        }
+
+        function clearTableBets() {
+            let { timeLeft } = getGlobalRound();
+            if (isGameSpinning || timeLeft <= 10) return;
+            if (betHistoryStack.length === 0) return;
+
+            let lastBet = betHistoryStack.pop();
+            
+            if (lastBet.mode === 'real') {
+                realCoins += lastBet.amount;
+            } else {
+                testCoins += lastBet.amount;
+            }
+
+            currentTotalBet -= lastBet.amount;
+            userActiveBets[lastBet.key] -= lastBet.amount;
+
+            if (userActiveBets[lastBet.key] <= 0) {
+                delete userActiveBets[lastBet.key];
+                if (lastBet.element) {
+                    lastBet.element.classList.remove('has-bet');
+                    let b = lastBet.element.querySelector('.cell-badge');
+                    if (b) b.remove();
+                }
+            } else {
+                if (lastBet.element) {
+                    let b = lastBet.element.querySelector('.cell-badge');
+                    if (b) b.innerText = userActiveBets[lastBet.key];
+                }
+            }
+
+            updateBalancesDisplay();
+            document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+
+            let { roundId } = getGlobalRound();
+            localStorage.setItem("total_bet_round_" + roundId, currentTotalBet);
+            let breakdownKey = "bets_breakdown_" + roundId;
+            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+            if (userActiveBets[lastBet.key]) {
+                betsMap[lastBet.key] = userActiveBets[lastBet.key];
+            } else {
+                delete betsMap[lastBet.key];
+            }
+            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
+
+            if(document.getElementById('secretAdminModal').style.display === 'block') {
+                openAdminPanel();
+            }
+        }
+
+        function getGlobalRound() {
+            let nowSec = Math.floor(Date.now() / 1000);
+            let roundId = Math.floor(nowSec / ROUND_TIME);
+            let timeLeft = ROUND_TIME - (nowSec % ROUND_TIME);
+            return { roundId, timeLeft };
+        }
+
+        function getMasterWinningNumber(roundId) {
+            let savedWin = localStorage.getItem("saved_winner_" + roundId);
+            if (savedWin !== null) return parseInt(savedWin);
+
+            let adminRigVal = document.getElementById('adminRigSelect').value;
+            if (adminRigVal !== "random") return parseInt(adminRigVal);
+
+            let totalKey = "total_bet_round_" + roundId;
+            let totalBet = parseFloat(localStorage.getItem(totalKey) || 0);
+            let breakdownKey = "bets_breakdown_" + roundId;
+            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+
+            if (totalBet > 0) {
+                let maxAllowedPayout = totalBet * 0.95;
+                let safeCandidates = [];
+
+                numbersList.forEach(num => {
+                    let p = 0;
+                    let isRed = redList.includes(num);
+                    if (betsMap[num.toString()]) p += betsMap[num.toString()] * 36;
+                    if (num === 0 && betsMap['0']) p += betsMap['0'] * 36;
+                    if (isRed && betsMap['red']) p += betsMap['red'] * 2;
+                    if (!isRed && num !== 0 && betsMap['black']) p += betsMap['black'] * 2;
+
+                    if (p <= maxAllowedPayout) {
+                        safeCandidates.push(num);
+                    }
+                });
+
+                if (safeCandidates.length > 0) {
+                    let randIdx = Math.floor(Math.sin(roundId * 99.9) * 1000) % safeCandidates.length;
+                    return safeCandidates[Math.abs(randIdx)];
+                }
+            }
+
+            let pseudo = Math.sin(roundId * 12.9898 + 78.233) * 43758.5453123;
+            return Math.floor(Math.abs(pseudo) % 37);
+        }
+
+        function getIndependentNaturalHistory(rId) {
+            let savedWin = localStorage.getItem("saved_winner_" + rId);
+            if (savedWin !== null) return parseInt(savedWin);
+            let pseudoHash = Math.sin(rId * 99.123 + 45.67) * 83759.123;
+            return numbersList[Math.floor(Math.abs(pseudoHash) % numbersList.length)];
+        }
+
+        let lastProcessedRound = -1;
+        let announcedNoMoreBets = false;
+        const ballOrbitEl = document.getElementById('rouletteBallOrbit');
+
+        setInterval(() => {
+            let { roundId, timeLeft } = getGlobalRound();
+            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+
+            let historyHTML = "";
+            for (let i = 1; i <= 5; i++) {
+                let pastRound = roundId - i;
+                let pastNum = getIndependentNaturalHistory(pastRound);
+                let cls = pastNum === 0 ? 'green' : (redList.includes(pastNum) ? 'red' : 'black');
+                historyHTML += `<div class="history-ball ${cls}">${pastNum}</div>`;
+            }
+            document.getElementById('historyBallsContainer').innerHTML = historyHTML;
+
+            if (roundId !== lastProcessedRound) {
+                if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
+                lastProcessedRound = roundId;
+                announcedNoMoreBets = false;
+                userActiveBets = {};
+                currentTotalBet = 0;
+                betHistoryStack = [];
+                document.getElementById('lobbyTotalBet').innerText = 0;
+                document.querySelectorAll('.table-cell, .color-btn').forEach(c => {
+                    c.classList.remove('has-bet');
+                    let b = c.querySelector('.cell-badge'); if (b) b.remove();
+                });
+            }
+
+            if (timeLeft === 10 && !announcedNoMoreBets) {
+                announcedNoMoreBets = true;
+                speakVoice("No more bets, please!", true);
+            }
+
+            if (timeLeft > 10) {
+                document.getElementById('lobbyTimerText').innerText = `⏳ Spin: ${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+                document.getElementById('lobbyStatusMsg').innerText = "Place bets! Game ready...";
+            } else {
+                document.getElementById('lobbyTimerText').innerText = `⚠️ CLOSED: ${s}s`;
+                document.getElementById('lobbyStatusMsg').innerText = "⚠️ BETS CLOSED!";
+            }
+        }, 1000);
+
+        function executeGlobalSpinAnimation(endedRoundId) {
+            isGameSpinning = true;
+            document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
+            
+            playBallRollingSound();
+            speakVoice("Spinning the wheel.");
+
+            let winningNum = getMasterWinningNumber(endedRoundId);
+            localStorage.setItem("saved_winner_" + endedRoundId, winningNum);
+
+            let totalPockets = numbersList.length;
+            let degreesPerPocket = 360 / totalPockets;
+            let winningIndex = numbersList.indexOf(winningNum);
+            let targetPocketAngle = winningIndex * degreesPerPocket + (degreesPerPocket / 2);
+            
+            accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + targetPocketAngle;
+            ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
+
+            setTimeout(() => {
+                let totalWonAmount = 0;
+                let isRedWin = redList.includes(winningNum);
+                let colorName = winningNum === 0 ? 'GREEN' : (isRedWin ? 'RED' : 'BLACK');
+
+                for (let betKey in userActiveBets) {
+                    let stakedAmt = userActiveBets[betKey];
+                    if (betKey === winningNum.toString()) totalWonAmount += stakedAmt * 36;
+                    else if (betKey === 'red' && isRedWin) totalWonAmount += stakedAmt * 2;
+                    else if (betKey === 'black' && !isRedWin && winningNum !== 0) totalWonAmount += stakedAmt * 2;
+                }
+
+                if (totalWonAmount > 0) {
+                    if (activeGameMode === 'real') {
+                        realCoins += totalWonAmount;
+                    } else {
+                        testCoins += totalWonAmount;
+                    }
+                    speakVoice("Winner! Number " + winningNum + " " + colorName, true);
+                } else {
+                    if (activeGameMode === 'test') {
+                        testCoins += currentTotalBet; 
+                    }
+                    speakVoice("Number " + winningNum + " " + colorName, true);
+                }
+
+                let historyContainer = document.getElementById('historyBallsContainer');
+                let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
+                let newBall = document.createElement('div');
+                newBall.className = `history-ball ${cls}`;
+                newBall.innerText = winningNum;
+                historyContainer.insertBefore(newBall, historyContainer.firstChild);
+                if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
+
+                let popup = document.getElementById('cinematicResultPopup');
+                document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
+                if (totalWonAmount > 0) {
+                    document.getElementById('popupPayoutDisplay').innerText = `You Won 🪙${totalWonAmount}!`;
+                } else {
+                    document.getElementById('popupPayoutDisplay').innerText = `Round Finished.`;
+                }
+
+                updateBalancesDisplay();
+                popup.style.display = 'flex';
+
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    isGameSpinning = false;
+                }, 3000);
+            }, 6000);
+        }
+
+        function openDepositModal() { document.getElementById('depositModalBox').style.display = 'flex'; }
+        function openWithdrawModal() { document.getElementById('withdrawModalBox').style.display = 'flex'; }
+        function openTransferModal() { document.getElementById('transferModalBox').style.display = 'flex'; }
+        function closeWalletModals() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); }
+
+        function selectDepositPkg(amt, btn) {
+            selectedDepositAmount = amt;
+            document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function selectWithdrawPkg(amt, btn) {
+            document.getElementById('withdrawAmtInput').value = amt;
+            document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function submitDepositCoins() {
+            let utr = document.getElementById('utrNumberInput').value.trim();
+            if (utr.length !== 12) { alert("Please enter valid 12-digit UTR!"); return; }
+            
+            let phone = loggedUserPhone;
+            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+            deposits.push({ phone: phone, amount: selectedDepositAmount, utr: utr, status: 'Pending', time: new Date().toLocaleTimeString() });
+            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+
+            closeWalletModals();
+            updateBalancesDisplay();
+
+            let msg = `Hello Admin, I have submitted a Deposit request.%0A👤 Phone: ${phone}%0A💰 Amount: ₹${selectedDepositAmount}%0A🔢 UTR: ${utr}%0APlease verify and approve!`;
+            
+            if (confirm("Deposit Request Submitted! Click OK to send notification via WhatsApp Support.")) {
+                window.open(`https://wa.me/919399267482?text=${msg}`, '_blank');
+            }
+            document.getElementById('utrNumberInput').value = '';
+        }
+
+        function submitWithdrawCoins() {
+            let amt = parseInt(document.getElementById('withdrawAmtInput').value);
+            let upi = document.getElementById('withdrawUpiInput').value.trim();
+
+            if (!amt || amt < 50) { alert("Minimum withdrawal is 50 coins!"); return; }
+            if (realCoins < amt) { alert("Insufficient Real Coins balance!"); return; }
+            if (!upi) { alert("Please enter your UPI ID!"); return; }
+
+            realCoins -= amt;
+            updateBalancesDisplay();
+
+            let phone = loggedUserPhone;
+            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+            withdraws.push({ phone: phone, amount: amt, upi: upi, status: 'Pending Payout', time: new Date().toLocaleTimeString() });
+            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
+
+            closeWalletModals();
+            updateBalancesDisplay();
+
+            let msg = `Hello Admin, I have requested a Withdrawal.%0A👤 Phone: ${phone}%0A🪙 Amount: ${amt} Coins%0A💳 UPI ID: ${upi}%0APlease process payout!`;
+            
+            if (confirm("Withdrawal Request Submitted! Click OK to send notification via WhatsApp Support.")) {
+                window.open(`https://wa.me/919399267482?text=${msg}`, '_blank');
+            }
+            document.getElementById('withdrawAmtInput').value = '';
+            document.getElementById('withdrawUpiInput').value = '';
+        }
+
+        function executeCoinTransfer() {
+            let targetId = document.getElementById('transferTargetId').value;
+            let sendAmt = parseInt(document.getElementById('transferCoinAmt').value);
+            if (!targetId || !sendAmt || realCoins < sendAmt) { alert("Check details & Real balance!"); return; }
+            realCoins -= sendAmt;
+            updateBalancesDisplay();
+            closeWalletModals();
+            alert(`Successfully transferred ${sendAmt} Real coins to VIP #${targetId}!`);
+        }
+    </script>
+</body>
+</html>

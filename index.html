@@ -23,8 +23,71 @@
             overflow: hidden;
             padding: 4px 0;
         }
-        
-        /* Top Trust Banner */
+
+        /* Login Screen Overlay */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 20, 11, 0.98);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+        .login-box {
+            background: #112b18;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            padding: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        .login-box h2 {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            background: #0b1a0f;
+            border: 1px solid #ffd700;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: #fff;
+            border: 1px solid #ffd700;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Main Game Layout */
+        #game-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+
         .top-banner {
             background: linear-gradient(90deg, #112b18, #1b4d27, #112b18);
             border: 1px solid #ffd700;
@@ -36,7 +99,6 @@
             width: 96%;
         }
 
-        /* Header Section */
         .header {
             text-align: center;
             width: 100%;
@@ -60,7 +122,6 @@
             border: 1px solid #333;
         }
 
-        /* Action Bar (Deposit, Timer, Withdraw) */
         .action-bar {
             display: flex;
             justify-content: space-between;
@@ -94,8 +155,8 @@
         /* Roulette Wheel Component */
         .wheel-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             margin: 2px auto;
         }
         .wheel {
@@ -126,8 +187,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: radial-gradient(circle, #ffd700, #b8860b);
             border-radius: 50%;
             border: 2px solid #fff;
@@ -135,11 +196,11 @@
         }
         .ball {
             position: absolute;
-            top: 8px;
+            top: 6px;
             left: 50%;
             transform: translateX(-50%);
-            width: 9px;
-            height: 9px;
+            width: 8px;
+            height: 8px;
             background: #fff;
             border-radius: 50%;
             box-shadow: 0 0 4px #000;
@@ -147,12 +208,12 @@
             transition: transform 4.5s cubic-bezier(0.15, 0.75, 0.15, 1);
         }
 
-        /* Betting Table & Info */
         .bet-info {
             font-size: 10px;
             color: #ffd700;
             margin: 1px 0;
         }
+
         .grid-container {
             width: 96%;
             background: #0f2614;
@@ -179,7 +240,6 @@
         .black { background: #1a1a1a; }
         .zero { background: #006600; grid-row: span 3; }
 
-        /* Special Bets & Chips */
         .special-bets {
             display: flex;
             justify-content: space-between;
@@ -204,8 +264,8 @@
             margin: 2px 0;
         }
         .chip {
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             border: 2px dashed #ffd700;
             background: #222;
@@ -222,7 +282,6 @@
             background: #444;
         }
 
-        /* Footer */
         .footer {
             font-size: 8px;
             color: #aaa;
@@ -236,103 +295,88 @@
 </head>
 <body>
 
-    <div class="top-banner">⚡ 100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
-
-    <div class="header">
-        <div class="title">★★ ROYAL ROULETTE ★★</div>
-        <div class="sub-header">
-            <span>🟢 ONLINE: 742 VIPs</span>
-            <span>🔒 256-BIT SECURE</span>
-            <span>⚡ PAYOUT: 99.4%</span>
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>ROYAL ROULETTE</h2>
+            <input type="text" id="username" class="login-input" placeholder="Enter Mobile / User ID">
+            <input type="password" id="password" class="login-input" placeholder="Enter PIN / Password">
+            <button class="login-btn" onclick="handleLogin()">LOGIN TO GAME</button>
         </div>
     </div>
 
-    <div class="action-bar">
-        <button class="btn" onclick="alert('Deposit Window Opened')">DEPOSIT</button>
-        <div class="timer-box" id="timer">SPIN: 00:40</div>
-        <button class="btn btn-withdraw" onclick="alert('Withdraw Window Opened')">WITHDRAW</button>
-    </div>
+    <div id="game-content">
+        <div class="top-banner">⚡ 100% TRUSTED & CERTIFIED • INSTANT FAST WITHDRAWAL ⚡</div>
 
-    <!-- Roulette Wheel with Smooth Physics -->
-    <div class="wheel-container">
-        <div class="ball" id="ball"></div>
-        <div class="wheel" id="wheel">
-            <div class="wheel-center"></div>
+        <div class="header">
+            <div class="title">★★ ROYAL ROULETTE ★★</div>
+            <div class="sub-header">
+                <span>🟢 ONLINE: 742 VIPs</span>
+                <span>🔒 256-BIT SECURE</span>
+                <span>⚡ PAYOUT: 99.4%</span>
+            </div>
         </div>
-    </div>
 
-    <div class="bet-info">Total Bet: 390 | Balance: 4610 | Chip: 50</div>
-
-    <!-- Betting Table Grid -->
-    <div class="grid-container">
-        <div class="number-grid">
-            <div class="grid-cell zero">0</div>
-            <div class="grid-cell red">3</div>
-            <div class="grid-cell black">6</div>
-            <div class="grid-cell red">9</div>
-            <div class="grid-cell red">12</div>
-            <div class="grid-cell black">15</div>
-            <div class="grid-cell red">18</div>
-            <div class="grid-cell red">21</div>
-            <div class="grid-cell black">24</div>
-            <div class="grid-cell red">27</div>
-            <div class="grid-cell black">30</div>
-            <div class="grid-cell red">33</div>
-            <div class="grid-cell red">36</div>
-            
-            <div class="grid-cell black">2</div>
-            <div class="grid-cell red">5</div>
-            <div class="grid-cell black">8</div>
-            <div class="grid-cell black">11</div>
-            <div class="grid-cell red">14</div>
-            <div class="grid-cell black">17</div>
-            <div class="grid-cell black">20</div>
-            <div class="grid-cell red">23</div>
-            <div class="grid-cell black">26</div>
-            <div class="grid-cell black">29</div>
-            <div class="grid-cell red">32</div>
-            <div class="grid-cell black">35</div>
-
-            <div class="grid-cell red">1</div>
-            <div class="grid-cell black">4</div>
-            <div class="grid-cell red">7</div>
-            <div class="grid-cell red">10</div>
-            <div class="grid-cell black">13</div>
-            <div class="grid-cell red">16</div>
-            <div class="grid-cell red">19</div>
-            <div class="grid-cell black">22</div>
-            <div class="grid-cell red">25</div>
-            <div class="grid-cell black">28</div>
-            <div class="grid-cell red">31</div>
-            <div class="grid-cell black">34</div>
+        <div class="action-bar">
+            <button class="btn" onclick="alert('Deposit Window Opened')">DEPOSIT</button>
+            <div class="timer-box" id="timer">SPIN: 00:40</div>
+            <button class="btn btn-withdraw" onclick="alert('Withdraw Window Opened')">WITHDRAW</button>
         </div>
-    </div>
 
-    <div class="special-bets">
-        <div class="s-btn red">RED (2X)</div>
-        <div class="s-btn zero" style="background:#006600;">GREEN (35X)</div>
-        <div class="s-btn black">BLACK (2X)</div>
-    </div>
+        <div class="wheel-container">
+            <div class="ball" id="ball"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-center"></div>
+            </div>
+        </div>
 
-    <div class="chip-selector">
-        <div class="chip">10</div>
-        <div class="chip active">50</div>
-        <div class="chip">100</div>
-        <div class="chip">500</div>
-        <div class="chip">1K</div>
-    </div>
+        <div class="bet-info">Total Bet: 390 | Balance: 4610 | Chip: 50</div>
 
-    <div class="footer">
-        🔒 SECURE PAYMENTS: UPI • NETBANKING • VISA • MASTERCARD<br>
-        🛡️ SSL SECURED • 🔐 RNG CERTIFIED • 🔞 18+ ONLY<br>
-        💬 WhatsApp Support | ✈️ Telegram Support | ⚖️ Fair Play
+        <div class="grid-container">
+            <div class="number-grid">
+                <div class="grid-cell zero">0</div>
+                <div class="grid-cell red">3</div><div class="grid-cell black">6</div><div class="grid-cell red">9</div><div class="grid-cell red">12</div><div class="grid-cell black">15</div><div class="grid-cell red">18</div><div class="grid-cell red">21</div><div class="grid-cell black">24</div><div class="grid-cell red">27</div><div class="grid-cell black">30</div><div class="grid-cell red">33</div><div class="grid-cell red">36</div>
+                <div class="grid-cell black">2</div><div class="grid-cell red">5</div><div class="grid-cell black">8</div><div class="grid-cell black">11</div><div class="grid-cell red">14</div><div class="grid-cell black">17</div><div class="grid-cell black">20</div><div class="grid-cell red">23</div><div class="grid-cell black">26</div><div class="grid-cell black">29</div><div class="grid-cell red">32</div><div class="grid-cell black">35</div>
+                <div class="grid-cell red">1</div><div class="grid-cell black">4</div><div class="grid-cell red">7</div><div class="grid-cell red">10</div><div class="grid-cell black">13</div><div class="grid-cell red">16</div><div class="grid-cell red">19</div><div class="grid-cell black">22</div><div class="grid-cell red">25</div><div class="grid-cell black">28</div><div class="grid-cell red">31</div><div class="grid-cell black">34</div>
+            </div>
+        </div>
+
+        <div class="special-bets">
+            <div class="s-btn red">RED (2X)</div>
+            <div class="s-btn zero" style="background:#006600;">GREEN (35X)</div>
+            <div class="s-btn black">BLACK (2X)</div>
+        </div>
+
+        <div class="chip-selector">
+            <div class="chip">10</div>
+            <div class="chip active">50</div>
+            <div class="chip">100</div>
+            <div class="chip">500</div>
+            <div class="chip">1K</div>
+        </div>
+
+        <div class="footer">
+            🔒 SECURE PAYMENTS: UPI • NETBANKING • VISA • MASTERCARD<br>
+            🛡️ SSL SECURED • 🔐 RNG CERTIFIED • 🔞 18+ ONLY<br>
+            💬 WhatsApp Support | ✈️ Telegram Support | ⚖️ Fair Play
+        </div>
     </div>
 
     <script>
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            if(user.trim() === "") {
+                alert("Please enter User ID or Mobile Number!");
+                return;
+            }
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('game-content').style.display = 'flex';
+        }
+
         let currentRotation = 0;
         function spinWheel() {
             const wheel = document.getElementById('wheel');
             const ball = document.getElementById('ball');
+            if(!wheel || !ball) return;
             const randomExtra = Math.floor(Math.random() * 360) + 1800;
             currentRotation += randomExtra;
             wheel.style.transform = `rotate(${currentRotation}deg)`;

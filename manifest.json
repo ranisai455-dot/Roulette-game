@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Royal Roulette",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Roulette",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "com.roulette.game",
+  "description": "A fun and exciting roulette game app"
+}

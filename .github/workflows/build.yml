@@ -17,23 +17,81 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Download Official WebView Template
+      - name: Create Basic Android Project Structure
         run: |
-          git clone https://github.com/empoCode/HtmlViewerAndroid.git project-workspace
-          cp index.html project-workspace/app/src/main/assets/index.html
+          mkdir -p myapp/app/src/main/assets
+          mkdir -p myapp/app/src/main/java/com/game/roulette
+          mkdir -p myapp/app/src/main/res/values
 
-      - name: Grant Execute Permission for Gradle
-        run: |
-          cd project-workspace
-          chmod +x gradlew
+          cp index.html myapp/app/src/main/assets/index.html
 
-      - name: Build Debug APK
-        run: |
-          cd project-workspace
+          cat << 'EOF' > myapp/app/src/main/AndroidManifest.xml
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.game.roulette">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application android:label="Roulette Game" android:usesCleartextTraffic="true">
+                  <activity android:name=".MainActivity" android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat << 'EOF' > myapp/app/src/main/java/com/game/roulette/MainActivity.java
+          package com.game.roulette;
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.webkit.WebView;
+          import android.webkit.WebSettings;
+
+          public class MainActivity extends Activity {
+              WebView wv;
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  wv = new WebView(this);
+                  WebSettings ws = wv.getSettings();
+                  ws.setJavaScriptEnabled(true);
+                  ws.setDomStorageEnabled(true);
+                  wv.loadUrl("file:///android_asset/index.html");
+                  setContentView(wv);
+              }
+          }
+          EOF
+
+          cat << 'EOF' > myapp/app/build.gradle
+          plugins { id 'com.android.application' }
+          android {
+              namespace 'com.game.roulette'
+              compileSdk 33
+              defaultConfig {
+                  applicationId "com.game.roulette"
+                  minSdk 21
+                  targetSdk 33
+                  versionCode 1
+                  versionName "1.0"
+              }
+          }
+          dependencies { implementation 'androidx.appcompat:appcompat:1.6.1' }
+          EOF
+
+          cat << 'EOF' > myapp/build.gradle
+          plugins { id 'com.android.application' version '8.1.1' apply false }
+          EOF
+
+          cat << 'EOF' > myapp/settings.gradle
+          rootProject.name = "RouletteGame"
+          include ':app'
+          EOF
+
+          cd myapp
+          gradle wrapper
           ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: roulette-game-apk
-          path: project-workspace/app/build/outputs/apk/debug/app-debug.apk
+          name: game-apk
+          path: myapp/app/build/outputs/apk/debug/app-debug.apk

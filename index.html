@@ -789,7 +789,7 @@
                     try {
                         let now = audioCtx.currentTime;
                         djGainNode.gain.linearRampToValueAtTime(ducking ? 0.02 : 0.12, now + 0.3);
-                    } catch(e) {}
+                    } catch(e){}
                 }
 
                 window.playBallRollingSound = function() { if (!audioCtx) return; duckMusic(true); setTimeout(() => { duckMusic(false); }, 6000); };
@@ -1199,7 +1199,8 @@
                 }
 
                 function getMasterWinningNumber(roundId) {
-                    let savedWin = localStorage.getItem("saved_winner_r_" + getCleanRoundCounter());
+                    let cleanRNum = getCleanRoundCounter();
+                    let savedWin = localStorage.getItem("saved_winner_r_" + cleanRNum);
                     if (savedWin !== null) return parseInt(savedWin);
                     let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
                     if (adminRigVal !== "random") return parseInt(adminRigVal);

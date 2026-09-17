@@ -1396,5 +1396,26 @@
     }
   });
 </script>
+    <script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (typeof window.syncuserCloudWallet === 'function') {
+        const _baseSync = window.syncuserCloudWallet;
+        window.syncuserCloudWallet = function(phone) {
+          _baseSync(phone);
+          try {
+            if (window.supabase && phone) {
+              window.supabase.from('profiles').upsert({
+                phone: phone,
+                real_coins: typeof realCoins !== 'undefined' ? realCoins : 0,
+                test_coins: typeof testCoins !== 'undefined' ? testCoins : 0
+              }, { onConflict: 'phone' }).then(() => {});
+            }
+          } catch(e) {}
+        };
+      }
+    }, 1500);
+  });
+</script>
 </body>
 </html>

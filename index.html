@@ -1417,5 +1417,64 @@
     }, 1500);
   });
 </script>
+    <div style="margin: 15px 0; background: rgba(10,25,10,0.9); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
+    <p style="color: #00ffcc; font-size: 13px; margin-bottom: 10px; font-weight: bold;">➕ DIRECT PLAYER COIN ADDER</p>
+    
+    <!-- ऑप्शन 1: कस्टमर/प्लेयर की आईडी (फोन नंबर) -->
+    <input type="text" id="targetPlayerPhone" placeholder="Enter Player Phone/ID (e.g. 9399...)" style="width: 100%; padding: 9px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box;" />
+    
+    <!-- ऑप्शन 2: कितने कॉइन डालने हैं -->
+    <input type="number" id="targetAddCoins" placeholder="Coins to Add (e.g. 500)" style="width: 100%; padding: 9px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box;" />
+    
+    <!-- नीचे अप्लाई का ऑप्शन/बटन -->
+    <button onclick="window.applyDirectPlayerCoins()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #00ffcc, #00aa88); color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Apply & Add Coins</button>
+</div>
+
+<script>
+  if (!window.applyDirectPlayerCoins) {
+    window.applyDirectPlayerCoins = function() {
+        let phone = document.getElementById('targetPlayerPhone').value.trim();
+        let addAmt = parseInt(document.getElementById('targetAddCoins').value) || 0;
+        
+        if (!phone || addAmt <= 0) {
+            alert('कृपया सही प्लेयर आईडी और कॉइन संख्या डालें!');
+            return;
+        }
+        
+        if (window.supabase) {
+            window.supabase.from('profiles').select('real_coins').eq('phone', phone).single().then(({ data }) => {
+                let currentCoins = data && data.real_coins ? data.real_coins : 0;
+                let updatedCoins = currentCoins + addAmt;
+                
+                window.supabase.from('profiles').upsert({
+                    phone: phone,
+                    real_coins: updatedCoins
+                }, { onConflict: 'phone' }).then(({ error }) => {
+                    if (error) {
+                        alert('एरर: ' + error.message);
+                    } else {
+                        alert(`सफलतापूर्वक ${phone} की आईडी में ${add_Amt_safe(addAmt)} कॉइन जोड़ दिए गए! नया कुल बैलेंस: ${updatedCoins}`);
+                    }
+                });
+            }).catch(() => {
+                // अगर रो मौजूद नहीं है तो डायरेक्ट upsert कर दें
+                window.supabase.from('profiles').upsert({
+                    phone: phone,
+                    real_coins: addAmt
+                }, { onConflict: 'phone' }).then(({ error }) => {
+                    if (error) {
+                        alert('एरर: ' + error.message);
+                    } else {
+                        alert(`सफलतापूर्वक ${phone} की आईडी में ${addAmt} कॉइन जोड़ दिए गए!`);
+                    }
+                });
+            });
+        } else {
+            alert('सुपाबेस कनेक्टेड नहीं है!');
+        }
+    };
+  }
+  function add_Amt_safe(n) { return n; }
+</script>
 </body>
 </html>

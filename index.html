@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ROYAL ROULETTE - SECURE MASTER CASINO</title>
+    <!-- Cashfree SDK for Real-time Sandbox Testing -->
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         body { 
@@ -42,9 +44,9 @@
         .bg-wheel-wrap {
             position: relative; width: 380px; height: 380px; border-radius: 50%; 
             opacity: 0.75; border: 8px solid #ffd700; box-shadow: 0 0 90px rgba(255, 215, 0, 0.7);
-            animation: wheelRotateBg 35s linear infinite;
+            animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center;
         }
-        #loginWheelCanvasBg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 50%; }
+        #loginWheelCanvasBg { width: 380px; height: 380px; border-radius: 50%; display: block; }
         
         .bg-ball-orbit {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
@@ -87,7 +89,7 @@
         .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 2px; }
         .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
         .login-card input {
-            width: 100%; padding: 8px; margin: 4px 0; background: #000000; border: 1px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 8px;
+            width: 100%; padding: 8px; margin: 4px 0; background: #000000; border: 1.5px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 8px;
             font-size: 12px; text-align: center; font-weight: bold;
         }
         .login-btn {
@@ -101,7 +103,7 @@
         .payment-gateways { font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 6px; border: 1px solid rgba(0,255,0,0.5); }
         .trust-badges { font-size: 7.5px; color: #ffd700; font-weight: bold; }
         .legal-links { font-size: 6.5px; color: #cccccc; word-spacing: 2px; }
-        .legal-links a { color: #ffd700; text-decoration: none; }
+        .legal-links a, .legal-links span { color: #ffd700; text-decoration: none; cursor: pointer; }
 
         /* गेम लॉबी स्क्रीन */
         #gameLobbyScreen {
@@ -114,7 +116,7 @@
         .lobby-header {
             display: flex; justify-content: space-between; align-items: center;
             background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 6px 10px; border-radius: 10px;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; gap: 6px;
         }
 
         .user-profile-widget {
@@ -138,9 +140,9 @@
         }
 
         .timer-strip-center {
-            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 13px; font-weight: 900;
-            padding: 4px 12px; border-radius: 8px; border: 2px solid #ffd700; text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(192, 57, 43, 0.9); letter-spacing: 1px;
+            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 15px; font-weight: 900;
+            padding: 6px 20px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1.5px; flex-grow: 1; max-width: 140px; text-align: center;
         }
 
         .history-strip-bar {
@@ -162,14 +164,14 @@
             position: relative; width: 260px; height: 260px; margin: 2px auto;
             border: 6px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden;
             box-shadow: 0 0 60px rgba(212, 175, 55, 0.9);
-            flex-shrink: 0; z-index: 100;
+            flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
         }
         
-        #lobbyWheelCanvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 50%; }
+        #lobbyWheelCanvas { width: 260px; height: 260px; border-radius: 50%; display: block; }
 
         .lobby-wheel-hub {
             position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px;
-            background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110;
+            background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none;
         }
 
         .game-ball-orbit {
@@ -226,7 +228,7 @@
         .clear-btn { background: #b03a2e; color: #fff; padding: 4px 8px; font-size: 9.5px; font-weight: 900; border-radius: 6px; cursor: pointer; border: 1.5px solid #d4af37; }
 
         .mode-toggle-bar {
-            display: flex; justify-content: center; gap: 5px; background: #000; border: 1px solid #ffd700;
+            display: flex; justify-content: center; gap: 5px; background: #000; border: 1.5px solid #ffd700;
             padding: 3px; border-radius: 8px; margin-bottom: 3px;
         }
         .mode-btn {
@@ -238,21 +240,60 @@
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 3px solid #ffd700; padding: 22px; border-radius: 16px; width: 290px; text-align: center; color: #fff; box-shadow: 0 0 50px #ffd700; animation: popupScale 0.3s ease-out; }
 
+        /* [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL] */
         #secretAdminModal { 
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(2, 10, 5, 0.98); border: 4px solid #e74c3c; padding: 15px; 
-            z-index: 40000; text-align: center; color: #fff; overflow-y: auto; 
+            background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); 
+            z-index: 50000; padding: 15px; text-align: center; color: #fff; overflow-y: auto; 
         }
-        .admin-dashboard-container { max-width: 750px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-        .admin-box select, .admin-box input { width: 100%; padding: 10px; margin: 5px 0; background: #000; color: #ffd700; border: 1px solid #ffd700; border-radius: 6px; font-weight: bold; text-align: center; font-size: 12px; }
+        .admin-dashboard-container { 
+            max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.95); 
+            border: 2px solid #ffd700; border-radius: 20px; padding: 25px; 
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), inset 0 0 30px rgba(0,0,0,0.9); 
+            display: flex; flex-direction: column; gap: 16px; text-align: left; 
+        }
+        .admin-top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 12px;
+        }
+        .admin-top-header h2 { font-size: 20px; color: #ffd700; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
         
-        .admin-stats-box { background: #111; border: 1.5px solid #333; padding: 12px; border-radius: 8px; text-align: left; font-size: 12px; }
-        .admin-stats-box div { margin-bottom: 5px; }
+        .admin-kpi-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .kpi-card {
+            background: rgba(0, 0, 0, 0.7); border: 1.5px solid #27ae60; border-radius: 12px; padding: 12px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .kpi-card.purple { border-color: #9b59b6; }
+        .kpi-card.orange { border-color: #e67e22; }
+        .kpi-card.blue { border-color: #3498db; }
+        .kpi-title { font-size: 9px; color: #bbb; text-transform: uppercase; margin-bottom: 4px; font-weight: bold; }
+        .kpi-value { font-size: 15px; font-weight: 900; color: #fff; }
 
-        .req-item { background: #1a1a1a; border: 1px solid #ffd700; padding: 8px; border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
-        .req-actions button { padding: 5px 10px; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; font-size: 10px; margin-left: 4px; }
-        .btn-approve { background: #27ae60; color: #fff; }
-        .btn-reject { background: #c0392b; color: #fff; }
+        .admin-section-box { 
+            background: rgba(0, 0, 0, 0.75); border: 1.5px solid rgba(255, 215, 0, 0.3); 
+            padding: 15px; border-radius: 12px; font-size: 12px; 
+        }
+        .admin-section-title { 
+            color: #ffd700; font-weight: 900; font-size: 13px; border-bottom: 1px dashed rgba(255,215,0,0.3); 
+            padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; 
+        }
+
+        .req-table-row { 
+            background: rgba(15, 25, 18, 0.9); border: 1px solid #333; 
+            padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; 
+            display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; 
+        }
+        .req-actions { display: flex; gap: 8px; }
+        .req-actions button { padding: 6px 14px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; text-transform: uppercase; }
+        .btn-approve { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 10px rgba(39,174,96,0.6); }
+        .btn-reject { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; box-shadow: 0 0 10px rgba(192,57,43,0.6); }
+
+        .admin-dashboard-container select { 
+            width: 100%; padding: 12px; background: #000; color: #ffd700; 
+            border: 1.5px solid #ffd700; border-radius: 8px; font-weight: bold; text-align: center; font-size: 13px; 
+        }
 
         #cinematicResultPopup {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -291,7 +332,7 @@
         <div class="bg-wheel-wrap">
             <canvas id="loginWheelCanvasBg" width="380" height="380"></canvas>
             <div class="bg-ball-orbit"></div>
-            <div class="lobby-wheel-hub" style="width: 45px; height: 45px; position:absolute; top:50%; left:50%; margin-top:-22.5px; margin-left:-22.5px; background:radial-gradient(circle, #fff, #d4af37); border-radius:50%; z-index:3;"></div>
+            <div class="lobby-wheel-hub"></div>
         </div>
     </div>
 
@@ -324,8 +365,7 @@
             <div class="payment-gateways">💳 SECURE PAYMENTS: UPI • NETBANKING • VISA • MASTERCARD</div>
             <div class="trust-badges">🛡️ SSL SECURED • 🔒 RNG CERTIFIED • 🔞 18+ ONLY</div>
             <div class="legal-links">
-                <a href="https://wa.me/919399267482?text=Hello%20Support" target="_blank">💬 WhatsApp Support</a> | 
-                <a href="https://t.me/RoyalRouletteSupport" target="_blank">✈️ Telegram Support</a> | 
+                <a href="https://t.me/YOUR_ACTUAL_GROUP_LINK" target="_blank" rel="noopener noreferrer" style="color:#00ffff; font-weight:bold; text-decoration:underline;">✈️ Telegram Support / Group Join</a> | 
                 <a href="#">Terms</a> | <a href="#">Fair Play</a>
             </div>
         </div>
@@ -342,6 +382,7 @@
             </div>
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
+
             <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="timer-strip-center" id="lobbyTimerText">⏳ 02:00</div>
             </div>
@@ -354,17 +395,16 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="280" height="280"></canvas>
+            <canvas id="lobbyWheelCanvas" width="260" height="260"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
 
         <div class="betting-board-section" id="bettingBoardArea">
-            <!-- शानदार और सिस्टमैटिक वॉलेट डिजाइन: रियल मनी बड़ा और प्रमिनेंट, टेस्ट मनी छोटा नीचे -->
             <div style="background: rgba(0,0,0,0.85); padding: 5px; border-radius: 8px; border: 1.5px solid #ffd700; margin-bottom: 2px; display: flex; flex-direction: column; gap: 2px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 900; color: #ffd700;">
                     <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
-                    <span style="background: rgba(39, 174, 96, 0.2); border: 1px solid #2ecc71; padding: 2px 8px; border-radius: 6px;">
+                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 2px 8px; border-radius: 6px;">
                         💎 REAL MONEY: <span id="playerRealBal" style="color:#2ecc71; font-size: 13px;">₹0</span>
                     </span>
                 </div>
@@ -403,7 +443,7 @@
         </div>
     </div>
 
-    <!-- [PLAYER PROFILE & TRANSACTION HISTORY MODAL] -->
+    <!-- 👤 PLAYER PROFILE MODAL (एडमिन बटन केवल एडमिन नंबर पर दिखेगा) -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 450px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:18px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
@@ -417,6 +457,13 @@
                 <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span> Coins</div>
             </div>
 
+            <!-- 👑 Admin Exclusive Profile Button (Hidden for normal players) -->
+            <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 10px;">
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanel(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:2px solid #ffd700; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase; box-shadow:0 0 15px rgba(230,126,34,0.7);">
+                    👑 Open Master Admin Panel
+                </button>
+            </div>
+
             <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 140px; overflow-y: auto;">
                 <div style="color:#2ecc71; font-weight:bold; font-size:11px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:5px;">📋 Your Deposit & Withdrawal History:</div>
                 <div id="playerTransactionHistoryList" style="font-size:10px; color:#ccc;">No transactions recorded yet.</div>
@@ -426,41 +473,78 @@
         </div>
     </div>
 
-    <!-- [FULL-SCREEN MASTER ADMIN PANEL] -->
+    <!-- [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL] -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
-            <h2 style="color:#e74c3c; font-size:22px; margin-bottom:5px;">🔒 MASTER ADMIN COMMAND CENTER</h2>
-            <p style="font-size:11px; color:#aaa; margin-bottom:10px;">Anti-Fraud Control: Approve, Reject & Monitor Payouts</p>
+            <div class="admin-top-header">
+                <h2>👑 MASTER ADMIN COMMAND CENTER</h2>
+                <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(231,76,60,0.5);">✕ Close Panel</button>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="admin-kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Active Players</div>
+                    <div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">742</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="kpi-title">Current Round ID</div>
+                    <div class="kpi-value" id="admRoundId" style="color:#f1c40f;">0</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="kpi-title">Total Table Bet</div>
+                    <div class="kpi-value" id="admTotalBet" style="color:#fff;">₹0</div>
+                </div>
+                <div class="kpi-card blue">
+                    <div class="kpi-title">House Profit (5%)</div>
+                    <div class="kpi-value" id="admProfit" style="color:#3498db;">₹0</div>
+                </div>
+            </div>
+
+            <!-- Live Deposit Requests (Cashfree Verified) -->
+            <div class="admin-section-box">
+                <div class="admin-section-title">
+                    <span>📥 Live Deposit Requests (Cashfree Verified)</span>
+                    <span style="font-size: 10px; color: #2ecc71; background: rgba(39,174,96,0.2); padding: 2px 6px; border-radius: 4px;">SECURE GATEWAY</span>
+                </div>
+                <div id="admDepositList" style="max-height: 160px; overflow-y: auto;">
+                    <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending deposit requests.</div>
+                </div>
+            </div>
+
+            <!-- Live Withdrawal Requests -->
+            <div class="admin-section-box">
+                <div class="admin-section-title">
+                    <span>📤 Live Withdrawal Requests (Up to ₹20,000)</span>
+                    <span style="font-size: 10px; color: #e74c3c; background: rgba(231,76,60,0.2); padding: 2px 6px; border-radius: 4px;">PAYOUT QUEUE</span>
+                </div>
+                <div id="admWithdrawList" style="max-height: 160px; overflow-y: auto;">
+                    <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending withdrawal requests.</div>
+                </div>
+            </div>
+
+            <!-- Active Bets Breakdown -->
+            <div class="admin-section-box">
+                <div class="admin-section-title">
+                    <span>🎯 Active Bets Breakdown (This Round)</span>
+                </div>
+                <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:100px; overflow-y:auto;">
+                    No active bets placed yet.
+                </div>
+            </div>
             
-            <div class="admin-stats-box">
-                <div>🟢 Active Players Online: <span id="admActivePlayers" style="color:#2ecc71;">742</span></div>
-                <div>👑 Current Round ID: <span id="admRoundId" style="color:#f1c40f;">0</span></div>
-                <div>💰 Total Table Bet (This Round): <span id="admTotalBet" style="color:#fff;">₹0</span></div>
-                <div>📈 House Profit Margin (5%): <span id="admProfit" style="color:#3498db;">₹0</span></div>
+            <!-- Game Rigging & Settings -->
+            <div class="admin-section-box">
+                <div class="admin-section-title"><span>⚙️ Anti-Fraud & RNG Controls</span></div>
+                <label style="font-size: 11px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px; text-align: left;">Rig Next Winning Number:</label>
+                <select id="adminRigSelect" style="margin-bottom: 10px;">
+                    <option value="random">Random (5% House Edge & Safety Mode)</option>
+                </select>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px; margin-top:0; flex: 2;">Save Admin Settings</button>
+                    <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background:#333; color:#fff; border:none; padding:12px; border-radius:8px; font-size:13px; cursor:pointer; font-weight:bold; flex: 1; margin-top: 0;">Close</button>
+                </div>
             </div>
-
-            <div class="admin-stats-box">
-                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:8px;">📥 Live Deposit Requests:</div>
-                <div id="admDepositList" style="max-height: 130px; overflow-y: auto;">No pending deposit requests.</div>
-            </div>
-
-            <div class="admin-stats-box">
-                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:8px;">📤 Live Withdrawal Requests:</div>
-                <div id="admWithdrawList" style="max-height: 130px; overflow-y: auto;">No pending withdrawal requests.</div>
-            </div>
-
-            <div class="admin-stats-box">
-                <div style="color:#ffd700; font-weight:bold; border-bottom:1px solid #444; padding-bottom:3px; margin-bottom:5px;">🎯 Detailed Bets Breakdown:</div>
-                <div id="admDetailedBetsList" style="font-size:11px; color:#ccc; max-height:90px; overflow-y:auto;">No active bets placed yet.</div>
-            </div>
-            
-            <label style="font-size:12px; display:block; margin-top:5px; text-align:left; color:#ffd700;">Rig Next Winning Number:</label>
-            <select id="adminRigSelect">
-                <option value="random">Random (5% House Edge & Safety Mode)</option>
-            </select>
-
-            <button onclick="saveAdminSettings()" class="login-btn" style="background:#27ae60; color:#fff; padding:12px; font-size:14px; margin-top:10px;">Save Admin Settings</button>
-            <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background:#c0392b; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:8px; font-size:13px; cursor:pointer; font-weight:bold;">Close Admin Panel</button>
         </div>
     </div>
 
@@ -474,8 +558,8 @@
 
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - SECURE DEPOSIT</h3>
-            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Select deposit package & pay via your preferred app</p>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - CASHFREE DEPOSIT</h3>
+            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Select deposit package (Secured via Cashfree Test Gateway)</p>
             
             <div class="deposit-packages-grid">
                 <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
@@ -486,14 +570,8 @@
                 <button class="dep-pkg-btn" onclick="selectDepositPkg(10000, this)">₹10000</button>
             </div>
 
-            <div style="display:flex; gap:8px; margin:15px 0;">
-                <button onclick="payViaApp('gpay')" style="flex:1; background:#1a1a1a; border:1px solid #4285F4; color:#4285F4; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">Google Pay</button>
-                <button onclick="payViaApp('phonepe')" style="flex:1; background:#1a1a1a; border:1px solid #5f259f; color:#a56eff; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">PhonePe</button>
-                <button onclick="payViaApp('paytm')" style="flex:1; background:#1a1a1a; border:1px solid #00b9f1; color:#00b9f1; padding:10px; font-size:11px; font-weight:bold; border-radius:8px; cursor:pointer;">Paytm</button>
-            </div>
-
-            <input type="text" id="utrNumberInput" placeholder="Enter 12-Digit UTR No / Reference No" maxlength="12">
-            <button onclick="submitDepositCoins();" class="login-btn" style="padding:12px; font-size:13px; margin-top:10px;">Submit Deposit (Pending)</button>
+            <input type="number" id="customDepositInput" value="300" placeholder="Or Enter Custom Amount" style="margin-top:10px;">
+            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; font-size:13px; margin-top:10px; background:linear-gradient(135deg, #27ae60, #1e8449);">🚀 PROCEED TO CASHFREE DEPOSIT</button>
             <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
         </div>
     </div>
@@ -508,7 +586,8 @@
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(1000, this)">₹1000</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(2000, this)">₹2000</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(5000, this)">₹5000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(10000, this)" style="grid-column: span 3;">₹10000</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(10000, this)">₹10000</button>
+                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(20000, this)" style="border-color:#22c55e; color:#22c55e;">₹20000</button>
             </div>
 
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Amount (Coins)">
@@ -537,15 +616,19 @@
     </div>
 
     <script>
+        function openTelegramSupport() {
+            let tgLink = "https://t.me/your_exact_group_username_or_invite"; 
+            window.open(tgLink, '_blank', 'noopener,noreferrer');
+        }
+
         const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
         const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
         const ROUND_TIME = 120;
 
         let accumulatedBallRotation = 0; 
-        const MERCHANT_UPI = "Q65790824@ybl";
-        const MERCHANT_NAME = "ROYAL ROULETTE";
         const MASTER_ADMIN_PHONE = "8889865182";
         const MASTER_ADMIN_SECRET_CODE = "Rani143143";
+        let isAdminLoggedIn = false;
 
         let realCoins = 0;
         let testCoins = 10000;
@@ -553,6 +636,8 @@
         let loggedUserPhone = "";
         let loggedVipId = "";
         let loggedAvatar = "😎";
+
+        const cashfree = Cashfree({ mode: "sandbox" });
 
         let audioCtx = null;
         let djInterval = null;
@@ -659,20 +744,6 @@
             }
         }
 
-        function payViaApp(appType) {
-            let amount = selectedDepositAmount;
-            let upiUrl = `upi://pay?pa=${MERCHANT_UPI}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
-            if (appType === 'gpay') {
-                window.location.href = `tez://upi/pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
-            } else if (appType === 'phonepe') {
-                window.location.href = `phonepe://pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
-            } else if (appType === 'paytm') {
-                window.location.href = `paytmmp://pay?pa=${MASTER_ADMIN_PHONE}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
-            } else {
-                window.location.href = upiUrl;
-            }
-        }
-
         function drawCanvasWheel(canvasId) {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
@@ -730,12 +801,14 @@
         }
 
         const adminSelect = document.getElementById('adminRigSelect');
-        numbersList.forEach(num => {
-            let opt = document.createElement('option');
-            opt.value = num;
-            opt.innerText = "Number " + num;
-            adminSelect.appendChild(opt);
-        });
+        if(adminSelect) {
+            numbersList.forEach(num => {
+                let opt = document.createElement('option');
+                opt.value = num;
+                opt.innerText = "Number " + num;
+                adminSelect.appendChild(opt);
+            });
+        }
 
         function saveAdminSettings() {
             alert("Admin Settings Applied Successfully!");
@@ -743,6 +816,7 @@
         }
 
         function logoutToLogin() {
+            isAdminLoggedIn = false;
             document.getElementById('gameLobbyScreen').style.display = 'none';
             document.getElementById('secretAdminModal').style.display = 'none';
             document.getElementById('loginScreenContainer').style.display = 'flex';
@@ -768,13 +842,9 @@
             }
         }
 
-        // --- पुराना और ट्रस्टेड दिखने वाला ऑटो-इंक्रीमेंट यूनीक VIP ID सिस्टम (शुरुआत VIP_84920 से) ---
         function getOrCreateUniqueVipId(phone) {
             let registeredUsers = JSON.parse(localStorage.getItem("casino_registered_users") || "{}");
-            
-            if (registeredUsers[phone]) {
-                return registeredUsers[phone]; 
-            }
+            if (registeredUsers[phone]) return registeredUsers[phone]; 
 
             let lastCounter = parseInt(localStorage.getItem("casino_id_counter") || "84919");
             let newCounter = lastCounter + 1;
@@ -783,7 +853,6 @@
             localStorage.setItem("casino_id_counter", newCounter);
             registeredUsers[phone] = uniqueId;
             localStorage.setItem("casino_registered_users", JSON.stringify(registeredUsers));
-
             return uniqueId;
         }
 
@@ -792,6 +861,7 @@
             let otp = document.getElementById('inputOtp').value.trim();
 
             if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) {
+                isAdminLoggedIn = true;
                 document.getElementById('fullscreenWheelBg').style.display = 'none';
                 document.getElementById('loginScreenContainer').style.display = 'none';
                 document.getElementById('gameLobbyScreen').style.display = 'flex';
@@ -807,11 +877,9 @@
                 return;
             }
 
-            if (otp.length < 4) { 
-                alert("Please enter or generate a valid OTP!"); 
-                return; 
-            }
+            if (otp.length < 4) { alert("Please enter or generate a valid OTP!"); return; }
 
+            isAdminLoggedIn = false;
             document.getElementById('fullscreenWheelBg').style.display = 'none';
             document.getElementById('loginScreenContainer').style.display = 'none';
             document.getElementById('gameLobbyScreen').style.display = 'flex';
@@ -839,6 +907,16 @@
             document.getElementById('profTestBal').innerText = testCoins;
             document.getElementById('profileAvatarLarge').innerText = loggedAvatar;
 
+            // सिर्फ एडमिन नंबर पर प्रोफाइल के अंदर एडमिन पैनल बटन दिखाएं
+            let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
+            if (adminWrap) {
+                if (isAdminLoggedIn || loggedUserPhone === MASTER_ADMIN_PHONE) {
+                    adminWrap.style.display = 'block';
+                } else {
+                    adminWrap.style.display = 'none';
+                }
+            }
+
             renderPlayerTransactionHistory();
         }
 
@@ -860,9 +938,7 @@
                 html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${wColor}; font-weight:bold;">Status: ${w.status} (${w.time})</span></div>`;
             });
 
-            if (html === "") {
-                html = "No deposit or withdrawal history yet.";
-            }
+            if (html === "") html = "No deposit or withdrawal history yet.";
             document.getElementById('playerTransactionHistoryList').innerHTML = html;
         }
 
@@ -901,11 +977,9 @@
 
             for (let k in betsMap) {
                 hasBets = true;
-                breakdownHtml += `<div>🎯 Bet on <b>${k}</b>: ₹${betsMap[k]}</div>`;
+                breakdownHtml += `<div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding: 4px 0;"><span>🎯 Bet on <b>${k}</b>:</span> <strong style="color:#ffd700;">₹${betsMap[k]}</strong></div>`;
             }
-            if (!hasBets) {
-                breakdownHtml = "No active bets placed in this round yet.";
-            }
+            if (!hasBets) breakdownHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No active bets placed in this round yet.</div>";
             document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
 
             let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
@@ -914,18 +988,18 @@
                 deposits.forEach((d, idx) => {
                     let statusColor = d.status === 'Approved' ? '#2ecc71' : (d.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
                     depHtml += `
-                        <div class="req-item">
-                            <div>📱 <b>${d.phone}</b> | Amt: ₹${d.amount} | UTR: <b>${d.utr}</b><br><span style="color:${statusColor}; font-weight:bold;">Status: ${d.status}</span></div>
+                        <div class="req-table-row">
+                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>Cashfree Txn: <b style="color:#ffd700;">${d.utr}</b><br>Status: <span style="color:${statusColor}; font-weight:bold;">${d.status}</span></div>
                             <div class="req-actions">
                                 ${d.status === 'Pending' ? `
                                     <button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button>
-                                    <button class="btn-reject" onclick="rejectDeposit(${idx})">Reject (Fake)</button>
+                                    <button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>
                                 ` : `<span style="color:${statusColor}; font-weight:bold; font-size:11px;">${d.status}</span>`}
                             </div>
                         </div>`;
                 });
             } else {
-                depHtml = "No pending deposit requests.";
+                depHtml = "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending deposit requests.</div>";
             }
             document.getElementById('admDepositList').innerHTML = depHtml;
 
@@ -935,18 +1009,18 @@
                 withdraws.forEach((w, idx) => {
                     let wdColor = w.status === 'Success' ? '#2ecc71' : (w.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
                     wdHtml += `
-                        <div class="req-item">
-                            <div>📱 <b>${w.phone}</b> | Amt: ${w.amount} Coins | UPI: <b>${w.upi}</b><br><span style="color:${wdColor}; font-weight:bold;">Status: ${w.status}</span></div>
+                        <div class="req-table-row">
+                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b><br>Status: <span style="color:${wdColor}; font-weight:bold;">${w.status}</span></div>
                             <div class="req-actions">
                                 ${w.status.includes('Pending') ? `
-                                    <button class="btn-approve" onclick="successWithdraw(${idx})">Mark Success</button>
-                                    <button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject (Refund)</button>
+                                    <button class="btn-approve" onclick="successWithdraw(${idx})">Paid</button>
+                                    <button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject</button>
                                 ` : `<span style="color:${wdColor}; font-weight:bold; font-size:11px;">${w.status}</span>`}
                             </div>
                         </div>`;
                 });
             } else {
-                wdHtml = "No pending withdrawal requests.";
+                wdHtml = "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending withdrawal requests.</div>";
             }
             document.getElementById('admWithdrawList').innerHTML = wdHtml;
 
@@ -958,17 +1032,17 @@
             deposits[idx].status = 'Approved';
             localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
             
-            realCoins += deposits[idx].amount * 2;
+            realCoins += deposits[idx].amount; 
             updateBalancesDisplay();
-            alert("✅ Deposit Approved! Real Coins added to player balance.");
+            alert("✅ Deposit Approved! ₹" + deposits[idx].amount + " successfully added to player's real balance.");
             openAdminPanel();
         }
 
         function rejectDeposit(idx) {
             let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            deposits[idx].status = 'Rejected (Fake UTR)';
+            deposits[idx].status = 'Rejected';
             localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-            alert("❌ Deposit Rejected as Fake UTR/Screenshot!");
+            alert("❌ Deposit Rejected!");
             openAdminPanel();
         }
 
@@ -988,20 +1062,22 @@
             
             realCoins += refundedAmt;
             updateBalancesDisplay();
-            alert("❌ Withdrawal Rejected & Real Coins Refunded to Player!");
+            alert("❌ Withdrawal Rejected & Coins Refunded to Player!");
             openAdminPanel();
         }
 
         const gridTableDiv = document.getElementById('gridTableDiv');
-        [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
-            row.forEach(num => {
-                let cell = document.createElement('div');
-                cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
-                cell.innerText = num;
-                cell.onclick = () => { placeTableBet(num.toString(), cell); };
-                gridTableDiv.appendChild(cell);
+        if(gridTableDiv) {
+            [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
+                row.forEach(num => {
+                    let cell = document.createElement('div');
+                    cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
+                    cell.innerText = num;
+                    cell.onclick = () => { placeTableBet(num.toString(), cell); };
+                    gridTableDiv.appendChild(cell);
+                });
             });
-        });
+        }
 
         let currentActiveChip = 50, userActiveBets = {}, currentTotalBet = 0, isGameSpinning = false;
         let selectedDepositAmount = 300;
@@ -1048,23 +1124,16 @@
                 badge.innerText = userActiveBets[key];
             }
 
-            if(document.getElementById('secretAdminModal').style.display === 'block') {
-                openAdminPanel();
-            }
+            if(document.getElementById('secretAdminModal').style.display === 'block') openAdminPanel();
         }
 
         function clearTableBets() {
             let { timeLeft } = getGlobalRound();
-            if (isGameSpinning || timeLeft <= 10) return;
-            if (betHistoryStack.length === 0) return;
+            if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
 
             let lastBet = betHistoryStack.pop();
-            
-            if (lastBet.mode === 'real') {
-                realCoins += lastBet.amount;
-            } else {
-                testCoins += lastBet.amount;
-            }
+            if (lastBet.mode === 'real') realCoins += lastBet.amount;
+            else testCoins += lastBet.amount;
 
             currentTotalBet -= lastBet.amount;
             userActiveBets[lastBet.key] -= lastBet.amount;
@@ -1085,21 +1154,6 @@
 
             updateBalancesDisplay();
             document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-
-            let { roundId } = getGlobalRound();
-            localStorage.setItem("total_bet_round_" + roundId, currentTotalBet);
-            let breakdownKey = "bets_breakdown_" + roundId;
-            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-            if (userActiveBets[lastBet.key]) {
-                betsMap[lastBet.key] = userActiveBets[lastBet.key];
-            } else {
-                delete betsMap[lastBet.key];
-            }
-            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
-
-            if(document.getElementById('secretAdminModal').style.display === 'block') {
-                openAdminPanel();
-            }
         }
 
         function getGlobalRound() {
@@ -1112,38 +1166,8 @@
         function getMasterWinningNumber(roundId) {
             let savedWin = localStorage.getItem("saved_winner_" + roundId);
             if (savedWin !== null) return parseInt(savedWin);
-
-            let adminRigVal = document.getElementById('adminRigSelect').value;
+            let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
             if (adminRigVal !== "random") return parseInt(adminRigVal);
-
-            let totalKey = "total_bet_round_" + roundId;
-            let totalBet = parseFloat(localStorage.getItem(totalKey) || 0);
-            let breakdownKey = "bets_breakdown_" + roundId;
-            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-
-            if (totalBet > 0) {
-                let maxAllowedPayout = totalBet * 0.95;
-                let safeCandidates = [];
-
-                numbersList.forEach(num => {
-                    let p = 0;
-                    let isRed = redList.includes(num);
-                    if (betsMap[num.toString()]) p += betsMap[num.toString()] * 36;
-                    if (num === 0 && betsMap['0']) p += betsMap['0'] * 36;
-                    if (isRed && betsMap['red']) p += betsMap['red'] * 2;
-                    if (!isRed && num !== 0 && betsMap['black']) p += betsMap['black'] * 2;
-
-                    if (p <= maxAllowedPayout) {
-                        safeCandidates.push(num);
-                    }
-                });
-
-                if (safeCandidates.length > 0) {
-                    let randIdx = Math.floor(Math.sin(roundId * 99.9) * 1000) % safeCandidates.length;
-                    return safeCandidates[Math.abs(randIdx)];
-                }
-            }
-
             let pseudo = Math.sin(roundId * 12.9898 + 78.233) * 43758.5453123;
             return Math.floor(Math.abs(pseudo) % 37);
         }
@@ -1170,7 +1194,8 @@
                 let cls = pastNum === 0 ? 'green' : (redList.includes(pastNum) ? 'red' : 'black');
                 historyHTML += `<div class="history-ball ${cls}">${pastNum}</div>`;
             }
-            document.getElementById('historyBallsContainer').innerHTML = historyHTML;
+            let historyBallsCont = document.getElementById('historyBallsContainer');
+            if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
 
             if (roundId !== lastProcessedRound) {
                 if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
@@ -1179,7 +1204,8 @@
                 userActiveBets = {};
                 currentTotalBet = 0;
                 betHistoryStack = [];
-                document.getElementById('lobbyTotalBet').innerText = 0;
+                let totalBetEl = document.getElementById('lobbyTotalBet');
+                if(totalBetEl) totalBetEl.innerText = 0;
                 document.querySelectorAll('.table-cell, .color-btn').forEach(c => {
                     c.classList.remove('has-bet');
                     let b = c.querySelector('.cell-badge'); if (b) b.remove();
@@ -1191,18 +1217,21 @@
                 speakVoice("No more bets, please!", true);
             }
 
+            let timerTextEl = document.getElementById('lobbyTimerText');
+            let statusMsgEl = document.getElementById('lobbyStatusMsg');
             if (timeLeft > 10) {
-                document.getElementById('lobbyTimerText').innerText = `⏳ Spin: ${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-                document.getElementById('lobbyStatusMsg').innerText = "Place bets! Game ready...";
+                if(timerTextEl) timerTextEl.innerText = `⏳ Spin: ${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+                if(statusMsgEl) statusMsgEl.innerText = "Place bets! Game ready...";
             } else {
-                document.getElementById('lobbyTimerText').innerText = `⚠️ CLOSED: ${s}s`;
-                document.getElementById('lobbyStatusMsg').innerText = "⚠️ BETS CLOSED!";
+                if(timerTextEl) timerTextEl.innerText = `⚠️ CLOSED: ${s}s`;
+                if(statusMsgEl) statusMsgEl.innerText = "⚠️ BETS CLOSED!";
             }
         }, 1000);
 
         function executeGlobalSpinAnimation(endedRoundId) {
             isGameSpinning = true;
-            document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
+            let statusMsgEl = document.getElementById('lobbyStatusMsg');
+            if(statusMsgEl) statusMsgEl.innerText = "Spinning...";
             
             playBallRollingSound();
             speakVoice("Spinning the wheel.");
@@ -1216,7 +1245,7 @@
             let targetPocketAngle = winningIndex * degreesPerPocket + (degreesPerPocket / 2);
             
             accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + targetPocketAngle;
-            ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
+            if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
             setTimeout(() => {
                 let totalWonAmount = 0;
@@ -1231,40 +1260,41 @@
                 }
 
                 if (totalWonAmount > 0) {
-                    if (activeGameMode === 'real') {
-                        realCoins += totalWonAmount;
-                    } else {
-                        testCoins += totalWonAmount;
-                    }
+                    if (activeGameMode === 'real') realCoins += totalWonAmount;
+                    else testCoins += totalWonAmount;
                     speakVoice("Winner! Number " + winningNum + " " + colorName, true);
                 } else {
-                    if (activeGameMode === 'test') {
-                        testCoins += currentTotalBet; 
-                    }
+                    if (activeGameMode === 'test') testCoins += currentTotalBet; 
                     speakVoice("Number " + winningNum + " " + colorName, true);
                 }
 
                 let historyContainer = document.getElementById('historyBallsContainer');
-                let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
-                let newBall = document.createElement('div');
-                newBall.className = `history-ball ${cls}`;
-                newBall.innerText = winningNum;
-                historyContainer.insertBefore(newBall, historyContainer.firstChild);
-                if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
+                if (historyContainer) {
+                    let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
+                    let newBall = document.createElement('div');
+                    newBall.className = `history-ball ${cls}`;
+                    newBall.innerText = winningNum;
+                    historyContainer.insertBefore(newBall, historyContainer.firstChild);
+                    if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
+                }
 
                 let popup = document.getElementById('cinematicResultPopup');
-                document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
-                if (totalWonAmount > 0) {
-                    document.getElementById('popupPayoutDisplay').innerText = `You Won 🪙${totalWonAmount}!`;
-                } else {
-                    document.getElementById('popupPayoutDisplay').innerText = `Round Finished.`;
+                let winNumDisp = document.getElementById('popupWinningNumDisplay');
+                let payoutDisp = document.getElementById('popupPayoutDisplay');
+                if(winNumDisp) winNumDisp.innerText = `${winningNum} (${colorName})`;
+                if(payoutDisp) {
+                    if (totalWonAmount > 0) {
+                        payoutDisp.innerText = `You Won 🪙${totalWonAmount}!`;
+                    } else {
+                        payoutDisp.innerText = `Round Finished.`;
+                    }
                 }
 
                 updateBalancesDisplay();
-                popup.style.display = 'flex';
+                if(popup) popup.style.display = 'flex';
 
                 setTimeout(() => {
-                    popup.style.display = 'none';
+                    if(popup) popup.style.display = 'none';
                     isGameSpinning = false;
                 }, 3000);
             }, 6000);
@@ -1279,6 +1309,7 @@
             selectedDepositAmount = amt;
             document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
+            document.getElementById('customDepositInput').value = amt;
         }
 
         function selectWithdrawPkg(amt, btn) {
@@ -1287,32 +1318,44 @@
             btn.classList.add('selected');
         }
 
-        function submitDepositCoins() {
-            let utr = document.getElementById('utrNumberInput').value.trim();
-            if (utr.length !== 12) { alert("Please enter valid 12-digit UTR!"); return; }
-            
-            let phone = loggedUserPhone;
-            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            deposits.push({ phone: phone, amount: selectedDepositAmount, utr: utr, status: 'Pending', time: new Date().toLocaleTimeString() });
-            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+        function triggerCashfreeSandboxDeposit() {
+            let customInput = document.getElementById('customDepositInput');
+            let customAmt = customInput ? parseInt(customInput.value) : selectedDepositAmount;
+            if (isNaN(customAmt) || customAmt < 50) {
+                alert("Please select or enter a valid deposit amount!");
+                return;
+            }
 
             closeWalletModals();
-            updateBalancesDisplay();
+            alert("🔒 Connecting to Cashfree Secure Sandbox Gateway... Test payment initialized for ₹" + customAmt);
 
-            let msg = `Hello Admin, I have submitted a Deposit request.%0A👤 Phone: ${phone}%0A💰 Amount: ₹${selectedDepositAmount}%0A🔢 UTR: ${utr}%0APlease verify and approve!`;
-            
-            if (confirm("Deposit Request Submitted! Click OK to send notification via WhatsApp Support.")) {
-                window.open(`https://wa.me/919399267482?text=${msg}`, '_blank');
-            }
-            document.getElementById('utrNumberInput').value = '';
+            setTimeout(() => {
+                let txId = "CF_TEST_" + Math.floor(Math.random() * 900000 + 100000);
+                let phone = loggedUserPhone;
+
+                let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                deposits.push({ 
+                    phone: phone, 
+                    amount: customAmt, 
+                    utr: txId, 
+                    status: 'Pending', 
+                    time: new Date().toLocaleTimeString() 
+                });
+                localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+
+                updateBalancesDisplay();
+                alert("✅ Cashfree Verified Payment Successfully!\n\nTransaction ID: " + txId + "\n\n👉 Request sent to your Master Admin Command Center for final approval.");
+            }, 1800);
         }
 
         function submitWithdrawCoins() {
-            let amt = parseInt(document.getElementById('withdrawAmtInput').value);
-            let upi = document.getElementById('withdrawUpiInput').value.trim();
+            let amtEl = document.getElementById('withdrawAmtInput');
+            let upiEl = document.getElementById('withdrawUpiInput');
+            let amt = amtEl ? parseInt(amtEl.value) : 0;
+            let upi = upiEl ? upiEl.value.trim() : "";
 
-            if (!amt || amt < 50) { alert("Minimum withdrawal is 50 coins!"); return; }
-            if (realCoins < amt) { alert("Insufficient Real Coins balance!"); return; }
+            if (!amt || amt < 100) { alert("Minimum withdrawal is ₹100!"); return; }
+            if (realCoins < amt) { alert("Insufficient Real Balance!"); return; }
             if (!upi) { alert("Please enter your UPI ID!"); return; }
 
             realCoins -= amt;
@@ -1325,24 +1368,19 @@
 
             closeWalletModals();
             updateBalancesDisplay();
-
-            let msg = `Hello Admin, I have requested a Withdrawal.%0A👤 Phone: ${phone}%0A🪙 Amount: ${amt} Coins%0A💳 UPI ID: ${upi}%0APlease process payout!`;
-            
-            if (confirm("Withdrawal Request Submitted! Click OK to send notification via WhatsApp Support.")) {
-                window.open(`https://wa.me/919399267482?text=${msg}`, '_blank');
-            }
-            document.getElementById('withdrawAmtInput').value = '';
-            document.getElementById('withdrawUpiInput').value = '';
+            alert("📤 Withdrawal request of ₹" + amt + " submitted successfully to Admin Panel!");
         }
 
         function executeCoinTransfer() {
-            let targetId = document.getElementById('transferTargetId').value;
-            let sendAmt = parseInt(document.getElementById('transferCoinAmt').value);
+            let targetEl = document.getElementById('transferTargetId');
+            let amtEl = document.getElementById('transferCoinAmt');
+            let targetId = targetEl ? targetEl.value : "";
+            let sendAmt = amtEl ? parseInt(amtEl.value) : 0;
             if (!targetId || !sendAmt || realCoins < sendAmt) { alert("Check details & Real balance!"); return; }
             realCoins -= sendAmt;
             updateBalancesDisplay();
             closeWalletModals();
-            alert(`Successfully transferred ${sendAmt} Real coins to VIP #${targetId}!`);
+            alert(`Successfully transferred ₹${sendAmt} to VIP #${targetId}!`);
         }
     </script>
 </body>

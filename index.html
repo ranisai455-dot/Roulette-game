@@ -329,6 +329,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 15px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 8px; text-align: center; font-weight: bold; font-size: 14px; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -1388,5 +1389,12 @@
             }catch(err){console.error("Engine guard error:", err);}
         })();
     </script>
+    <script>
+  window.addEventListener('load', () => {
+    if (window.supabase) {
+      window.supabase.createClient('https://fifqewznpxllackprwut.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpZnFld3pucHhsbGFja3Byd3V0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwMDM5NjAsImV4cCI6MjA1NjU3OTk2MH0.dummy_key_or_actual_anon');
+    }
+  });
+</script>
 </body>
 </html>

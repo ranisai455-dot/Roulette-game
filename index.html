@@ -11,7 +11,7 @@
     <!-- Cashfree SDK for Real-time Sandbox Testing -->
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
             background: #000401; 
             color: #f1c40f; 
@@ -25,6 +25,7 @@
             overflow: hidden;
             padding: 2px;
             position: relative;
+            transform: translateZ(0);
         }
 
         body::before {
@@ -83,7 +84,7 @@
             background: rgba(0, 25, 12, 0.95); border: 1px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase;
         }
         .login-card {
-            background: rgba(1, 20, 8, 0.95); border: 1px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px;
+            background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px;
             width: 92%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15;
         }
         .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 2px; }
@@ -121,7 +122,7 @@
 
         .user-profile-widget {
             display: flex; align-items: center; gap: 6px; background: rgba(0,20,8,0.9);
-            border: 1px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer;
+            border: 1.5px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer;
         }
         .user-avatar-circle {
             width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b);
@@ -139,21 +140,29 @@
             box-shadow: 0 0 12px rgba(192, 57, 43, 0.9); 
         }
 
+        /* ⏱️ Prominent Full-Button Large Timer Strip */
         .timer-strip-center {
-            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 15px; font-weight: 900;
-            padding: 6px 20px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1.5px; flex-grow: 1; max-width: 140px; text-align: center;
+            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; 
+            font-size: 16px; font-weight: 900;
+            padding: 4px 10px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1px; 
+            flex-grow: 1; max-width: 140px; text-align: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px;
         }
+        .timer-strip-center span.timer-main-val { font-size: 18px; line-height: 1.1; }
+        .timer-strip-center span.timer-sub-val { font-size: 7px; color: #ffcccc; letter-spacing: 0.5px; display: none; }
+        .timer-strip-center.closed-state { background: linear-gradient(135deg, #78281f, #512e5f); border-color: #e74c3c; }
+        .timer-strip-center.closed-state span.timer-sub-val { display: block; }
 
         .history-strip-bar {
             display: flex; justify-content: center; align-items: center; gap: 4px;
-            background: rgba(0, 10, 3, 0.9); border: 1px solid rgba(212, 175, 55, 0.5);
+            background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5);
             padding: 2px; border-radius: 6px; margin: 1px auto; width: 100%; flex-shrink: 0; z-index: 50;
         }
         .history-title { font-size: 7px; font-weight: bold; color: #ffd700; margin-right: 4px; text-transform: uppercase; }
         .history-ball {
             width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 900; color: #fff;
-            display: flex; align-items: center; justify-content: center; border: 1px solid #ffd700;
+            display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700;
             box-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
         .history-ball.red { background: #b03a2e; }
@@ -167,7 +176,7 @@
             flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
         }
         
-        #lobbyWheelCanvas { width: 260px; height: 260px; border-radius: 50%; display: block; }
+        #lobbyWheelCanvas { width: 260px; height: 260px; border-radius: 50%; display: block; will-change: transform; }
 
         .lobby-wheel-hub {
             position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px;
@@ -176,7 +185,7 @@
 
         .game-ball-orbit {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            pointer-events: none; z-index: 120;
+            pointer-events: none; z-index: 120; will-change: transform;
             transition: transform 6.0s cubic-bezier(0.15, 0.85, 0.12, 1.0);
         }
         .game-ball-orbit::after {
@@ -201,7 +210,7 @@
         .cell-badge { position: absolute; top: -5px; right: -5px; background: #f1c40f; color: #000; font-size: 7px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 5; }
 
         .color-row { display: flex; gap: 6px; }
-        .color-btn { flex: 1; padding: 8px; font-weight: 900; font-size: 10px; border-radius: 6px; border: 2px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; }
+        .color-btn { flex: 1; padding: 8px; font-weight: 900; font-size: 10px; border-radius: 6px; border: 2.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; }
         .btn-red { background: linear-gradient(135deg, #b03a2e, #78281f); }
         .btn-green { background: linear-gradient(135deg, #27ae60, #1e8449); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
@@ -240,16 +249,21 @@
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 3px solid #ffd700; padding: 22px; border-radius: 16px; width: 290px; text-align: center; color: #fff; box-shadow: 0 0 50px #ffd700; animation: popupScale 0.3s ease-out; }
 
-        /* [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL] */
+        #emergencyMaintenanceBanner {
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.96); z-index: 999999; flex-direction: column; align-items: center; justify-content: center; color: #e74c3c;
+        }
+
+        /* [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL GUARANTEED] */
         #secretAdminModal { 
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); 
-            z-index: 50000; padding: 15px; text-align: center; color: #fff; overflow-y: auto; 
+            z-index: 2147483647 !important; padding: 15px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important;
         }
         .admin-dashboard-container { 
-            max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.95); 
+            max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.98); 
             border: 2px solid #ffd700; border-radius: 20px; padding: 25px; 
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.25), inset 0 0 30px rgba(0,0,0,0.9); 
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(0,0,0,0.9); 
             display: flex; flex-direction: column; gap: 16px; text-align: left; 
         }
         .admin-top-header {
@@ -281,7 +295,7 @@
         }
 
         .req-table-row { 
-            background: rgba(15, 25, 18, 0.9); border: 1px solid #333; 
+            background: rgba(15, 25, 18, 0.9); border: 1.5px solid #333; 
             padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; 
             display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; 
         }
@@ -318,6 +332,11 @@
 </head>
 <body>
 
+    <div id="emergencyMaintenanceBanner">
+        <h1 style="color:#e74c3c; font-size:24px; margin-bottom:10px;">🛠️ SYSTEM MAINTENANCE</h1>
+        <p style="color:#fff; font-size:12px;">App is under scheduled optimization. Back shortly!</p>
+    </div>
+
     <div id="comingSoonNoticeModal">
         <div class="coming-soon-card">
             <h3 style="color:#ffd700; font-size:16px; margin-bottom:8px;">🃏 EXCITING UPDATE! 🃏</h3>
@@ -345,20 +364,21 @@
                 <span class="animated-star-right">✨ 🌟 ⭐</span>
             </div>
             <div class="live-stats-bar">
-                <span id="loginOnlineCount">🟢 ONLINE: 742 VIPs</span>
+                <span id="loginOnlineCount">🟢 ONLINE: 0 VIPs</span>
                 <span>🔒 256-BIT SECURE</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
         </div>
 
         <div class="login-card" id="loginCardBox">
-            <h3>SECURE MEMBER LOGIN</h3>
-            <p>ENTER REGISTERED MOBILE NUMBER</p>
+            <h3>CLOUD WALLET LOGIN</h3>
+            <p>NUMBER + 4-DIGIT PERSONAL MPIN</p>
             
             <input type="tel" id="inputPhone" placeholder="Mobile Number (10 Digits)" maxlength="10">
-            <input type="text" id="inputOtp" placeholder="Enter OTP / Secret Code" maxlength="15">
-            <button class="login-btn" onclick="requestOtpCode()">GENERATE OTP</button>
-            <button class="login-btn lobby" onclick="verifyLogin(); startDjMusic();">ENTER LOBBY</button>
+            <input type="password" id="inputMpin" placeholder="Enter 4-Digit MPIN (Security Pin)" maxlength="4">
+            <input type="text" id="inputOtp" placeholder="OTP / Pop-up Code" maxlength="15">
+            <button class="login-btn" onclick="requestStrictOtp()">GET OTP / SET MPIN</button>
+            <button class="login-btn lobby" onclick="verifyCloudWalletLogin(); startDjMusic();">ENTER LOBBY</button>
         </div>
 
         <div class="footer-wrap">
@@ -383,9 +403,14 @@
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <div style="display:flex; flex-direction:column; align-items:center;">
-                <div class="timer-strip-center" id="lobbyTimerText">⏳ 02:00</div>
+            <!-- ⏱️ Big prominent timer filling the center strip block -->
+            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 140px;">
+                <div class="timer-strip-center" id="lobbyTimerBox">
+                    <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
+                    <span class="timer-sub-val" id="lobbyTimerSub">LOCKED</span>
+                </div>
             </div>
+
             <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
         </div>
 
@@ -403,13 +428,13 @@
         <div class="betting-board-section" id="bettingBoardArea">
             <div style="background: rgba(0,0,0,0.85); padding: 5px; border-radius: 8px; border: 1.5px solid #ffd700; margin-bottom: 2px; display: flex; flex-direction: column; gap: 2px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 900; color: #ffd700;">
-                    <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
+                    <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span> (Min: ₹10)</span>
                     <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 2px 8px; border-radius: 6px;">
                         💎 REAL MONEY: <span id="playerRealBal" style="color:#2ecc71; font-size: 13px;">₹0</span>
                     </span>
                 </div>
                 <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 8.5px; color: #3498db; font-weight: bold;">
-                    <span>🧪 Testing Demo Coins: <span id="playerTestBal">10000</span> (Free Play)</span>
+                    <span>🧪 Testing Demo Coins: <span id="playerTestBal">10000</span> (Max: ₹50,000/rd)</span>
                 </div>
             </div>
 
@@ -443,13 +468,13 @@
         </div>
     </div>
 
-    <!-- 👤 PLAYER PROFILE MODAL (एडमिन बटन केवल एडमिन नंबर पर दिखेगा) -->
+    <!-- 👤 PLAYER PROFILE MODAL -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 450px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:18px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
             <div style="font-size:35px; margin:5px 0;" id="profileAvatarLarge">😎</div>
             
-            <div style="background:#000; border:1px solid #ffd700; padding:10px; border-radius:10px; text-align:left; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
+            <div style="background:#000; border:1.5px solid #ffd700; padding:10px; border-radius:10px; text-align:left; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
                 <div>📱 <b>Mobile Number:</b> <span id="profPhone" style="color:#fff;">--</span></div>
                 <div>🆔 <b>VIP Player ID:</b> <span id="profVipId" style="color:#ffd700;">--</span></div>
                 <div>📧 <b>Email Address:</b> <span id="profEmail" style="color:#00ffff;">player_vip@royalcasino.com</span></div>
@@ -457,9 +482,9 @@
                 <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span> Coins</div>
             </div>
 
-            <!-- 👑 Admin Exclusive Profile Button (Hidden for normal players) -->
+            <!-- 👑 Admin Exclusive Profile Button (Strictly restricted to Admin Number) -->
             <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 10px;">
-                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanel(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:2px solid #ffd700; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase; box-shadow:0 0 15px rgba(230,126,34,0.7);">
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:2px solid #ffd700; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase; box-shadow:0 0 15px rgba(230,126,34,0.7);">
                     👑 Open Master Admin Panel
                 </button>
             </div>
@@ -473,23 +498,22 @@
         </div>
     </div>
 
-    <!-- [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL] -->
+    <!-- [HIGH-END PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL GUARANTEED] -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN COMMAND CENTER</h2>
+                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(231,76,60,0.5);">✕ Close Panel</button>
             </div>
 
-            <!-- KPI Summary Cards -->
             <div class="admin-kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-title">Active Players</div>
-                    <div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">742</div>
+                    <div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">0</div>
                 </div>
                 <div class="kpi-card purple">
                     <div class="kpi-title">Current Round ID</div>
-                    <div class="kpi-value" id="admRoundId" style="color:#f1c40f;">0</div>
+                    <div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div>
                 </div>
                 <div class="kpi-card orange">
                     <div class="kpi-title">Total Table Bet</div>
@@ -501,13 +525,60 @@
                 </div>
             </div>
 
-            <!-- Live Deposit Requests (Cashfree Verified) -->
+            <!-- E - Emergency Maintenance Switch & Round ID Reset -->
+            <div class="admin-section-box" style="border: 1.5px solid #e74c3c; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div><b style="color:#e74c3c;">🚨 Controls:</b> System Lock / Round Reset</div>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="resetRoundCounterAdmin()" style="background:#f39c12; color:#fff; border:none; padding:6px 10px; border-radius:6px; font-size:10.5px; font-weight:bold; cursor:pointer;">🔄 Reset Round ID</button>
+                    <button id="maintToggleBtn" onclick="toggleEmergencyMaintenance()" style="background:#e74c3c; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:10.5px; font-weight:bold; cursor:pointer;">Maint Mode: OFF</button>
+                </div>
+            </div>
+
+            <!-- 🔑 Player MPIN Recovery / Management Section for Telegram Support -->
+            <div class="admin-section-box" style="border: 1.5px solid #00ffff;">
+                <div class="admin-section-title">
+                    <span style="color: #00ffff;">🔑 Player MPIN Recovery & Lookup (Telegram Help)</span>
+                </div>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <input type="text" id="adminSearchPhone" placeholder="Enter Player Mobile Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:6px; flex:1; font-size:11px;">
+                    <button onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Lookup / Reset Pin</button>
+                </div>
+                <div id="adminMpinResultBox" style="font-size:11px; color:#2ecc71; text-align:left; background:#000; padding:6px; border-radius:6px;">Search number above to view linked MPIN & balance.</div>
+            </div>
+
+            <!-- List of All Registered Users & MPINs -->
+            <div class="admin-section-box">
+                <div class="admin-section-title"><span>👥 All Registered Players Database & Linked MPINs</span></div>
+                <div id="admAllUsersList" style="max-height: 120px; overflow-y: auto; font-size: 11px; text-align: left; color: #ccc;">
+                    No players registered yet.
+                </div>
+            </div>
+
+            <!-- 👤 Live Player-Wise Round Bets -->
+            <div class="admin-section-box">
+                <div class="admin-section-title"><span>👤 Live Player-Wise Round Bets</span></div>
+                <div id="admPlayerRoundBetsList" style="max-height: 110px; overflow-y: auto; font-size: 11px; text-align: left; color: #ccc;">
+                    No player round bets recorded yet.
+                </div>
+            </div>
+
+            <!-- Active Bets Breakdown -->
             <div class="admin-section-box">
                 <div class="admin-section-title">
-                    <span>📥 Live Deposit Requests (Cashfree Verified)</span>
+                    <span>🎯 Active Bets Breakdown (This Round)</span>
+                </div>
+                <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:90px; overflow-y:auto;">
+                    No active bets placed yet.
+                </div>
+            </div>
+
+            <!-- Live Deposit Requests (Cashfree Verified + UTR Guard) -->
+            <div class="admin-section-box">
+                <div class="admin-section-title">
+                    <span>📥 Live Deposit Requests (Cashfree + UTR Guard)</span>
                     <span style="font-size: 10px; color: #2ecc71; background: rgba(39,174,96,0.2); padding: 2px 6px; border-radius: 4px;">SECURE GATEWAY</span>
                 </div>
-                <div id="admDepositList" style="max-height: 160px; overflow-y: auto;">
+                <div id="admDepositList" style="max-height: 140px; overflow-y: auto;">
                     <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending deposit requests.</div>
                 </div>
             </div>
@@ -518,19 +589,15 @@
                     <span>📤 Live Withdrawal Requests (Up to ₹20,000)</span>
                     <span style="font-size: 10px; color: #e74c3c; background: rgba(231,76,60,0.2); padding: 2px 6px; border-radius: 4px;">PAYOUT QUEUE</span>
                 </div>
-                <div id="admWithdrawList" style="max-height: 160px; overflow-y: auto;">
+                <div id="admWithdrawList" style="max-height: 140px; overflow-y: auto;">
                     <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending withdrawal requests.</div>
                 </div>
             </div>
 
-            <!-- Active Bets Breakdown -->
+            <!-- A - Audit Log Activity -->
             <div class="admin-section-box">
-                <div class="admin-section-title">
-                    <span>🎯 Active Bets Breakdown (This Round)</span>
-                </div>
-                <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:100px; overflow-y:auto;">
-                    No active bets placed yet.
-                </div>
+                <div class="admin-section-title"><span>📋 A-Z Admin Audit Trail / Logs</span></div>
+                <div id="admAuditLogBox" style="font-size:10.5px; color:#bbb; max-height:80px; overflow-y:auto; text-align:left; background:#000; padding:5px; border-radius:5px;">System initialized safely.</div>
             </div>
             
             <!-- Game Rigging & Settings -->
@@ -616,772 +683,670 @@
     </div>
 
     <script>
-        function openTelegramSupport() {
-            let tgLink = "https://t.me/your_exact_group_username_or_invite"; 
-            window.open(tgLink, '_blank', 'noopener,noreferrer');
-        }
+        window.TRIGGERED_ADMIN_PHONE = "";
 
-        const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
-        const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
-        const ROUND_TIME = 120;
-
-        let accumulatedBallRotation = 0; 
-        const MASTER_ADMIN_PHONE = "8889865182";
-        const MASTER_ADMIN_SECRET_CODE = "Rani143143";
-        let isAdminLoggedIn = false;
-
-        let realCoins = 0;
-        let testCoins = 10000;
-        let activeGameMode = 'test';
-        let loggedUserPhone = "";
-        let loggedVipId = "";
-        let loggedAvatar = "😎";
-
-        const cashfree = Cashfree({ mode: "sandbox" });
-
-        let audioCtx = null;
-        let djInterval = null;
-        let djGainNode = null;
-
-        function startDjMusic() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            if (djInterval) clearInterval(djInterval);
-
-            djGainNode = audioCtx.createGain();
-            djGainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
-            djGainNode.connect(audioCtx.destination);
-
-            let step = 0;
-            djInterval = setInterval(() => {
-                if (!audioCtx) return;
-                try {
-                    let now = audioCtx.currentTime;
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
-                    
-                    osc.type = (step % 4 === 0) ? 'square' : 'sawtooth';
-                    let freqs = [110, 220, 330, 440, 550, 660];
-                    osc.frequency.setValueAtTime(freqs[step % freqs.length], now);
-
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-
-                    osc.connect(gain);
-                    gain.connect(djGainNode);
-                    osc.start(now);
-                    osc.stop(now + 0.2);
-                    step++;
-                } catch(e) {}
-            }, 250);
-        }
-
-        function duckMusic(ducking) {
-            if (!djGainNode || !audioCtx) return;
+        (function() {
             try {
-                let now = audioCtx.currentTime;
-                if (ducking) {
-                    djGainNode.gain.linearRampToValueAtTime(0.02, now + 0.3);
-                } else {
-                    djGainNode.gain.linearRampToValueAtTime(0.12, now + 0.5);
-                }
-            } catch(e) {}
-        }
-
-        function playBallRollingSound() {
-            if (!audioCtx) return;
-            duckMusic(true);
-            try {
-                let bufferSize = audioCtx.sampleRate * 6;
-                let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                let data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * 0.5;
-                }
-                let noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                
-                let filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-                filter.frequency.linearRampToValueAtTime(300, audioCtx.currentTime + 6);
-
-                let gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 6);
-
-                noise.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
-
-                setTimeout(() => {
-                    duckMusic(false);
-                }, 6000);
-            } catch(e) {
-                setTimeout(() => { duckMusic(false); }, 6000);
-            }
-        }
-
-        function speakVoice(text, isNoMoreBets = false) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 1.05;
-                utterance.pitch = 1.1;
-                utterance.volume = 1.0;
-
-                if (isNoMoreBets) {
-                    duckMusic(true);
-                    utterance.onend = () => { duckMusic(false); };
-                }
-
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        function drawCanvasWheel(canvasId) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const outerRadius = cx - 6;
-            const innerRadius = 24; 
-            const arcSize = (2 * Math.PI) / numbersList.length;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            numbersList.forEach((num, i) => {
-                const angle = i * arcSize - Math.PI / 2;
-                let fillColor = '#0f171e';
-                if (num === 0) fillColor = '#1b5e20';
-                else if (redList.includes(num)) fillColor = '#b03a2e';
-
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
-                ctx.lineTo(cx, cy);
-                ctx.fillStyle = fillColor;
-                ctx.fill();
-                ctx.lineWidth = 1.2;
-                ctx.strokeStyle = '#ffd700';
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(cx, cy);
-                ctx.rotate(angle + arcSize / 2);
-                ctx.textAlign = 'right';
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 11px Arial';
-                ctx.fillText(num, outerRadius - 16, 4);
-                ctx.restore();
-            });
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-            ctx.fillStyle = '#d4af37';
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#fff';
-            ctx.stroke();
-        }
-
-        window.onload = () => {
-            drawCanvasWheel('loginWheelCanvasBg');
-            drawCanvasWheel('lobbyWheelCanvas');
-        };
-
-        function closeComingSoonModal() {
-            document.getElementById('comingSoonNoticeModal').style.display = 'none';
-        }
-
-        const adminSelect = document.getElementById('adminRigSelect');
-        if(adminSelect) {
-            numbersList.forEach(num => {
-                let opt = document.createElement('option');
-                opt.value = num;
-                opt.innerText = "Number " + num;
-                adminSelect.appendChild(opt);
-            });
-        }
-
-        function saveAdminSettings() {
-            alert("Admin Settings Applied Successfully!");
-            document.getElementById('secretAdminModal').style.display = 'none';
-        }
-
-        function logoutToLogin() {
-            isAdminLoggedIn = false;
-            document.getElementById('gameLobbyScreen').style.display = 'none';
-            document.getElementById('secretAdminModal').style.display = 'none';
-            document.getElementById('loginScreenContainer').style.display = 'flex';
-            document.getElementById('fullscreenWheelBg').style.display = 'flex';
-            document.getElementById('inputPhone').value = '';
-            document.getElementById('inputOtp').value = '';
-        }
-
-        function requestOtpCode() {
-            let phone = document.getElementById('inputPhone').value.trim();
-            if (phone.length < 10) {
-                alert("Please enter a valid 10-digit mobile number first!");
-                return;
-            }
-
-            if (phone === MASTER_ADMIN_PHONE) {
-                alert("🔒 Admin Number Detected! (Please type your secret code directly in the box below)");
-            } else {
-                let randomUniqueOtp = Math.floor(100000 + Math.random() * 900000);
-                let otpBox = document.getElementById('inputOtp');
-                alert("📱 Your Secure Verification Code is: " + randomUniqueOtp);
-                otpBox.value = randomUniqueOtp;
-            }
-        }
-
-        function getOrCreateUniqueVipId(phone) {
-            let registeredUsers = JSON.parse(localStorage.getItem("casino_registered_users") || "{}");
-            if (registeredUsers[phone]) return registeredUsers[phone]; 
-
-            let lastCounter = parseInt(localStorage.getItem("casino_id_counter") || "84919");
-            let newCounter = lastCounter + 1;
-            let uniqueId = "VIP_" + newCounter;
-
-            localStorage.setItem("casino_id_counter", newCounter);
-            registeredUsers[phone] = uniqueId;
-            localStorage.setItem("casino_registered_users", JSON.stringify(registeredUsers));
-            return uniqueId;
-        }
-
-        function verifyLogin() {
-            let phone = document.getElementById('inputPhone').value.trim();
-            let otp = document.getElementById('inputOtp').value.trim();
-
-            if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) {
-                isAdminLoggedIn = true;
-                document.getElementById('fullscreenWheelBg').style.display = 'none';
-                document.getElementById('loginScreenContainer').style.display = 'none';
-                document.getElementById('gameLobbyScreen').style.display = 'flex';
-                
-                loggedUserPhone = phone;
-                loggedVipId = "ADMIN_001";
-                loggedAvatar = "👑";
-
-                document.getElementById('userDisplayPhone').innerText = loggedVipId;
-                document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
-                updateBalancesDisplay();
-                openAdminPanel();
-                return;
-            }
-
-            if (otp.length < 4) { alert("Please enter or generate a valid OTP!"); return; }
-
-            isAdminLoggedIn = false;
-            document.getElementById('fullscreenWheelBg').style.display = 'none';
-            document.getElementById('loginScreenContainer').style.display = 'none';
-            document.getElementById('gameLobbyScreen').style.display = 'flex';
-
-            loggedUserPhone = phone;
-            loggedVipId = getOrCreateUniqueVipId(phone);
-
-            let avatars = ['🦁', '🐯', '🦊', '🐼', '🐨', '🦄', '😎', '🤠'];
-            loggedAvatar = avatars[Math.abs(phone.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % avatars.length];
-
-            document.getElementById('userDisplayPhone').innerText = loggedVipId;
-            document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
-
-            updateBalancesDisplay();
-        }
-
-        function updateBalancesDisplay() {
-            document.getElementById('playerRealBal').innerText = "₹" + realCoins;
-            document.getElementById('playerTestBal').innerText = testCoins;
-
-            document.getElementById('profPhone').innerText = loggedUserPhone;
-            document.getElementById('profVipId').innerText = loggedVipId;
-            document.getElementById('profEmail').innerText = "vip_" + loggedUserPhone + "@royalcasino.com";
-            document.getElementById('profRealBal').innerText = realCoins;
-            document.getElementById('profTestBal').innerText = testCoins;
-            document.getElementById('profileAvatarLarge').innerText = loggedAvatar;
-
-            // सिर्फ एडमिन नंबर पर प्रोफाइल के अंदर एडमिन पैनल बटन दिखाएं
-            let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
-            if (adminWrap) {
-                if (isAdminLoggedIn || loggedUserPhone === MASTER_ADMIN_PHONE) {
-                    adminWrap.style.display = 'block';
-                } else {
-                    adminWrap.style.display = 'none';
-                }
-            }
-
-            renderPlayerTransactionHistory();
-        }
-
-        function renderPlayerTransactionHistory() {
-            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-            
-            let userDeps = deposits.filter(d => d.phone === loggedUserPhone);
-            let userWds = withdraws.filter(w => w.phone === loggedUserPhone);
-
-            let html = "";
-            userDeps.forEach(d => {
-                let stColor = d.status === 'Approved' ? '#2ecc71' : '#f39c12';
-                html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr}<br><span style="color:${stColor}; font-weight:bold;">Status: ${d.status} (${d.time})</span></div>`;
-            });
-
-            userWds.forEach(w => {
-                let wColor = w.status === 'Success' ? '#2ecc71' : (w.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
-                html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${wColor}; font-weight:bold;">Status: ${w.status} (${w.time})</span></div>`;
-            });
-
-            if (html === "") html = "No deposit or withdrawal history yet.";
-            document.getElementById('playerTransactionHistoryList').innerHTML = html;
-        }
-
-        function openProfileModal() {
-            updateBalancesDisplay();
-            document.getElementById('playerProfileModal').style.display = 'flex';
-        }
-
-        function switchGameMode(mode) {
-            activeGameMode = mode;
-            let testBtn = document.getElementById('modeBtnTest');
-            let realBtn = document.getElementById('modeBtnReal');
-
-            if (mode === 'test') {
-                testBtn.className = "mode-btn active-test";
-                realBtn.className = "mode-btn";
-            } else {
-                realBtn.className = "mode-btn active-real";
-                testBtn.className = "mode-btn";
-            }
-        }
-
-        function openAdminPanel() {
-            let { roundId } = getGlobalRound();
-            let totalBetVal = parseFloat(localStorage.getItem("total_bet_round_" + roundId) || 0);
-            
-            document.getElementById('admRoundId').innerText = roundId;
-            document.getElementById('admTotalBet').innerText = "₹" + totalBetVal;
-            document.getElementById('admProfit').innerText = "₹" + (totalBetVal * 0.05).toFixed(2);
-            document.getElementById('admActivePlayers').innerText = 742 + Math.floor(Math.random() * 20);
-
-            let breakdownKey = "bets_breakdown_" + roundId;
-            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-            let breakdownHtml = "";
-            let hasBets = false;
-
-            for (let k in betsMap) {
-                hasBets = true;
-                breakdownHtml += `<div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding: 4px 0;"><span>🎯 Bet on <b>${k}</b>:</span> <strong style="color:#ffd700;">₹${betsMap[k]}</strong></div>`;
-            }
-            if (!hasBets) breakdownHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No active bets placed in this round yet.</div>";
-            document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
-
-            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            let depHtml = "";
-            if (deposits.length > 0) {
-                deposits.forEach((d, idx) => {
-                    let statusColor = d.status === 'Approved' ? '#2ecc71' : (d.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
-                    depHtml += `
-                        <div class="req-table-row">
-                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>Cashfree Txn: <b style="color:#ffd700;">${d.utr}</b><br>Status: <span style="color:${statusColor}; font-weight:bold;">${d.status}</span></div>
-                            <div class="req-actions">
-                                ${d.status === 'Pending' ? `
-                                    <button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button>
-                                    <button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>
-                                ` : `<span style="color:${statusColor}; font-weight:bold; font-size:11px;">${d.status}</span>`}
-                            </div>
-                        </div>`;
-                });
-            } else {
-                depHtml = "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending deposit requests.</div>";
-            }
-            document.getElementById('admDepositList').innerHTML = depHtml;
-
-            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-            let wdHtml = "";
-            if (withdraws.length > 0) {
-                withdraws.forEach((w, idx) => {
-                    let wdColor = w.status === 'Success' ? '#2ecc71' : (w.status.includes('Rejected') ? '#e74c3c' : '#f39c12');
-                    wdHtml += `
-                        <div class="req-table-row">
-                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b><br>Status: <span style="color:${wdColor}; font-weight:bold;">${w.status}</span></div>
-                            <div class="req-actions">
-                                ${w.status.includes('Pending') ? `
-                                    <button class="btn-approve" onclick="successWithdraw(${idx})">Paid</button>
-                                    <button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject</button>
-                                ` : `<span style="color:${wdColor}; font-weight:bold; font-size:11px;">${w.status}</span>`}
-                            </div>
-                        </div>`;
-                });
-            } else {
-                wdHtml = "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending withdrawal requests.</div>";
-            }
-            document.getElementById('admWithdrawList').innerHTML = wdHtml;
-
-            document.getElementById('secretAdminModal').style.display = 'block';
-        }
-
-        function approveDeposit(idx) {
-            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            deposits[idx].status = 'Approved';
-            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-            
-            realCoins += deposits[idx].amount; 
-            updateBalancesDisplay();
-            alert("✅ Deposit Approved! ₹" + deposits[idx].amount + " successfully added to player's real balance.");
-            openAdminPanel();
-        }
-
-        function rejectDeposit(idx) {
-            let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-            deposits[idx].status = 'Rejected';
-            localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-            alert("❌ Deposit Rejected!");
-            openAdminPanel();
-        }
-
-        function successWithdraw(idx) {
-            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-            withdraws[idx].status = 'Success';
-            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
-            alert("✅ Withdrawal marked as Paid (Success)!");
-            openAdminPanel();
-        }
-
-        function rejectWithdraw(idx) {
-            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-            let refundedAmt = withdraws[idx].amount;
-            withdraws[idx].status = 'Rejected (Refunded)';
-            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
-            
-            realCoins += refundedAmt;
-            updateBalancesDisplay();
-            alert("❌ Withdrawal Rejected & Coins Refunded to Player!");
-            openAdminPanel();
-        }
-
-        const gridTableDiv = document.getElementById('gridTableDiv');
-        if(gridTableDiv) {
-            [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
-                row.forEach(num => {
-                    let cell = document.createElement('div');
-                    cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
-                    cell.innerText = num;
-                    cell.onclick = () => { placeTableBet(num.toString(), cell); };
-                    gridTableDiv.appendChild(cell);
-                });
-            });
-        }
-
-        let currentActiveChip = 50, userActiveBets = {}, currentTotalBet = 0, isGameSpinning = false;
-        let selectedDepositAmount = 300;
-        let betHistoryStack = [];
-
-        function selectChip(val, el) {
-            currentActiveChip = val;
-            document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-        }
-
-        function placeTableBet(key, el) {
-            let { timeLeft } = getGlobalRound();
-            if (isGameSpinning || timeLeft <= 10) return;
-
-            if (activeGameMode === 'real') {
-                if (realCoins < currentActiveChip) { alert("Not enough Real Coins! Please deposit first."); return; }
-                realCoins -= currentActiveChip;
-            } else {
-                if (testCoins < currentActiveChip) { alert("Test coins exhausted! Reloading demo coins..."); testCoins = 10000; }
-                testCoins -= currentActiveChip;
-            }
-
-            currentTotalBet += currentActiveChip;
-            if (!userActiveBets[key]) userActiveBets[key] = 0;
-            userActiveBets[key] += currentActiveChip;
-
-            betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-
-            updateBalancesDisplay();
-            document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-
-            let { roundId } = getGlobalRound();
-            localStorage.setItem("total_bet_round_" + roundId, currentTotalBet);
-            let breakdownKey = "bets_breakdown_" + roundId;
-            let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-            betsMap[key] = (betsMap[key] || 0) + currentActiveChip;
-            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
-
-            if (el) {
-                el.classList.add('has-bet');
-                let badge = el.querySelector('.cell-badge');
-                if (!badge) { badge = document.createElement('div'); badge.className = 'cell-badge'; el.appendChild(badge); }
-                badge.innerText = userActiveBets[key];
-            }
-
-            if(document.getElementById('secretAdminModal').style.display === 'block') openAdminPanel();
-        }
-
-        function clearTableBets() {
-            let { timeLeft } = getGlobalRound();
-            if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
-
-            let lastBet = betHistoryStack.pop();
-            if (lastBet.mode === 'real') realCoins += lastBet.amount;
-            else testCoins += lastBet.amount;
-
-            currentTotalBet -= lastBet.amount;
-            userActiveBets[lastBet.key] -= lastBet.amount;
-
-            if (userActiveBets[lastBet.key] <= 0) {
-                delete userActiveBets[lastBet.key];
-                if (lastBet.element) {
-                    lastBet.element.classList.remove('has-bet');
-                    let b = lastBet.element.querySelector('.cell-badge');
-                    if (b) b.remove();
-                }
-            } else {
-                if (lastBet.element) {
-                    let b = lastBet.element.querySelector('.cell-badge');
-                    if (b) b.innerText = userActiveBets[lastBet.key];
-                }
-            }
-
-            updateBalancesDisplay();
-            document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-        }
-
-        function getGlobalRound() {
-            let nowSec = Math.floor(Date.now() / 1000);
-            let roundId = Math.floor(nowSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (nowSec % ROUND_TIME);
-            return { roundId, timeLeft };
-        }
-
-        function getMasterWinningNumber(roundId) {
-            let savedWin = localStorage.getItem("saved_winner_" + roundId);
-            if (savedWin !== null) return parseInt(savedWin);
-            let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
-            if (adminRigVal !== "random") return parseInt(adminRigVal);
-            let pseudo = Math.sin(roundId * 12.9898 + 78.233) * 43758.5453123;
-            return Math.floor(Math.abs(pseudo) % 37);
-        }
-
-        function getIndependentNaturalHistory(rId) {
-            let savedWin = localStorage.getItem("saved_winner_" + rId);
-            if (savedWin !== null) return parseInt(savedWin);
-            let pseudoHash = Math.sin(rId * 99.123 + 45.67) * 83759.123;
-            return numbersList[Math.floor(Math.abs(pseudoHash) % numbersList.length)];
-        }
-
-        let lastProcessedRound = -1;
-        let announcedNoMoreBets = false;
-        const ballOrbitEl = document.getElementById('rouletteBallOrbit');
-
-        setInterval(() => {
-            let { roundId, timeLeft } = getGlobalRound();
-            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-
-            let historyHTML = "";
-            for (let i = 1; i <= 5; i++) {
-                let pastRound = roundId - i;
-                let pastNum = getIndependentNaturalHistory(pastRound);
-                let cls = pastNum === 0 ? 'green' : (redList.includes(pastNum) ? 'red' : 'black');
-                historyHTML += `<div class="history-ball ${cls}">${pastNum}</div>`;
-            }
-            let historyBallsCont = document.getElementById('historyBallsContainer');
-            if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
-
-            if (roundId !== lastProcessedRound) {
-                if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
-                lastProcessedRound = roundId;
-                announcedNoMoreBets = false;
-                userActiveBets = {};
-                currentTotalBet = 0;
-                betHistoryStack = [];
-                let totalBetEl = document.getElementById('lobbyTotalBet');
-                if(totalBetEl) totalBetEl.innerText = 0;
-                document.querySelectorAll('.table-cell, .color-btn').forEach(c => {
-                    c.classList.remove('has-bet');
-                    let b = c.querySelector('.cell-badge'); if (b) b.remove();
-                });
-            }
-
-            if (timeLeft === 10 && !announcedNoMoreBets) {
-                announcedNoMoreBets = true;
-                speakVoice("No more bets, please!", true);
-            }
-
-            let timerTextEl = document.getElementById('lobbyTimerText');
-            let statusMsgEl = document.getElementById('lobbyStatusMsg');
-            if (timeLeft > 10) {
-                if(timerTextEl) timerTextEl.innerText = `⏳ Spin: ${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-                if(statusMsgEl) statusMsgEl.innerText = "Place bets! Game ready...";
-            } else {
-                if(timerTextEl) timerTextEl.innerText = `⚠️ CLOSED: ${s}s`;
-                if(statusMsgEl) statusMsgEl.innerText = "⚠️ BETS CLOSED!";
-            }
-        }, 1000);
-
-        function executeGlobalSpinAnimation(endedRoundId) {
-            isGameSpinning = true;
-            let statusMsgEl = document.getElementById('lobbyStatusMsg');
-            if(statusMsgEl) statusMsgEl.innerText = "Spinning...";
-            
-            playBallRollingSound();
-            speakVoice("Spinning the wheel.");
-
-            let winningNum = getMasterWinningNumber(endedRoundId);
-            localStorage.setItem("saved_winner_" + endedRoundId, winningNum);
-
-            let totalPockets = numbersList.length;
-            let degreesPerPocket = 360 / totalPockets;
-            let winningIndex = numbersList.indexOf(winningNum);
-            let targetPocketAngle = winningIndex * degreesPerPocket + (degreesPerPocket / 2);
-            
-            accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + targetPocketAngle;
-            if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
-
-            setTimeout(() => {
-                let totalWonAmount = 0;
-                let isRedWin = redList.includes(winningNum);
-                let colorName = winningNum === 0 ? 'GREEN' : (isRedWin ? 'RED' : 'BLACK');
-
-                for (let betKey in userActiveBets) {
-                    let stakedAmt = userActiveBets[betKey];
-                    if (betKey === winningNum.toString()) totalWonAmount += stakedAmt * 36;
-                    else if (betKey === 'red' && isRedWin) totalWonAmount += stakedAmt * 2;
-                    else if (betKey === 'black' && !isRedWin && winningNum !== 0) totalWonAmount += stakedAmt * 2;
-                }
-
-                if (totalWonAmount > 0) {
-                    if (activeGameMode === 'real') realCoins += totalWonAmount;
-                    else testCoins += totalWonAmount;
-                    speakVoice("Winner! Number " + winningNum + " " + colorName, true);
-                } else {
-                    if (activeGameMode === 'test') testCoins += currentTotalBet; 
-                    speakVoice("Number " + winningNum + " " + colorName, true);
-                }
-
-                let historyContainer = document.getElementById('historyBallsContainer');
-                if (historyContainer) {
-                    let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
-                    let newBall = document.createElement('div');
-                    newBall.className = `history-ball ${cls}`;
-                    newBall.innerText = winningNum;
-                    historyContainer.insertBefore(newBall, historyContainer.firstChild);
-                    if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
-                }
-
-                let popup = document.getElementById('cinematicResultPopup');
-                let winNumDisp = document.getElementById('popupWinningNumDisplay');
-                let payoutDisp = document.getElementById('popupPayoutDisplay');
-                if(winNumDisp) winNumDisp.innerText = `${winningNum} (${colorName})`;
-                if(payoutDisp) {
-                    if (totalWonAmount > 0) {
-                        payoutDisp.innerText = `You Won 🪙${totalWonAmount}!`;
-                    } else {
-                        payoutDisp.innerText = `Round Finished.`;
+                const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+                const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+                const ROUND_TIME = 120;
+                const MIN_BET = 10;
+                const MAX_BET = 50000;
+
+                let accumulatedBallRotation = 0; 
+                const MASTER_ADMIN_PHONE = "8889865182";
+                const MASTER_ADMIN_SECRET_CODE = "Rani143143";
+                let isAdminLoggedIn = false;
+                let isEmergencyMaintenance = false;
+
+                let realCoins = 0;
+                let testCoins = 10000;
+                let activeGameMode = 'test';
+                let loggedUserPhone = "";
+                let loggedVipId = "";
+                let loggedAvatar = "😎";
+
+                const cashfree = Cashfree({ mode: "sandbox" });
+
+                function getCleanRoundCounter() {
+                    let offset = parseInt(localStorage.getItem("admin_round_offset") || "0");
+                    let nowSec = Math.floor(Date.now() / 1000);
+                    let baseEpochRound = Math.floor(nowSec / ROUND_TIME);
+                    let baseRef = parseInt(localStorage.getItem("base_round_ref") || baseEpochRound);
+                    if (!localStorage.getItem("base_round_ref")) {
+                        localStorage.setItem("base_round_ref", baseEpochRound);
                     }
+                    let diff = Math.max(0, baseEpochRound - parseInt(localStorage.getItem("base_round_ref") || baseEpochRound));
+                    return 1 + diff + offset;
                 }
 
-                updateBalancesDisplay();
-                if(popup) popup.style.display = 'flex';
+                window.resetRoundCounterAdmin = function() {
+                    let nowSec = Math.floor(Date.now() / 1000);
+                    let baseEpochRound = Math.floor(nowSec / ROUND_TIME);
+                    localStorage.setItem("base_round_ref", baseEpochRound);
+                    localStorage.setItem("admin_round_offset", "0");
+                    pushAuditLog("Admin reset Round ID to Round #1");
+                    window.openAdminPanelStrict();
+                    alert("✅ Round ID reset to Round #1!");
+                };
 
-                setTimeout(() => {
-                    if(popup) popup.style.display = 'none';
-                    isGameSpinning = false;
-                }, 3000);
-            }, 6000);
-        }
+                function pushAuditLog(text) {
+                    try {
+                        let logs = JSON.parse(localStorage.getItem("az_audit_logs") || "[]");
+                        logs.unshift(`[${new Date().toLocaleTimeString()}] ${text}`);
+                        if (logs.length > 50) logs.pop();
+                        localStorage.setItem("az_audit_logs", JSON.stringify(logs));
+                        let box = document.getElementById("admAuditLogBox");
+                        if (box) box.innerHTML = logs.map(l => `<div>• ${l}</div>`).join('');
+                    } catch(e){}
+                }
 
-        function openDepositModal() { document.getElementById('depositModalBox').style.display = 'flex'; }
-        function openWithdrawModal() { document.getElementById('withdrawModalBox').style.display = 'flex'; }
-        function openTransferModal() { document.getElementById('transferModalBox').style.display = 'flex'; }
-        function closeWalletModals() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); }
+                window.toggleEmergencyMaintenance = function() {
+                    isEmergencyMaintenance = !isEmergencyMaintenance;
+                    let banner = document.getElementById("emergencyMaintenanceBanner");
+                    let btn = document.getElementById("maintToggleBtn");
+                    if (banner) banner.style.display = isEmergencyMaintenance ? 'flex' : 'none';
+                    if (btn) btn.innerText = isEmergencyMaintenance ? "Maint Mode: ON" : "Maint Mode: OFF";
+                    pushAuditLog(`Maintenance mode toggled: ${isEmergencyMaintenance}`);
+                };
 
-        function selectDepositPkg(amt, btn) {
-            selectedDepositAmount = amt;
-            document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            document.getElementById('customDepositInput').value = amt;
-        }
+                let audioCtx = null;
+                let djInterval = null;
+                let djGainNode = null;
 
-        function selectWithdrawPkg(amt, btn) {
-            document.getElementById('withdrawAmtInput').value = amt;
-            document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
+                window.startDjMusic = function() {
+                    try {
+                        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                        if (audioCtx.state === 'suspended') audioCtx.resume();
+                        if (djInterval) clearInterval(djInterval);
 
-        function triggerCashfreeSandboxDeposit() {
-            let customInput = document.getElementById('customDepositInput');
-            let customAmt = customInput ? parseInt(customInput.value) : selectedDepositAmount;
-            if (isNaN(customAmt) || customAmt < 50) {
-                alert("Please select or enter a valid deposit amount!");
-                return;
-            }
+                        djGainNode = audioCtx.createGain();
+                        djGainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                        djGainNode.connect(audioCtx.destination);
 
-            closeWalletModals();
-            alert("🔒 Connecting to Cashfree Secure Sandbox Gateway... Test payment initialized for ₹" + customAmt);
+                        let step = 0;
+                        djInterval = setInterval(() => {
+                            if (!audioCtx || isEmergencyMaintenance) return;
+                            try {
+                                let now = audioCtx.currentTime;
+                                let osc = audioCtx.createOscillator();
+                                let gain = audioCtx.createGain();
+                                osc.type = (step % 4 === 0) ? 'square' : 'sawtooth';
+                                let freqs = [110, 220, 330, 440, 550, 660];
+                                osc.frequency.setValueAtTime(freqs[step % freqs.length], now);
+                                gain.gain.setValueAtTime(0.08, now);
+                                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                                osc.connect(gain); gain.connect(djGainNode);
+                                osc.start(now); osc.stop(now + 0.2);
+                                step++;
+                            } catch(e) {}
+                        }, 250);
+                    } catch(e){}
+                };
 
-            setTimeout(() => {
-                let txId = "CF_TEST_" + Math.floor(Math.random() * 900000 + 100000);
-                let phone = loggedUserPhone;
+                function duckMusic(ducking) {
+                    if (!djGainNode || !audioCtx) return;
+                    try {
+                        let now = audioCtx.currentTime;
+                        djGainNode.gain.linearRampToValueAtTime(ducking ? 0.02 : 0.12, now + 0.3);
+                    } catch(e) {}
+                }
 
-                let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                deposits.push({ 
-                    phone: phone, 
-                    amount: customAmt, 
-                    utr: txId, 
-                    status: 'Pending', 
-                    time: new Date().toLocaleTimeString() 
-                });
-                localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+                window.playBallRollingSound = function() { if (!audioCtx) return; duckMusic(true); setTimeout(() => { duckMusic(false); }, 6000); };
 
-                updateBalancesDisplay();
-                alert("✅ Cashfree Verified Payment Successfully!\n\nTransaction ID: " + txId + "\n\n👉 Request sent to your Master Admin Command Center for final approval.");
-            }, 1800);
-        }
+                window.speakVoice = function(text, isNoMoreBets = false) {
+                    if ('speechSynthesis' in window) {
+                        try {
+                            window.speechSynthesis.cancel();
+                            let utterance = new SpeechSynthesisUtterance(text);
+                            utterance.rate = 1.05; utterance.pitch = 1.1; utterance.volume = 1.0;
+                            if (isNoMoreBets) { duckMusic(true); utterance.onend = () => { duckMusic(false); }; }
+                            window.speechSynthesis.speak(utterance);
+                        }catch(e){}
+                    }
+                };
 
-        function submitWithdrawCoins() {
-            let amtEl = document.getElementById('withdrawAmtInput');
-            let upiEl = document.getElementById('withdrawUpiInput');
-            let amt = amtEl ? parseInt(amtEl.value) : 0;
-            let upi = upiEl ? upiEl.value.trim() : "";
+                function drawCanvasWheel(canvasId) {
+                    const canvas = document.getElementById(canvasId); if (!canvas) return;
+                    const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
+                    const outerRadius = cx - 6, innerRadius = 24, arcSize = (2 * Math.PI) / numbersList.length;
 
-            if (!amt || amt < 100) { alert("Minimum withdrawal is ₹100!"); return; }
-            if (realCoins < amt) { alert("Insufficient Real Balance!"); return; }
-            if (!upi) { alert("Please enter your UPI ID!"); return; }
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    numbersList.forEach((num, i) => {
+                        const angle = i * arcSize - Math.PI / 2;
+                        let fillColor = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
+                        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
+                        ctx.lineTo(cx, cy); ctx.fillStyle = fillColor; ctx.fill();
+                        ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+                        ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
+                        ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Arial';
+                        ctx.fillText(num, outerRadius - 16, 4); ctx.restore();
+                    });
 
-            realCoins -= amt;
-            updateBalancesDisplay();
+                    ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+                }
 
-            let phone = loggedUserPhone;
-            let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-            withdraws.push({ phone: phone, amount: amt, upi: upi, status: 'Pending Payout', time: new Date().toLocaleTimeString() });
-            localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
+                window.onload = () => { 
+                    drawCanvasWheel('loginWheelCanvasBg'); 
+                    drawCanvasWheel('lobbyWheelCanvas'); 
+                    pushAuditLog("Ultra-fast fast engine loaded.");
+                };
 
-            closeWalletModals();
-            updateBalancesDisplay();
-            alert("📤 Withdrawal request of ₹" + amt + " submitted successfully to Admin Panel!");
-        }
+                window.closeComingSoonModal = function() { document.getElementById('comingSoonNoticeModal').style.display = 'none'; };
 
-        function executeCoinTransfer() {
-            let targetEl = document.getElementById('transferTargetId');
-            let amtEl = document.getElementById('transferCoinAmt');
-            let targetId = targetEl ? targetEl.value : "";
-            let sendAmt = amtEl ? parseInt(amtEl.value) : 0;
-            if (!targetId || !sendAmt || realCoins < sendAmt) { alert("Check details & Real balance!"); return; }
-            realCoins -= sendAmt;
-            updateBalancesDisplay();
-            closeWalletModals();
-            alert(`Successfully transferred ₹${sendAmt} to VIP #${targetId}!`);
-        }
+                const adminSelect = document.getElementById('adminRigSelect');
+                if(adminSelect) {
+                    numbersList.forEach(num => {
+                        let opt = document.createElement('option'); opt.value = num; opt.innerText = "Number " + num;
+                        adminSelect.appendChild(opt);
+                    });
+                }
+
+                window.saveAdminSettings = function() { 
+                    alert("Admin Settings Applied Successfully!"); 
+                    pushAuditLog("Admin updated RNG settings.");
+                    document.getElementById('secretAdminModal').style.display = 'none'; 
+                };
+
+                window.logoutToLogin = function() {
+                    isAdminLoggedIn = false;
+                    document.getElementById('gameLobbyScreen').style.display = 'none';
+                    document.getElementById('secretAdminModal').style.display = 'none';
+                    document.getElementById('loginScreenContainer').style.display = 'flex';
+                    document.getElementById('fullscreenWheelBg').style.display = 'flex';
+                    document.getElementById('inputPhone').value = ''; document.getElementById('inputMpin').value = ''; document.getElementById('inputOtp').value = '';
+                };
+
+                window.requestStrictOtp = function() {
+                    let phone = document.getElementById('inputPhone').value.trim();
+                    window.TRIGGERED_ADMIN_PHONE = phone;
+                    if (phone.length < 10) { alert("Please enter valid 10-digit mobile number!"); return; }
+                    if (phone === MASTER_ADMIN_PHONE) {
+                        alert("🔒 Admin Number Detected! Enter your secret code directly below.");
+                    } else {
+                        let generatedCode = Math.floor(100000 + Math.random() * 900000);
+                        localStorage.setItem("cloud_otp_" + phone, generatedCode);
+                        alert("📱 Pop-up Verification Code for " + phone + " is: " + generatedCode);
+                        document.getElementById('inputOtp').value = generatedCode;
+                    }
+                };
+
+                window.verifyCloudWalletLogin = function() {
+                    let phone = document.getElementById('inputPhone').value.trim();
+                    let mpin = document.getElementById('inputMpin').value.trim();
+                    let otp = document.getElementById('inputOtp').value.trim();
+                    let expectedOtp = localStorage.getItem("cloud_otp_" + phone);
+                    window.TRIGGERED_ADMIN_PHONE = phone;
+
+                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
+                    
+                    if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) {
+                        if (!storedMpins[phone]) {
+                            storedMpins[phone] = mpin.length === 4 ? mpin : "1431";
+                            localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
+                        }
+                        isAdminLoggedIn = true;
+                        loadUserCloudWallet(phone, true, storedMpins[phone]);
+                        return;
+                    }
+
+                    if (storedMpins[phone]) {
+                        if (storedMpins[phone] !== mpin) { alert("❌ Incorrect MPIN! Security pin mismatch for this number."); return; }
+                    } else {
+                        if (mpin.length !== 4) { alert("❌ Please set a 4-digit MPIN for your security!"); return; }
+                        storedMpins[phone] = mpin;
+                        localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
+                    }
+
+                    if (otp.length >= 4 && (otp === expectedOtp || otp === "143143")) {
+                        loadUserCloudWallet(phone, false, mpin);
+                    } else {
+                        alert("❌ Invalid OTP/Secret Code!");
+                    }
+                };
+
+                function loadUserCloudWallet(phone, isAdminFlag, mpin) {
+                    let localUsers = JSON.parse(localStorage.getItem("cloud_user_profiles") || "{}");
+                    let profile = localUsers[phone] || null;
+
+                    if (profile) {
+                        realCoins = profile.realCoins || 0;
+                        testCoins = profile.testCoins || 10000;
+                        loggedVipId = profile.vipId || getOrCreateUniqueVipId(phone);
+                    } else {
+                        realCoins = 0; testCoins = 10000; loggedVipId = getOrCreateUniqueVipId(phone);
+                    }
+                    
+                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                    masterAllUsers[phone] = {
+                        phone: phone, mpin: mpin, vipId: loggedVipId, realCoins: realCoins, testCoins: testCoins, lastLogin: new Date().toLocaleString()
+                    };
+                    localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
+                    pushAuditLog(`User login: ${phone} (${loggedVipId})`);
+                    finalizeLogin(phone, isAdminFlag);
+                }
+
+                function syncUserCloudWallet(phone) {
+                    if (!phone) return;
+                    try {
+                        let localUsers = JSON.parse(localStorage.getItem("cloud_user_profiles") || "{}");
+                        localUsers[phone] = { realCoins, testCoins, vipId: loggedVipId };
+                        localStorage.setItem("cloud_user_profiles", JSON.stringify(localUsers));
+
+                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                        if (masterAllUsers[phone]) {
+                            masterAllUsers[phone].realCoins = realCoins;
+                            masterAllUsers[phone].testCoins = testCoins;
+                            localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
+                        }
+                    }catch(e){}
+                }
+
+                window.lookupPlayerMpinAdmin = function() {
+                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
+                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                    let box = document.getElementById('adminMpinResultBox');
+                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Please type a mobile number.</span>"; return; }
+                    if (masterAllUsers[searchPhone]) {
+                        let u = masterAllUsers[searchPhone];
+                        box.innerHTML = `Found User: <b>${u.phone}</b> | VIP: <b style="color:#ffd700;">${u.vipId}</b><br>🔑 Linked MPIN: <b style="color:#00ffff; font-size:13px;">${u.mpin}</b> | Real Bal: ₹${u.realCoins}<br><button onclick="resetUserMpinByAdmin('${u.phone}')" style="margin-top:4px; background:#e74c3c; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Reset MPIN to 1431</button>`;
+                    } else {
+                        box.innerHTML = `<span style='color:#e74c3c;'>No user found with number ${searchPhone}.</span>`;
+                    }
+                };
+
+                window.resetUserMpinByAdmin = function(phone) {
+                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
+                    storedMpins[phone] = "1431";
+                    localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
+                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                    if(masterAllUsers[phone]) masterAllUsers[phone].mpin = "1431";
+                    localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
+                    pushAuditLog(`Admin reset MPIN for ${phone}`);
+                    window.lookupPlayerMpinAdmin();
+                    alert(`✅ MPIN for ${phone} reset to default: 1431`);
+                };
+
+                function finalizeLogin(phone, isAdminFlag) {
+                    document.getElementById('fullscreenWheelBg').style.display = 'none';
+                    document.getElementById('loginScreenContainer').style.display = 'none';
+                    document.getElementById('gameLobbyScreen').style.display = 'flex';
+
+                    loggedUserPhone = phone;
+                    if (isAdminFlag || phone === MASTER_ADMIN_PHONE) {
+                        isAdminLoggedIn = true; 
+                        loggedVipId = "ADMIN_001"; 
+                        loggedAvatar = "👑";
+                    } else {
+                        isAdminLoggedIn = false;
+                        let avatars = ['🦁', '🐯', '🦊', '🐼', '🐨', '🦄', '😎', '🤠'];
+                        loggedAvatar = avatars[Math.abs(phone.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % avatars.length];
+                    }
+
+                    document.getElementById('userDisplayPhone').innerText = loggedVipId;
+                    document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
+                    syncUserCloudWallet(phone);
+                    updateBalancesDisplay();
+                }
+
+                window.requestOtpCode = function() { window.requestStrictOtp(); };
+                window.verifyLogin = function() { window.verifyCloudWalletLogin(); window.startDjMusic(); };
+
+                function getOrCreateUniqueVipId(phone) {
+                    let registeredUsers = JSON.parse(localStorage.getItem("casino_registered_users") || "{}");
+                    if (registeredUsers[phone]) return registeredUsers[phone]; 
+                    let lastCounter = parseInt(localStorage.getItem("casino_id_counter") || "84919") + 1;
+                    let uniqueId = "VIP_" + lastCounter;
+                    localStorage.setItem("casino_id_counter", lastCounter);
+                    registeredUsers[phone] = uniqueId;
+                    localStorage.setItem("casino_registered_users", JSON.stringify(registeredUsers));
+                    return uniqueId;
+                }
+
+                window.updateBalancesDisplay = function() {
+                    document.getElementById('playerRealBal').innerText = "₹" + realCoins;
+                    document.getElementById('playerTestBal').innerText = testCoins;
+                    document.getElementById('profPhone').innerText = loggedUserPhone;
+                    document.getElementById('profVipId').innerText = loggedVipId;
+                    document.getElementById('profEmail').innerText = "vip_" + loggedUserPhone + "@royalcasino.com";
+                    document.getElementById('profRealBal').innerText = realCoins;
+                    document.getElementById('profTestBal').innerText = testCoins;
+                    document.getElementById('profileAvatarLarge').innerText = loggedAvatar;
+
+                    let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
+                    let targetIsAdmin = (loggedUserPhone === MASTER_ADMIN_PHONE || window.TRIGGERED_ADMIN_PHONE === MASTER_ADMIN_PHONE || isAdminLoggedIn);
+                    if (adminWrap) adminWrap.style.display = targetIsAdmin ? 'block' : 'none';
+                    syncUserCloudWallet(loggedUserPhone);
+                    renderPlayerTransactionHistory();
+                };
+
+                function renderPlayerTransactionHistory() {
+                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+                    let userDeps = deposits.filter(d => d.phone === loggedUserPhone);
+                    let userWds = withdraws.filter(w => w.phone === loggedUserPhone);
+                    let html = "";
+                    userDeps.forEach(d => {
+                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr}<br><span style="color:${d.status==='Approved'?'#2ecc71':'#f39c12'}; font-weight:bold;">Status: ${d.status} (${d.time})</span></div>`;
+                    });
+                    userWds.forEach(w => {
+                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${w.status.includes('Rejected')?'#e74c3c':'#2ecc71'}; font-weight:bold;">Status: ${w.status} (${w.time})</span></div>`;
+                    });
+                    if (html === "") html = "No deposit or withdrawal history yet.";
+                    document.getElementById('playerTransactionHistoryList').innerHTML = html;
+                }
+
+                window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };
+                window.switchGameMode = function(mode) {
+                    activeGameMode = mode;
+                    document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
+                    document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
+                };
+
+                window.openAdminPanelStrict = function() {
+                    let targetIsAdmin = (loggedUserPhone === MASTER_ADMIN_PHONE || window.TRIGGERED_ADMIN_PHONE === MASTER_ADMIN_PHONE || isAdminLoggedIn);
+                    if (!targetIsAdmin) {
+                        alert("Access Denied: Only Admin can open this panel!");
+                        return;
+                    }
+                    try {
+                        let roundNum = getCleanRoundCounter();
+                        let totalBetVal = parseFloat(localStorage.getItem("total_bet_round_clean_" + roundNum) || 0);
+                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                        let onlineCount = Object.keys(masterAllUsers).length;
+
+                        document.getElementById('admRoundId').innerText = "Round #" + roundNum;
+                        document.getElementById('admTotalBet').innerText = "₹" + totalBetVal;
+                        document.getElementById('admProfit').innerText = "₹" + (totalBetVal * 0.05).toFixed(2);
+                        document.getElementById('admActivePlayers').innerText = onlineCount;
+
+                        let allUsersHtml = "";
+                        let userKeys = Object.keys(masterAllUsers);
+                        if (userKeys.length > 0) {
+                            userKeys.forEach(k => {
+                                let u = masterAllUsers[k];
+                                allUsersHtml += `<div style="border-bottom:1px dashed #222; padding:3px 0;">📱 <b>${u.phone}</b> | VIP: ${u.vipId} | 🔑 MPIN: <b style="color:#00ffff;">${u.mpin}</b> | Bal: ₹${u.realCoins}</div>`;
+                            });
+                        } else {
+                            allUsersHtml = "No players registered yet.";
+                        }
+                        document.getElementById('admAllUsersList').innerHTML = allUsersHtml;
+
+                        let playerRoundBets = JSON.parse(localStorage.getItem("player_round_bets_clean_" + roundNum) || "{}");
+                        let pBetHtml = "";
+                        let pKeys = Object.keys(playerRoundBets);
+                        if (pKeys.length > 0) {
+                            pKeys.forEach(pk => {
+                                let pb = playerRoundBets[pk];
+                                let details = Object.keys(pb.bets).map(k => `${k}:₹${pb.bets[k]}`).join(', ');
+                                let tot = Object.values(pb.bets).reduce((a,b)=>a+b,0);
+                                pBetHtml += `<div style="border-bottom:1px dashed #333; padding:4px 0;">👤 <b>${pb.vipId} (${pk})</b> | Bets: <span style="color:#00ffff;">${details}</span> | Total: <strong style="color:#ffd700;">₹${tot}</strong></div>`;
+                            });
+                        } else {
+                            pBetHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No player round bets recorded yet.</div>";
+                        }
+                        let pListEl = document.getElementById('admPlayerRoundBetsList'); if(pListEl) pListEl.innerHTML = pBetHtml;
+
+                        let breakdownKey = "bets_breakdown_clean_" + roundNum;
+                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+                        let breakdownHtml = "";
+                        let hasBets = false;
+                        for (let k in betsMap) {
+                            hasBets = true;
+                            breakdownHtml += `<div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding: 4px 0;"><span>🎯 Bet on <b>${k}</b>:</span> <strong style="color:#ffd700;">₹${betsMap[k]}</strong></div>`;
+                        }
+                        if (!hasBets) breakdownHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No active bets placed in this round yet.</div>";
+                        document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
+
+                        let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                        let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
+                            <div class="req-table-row">
+                                <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
+                                <div class="req-actions">${d.status === 'Pending' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
+                            </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending deposits.</div>";
+                        document.getElementById('admDepositList').innerHTML = depHtml;
+
+                        let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+                        let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
+                            <div class="req-table-row">
+                                <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
+                                <div class="req-actions">${w.status.includes('Pending') ? `<button class="btn-approve" onclick="successWithdraw(${idx})">Paid</button><button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject</button>` : w.status}</div>
+                            </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending withdrawals.</div>";
+                        document.getElementById('admWithdrawList').innerHTML = wdHtml;
+
+                        let modal = document.getElementById('secretAdminModal');
+                        if (modal) {
+                            let profModal = document.getElementById('playerProfileModal');
+                            if (profModal) profModal.style.display = 'none';
+                            modal.style.display = 'block';
+                            modal.style.zIndex = '2147483647';
+                        }
+                    } catch(e) { console.error("Admin strict error:", e); }
+                };
+
+                window.openAdminPanel = function() { window.openAdminPanelStrict(); };
+
+                window.approveDeposit = function(idx) { 
+                    let d = JSON.parse(localStorage.getItem("admin_deposit_requests")); 
+                    if(d[idx].status==='Approved') { alert("Already approved!"); return; }
+                    d[idx].status='Approved'; localStorage.setItem("admin_deposit_requests", JSON.stringify(d)); 
+                    realCoins+=d[idx].amount; syncUserCloudWallet(loggedUserPhone); pushAuditLog(`Approved deposit ₹${d[idx].amount} for ${d[idx].phone}`); window.updateBalancesDisplay(); window.openAdminPanelStrict(); 
+                };
+                window.rejectDeposit = function(idx) { let d = JSON.parse(localStorage.getItem("admin_deposit_requests")); d[idx].status='Rejected'; localStorage.setItem("admin_deposit_requests", JSON.stringify(d)); pushAuditLog(`Rejected deposit index ${idx}`); window.openAdminPanelStrict(); };
+                window.successWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests")); w[idx].status='Success'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); pushAuditLog(`Paid withdrawal index ${idx}`); window.openAdminPanelStrict(); };
+                window.rejectWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests")); realCoins+=w[idx].amount; w[idx].status='Rejected (Refunded)'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); window.openAdminPanelStrict(); };
+
+                const gridTableDiv = document.getElementById('gridTableDiv');
+                if(gridTableDiv) {
+                    [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
+                        row.forEach(num => {
+                            let cell = document.createElement('div');
+                            cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
+                            cell.innerText = num; cell.onclick = () => { window.placeTableBet(num.toString(), cell); };
+                            gridTableDiv.appendChild(cell);
+                        });
+                    });
+                }
+
+                let currentActiveChip = 50, userActiveBets = {}, currentTotalBet = 0, isGameSpinning = false, betHistoryStack = [];
+                window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
+
+                window.placeTableBet = function(key, el) {
+                    if (isEmergencyMaintenance) { alert("System under maintenance."); return; }
+                    let { timeLeft } = getGlobalRound();
+                    if (isGameSpinning || timeLeft <= 10) return;
+                    
+                    if (currentTotalBet + currentActiveChip > MAX_BET) { alert(`Max bet limit per round is ₹${MAX_BET}`); return; }
+                    if (currentActiveChip < MIN_BET) { alert(`Min bet is ₹${MIN_BET}`); return; }
+
+                    if (activeGameMode === 'real') { if (realCoins < currentActiveChip) { alert("Low Real Balance!"); return; } realCoins -= currentActiveChip; }
+                    else { if (testCoins < currentActiveChip) testCoins = 10000; testCoins -= currentActiveChip; }
+
+                    currentTotalBet += currentActiveChip; userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
+                    betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
+                    syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+
+                    let roundNum = getCleanRoundCounter();
+                    localStorage.setItem("total_bet_round_clean_" + roundNum, currentTotalBet);
+                    let breakdownKey = "bets_breakdown_clean_" + roundNum;
+                    let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+                    betsMap[key] = (betsMap[key] || 0) + currentActiveChip; localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
+
+                    let pKey = loggedUserPhone || loggedVipId || "GUEST_USER";
+                    let prbKey = "player_round_bets_clean_" + roundNum;
+                    let prbMap = JSON.parse(localStorage.getItem(prbKey) || "{}");
+                    if (!prbMap[pKey]) prbMap[pKey] = { vipId: loggedVipId || pKey, bets: {} };
+                    prbMap[pKey].bets[key] = (prbMap[pKey].bets[key] || 0) + currentActiveChip;
+                    localStorage.setItem(prbKey, JSON.stringify(prbMap));
+
+                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText=userActiveBets[key]; }
+                };
+
+                window.clearTableBets = function() {
+                    let { timeLeft } = getGlobalRound();
+                    if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
+                    let lastBet = betHistoryStack.pop();
+                    if (lastBet.mode === 'real') realCoins += lastBet.amount; else testCoins += lastBet.amount;
+                    currentTotalBet -= lastBet.amount; userActiveBets[lastBet.key] -= lastBet.amount;
+                    if (userActiveBets[lastBet.key] <= 0) { delete userActiveBets[lastBet.key]; if(lastBet.element){lastBet.element.classList.remove('has-bet'); let b=lastBet.element.querySelector('.cell-badge'); if(b)b.remove();} }
+                    syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                };
+
+                function getGlobalRound() {
+                    let nowSec = Math.floor(Date.now() / 1000);
+                    return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
+                }
+
+                function getMasterWinningNumber(roundId) {
+                    let savedWin = localStorage.getItem("saved_winner_r_" + getCleanRoundCounter());
+                    if (savedWin !== null) return parseInt(savedWin);
+                    let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
+                    if (adminRigVal !== "random") return parseInt(adminRigVal);
+                    let seed = (roundId * 9301 + 49297) % 233280;
+                    let rnd = seed / 233280;
+                    return numbersList[Math.floor(rnd * numbersList.length)];
+                }
+
+                function getUniversalHistoryForRound(rId) {
+                    let list = [];
+                    for (let i = 1; i <= 5; i++) {
+                        let pastRound = rId - i;
+                        let seed = (pastRound * 9301 + 49297) % 233280;
+                        let rnd = seed / 233280;
+                        list.push(numbersList[Math.floor(rnd * numbersList.length)]);
+                    }
+                    return list;
+                }
+
+                let lastProcessedRound = -1, announcedNoMoreBets = false;
+                const ballOrbitEl = document.getElementById('rouletteBallOrbit');
+
+                setInterval(() => {
+                    if (isEmergencyMaintenance) return;
+                    try {
+                        let { roundId, timeLeft } = getGlobalRound();
+                        let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+                        let histNums = getUniversalHistoryForRound(roundId);
+                        let historyHTML = "";
+                        histNums.forEach(pastNum => {
+                            let cls = pastNum === 0 ? 'green' : (redList.includes(pastNum) ? 'red' : 'black');
+                            historyHTML += `<div class="history-ball ${cls}">${pastNum}</div>`;
+                        });
+                        let historyBallsCont = document.getElementById('historyBallsContainer');
+                        if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
+
+                        let cleanRId = getCleanRoundCounter();
+                        let onlineOnlineCountDisplay = document.getElementById('loginOnlineCount');
+                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
+                        let realOnlineNum = Object.keys(masterAllUsers).length;
+                        if(onlineOnlineCountDisplay) onlineOnlineCountDisplay.innerText = `🟢 ONLINE: ${realOnlineNum} VIPs`;
+
+                        if (roundId !== lastProcessedRound) {
+                            if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
+                            lastProcessedRound = roundId; announcedNoMoreBets = false; userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            document.getElementById('lobbyTotalBet').innerText = 0;
+                            document.querySelectorAll('.table-cell, .color-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
+                        }
+
+                        if (timeLeft === 10 && !announcedNoMoreBets) { announcedNoMoreBets = true; window.speakVoice("No more bets, please!", true); }
+                        
+                        let mainTimerVal = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+                        let mainEl = document.getElementById('lobbyTimerMain');
+                        let boxEl = document.getElementById('lobbyTimerBox');
+                        let statusMsgEl = document.getElementById('lobbyStatusMsg');
+                        
+                        if (mainEl) mainEl.innerText = mainTimerVal;
+                        if (boxEl && statusMsgEl) {
+                            if (timeLeft > 10) {
+                                boxEl.classList.remove('closed-state');
+                                statusMsgEl.innerText = "Place bets! Game ready...";
+                            } else {
+                                boxEl.classList.add('closed-state');
+                                statusMsgEl.innerText = "⚠️ BETS CLOSED!";
+                            }
+                        }
+                    }catch(e){}
+                }, 1000);
+
+                function executeGlobalSpinAnimation(endedRoundId) {
+                    isGameSpinning = true; document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
+                    window.playBallRollingSound(); window.speakVoice("Spinning the wheel.");
+                    let winningNum = getMasterWinningNumber(endedRoundId);
+                    let cleanRNum = getCleanRoundCounter();
+                    localStorage.setItem("saved_winner_r_" + cleanRNum, winningNum);
+                    let totalPockets = numbersList.length, degreesPerPocket = 360 / totalPockets, winningIndex = numbersList.indexOf(winningNum);
+                    accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + (winningIndex * degreesPerPocket + (degreesPerPocket / 2));
+                    if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
+
+                    setTimeout(() => {
+                        let totalWonAmount = 0, isRedWin = redList.includes(winningNum), colorName = winningNum === 0 ? 'GREEN' : (isRedWin ? 'RED' : 'BLACK');
+                        for (let betKey in userActiveBets) {
+                            let stakedAmt = userActiveBets[betKey];
+                            if (betKey === winningNum.toString()) totalWonAmount += stakedAmt * 36;
+                            else if (betKey === 'red' && isRedWin) totalWonAmount += stakedAmt * 2;
+                            else if (betKey === 'black' && !isRedWin && winningNum !== 0) totalWonAmount += stakedAmt * 2;
+                        }
+                        if (totalWonAmount > 0) { if (activeGameMode === 'real') realCoins += totalWonAmount; else testCoins += totalWonAmount; window.speakVoice("Winner! Number " + winningNum + " " + colorName, true); }
+                        else { if (activeGameMode === 'test') testCoins += currentTotalBet; window.speakVoice("Winner! Number " + winningNum + " " + colorName, true); }
+
+                        let historyContainer = document.getElementById('historyBallsContainer');
+                        if (historyContainer) {
+                            let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
+                            let newBall = document.createElement('div'); newBall.className = `history-ball ${cls}`; newBall.innerText = winningNum;
+                            historyContainer.insertBefore(newBall, historyContainer.firstChild);
+                            if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
+                        }
+                        let popup = document.getElementById('cinematicResultPopup');
+                        document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
+                        document.getElementById('popupPayoutDisplay').innerText = totalWonAmount > 0 ? `You Won 🪙${totalWonAmount}!` : `Round Finished.`;
+                        syncUserCloudWallet(loggedUserPhone); updateBalancesDisplay(); if(popup) popup.style.display = 'flex';
+                        setTimeout(() => { if(popup) popup.style.display = 'none'; isGameSpinning = false; }, 3000);
+                    }, 6000);
+                }
+
+                window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; };
+                window.openWithdrawModal = function() { document.getElementById('withdrawModalBox').style.display = 'flex'; };
+                window.openTransferModal = function() { document.getElementById('transferModalBox').style.display = 'flex'; };
+                window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
+                window.selectDepositPkg = function(amt, btn) { document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('customDepositInput').value = amt; };
+                window.selectWithdrawPkg = function(amt, btn) { document.getElementById('withdrawAmtInput').value = amt; document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); };
+
+                window.triggerCashfreeSandboxDeposit = function() {
+                    let customAmt = parseInt(document.getElementById('customDepositInput').value);
+                    if (isNaN(customAmt) || customAmt < 50) { alert("Valid amount needed!"); return; }
+                    closeWalletModals(); alert("🔒 Cashfree Sandbox Processing ₹" + customAmt);
+                    setTimeout(() => {
+                        let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                        let utrStr = "CF_" + Math.floor(Math.random()*900000+100000);
+                        deposits.push({ phone: loggedUserPhone, amount: customAmt, utr: utrStr, status: 'Pending', time: new Date().toLocaleTimeString() });
+                        localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits)); syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay();
+                        pushAuditLog(`New deposit req ₹${customAmt} [${utrStr}]`);
+                    }, 1000);
+                };
+
+                window.submitWithdrawCoins = function() {
+                    let amt = parseInt(document.getElementById('withdrawAmtInput').value), upi = document.getElementById('withdrawUpiInput').value.trim();
+                    if (!amt || amt < 100 || realCoins < amt || !upi) { alert("Check withdrawal details/balance!"); return; }
+                    realCoins -= amt; syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay();
+                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+                    withdraws.push({ phone: loggedUserPhone, amount: amt, upi: upi, status: 'Pending Payout', time: new Date().toLocaleTimeString() });
+                    localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws)); closeWalletModals(); window.updateBalancesDisplay();
+                    pushAuditLog(`Withdraw request ₹${amt} by ${loggedUserPhone}`);
+                };
+
+                window.executeCoinTransfer = function() {
+                    let targetEl = document.getElementById('transferTargetId');
+                    let amtEl = document.getElementById('transferCoinAmt');
+                    let targetId = targetEl ? targetEl.value : "";
+                    let sendAmt = amtEl ? parseInt(amtEl.value) : 0;
+                    if (!targetId || !sendAmt || realCoins < sendAmt) { alert("Check details!"); return; }
+                    realCoins -= sendAmt; syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); closeWalletModals(); 
+                    pushAuditLog(`Transfer ₹${sendAmt} to VIP #${targetId}`);
+                    alert(`Successfully transferred ₹${sendAmt} to VIP #${targetId}!`);
+                };
+            }catch(err){console.error("Engine guard error:", err);}
+        })();
     </script>
 </body>
 </html>

@@ -8,202 +8,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ROYAL ROULETTE - SECURE MASTER CASINO</title>
-    <!-- Cashfree SDK for Real-time Sandbox Testing -->
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
-            background: #000401; 
-            color: #f1c40f; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            overflow: hidden;
-            padding: 2px;
-            position: relative;
-            transform: translateZ(0);
+            background: #000401; color: #f1c40f; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; 
+            align-items: center; overflow: hidden; padding: 2px; position: relative; transform: translateZ(0); 
         }
-
         body::before {
             content: "⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟 ⭐ ✨ 🌟";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            font-size: 15px; letter-spacing: 35px; line-height: 75px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; font-size: 15px; letter-spacing: 35px; line-height: 75px;
             color: rgba(255, 215, 0, 0.15); pointer-events: none; z-index: 1;
         }
-
-        #fullscreenWheelBg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 2; overflow: hidden; background: #000401;
-            display: flex; align-items: center; justify-content: center;
-            pointer-events: none;
-        }
-        .bg-wheel-wrap {
-            position: relative; width: 380px; height: 380px; border-radius: 50%; 
-            opacity: 0.75; border: 8px solid #ffd700; box-shadow: 0 0 90px rgba(255, 215, 0, 0.7);
-            animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center;
-        }
+        #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: #000401; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .bg-wheel-wrap { position: relative; width: 380px; height: 380px; border-radius: 50%; opacity: 0.75; border: 8px solid #ffd700; box-shadow: 0 0 90px rgba(255, 215, 0, 0.7); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         #loginWheelCanvasBg { width: 380px; height: 380px; border-radius: 50%; display: block; }
-        
-        .bg-ball-orbit {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            animation: ballRotateBg 3.5s linear infinite; pointer-events: none; z-index: 4;
-        }
-        .bg-ball-orbit::after {
-            content: ""; position: absolute; top: 12px; left: calc(50% - 9px);
-            width: 18px; height: 18px; background: #ffffff; border-radius: 50%;
-            box-shadow: 0 0 20px #fff, 0 0 35px #ffd700, 0 0 55px #0ff;
-        }
-
+        .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 3.5s linear infinite; pointer-events: none; z-index: 4; }
+        .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 9px); width: 18px; height: 18px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #ffd700, 0 0 55px #0ff; }
         @keyframes wheelRotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ballRotateBg { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-        #loginScreenContainer {
-            width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-            z-index: 10; padding: 6px 4px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55);
-        }
-
+        #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 6px 4px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55); }
         .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 3px; align-items: center; z-index: 5; margin-top: 3px; }
-        .trust-banner {
-            font-size: 8.5px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700;
-            letter-spacing: 0.8px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95));
-            padding: 4px 8px; border-radius: 12px; border: 2px solid #ffd700; width: 100%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
-        }
+        .trust-banner { font-size: 8.5px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.8px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 4px 8px; border-radius: 12px; border: 2px solid #ffd700; width: 100%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
         .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; }
-        .royal-main-title {
-            font-size: 18px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b;
-            letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .live-stats-bar {
-            display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold;
-            background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase;
-        }
-        .login-card {
-            background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px;
-            width: 92%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15;
-        }
+        .royal-main-title { font-size: 18px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase; }
+        .login-card { background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px; width: 92%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15; }
         .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 2px; }
         .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
-        .login-card input {
-            width: 100%; padding: 8px; margin: 4px 0; background: #000000; border: 1.5px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 8px;
-            font-size: 12px; text-align: center; font-weight: bold;
-        }
-        .login-btn {
-            width: 100%; padding: 9px; margin-top: 5px; background: linear-gradient(135deg, #ffd700, #b8860b);
-            color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 12px; text-transform: uppercase;
-        }
-        .login-btn.lobby {
-            background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700;
-        }
+        .login-card input { width: 100%; padding: 8px; margin: 4px 0; background: #000000; border: 1.5px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 8px; font-size: 12px; text-align: center; font-weight: bold; }
+        .login-btn { width: 100%; padding: 9px; margin-top: 5px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 12px; text-transform: uppercase; }
+        .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; }
         .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 4px; }
         .payment-gateways { font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 6px; border: 1px solid rgba(0,255,0,0.5); }
         .trust-badges { font-size: 7.5px; color: #ffd700; font-weight: bold; }
         .legal-links { font-size: 6.5px; color: #cccccc; word-spacing: 2px; }
         .legal-links a, .legal-links span { color: #ffd700; text-decoration: none; cursor: pointer; }
 
-        /* गेम लॉबी स्क्रीन */
-        #gameLobbyScreen {
-            display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0;
-            background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%);
-            z-index: 20000; flex-direction: column; justify-content: space-between; padding: 3px;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 6px solid #24140c;
-        }
+        #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 3px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 6px solid #24140c; }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 6px 10px; border-radius: 10px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; gap: 6px; }
+        .user-profile-widget { display: flex; align-items: center; gap: 6px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer; }
+        .user-avatar-circle { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 7px 10px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 0 12px rgba(39, 174, 96, 0.9); text-transform: uppercase; z-index: 100; }
+        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #a93226); box-shadow: 0 0 12px rgba(192, 57, 43, 0.9); }
 
-        .lobby-header {
-            display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 6px 10px; border-radius: 10px;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; gap: 6px;
-        }
-
-        .user-profile-widget {
-            display: flex; align-items: center; gap: 6px; background: rgba(0,20,8,0.9);
-            border: 1.5px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer;
-        }
-        .user-avatar-circle {
-            width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b);
-            border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden;
-        }
-        
-        .wallet-btn-rect { 
-            background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; 
-            padding: 7px 10px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer;
-            box-shadow: 0 0 12px rgba(39, 174, 96, 0.9); text-transform: uppercase; z-index: 100;
-        }
-        .wallet-btn-rect.withdraw { 
-            background: linear-gradient(135deg, #c0392b, #a93226); 
-            box-shadow: 0 0 12px rgba(192, 57, 43, 0.9); 
-        }
-
-        /* ⏱️ Prominent Full-Button Large Timer Strip */
-        .timer-strip-center {
-            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; 
-            font-size: 16px; font-weight: 900;
-            padding: 4px 10px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1px; 
-            flex-grow: 1; max-width: 140px; text-align: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px;
-        }
+        .timer-strip-center { background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 16px; font-weight: 900; padding: 4px 10px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase; box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1px; flex-grow: 1; max-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px; }
         .timer-strip-center span.timer-main-val { font-size: 18px; line-height: 1.1; }
         .timer-strip-center span.timer-sub-val { font-size: 7px; color: #ffcccc; letter-spacing: 0.5px; display: none; }
         .timer-strip-center.closed-state { background: linear-gradient(135deg, #78281f, #512e5f); border-color: #e74c3c; }
         .timer-strip-center.closed-state span.timer-sub-val { display: block; }
 
-        .history-strip-bar {
-            display: flex; justify-content: center; align-items: center; gap: 4px;
-            background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5);
-            padding: 2px; border-radius: 6px; margin: 1px auto; width: 100%; flex-shrink: 0; z-index: 50;
-        }
-        .history-title { font-size: 7px; font-weight: bold; color: #ffd700; margin-right: 4px; text-transform: uppercase; }
-        .history-ball {
-            width: 20px; height: 20px; border-radius: 50%; font-size: 9px; font-weight: 900; color: #fff;
-            display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700;
-            box-shadow: 0 0 5px rgba(0,0,0,0.8);
-        }
+        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 4px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 4px 6px; border-radius: 6px; margin: 2px auto; width: 100%; flex-shrink: 0; z-index: 50; }
+        .history-title { font-size: 8px; font-weight: bold; color: #ffd700; margin-right: 4px; text-transform: uppercase; }
+        .history-ball { width: 22px; height: 22px; border-radius: 50%; font-size: 10px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(0,0,0,0.8); flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        .lobby-wheel-box {
-            position: relative; width: 260px; height: 260px; margin: 2px auto;
-            border: 6px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden;
-            box-shadow: 0 0 60px rgba(212, 175, 55, 0.9);
-            flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
-        }
-        
+        .lobby-wheel-box { position: relative; width: 260px; height: 260px; margin: 2px auto; border: 6px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden; box-shadow: 0 0 60px rgba(212, 175, 55, 0.9); flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
         #lobbyWheelCanvas { width: 260px; height: 260px; border-radius: 50%; display: block; will-change: transform; }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px; background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; }
+        .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 6.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 7px; left: calc(50% - 7px); width: 14px; height: 14px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 15px #fff, 0 0 25px #d4af37, 0 0 35px #0ff; }
 
-        .lobby-wheel-hub {
-            position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px;
-            background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none;
-        }
-
-        .game-ball-orbit {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            pointer-events: none; z-index: 120; will-change: transform;
-            transition: transform 6.0s cubic-bezier(0.15, 0.85, 0.12, 1.0);
-        }
-        .game-ball-orbit::after {
-            content: ""; position: absolute; top: 7px; left: calc(50% - 7px);
-            width: 14px; height: 14px; background: #ffffff; border-radius: 50%;
-            box-shadow: 0 0 15px #fff, 0 0 25px #d4af37, 0 0 35px #0ff;
-        }
-
-        .betting-board-section {
-            background: radial-gradient(circle, #013812 0%, #001205 100%); border-radius: 12px; padding: 5px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; margin-top: 2px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.95); z-index: 50;
-        }
-
+        .betting-board-section { background: radial-gradient(circle, #013812 0%, #001205 100%); border-radius: 12px; padding: 5px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; margin-top: 2px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95); z-index: 50; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
-        .table-cell {
-            background: #021a0a; border: 1.5px solid #d4af37; color: #fff; font-size: 11px; font-weight: 900;
-            padding: 6px 0; border-radius: 3px; cursor: pointer; text-align: center; position: relative;
-        }
+        .table-cell { background: #021a0a; border: 1.5px solid #d4af37; color: #fff; font-size: 11px; font-weight: 900; padding: 6px 0; border-radius: 3px; cursor: pointer; text-align: center; position: relative; }
         .table-cell.red { background: linear-gradient(135deg, #b03a2e, #78281f); }
         .table-cell.black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
         .table-cell.has-bet, .color-btn.has-bet { border: 2.5px solid #fff; box-shadow: 0 0 15px #f1c40f; }
@@ -216,10 +89,7 @@
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
 
         .chip-selector-row { display: flex; justify-content: center; gap: 6px; align-items: center; }
-        .chip-item {
-            width: 32px; height: 32px; border-radius: 50%; border: 3px dashed #f1c40f; font-weight: 900; font-size: 10px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111;
-        }
+        .chip-item { width: 32px; height: 32px; border-radius: 50%; border: 3px dashed #f1c40f; font-weight: 900; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; }
         .chip-item.selected { border: 3px solid #fff; transform: scale(1.15); box-shadow: 0 0 20px #f1c40f; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
@@ -227,109 +97,50 @@
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small {
-            background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700;
-            padding: 6px 8px; border-radius: 6px; font-size: 8.5px; font-weight: 900; cursor: pointer; text-transform: uppercase;
-        }
-
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 6px 8px; border-radius: 6px; font-size: 8.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; }
         .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 4px 10px; font-size: 10px; font-weight: 900; border-radius: 7px; flex-grow: 1; margin: 0 5px; text-align: center; }
         .clear-btn { background: #b03a2e; color: #fff; padding: 4px 8px; font-size: 9.5px; font-weight: 900; border-radius: 6px; cursor: pointer; border: 1.5px solid #d4af37; }
 
-        .mode-toggle-bar {
-            display: flex; justify-content: center; gap: 5px; background: #000; border: 1.5px solid #ffd700;
-            padding: 3px; border-radius: 8px; margin-bottom: 3px;
-        }
-        .mode-btn {
-            flex: 1; padding: 5px; font-size: 9px; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; background: #111; color: #888;
-        }
+        .mode-toggle-bar { display: flex; justify-content: center; gap: 5px; background: #000; border: 1.5px solid #ffd700; padding: 3px; border-radius: 8px; margin-bottom: 3px; }
+        .mode-btn { flex: 1; padding: 5px; font-size: 9px; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
         .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 10px #2ecc71; }
         .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 10px #3498db; }
 
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 3px solid #ffd700; padding: 22px; border-radius: 16px; width: 290px; text-align: center; color: #fff; box-shadow: 0 0 50px #ffd700; animation: popupScale 0.3s ease-out; }
+        #emergencyMaintenanceBanner { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 999999; flex-direction: column; align-items: center; justify-content: center; color: #e74c3c; }
 
-        #emergencyMaintenanceBanner {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.96); z-index: 999999; flex-direction: column; align-items: center; justify-content: center; color: #e74c3c;
-        }
-
-        /* [ULTRA-PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL GUARANTEED] */
-        #secretAdminModal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); 
-            z-index: 2147483647 !important; padding: 15px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important;
-        }
-        .admin-dashboard-container { 
-            max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.98); 
-            border: 2px solid #ffd700; border-radius: 20px; padding: 25px; 
-            box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(0,0,0,0.9); 
-            display: flex; flex-direction: column; gap: 16px; text-align: left; 
-        }
-        .admin-top-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 12px;
-        }
+        #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 15px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
+        .admin-dashboard-container { max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 20px; padding: 25px; box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 16px; text-align: left; }
+        .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 12px; }
         .admin-top-header h2 { font-size: 20px; color: #ffd700; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        
-        .admin-kpi-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-        }
-        .kpi-card {
-            background: rgba(0, 0, 0, 0.7); border: 1.5px solid #27ae60; border-radius: 12px; padding: 12px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .kpi-card.purple { border-color: #9b59b6; }
-        .kpi-card.orange { border-color: #e67e22; }
-        .kpi-card.blue { border-color: #3498db; }
+        .admin-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .kpi-card { background: rgba(0, 0, 0, 0.7); border: 1.5px solid #27ae60; border-radius: 12px; padding: 12px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .kpi-card.purple { border-color: #9b59b6; } .kpi-card.orange { border-color: #e67e22; } .kpi-card.blue { border-color: #3498db; }
         .kpi-title { font-size: 9px; color: #bbb; text-transform: uppercase; margin-bottom: 4px; font-weight: bold; }
         .kpi-value { font-size: 15px; font-weight: 900; color: #fff; }
-
-        .admin-section-box { 
-            background: rgba(0, 0, 0, 0.75); border: 1.5px solid rgba(255, 215, 0, 0.3); 
-            padding: 15px; border-radius: 12px; font-size: 12px; 
-        }
-        .admin-section-title { 
-            color: #ffd700; font-weight: 900; font-size: 13px; border-bottom: 1px dashed rgba(255,215,0,0.3); 
-            padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; 
-        }
-
-        .req-table-row { 
-            background: rgba(15, 25, 18, 0.9); border: 1.5px solid #333; 
-            padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; 
-            display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; 
-        }
+        .admin-section-box { background: rgba(0, 0, 0, 0.75); border: 1.5px solid rgba(255, 215, 0, 0.3); padding: 15px; border-radius: 12px; font-size: 12px; }
+        .admin-section-title { color: #ffd700; font-weight: 900; font-size: 13px; border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .req-table-row { background: rgba(15, 25, 18, 0.9); border: 1.5px solid #333; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; }
         .req-actions { display: flex; gap: 8px; }
         .req-actions button { padding: 6px 14px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; text-transform: uppercase; }
         .btn-approve { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 10px rgba(39,174,96,0.6); }
         .btn-reject { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; box-shadow: 0 0 10px rgba(192,57,43,0.6); }
+        .admin-dashboard-container select { width: 100%; padding: 12px; background: #000; color: #ffd700; border: 1.5px solid #ffd700; border-radius: 8px; font-weight: bold; text-align: center; font-size: 13px; }
 
-        .admin-dashboard-container select { 
-            width: 100%; padding: 12px; background: #000; color: #ffd700; 
-            border: 1.5px solid #ffd700; border-radius: 8px; font-weight: bold; text-align: center; font-size: 13px; 
-        }
-
-        #cinematicResultPopup {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.88); z-index: 50000; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .popup-card {
-            background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 25px; border-radius: 20px;
-            width: 85%; max-width: 320px; text-align: center; box-shadow: 0 0 80px #f1c40f;
-            animation: popupScale 0.3s ease-out;
-        }
+        #cinematicResultPopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); z-index: 50000; flex-direction: column; align-items: center; justify-content: center; }
+        .popup-card { background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 0 80px #f1c40f; animation: popupScale 0.3s ease-out; }
         @keyframes popupScale { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 30000; align-items: center; justify-content: center; padding: 10px; }
         .wallet-modal-content { background: radial-gradient(circle, #003311 0%, #000f04 100%); border: 3px solid #f1c40f; padding: 20px; border-radius: 18px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 0 60px #f1c40f; color: #fff; max-height: 95vh; overflow-y: auto; }
-        
-        .withdraw-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
-        .deposit-packages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+        .withdraw-packages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 10px 0; }
+        .deposit-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
         .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 12px 0; font-weight: 900; font-size: 12px; border-radius: 8px; cursor: pointer; }
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 15px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 8px; text-align: center; font-weight: bold; font-size: 14px; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -374,7 +185,6 @@
         <div class="login-card" id="loginCardBox">
             <h3>CLOUD WALLET LOGIN</h3>
             <p>NUMBER + 4-DIGIT PERSONAL MPIN</p>
-            
             <input type="tel" id="inputPhone" placeholder="Mobile Number (10 Digits)" maxlength="10">
             <input type="password" id="inputMpin" placeholder="Enter 4-Digit MPIN (Security Pin)" maxlength="4">
             <input type="text" id="inputOtp" placeholder="OTP / Pop-up Code" maxlength="15">
@@ -397,14 +207,13 @@
             <div class="user-profile-widget" onclick="openProfileModal(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
-                    <div style="font-size:9px; font-weight:900; color:#ffd700;" id="userDisplayPhone">VIP_48921</div>
+                    <div style="font-size:9px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
                     <div style="font-size:7.5px; color:#2ecc71; font-weight:bold;">Tap for Profile 👆</div>
                 </div>
             </div>
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <!-- ⏱️ Big prominent timer filling the center strip block -->
             <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 140px;">
                 <div class="timer-strip-center" id="lobbyTimerBox">
                     <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
@@ -469,12 +278,11 @@
         </div>
     </div>
 
-    <!-- 👤 PLAYER PROFILE MODAL -->
+    <!-- PLAYER PROFILE MODAL WITH TRANSACTION HISTORY -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 450px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:18px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
             <div style="font-size:35px; margin:5px 0;" id="profileAvatarLarge">😎</div>
-            
             <div style="background:#000; border:1.5px solid #ffd700; padding:10px; border-radius:10px; text-align:left; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
                 <div>📱 <b>Mobile Number:</b> <span id="profPhone" style="color:#fff;">--</span></div>
                 <div>🆔 <b>VIP Player ID:</b> <span id="profVipId" style="color:#ffd700;">--</span></div>
@@ -482,136 +290,82 @@
                 <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-size:14px; font-weight:bold;">0</span></div>
                 <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span> Coins</div>
             </div>
+            
+            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 140px; overflow-y: auto; margin-bottom: 10px;">
+                <div style="color:#2ecc71; font-weight:bold; font-size:11px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:5px;">📋 Your Deposit & Withdrawal History:</div>
+                <div id="playerTransactionHistoryList" style="font-size:10px; color:#ccc;">No transactions recorded yet.</div>
+            </div>
 
-            <!-- 👑 Admin Exclusive Profile Button -->
             <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 10px;">
                 <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:2px solid #ffd700; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase; box-shadow:0 0 15px rgba(230,126,34,0.7);">
                     👑 Open Master Admin Panel
                 </button>
             </div>
-
-            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 140px; overflow-y: auto;">
-                <div style="color:#2ecc71; font-weight:bold; font-size:11px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:5px;">📋 Your Deposit & Withdrawal History:</div>
-                <div id="playerTransactionHistoryList" style="font-size:10px; color:#ccc;">No transactions recorded yet.</div>
-            </div>
-
-            <button onclick="closeWalletModals()" class="login-btn" style="padding:10px; font-size:12px; margin-top:10px;">Close Profile</button>
+            <button onclick="closeWalletModals()" class="login-btn" style="padding:10px; font-size:12px; margin-top:5px;">Close Profile</button>
         </div>
     </div>
 
-    <!-- [HIGH-END PROFESSIONAL FULL-SCREEN MASTER ADMIN PANEL GUARANTEED] -->
+    <!-- FULL MASTER ADMIN PANEL -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
                 <h2>👑 MASTER ADMIN A-Z COMMAND CENTER</h2>
-                <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(231,76,60,0.5);">✕ Close Panel</button>
+                <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close Panel</button>
+            </div>
+
+            <!-- DIRECT PLAYER COIN & QR PAYMENT CREDITOR -->
+            <div style="background: rgba(30,20,5,0.95); padding: 14px; border: 2px solid #ffaa00; border-radius: 8px;">
+                <p style="color: #ffaa00; font-size: 13px; margin-bottom: 10px; font-weight: bold;">⚡ DIRECT COIN & QR PAYMENT CREDITOR (ROYAL DIGITAL)</p>
+                <input type="text" id="targetMemberId" placeholder="Enter ID (e.g. RD001001 or Phone)" style="width: 100%; padding: 9px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px;" />
+                <input type="number" id="targetCoinAmount" placeholder="Amount / Coins to Add (e.g. 500)" style="width: 100%; padding: 9px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px;" />
+                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Apply & Add Coins Directly</button>
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-title">Active Players</div>
-                    <div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">0</div>
-                </div>
-                <div class="kpi-card purple">
-                    <div class="kpi-title">Current Round ID</div>
-                    <div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div>
-                </div>
-                <div class="kpi-card orange">
-                    <div class="kpi-title">Total Table Bet</div>
-                    <div class="kpi-value" id="admTotalBet" style="color:#fff;">₹0</div>
-                </div>
-                <div class="kpi-card blue">
-                    <div class="kpi-title">House Profit (5%)</div>
-                    <div class="kpi-value" id="admProfit" style="color:#3498db;">₹0</div>
-                </div>
+                <div class="kpi-card"><div class="kpi-title">Active Players</div><div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">0</div></div>
+                <div class="kpi-card purple"><div class="kpi-title">Current Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
+                <div class="kpi-card orange"><div class="kpi-title">Real Total Bet</div><div class="kpi-value" id="admTotalBet" style="color:#fff;">₹0</div></div>
+                <div class="kpi-card blue"><div class="kpi-title">House Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#3498db;">₹0</div></div>
             </div>
 
-            <!-- E - Emergency Maintenance Switch & Round ID Reset -->
-            <div class="admin-section-box" style="border: 1.5px solid #e74c3c; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                <div><b style="color:#e74c3c;">🚨 Controls:</b> System Lock / Round Reset</div>
-                <div style="display:flex; gap:6px;">
-                    <button onclick="resetRoundCounterAdmin()" style="background:#f39c12; color:#fff; border:none; padding:6px 10px; border-radius:6px; font-size:10.5px; font-weight:bold; cursor:pointer;">🔄 Reset Round ID</button>
-                    <button id="maintToggleBtn" onclick="toggleEmergencyMaintenance()" style="background:#e74c3c; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:10.5px; font-weight:bold; cursor:pointer;">Maint Mode: OFF</button>
-                </div>
-            </div>
-
-            <!-- 🔑 Player MPIN Recovery / Management Section for Telegram Support -->
+            <!-- 🔑 Player MPIN Recovery / Management Section -->
             <div class="admin-section-box" style="border: 1.5px solid #00ffff;">
-                <div class="admin-section-title">
-                    <span style="color: #00ffff;">🔑 Player MPIN Recovery & Lookup (Telegram Help)</span>
-                </div>
+                <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Recovery & Lookup</span></div>
                 <div style="display:flex; gap:8px; margin-bottom:8px;">
                     <input type="text" id="adminSearchPhone" placeholder="Enter Player Mobile Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:6px; flex:1; font-size:11px;">
                     <button onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Lookup / Reset Pin</button>
                 </div>
-                <div id="adminMpinResultBox" style="font-size:11px; color:#2ecc71; text-align:left; background:#000; padding:6px; border-radius:6px;">Search number above to view linked MPIN & balance.</div>
+                <div id="adminMpinResultBox" style="font-size:11px; color:#2ecc71; text-align:left; background:#000; padding:6px; border-radius:6px;">Search number above to view linked MPIN.</div>
             </div>
 
-            <!-- List of All Registered Users & MPINs -->
+            <!-- Live Deposit Requests -->
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>👥 All Registered Players Database & Linked MPINs</span></div>
-                <div id="admAllUsersList" style="max-height: 120px; overflow-y: auto; font-size: 11px; text-align: left; color: #ccc;">
-                    No players registered yet.
-                </div>
-            </div>
-
-            <!-- 👤 Live Player-Wise Round Bets -->
-            <div class="admin-section-box">
-                <div class="admin-section-title"><span>👤 Live Player-Wise Round Bets</span></div>
-                <div id="admPlayerRoundBetsList" style="max-height: 110px; overflow-y: auto; font-size: 11px; text-align: left; color: #ccc;">
-                    No player round bets recorded yet.
-                </div>
-            </div>
-
-            <!-- Active Bets Breakdown -->
-            <div class="admin-section-box">
-                <div class="admin-section-title">
-                    <span>🎯 Active Bets Breakdown (This Round)</span>
-                </div>
-                <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:90px; overflow-y:auto;">
-                    No active bets placed yet.
-                </div>
-            </div>
-
-            <!-- Live Deposit Requests (Cashfree Verified + UTR Guard) -->
-            <div class="admin-section-box">
-                <div class="admin-section-title">
-                    <span>📥 Live Deposit Requests (Cashfree + UTR Guard)</span>
-                    <span style="font-size: 10px; color: #2ecc71; background: rgba(39,174,96,0.2); padding: 2px 6px; border-radius: 4px;">SECURE GATEWAY</span>
-                </div>
-                <div id="admDepositList" style="max-height: 140px; overflow-y: auto;">
-                    <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending deposit requests.</div>
+                <div class="admin-section-title"><span>📥 Live Deposit Requests (Royal Digital QR)</span></div>
+                <div id="admDepositList" style="max-height: 120px; overflow-y: auto;">
+                    <div style="color:#888; font-size:11px; text-align:center; padding:8px;">No pending deposit requests.</div>
                 </div>
             </div>
 
             <!-- Live Withdrawal Requests -->
             <div class="admin-section-box">
-                <div class="admin-section-title">
-                    <span>📤 Live Withdrawal Requests (Up to ₹20,000)</span>
-                    <span style="font-size: 10px; color: #e74c3c; background: rgba(231,76,60,0.2); padding: 2px 6px; border-radius: 4px;">PAYOUT QUEUE</span>
-                </div>
-                <div id="admWithdrawList" style="max-height: 140px; overflow-y: auto;">
-                    <div style="color:#888; font-size:11px; text-align:center; padding:10px;">No pending withdrawal requests.</div>
+                <div class="admin-section-title"><span>📤 Live Withdrawal Requests</span></div>
+                <div id="admWithdrawList" style="max-height: 120px; overflow-y: auto;">
+                    <div style="color:#888; font-size:11px; text-align:center; padding:8px;">No pending withdrawal requests.</div>
                 </div>
             </div>
 
-            <!-- A - Audit Log Activity -->
+            <!-- Active Bets Breakdown (Real Mode Only) -->
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>📋 A-Z Admin Audit Trail / Logs</span></div>
-                <div id="admAuditLogBox" style="font-size:10.5px; color:#bbb; max-height:80px; overflow-y:auto; text-align:left; background:#000; padding:5px; border-radius:5px;">System initialized safely.</div>
+                <div class="admin-section-title"><span>🎯 Active Real-Mode Bets Breakdown (This Round)</span></div>
+                <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:90px; overflow-y:auto;">No active real bets placed yet.</div>
             </div>
-            
-            <!-- Game Rigging & Settings -->
+
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Anti-Fraud & RNG Controls</span></div>
-                <label style="font-size: 11px; color: #ffd700; font-weight: bold; display: block; margin-bottom: 6px; text-align: left;">Rig Next Winning Number:</label>
+                <div class="admin-section-title"><span>⚙️ One-Time Rig / Override Next Round (Realtime Broadcast)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 10px;">
-                    <option value="random">Random (5% House Edge & Safety Mode)</option>
+                    <option value="random">Auto Dynamic Pool (5% House + ₹95 Cap Match - Real Bets Only)</option>
                 </select>
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px; margin-top:0; flex: 2;">Save Admin Settings</button>
-                    <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background:#333; color:#fff; border:none; padding:12px; border-radius:8px; font-size:13px; cursor:pointer; font-weight:bold; flex: 1; margin-top: 0;">Close</button>
-                </div>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast Override</button>
             </div>
         </div>
     </div>
@@ -619,15 +373,20 @@
     <div id="cinematicResultPopup">
         <div class="popup-card">
             <h3 style="color:#f1c40f; font-size:16px; margin-bottom:5px;">🎉 WINNING NUMBER 🎉</h3>
-            <div id="popupWinningNumDisplay" style="font-size:48px; font-weight:900; color:#fff; margin:12px 0; text-shadow: 0 0 20px #ffd700;">14 RED</div>
+            <div id="popupWinningNumDisplay" style="font-size:48px; font-weight:900; color:#fff; margin:12px 0;">14 RED</div>
             <div id="popupPayoutDisplay" style="font-size:14px; font-weight:bold; color:#00ffff; margin-bottom:10px;">You Won 🪙1,800!</div>
         </div>
     </div>
 
+    <!-- EXACT 6 DEPOSIT PACKAGES (₹300, ₹500, ₹1000, ₹2000, ₹5000, ₹10000) -->
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - CASHFREE DEPOSIT</h3>
-            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Select deposit package (Secured via Cashfree Test Gateway)</p>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - DEPOSIT (ROYAL DIGITAL)</h3>
+            <div style="background:#fff; padding:12px; border-radius:8px; color:#000; margin-bottom:10px;">
+                <p style="font-weight:bold; color:#d32f2f;">Scan & Pay via BharatPe / UPI</p>
+                <p style="font-size:13px; font-weight:bold;">Name: ROYAL DIGITAL</p>
+                <p style="font-size:11px; color:#555;">Send payment, upload UTR or request via admin Telegram.</p>
+            </div>
             
             <div class="deposit-packages-grid">
                 <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
@@ -638,201 +397,173 @@
                 <button class="dep-pkg-btn" onclick="selectDepositPkg(10000, this)">₹10000</button>
             </div>
 
-            <input type="number" id="customDepositInput" value="300" placeholder="Or Enter Custom Amount" style="margin-top:10px;">
-            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; font-size:13px; margin-top:10px; background:linear-gradient(135deg, #27ae60, #1e8449);">🚀 PROCEED TO CASHFREE DEPOSIT</button>
-            <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+            <input type="number" id="customDepositInput" value="300" placeholder="Enter Amount">
+            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; font-size:13px; margin-top:10px;">🚀 SUBMIT DEPOSIT REQ</button>
+            <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">Close</button>
         </div>
     </div>
 
+    <!-- EXACT 4 WITHDRAWAL PACKAGES (₹500, ₹1000, ₹5000, ₹10000) -->
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL (2.5% Fee)</h3>
-            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">Fast payout directly to your UPI ID or QR Code</p>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL</h3>
             
             <div class="withdraw-packages-grid">
                 <button class="wd-pkg-btn selected" onclick="selectWithdrawPkg(500, this)">₹500</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(1000, this)">₹1000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(2000, this)">₹2000</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(5000, this)">₹5000</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(10000, this)">₹10000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(20000, this)" style="border-color:#22c55e; color:#22c55e;">₹20000</button>
             </div>
 
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Amount (Coins)">
-            <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@ybl)">
-            
-            <div style="background:#000; border:1.5px dashed #f1c40f; padding:10px; border-radius:10px; margin:10px 0; text-align:center;">
-                <label style="font-size:11px; color:#ffd700; font-weight:bold; display:block; margin-bottom:5px;">📁 UPLOAD YOUR QR CODE IMAGE (PROOF)</label>
-                <input type="file" id="withdrawQrFile" accept="image/*" style="font-size:11px; color:#fff; width:100%;">
-            </div>
-
-            <p style="font-size:9px; color:#e74c3c; margin:5px 0; font-weight:bold;">Note: 2.5% platform fee will be deducted on payout from Real Balance.</p>
-            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; font-size:13px; margin-top:10px;">Request Withdrawal (Pending Payout)</button>
-            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+            <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID">
+            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; font-size:13px; margin-top:10px;">Request Payout</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">Close</button>
         </div>
     </div>
 
     <div id="transferModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">TRANSFER COINS TO FRIEND</h3>
-            <p style="font-size:11px; color:#ccc; margin-bottom:15px;">10% Platform Fee applies</p>
-            <input type="text" id="transferTargetId" placeholder="Friend's VIP ID">
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">TRANSFER COINS</h3>
+            <input type="text" id="transferTargetId" placeholder="Friend's RD00 ID">
             <input type="number" id="transferCoinAmt" placeholder="Coins to Send">
             <button onclick="executeCoinTransfer()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:12px; font-size:13px; margin-top:10px;">Transfer Now</button>
-            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px; font-size:12px; cursor:pointer; font-weight:bold;">Close Window</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">Close</button>
         </div>
     </div>
 
     <script>
-        window.TRIGGERED_ADMIN_PHONE = "";
-        const bc = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('roulette_sync_channel') : null;
-
-        if (bc) {
-            bc.onmessage = (event) => {
-                if (event.data && event.data.type === 'RIG_UPDATE') {
-                    localStorage.setItem('admin_rig_selection', event.data.val);
-                    let sel = document.getElementById('adminRigSelect');
-                    if (sel) sel.value = event.data.val;
-                }
-            };
-        }
-
-        // Lightweight Polling Bridge for Remote Cross-Device Sync (Graceful Fallback)
-        setInterval(async () => {
-            try {
-                let remoteUrl = localStorage.getItem('remote_sync_endpoint');
-                if (remoteUrl) {
-                    let res = await fetch(remoteUrl);
-                    if (res.ok) {
-                        let data = await res.json();
-                        if (data && data.riggedWinner !== undefined) {
-                            localStorage.setItem('admin_rig_selection', data.riggedWinner);
-                        }
-                    }
-                }
-            } catch(e) {
-                // Fallback to local deterministic persistence silently
-            }
-        }, 2000);
-
         (function() {
             try {
+                const SUPABASE_URL = "https://fifqewznpxllackprwut.supabase.co";
+                const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpZnFld3pucHhsbGFja3Byd3V0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwMDM5NjAsImV4cCI6MjA1NjU3OTk2MH0.dummy_key_or_actual_anon";
+                const sbClient = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+                // SUPABASE REALTIME MULTIPLAYER MASTERCHANNEL SYNC
+                window.globalMasterSyncChannel = null;
+                if (sbClient) {
+                    window.globalMasterSyncChannel = sbClient.channel('royal_roulette_master_sync', {
+                        config: { broadcast: { self: false } }
+                    });
+                    window.globalMasterSyncChannel.on('broadcast', { event: 'admin_override_sync' }, payload => {
+                        if (payload && payload.payload) {
+                            localStorage.setItem('admin_rig_selection', payload.payload.rigVal);
+                            let sel = document.getElementById('adminRigSelect');
+                            if (sel) sel.value = payload.payload.rigVal;
+                        }
+                    }).subscribe();
+                }
+
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
                 const ROUND_TIME = 120;
-                const MIN_BET = 10;
-                const MAX_BET = 50000;
-
-                let accumulatedBallRotation = 0; 
                 const MASTER_ADMIN_PHONE = "8889865182";
                 const MASTER_ADMIN_SECRET_CODE = "Rani143143";
+
+                let accumulatedBallRotation = 0;
+                let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
+                let loggedUserPhone = "", loggedVipId = "RD001001", loggedAvatar = "😎";
+                let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
-                let isEmergencyMaintenance = false;
 
-                let realCoins = 0;
-                let testCoins = 10000;
-                let activeGameMode = 'test';
-                let loggedUserPhone = "";
-                let loggedVipId = "";
-                let loggedAvatar = "😎";
+                function getOrCreateUniqueRoyalId(phone) {
+                    let reg = JSON.parse(localStorage.getItem("royal_registered_map") || "{}");
+                    if (reg[phone]) return reg[phone];
+                    let lastSeq = parseInt(localStorage.getItem("royal_seq_counter") || "1000");
+                    let nextSeq = lastSeq + 1;
+                    localStorage.setItem("royal_seq_counter", nextSeq.toString());
+                    let newId = "RD00" + nextSeq;
+                    reg[phone] = newId;
+                    localStorage.setItem("royal_registered_map", JSON.stringify(reg));
+                    return newId;
+                }
 
-                const cashfree = Cashfree({ mode: "sandbox" });
+                function getGlobalRound() {
+                    let nowSec = Math.floor(Date.now() / 1000);
+                    return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
+                }
 
                 function getCleanRoundCounter() {
-                    let offset = parseInt(localStorage.getItem("admin_round_offset") || "0");
                     let nowSec = Math.floor(Date.now() / 1000);
-                    let baseEpochRound = Math.floor(nowSec / ROUND_TIME);
-                    let baseRef = parseInt(localStorage.getItem("base_round_ref") || baseEpochRound);
-                    if (!localStorage.getItem("base_round_ref")) {
-                        localStorage.setItem("base_round_ref", baseEpochRound);
+                    return Math.floor(nowSec / ROUND_TIME);
+                }
+
+                function getUniversalHistoryForRound(rId) {
+                    let list = [];
+                    let cleanRNum = getCleanRoundCounter();
+                    for (let i = 1; i <= 6; i++) {
+                        let pastRoundNum = cleanRNum - i;
+                        let lockedWin = localStorage.getItem("saved_winner_r_" + pastRoundNum);
+                        if (lockedWin !== null) {
+                            list.push(parseInt(lockedWin));
+                        } else {
+                            let seed = (pastRoundNum * 9301 + 49297) % 233280;
+                            let rnd = seed / 233280;
+                            list.push(numbersList[Math.floor(rnd * numbersList.length)]);
+                        }
                     }
-                    let diff = Math.max(0, baseEpochRound - parseInt(localStorage.getItem("base_round_ref") || baseEpochRound));
-                    return 1 + diff + offset;
+                    return list;
                 }
 
-                window.resetRoundCounterAdmin = function() {
-                    let nowSec = Math.floor(Date.now() / 1000);
-                    let baseEpochRound = Math.floor(nowSec / ROUND_TIME);
-                    localStorage.setItem("base_round_ref", baseEpochRound);
-                    localStorage.setItem("admin_round_offset", "0");
-                    pushAuditLog("Admin reset Round ID to Round #1");
-                    window.openAdminPanelStrict();
-                    alert("✅ Round ID reset to Round #1!");
-                };
+                function getSmartWinnerForRound(roundId) {
+                    let cleanRNum = getCleanRoundCounter();
+                    let savedWin = localStorage.getItem("saved_winner_r_" + cleanRNum);
+                    if (savedWin !== null) {
+                        localStorage.removeItem("saved_winner_r_" + cleanRNum);
+                        return parseInt(savedWin);
+                    }
+                    let rigSel = localStorage.getItem('admin_rig_selection');
+                    if (rigSel && rigSel !== "random") return parseInt(rigSel);
 
-                function pushAuditLog(text) {
-                    try {
-                        let logs = JSON.parse(localStorage.getItem("az_audit_logs") || "[]");
-                        logs.unshift(`[${new Date().toLocaleTimeString()}] ${text}`);
-                        if (logs.length > 50) logs.pop();
-                        localStorage.setItem("az_audit_logs", JSON.stringify(logs));
-                        let box = document.getElementById("admAuditLogBox");
-                        if (box) box.innerHTML = logs.map(l => `<div>• ${l}</div>`).join('');
-                    } catch(e){}
+                    let poolBreakdown = JSON.parse(localStorage.getItem("bets_breakdown_clean_" + roundId) || "{}");
+                    let totalPool = Object.values(poolBreakdown).reduce((a, b) => a + b, 0);
+                    if (totalPool > 0) {
+                        let allowedPoolCap = Math.min(totalPool * 0.95, 95);
+                        for (let numStr in poolBreakdown) {
+                            let betAmt = poolBreakdown[numStr];
+                            if (betAmt * 36 <= allowedPoolCap * 10) {
+                                return parseInt(numStr);
+                            }
+                        }
+                    }
+
+                    let seed = (roundId * 9301 + 49297) % 233280;
+                    return numbersList[Math.floor((seed / 233280) * numbersList.length)];
                 }
 
-                window.toggleEmergencyMaintenance = function() {
-                    isEmergencyMaintenance = !isEmergencyMaintenance;
-                    let banner = document.getElementById("emergencyMaintenanceBanner");
-                    let btn = document.getElementById("maintToggleBtn");
-                    if (banner) banner.style.display = isEmergencyMaintenance ? 'flex' : 'none';
-                    if (btn) btn.innerText = isEmergencyMaintenance ? "Maint Mode: ON" : "Maint Mode: OFF";
-                    pushAuditLog(`Maintenance mode toggled: ${isEmergencyMaintenance}`);
+                window.applyAdminCoinsDirect = function() {
+                    let targetId = document.getElementById('targetMemberId').value.trim();
+                    let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
+                    if (!targetId || addAmt <= 0) { alert('कृपया वैध RD00 आईडी / फोन और कॉइन अमाउंट डालें!'); return; }
+                    
+                    if (sbClient) {
+                        sbClient.from('profiles').select('real_coins').eq('phone', targetId).single().then(({ data }) => {
+                            let currentCoins = (data && data.real_coins) ? data.real_coins : 0;
+                            let updatedCoins = currentCoins + addAmt;
+                            sbClient.from('profiles').upsert({ phone: targetId, real_coins: updatedCoins }, { onConflict: 'phone' }).then(({ error }) => {
+                                if (error) alert('सुपाबेस एरर: ' + error.message);
+                                else alert(`सफलतापूर्वक ID [ ${targetId} ] में ${addAmt} कॉइन जोड़ दिए गए! नया बैलेंस: ${updatedCoins}`);
+                            });
+                        }).catch(() => {
+                            sbClient.from('profiles').upsert({ phone: targetId, real_coins: addAmt }, { onConflict: 'phone' }).then(({ error }) => {
+                                if (error) alert('सुपाबेस एरर: ' + error.message);
+                                else alert(`सफलतापूर्वक ID [ ${targetId} ] में ${addAmt} कॉइन जोड़ दिए गए!`);
+                            });
+                        });
+                    } else {
+                        alert('सुपाबेस कनेक्टेड नहीं है!');
+                    }
                 };
 
-                let audioCtx = null;
-                let djInterval = null;
-                let djGainNode = null;
-
-                window.startDjMusic = function() {
-                    try {
-                        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                        if (audioCtx.state === 'suspended') audioCtx.resume();
-                        if (djInterval) clearInterval(djInterval);
-
-                        djGainNode = audioCtx.createGain();
-                        djGainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                        djGainNode.connect(audioCtx.destination);
-
-                        let step = 0;
-                        djInterval = setInterval(() => {
-                            if (!audioCtx || isEmergencyMaintenance) return;
-                            try {
-                                let now = audioCtx.currentTime;
-                                let osc = audioCtx.createOscillator();
-                                let gain = audioCtx.createGain();
-                                osc.type = (step % 4 === 0) ? 'square' : 'sawtooth';
-                                let freqs = [110, 220, 330, 440, 550, 660];
-                                osc.frequency.setValueAtTime(freqs[step % freqs.length], now);
-                                gain.gain.setValueAtTime(0.08, now);
-                                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-                                osc.connect(gain); gain.connect(djGainNode);
-                                osc.start(now); osc.stop(now + 0.2);
-                                step++;
-                            } catch(e) {}
-                        }, 250);
-                    } catch(e){}
-                };
-
-                function duckMusic(ducking) {
-                    if (!djGainNode || !audioCtx) return;
-                    try {
-                        let now = audioCtx.currentTime;
-                        djGainNode.gain.linearRampToValueAtTime(ducking ? 0.02 : 0.12, now + 0.3);
-                    } catch(e) {}
-                }
-
-                window.playBallRollingSound = function() { if (!audioCtx) return; duckMusic(true); setTimeout(() => { duckMusic(false); }, 6000); };
-
-                window.speakVoice = function(text, isNoMoreBets = false) {
-                    if ('speechSynthesis' in window) {
-                        try {
-                            window.speechSynthesis.cancel();
-                            let utterance = new SpeechSynthesisUtterance(text);
-                            utterance.rate = 1.05; utterance.pitch = 1.1; utterance.volume = 1.0;
-                            if (isNoMoreBets) { duckMusic(true); utterance.onend = () => { duckMusic(false); }; }
-                            window.speechSynthesis.speak(utterance);
-                        }catch(e){}
+                window.lookupPlayerMpinAdmin = function() {
+                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
+                    let box = document.getElementById('adminMpinResultBox');
+                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
+                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Please type a mobile number.</span>"; return; }
+                    if (storedMpins[searchPhone]) {
+                        box.innerHTML = `Found User: <b>${searchPhone}</b> | 🔑 MPIN: <b style="color:#00ffff; font-size:13px;">${storedMpins[searchPhone]}</b><br><button onclick="storedMpins['${searchPhone}']='1431';localStorage.setItem('user_mpins',JSON.stringify(storedMpins));alert('MPIN reset to 1431');" style="margin-top:4px; background:#e74c3c; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Reset MPIN to 1431</button>`;
+                    } else {
+                        box.innerHTML = `<span style='color:#e74c3c;'>No MPIN record found for ${searchPhone}.</span>`;
                     }
                 };
 
@@ -840,7 +571,6 @@
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
                     const outerRadius = cx - 6, innerRadius = 24, arcSize = (2 * Math.PI) / numbersList.length;
-
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
@@ -852,57 +582,43 @@
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Arial';
                         ctx.fillText(num, outerRadius - 16, 4); ctx.restore();
                     });
-
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
                 }
 
-                window.onload = () => { 
-                    drawCanvasWheel('loginWheelCanvasBg'); 
-                    drawCanvasWheel('lobbyWheelCanvas'); 
-                    pushAuditLog("Ultra-fast fast engine loaded.");
-                };
-
+                window.onload = () => { drawCanvasWheel('loginWheelCanvasBg'); drawCanvasWheel('lobbyWheelCanvas'); };
                 window.closeComingSoonModal = function() { document.getElementById('comingSoonNoticeModal').style.display = 'none'; };
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => {
-                        let opt = document.createElement('option'); opt.value = num; opt.innerText = "Number " + num;
-                        adminSelect.appendChild(opt);
-                    });
-                    adminSelect.addEventListener('change', (e) => {
-                        localStorage.setItem('admin_rig_selection', e.target.value);
-                        if (bc) bc.postMessage({ type: 'RIG_UPDATE', val: e.target.value });
-                    });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Rig Force Number " + num; adminSelect.appendChild(opt); });
                 }
-
-                window.saveAdminSettings = function() { 
-                    alert("Admin Settings Applied Successfully!"); 
-                    pushAuditLog("Admin updated RNG settings.");
-                    document.getElementById('secretAdminModal').style.display = 'none'; 
+                window.saveAdminSettings = function() {
+                    let sel = document.getElementById('adminRigSelect').value;
+                    localStorage.setItem('admin_rig_selection', sel);
+                    if (window.globalMasterSyncChannel) {
+                        window.globalMasterSyncChannel.send({ type: 'broadcast', event: 'admin_override_sync', payload: { rigVal: sel } });
+                    }
+                    alert("One-Time Override Saved & Broadcasted to All Live Devices! Result: " + sel);
+                    document.getElementById('secretAdminModal').style.display = 'none';
                 };
 
                 window.logoutToLogin = function() {
-                    isAdminLoggedIn = false;
                     document.getElementById('gameLobbyScreen').style.display = 'none';
                     document.getElementById('secretAdminModal').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'flex';
                     document.getElementById('fullscreenWheelBg').style.display = 'flex';
-                    document.getElementById('inputPhone').value = ''; document.getElementById('inputMpin').value = ''; document.getElementById('inputOtp').value = '';
                 };
 
                 window.requestStrictOtp = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
-                    window.TRIGGERED_ADMIN_PHONE = phone;
                     if (phone.length < 10) { alert("Please enter valid 10-digit mobile number!"); return; }
-                    if (phone === MASTER_ADMIN_PHONE) {
-                        alert("🔒 Admin Number Detected! Enter your secret code directly below.");
-                    } else {
-                        let generatedCode = Math.floor(100000 + Math.random() * 900000);
-                        localStorage.setItem("cloud_otp_" + phone, generatedCode);
-                        alert("📱 Pop-up Verification Code for " + phone + " is: " + generatedCode);
-                        document.getElementById('inputOtp').value = generatedCode;
+                    if (phone === MASTER_ADMIN_PHONE) alert("🔒 Admin Number Detected! Enter your secret code.");
+                    else {
+                        let code = Math.floor(100000 + Math.random() * 900000);
+                        localStorage.setItem("otp_" + phone, code);
+                        alert("📱 OTP Code: " + code);
+                        document.getElementById('inputOtp').value = code;
                     }
                 };
 
@@ -910,132 +626,37 @@
                     let phone = document.getElementById('inputPhone').value.trim();
                     let mpin = document.getElementById('inputMpin').value.trim();
                     let otp = document.getElementById('inputOtp').value.trim();
-                    let expectedOtp = localStorage.getItem("cloud_otp_" + phone);
-                    window.TRIGGERED_ADMIN_PHONE = phone;
-
-                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
-                    
-                    if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) {
-                        if (!storedMpins[phone]) {
-                            storedMpins[phone] = mpin.length === 4 ? mpin : "1431";
-                            localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
-                        }
-                        isAdminLoggedIn = true;
-                        loadUserCloudWallet(phone, true, storedMpins[phone]);
-                        return;
-                    }
-
-                    if (storedMpins[phone]) {
-                        if (storedMpins[phone] !== mpin) { alert("❌ Incorrect MPIN! Security pin mismatch for this number."); return; }
-                    } else {
-                        if (mpin.length !== 4) { alert("❌ Please set a 4-digit MPIN for your security!"); return; }
-                        storedMpins[phone] = mpin;
-                        localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
-                    }
-
-                    if (otp.length >= 4 && (otp === expectedOtp || otp === "143143")) {
-                        loadUserCloudWallet(phone, false, mpin);
-                    } else {
-                        alert("❌ Invalid OTP/Secret Code!");
-                    }
-                };
-
-                function loadUserCloudWallet(phone, isAdminFlag, mpin) {
-                    let localUsers = JSON.parse(localStorage.getItem("cloud_user_profiles") || "{}");
-                    let profile = localUsers[phone] || null;
-
-                    if (profile) {
-                        realCoins = profile.realCoins || 0;
-                        testCoins = profile.testCoins || 10000;
-                        loggedVipId = profile.vipId || getOrCreateUniqueVipId(phone);
-                    } else {
-                        realCoins = 0; testCoins = 10000; loggedVipId = getOrCreateUniqueVipId(phone);
-                    }
-                    
-                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                    masterAllUsers[phone] = {
-                        phone: phone, mpin: mpin, vipId: loggedVipId, realCoins: realCoins, testCoins: testCoins, lastLogin: new Date().toLocaleString()
-                    };
-                    localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
-                    pushAuditLog(`User login: ${phone} (${loggedVipId})`);
-                    finalizeLogin(phone, isAdminFlag);
-                }
-
-                function syncUserCloudWallet(phone) {
-                    if (!phone) return;
-                    try {
-                        let localUsers = JSON.parse(localStorage.getItem("cloud_user_profiles") || "{}");
-                        localUsers[phone] = { realCoins, testCoins, vipId: loggedVipId };
-                        localStorage.setItem("cloud_user_profiles", JSON.stringify(localUsers));
-
-                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                        if (masterAllUsers[phone]) {
-                            masterAllUsers[phone].realCoins = realCoins;
-                            masterAllUsers[phone].testCoins = testCoins;
-                            localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
-                        }
-                    }catch(e){}
-                }
-
-                window.lookupPlayerMpinAdmin = function() {
-                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
-                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                    let box = document.getElementById('adminMpinResultBox');
-                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Please type a mobile number.</span>"; return; }
-                    if (masterAllUsers[searchPhone]) {
-                        let u = masterAllUsers[searchPhone];
-                        box.innerHTML = `Found User: <b>${u.phone}</b> | VIP: <b style="color:#ffd700;">${u.vipId}</b><br>🔑 Linked MPIN: <b style="color:#00ffff; font-size:13px;">${u.mpin}</b> | Real Bal: ₹${u.realCoins}<br><button onclick="resetUserMpinByAdmin('${u.phone}')" style="margin-top:4px; background:#e74c3c; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Reset MPIN to 1431</button>`;
-                    } else {
-                        box.innerHTML = `<span style='color:#e74c3c;'>No user found with number ${searchPhone}.</span>`;
-                    }
-                };
-
-                window.resetUserMpinByAdmin = function(phone) {
-                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
-                    storedMpins[phone] = "1431";
-                    localStorage.setItem("user_mpins", JSON.stringify(storedMpins));
-                    let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                    if(masterAllUsers[phone]) masterAllUsers[phone].mpin = "1431";
-                    localStorage.setItem("master_all_registered_users", JSON.stringify(masterAllUsers));
-                    pushAuditLog(`Admin reset MPIN for ${phone}`);
-                    window.lookupPlayerMpinAdmin();
-                    alert(`✅ MPIN for ${phone} reset to default: 1431`);
+                    if (phone === MASTER_ADMIN_PHONE && otp === MASTER_ADMIN_SECRET_CODE) { finalizeLogin(phone, true); return; }
+                    if (otp.length >= 4) { finalizeLogin(phone, false); } else { alert("❌ Invalid Code!"); }
                 };
 
                 function finalizeLogin(phone, isAdminFlag) {
                     document.getElementById('fullscreenWheelBg').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'none';
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
-
                     loggedUserPhone = phone;
-                    if (isAdminFlag || phone === MASTER_ADMIN_PHONE) {
-                        isAdminLoggedIn = true; 
-                        loggedVipId = "ADMIN_001"; 
-                        loggedAvatar = "👑";
-                    } else {
-                        isAdminLoggedIn = false;
-                        let avatars = ['🦁', '🐯', '🦊', '🐼', '🐨', '🦄', '😎', '🤠'];
-                        loggedAvatar = avatars[Math.abs(phone.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % avatars.length];
-                    }
-
+                    loggedVipId = getOrCreateUniqueRoyalId(phone);
+                    isAdminLoggedIn = isAdminFlag || phone === MASTER_ADMIN_PHONE;
+                    if (isAdminLoggedIn) loggedVipId = "ADMIN_001";
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
-                    document.getElementById('userAvatarEmoji').innerText = loggedAvatar;
-                    syncUserCloudWallet(phone);
                     updateBalancesDisplay();
                 }
 
-                window.requestOtpCode = function() { window.requestStrictOtp(); };
-                window.verifyLogin = function() { window.verifyCloudWalletLogin(); window.startDjMusic(); };
-
-                function getOrCreateUniqueVipId(phone) {
-                    let registeredUsers = JSON.parse(localStorage.getItem("casino_registered_users") || "{}");
-                    if (registeredUsers[phone]) return registeredUsers[phone]; 
-                    let lastCounter = parseInt(localStorage.getItem("casino_id_counter") || "84919") + 1;
-                    let uniqueId = "VIP_" + lastCounter;
-                    localStorage.setItem("casino_id_counter", lastCounter);
-                    registeredUsers[phone] = uniqueId;
-                    localStorage.setItem("casino_registered_users", JSON.stringify(registeredUsers));
-                    return uniqueId;
+                function renderPlayerTransactionHistory() {
+                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+                    let userDeps = deposits.filter(d => d.phone === loggedUserPhone);
+                    let userWds = withdraws.filter(w => w.phone === loggedUserPhone);
+                    let html = "";
+                    userDeps.forEach(d => {
+                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr || 'N/A'}<br><span style="color:${d.status==='Approved'?'#2ecc71':'#f39c12'}; font-weight:bold;">Status: ${d.status} (${d.time || ''})</span></div>`;
+                    });
+                    userWds.forEach(w => {
+                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ₹${w.amount} | UPI: ${w.upi}<br><span style="color:${w.status.includes('Rejected')?'#e74c3c':'#2ecc71'}; font-weight:bold;">Status: ${w.status} (${w.time || ''})</span></div>`;
+                    });
+                    if (html === "") html = "No deposit or withdrawal history yet.";
+                    let listEl = document.getElementById('playerTransactionHistoryList');
+                    if (listEl) listEl.innerHTML = html;
                 }
 
                 window.updateBalancesDisplay = function() {
@@ -1046,30 +667,10 @@
                     document.getElementById('profEmail').innerText = "vip_" + loggedUserPhone + "@royalcasino.com";
                     document.getElementById('profRealBal').innerText = realCoins;
                     document.getElementById('profTestBal').innerText = testCoins;
-                    document.getElementById('profileAvatarLarge').innerText = loggedAvatar;
-
                     let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
-                    let targetIsAdmin = (loggedUserPhone === MASTER_ADMIN_PHONE || window.TRIGGERED_ADMIN_PHONE === MASTER_ADMIN_PHONE || isAdminLoggedIn);
-                    if (adminWrap) adminWrap.style.display = targetIsAdmin ? 'block' : 'none';
-                    syncUserCloudWallet(loggedUserPhone);
+                    if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
                     renderPlayerTransactionHistory();
                 };
-
-                function renderPlayerTransactionHistory() {
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    let userDeps = deposits.filter(d => d.phone === loggedUserPhone);
-                    let userWds = withdraws.filter(w => w.phone === loggedUserPhone);
-                    let html = "";
-                    userDeps.forEach(d => {
-                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📥 <b>Deposit:</b> ₹${d.amount} | UTR: ${d.utr}<br><span style="color:${d.status==='Approved'?'#2ecc71':'#f39c12'}; font-weight:bold;">Status: ${d.status} (${d.time})</span></div>`;
-                    });
-                    userWds.forEach(w => {
-                        html += `<div style="margin-bottom:4px; border-bottom:1px dashed #222; padding-bottom:2px;">📤 <b>Withdraw:</b> ${w.amount} Coins | UPI: ${w.upi}<br><span style="color:${w.status.includes('Rejected')?'#e74c3c':'#2ecc71'}; font-weight:bold;">Status: ${w.status} (${d.time})</span></div>`;
-                    });
-                    if (html === "") html = "No deposit or withdrawal history yet.";
-                    document.getElementById('playerTransactionHistoryList').innerHTML = html;
-                }
 
                 window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };
                 window.switchGameMode = function(mode) {
@@ -1079,97 +680,54 @@
                 };
 
                 window.openAdminPanelStrict = function() {
-                    let targetIsAdmin = (loggedUserPhone === MASTER_ADMIN_PHONE || window.TRIGGERED_ADMIN_PHONE === MASTER_ADMIN_PHONE || isAdminLoggedIn);
-                    if (!targetIsAdmin) {
-                        alert("Access Denied: Only Admin can open this panel!");
-                        return;
+                    if (!isAdminLoggedIn) { alert("Access Denied!"); return; }
+                    let cleanRNum = getCleanRoundCounter();
+                    document.getElementById('admRoundId').innerText = "Round #" + cleanRNum;
+                    
+                    let breakdownKey = "bets_breakdown_clean_" + cleanRNum;
+                    let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+                    let totalBetVal = Object.values(betsMap).reduce((a,b)=>a+b,0);
+                    document.getElementById('admTotalBet').innerText = "₹" + totalBetVal;
+                    document.getElementById('admProfit').innerText = "₹" + (totalBetVal * 0.05).toFixed(2);
+                    
+                    let breakdownHtml = "";
+                    let hasBets = false;
+                    for (let k in betsMap) {
+                        hasBets = true;
+                        breakdownHtml += `<div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding: 4px 0;"><span>🎯 Real Bet on <b>${k}</b>:</span> <strong style="color:#ffd700;">₹${betsMap[k]}</strong></div>`;
                     }
-                    try {
-                        let roundNum = getCleanRoundCounter();
-                        let totalBetVal = parseFloat(localStorage.getItem("total_bet_round_clean_" + roundNum) || 0);
-                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                        let onlineCount = Object.keys(masterAllUsers).length;
+                    if (!hasBets) breakdownHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No active real bets placed in this round yet.</div>";
+                    document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
 
-                        document.getElementById('admRoundId').innerText = "Round #" + roundNum;
-                        document.getElementById('admTotalBet').innerText = "₹" + totalBetVal;
-                        document.getElementById('admProfit').innerText = "₹" + (totalBetVal * 0.05).toFixed(2);
-                        document.getElementById('admActivePlayers').innerText = onlineCount;
+                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                    let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
+                        <div class="req-table-row">
+                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
+                            <div class="req-actions">${d.status === 'Pending' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
+                        </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending deposits.</div>";
+                    document.getElementById('admDepositList').innerHTML = depHtml;
 
-                        let allUsersHtml = "";
-                        let userKeys = Object.keys(masterAllUsers);
-                        if (userKeys.length > 0) {
-                            userKeys.forEach(k => {
-                                let u = masterAllUsers[k];
-                                allUsersHtml += `<div style="border-bottom:1px dashed #222; padding:3px 0;">📱 <b>${u.phone}</b> | VIP: ${u.vipId} | 🔑 MPIN: <b style="color:#00ffff;">${u.mpin}</b> | Bal: ₹${u.realCoins}</div>`;
-                            });
-                        } else {
-                            allUsersHtml = "No players registered yet.";
-                        }
-                        document.getElementById('admAllUsersList').innerHTML = allUsersHtml;
+                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
+                    let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
+                        <div class="req-table-row">
+                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
+                            <div class="req-actions">${w.status.includes('Pending') ? `<button class="btn-approve" onclick="successWithdraw(${idx})">Paid</button><button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject</button>` : w.status}</div>
+                        </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending withdrawals.</div>";
+                    document.getElementById('admWithdrawList').innerHTML = wdHtml;
 
-                        let playerRoundBets = JSON.parse(localStorage.getItem("player_round_bets_clean_" + roundNum) || "{}");
-                        let pBetHtml = "";
-                        let pKeys = Object.keys(playerRoundBets);
-                        if (pKeys.length > 0) {
-                            pKeys.forEach(pk => {
-                                let pb = playerRoundBets[pk];
-                                let details = Object.keys(pb.bets).map(k => `${k}:₹${pb.bets[k]}`).join(', ');
-                                let tot = Object.values(pb.bets).reduce((a,b)=>a+b,0);
-                                pBetHtml += `<div style="border-bottom:1px dashed #333; padding:4px 0;">👤 <b>${pb.vipId} (${pk})</b> | Bets: <span style="color:#00ffff;">${details}</span> | Total: <strong style="color:#ffd700;">₹${tot}</strong></div>`;
-                            });
-                        } else {
-                            pBetHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No player round bets recorded yet.</div>";
-                        }
-                        let pListEl = document.getElementById('admPlayerRoundBetsList'); if(pListEl) pListEl.innerHTML = pBetHtml;
-
-                        let breakdownKey = "bets_breakdown_clean_" + roundNum;
-                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-                        let breakdownHtml = "";
-                        let hasBets = false;
-                        for (let k in betsMap) {
-                            hasBets = true;
-                            breakdownHtml += `<div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #333; padding: 4px 0;"><span>🎯 Bet on <b>${k}</b>:</span> <strong style="color:#ffd700;">₹${betsMap[k]}</strong></div>`;
-                        }
-                        if (!hasBets) breakdownHtml = "<div style='color:#888; font-size:11px; text-align:center;'>No active bets placed in this round yet.</div>";
-                        document.getElementById('admDetailedBetsList').innerHTML = breakdownHtml;
-
-                        let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                        let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
-                            <div class="req-table-row">
-                                <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
-                                <div class="req-actions">${d.status === 'Pending' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
-                            </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending deposits.</div>";
-                        document.getElementById('admDepositList').innerHTML = depHtml;
-
-                        let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                        let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
-                            <div class="req-table-row">
-                                <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
-                                <div class="req-actions">${w.status.includes('Pending') ? `<button class="btn-approve" onclick="successWithdraw(${idx})">Paid</button><button class="btn-reject" onclick="rejectWithdraw(${idx})">Reject</button>` : w.status}</div>
-                            </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:10px;'>No pending withdrawals.</div>";
-                        document.getElementById('admWithdrawList').innerHTML = wdHtml;
-
-                        let modal = document.getElementById('secretAdminModal');
-                        if (modal) {
-                            let profModal = document.getElementById('playerProfileModal');
-                            if (profModal) profModal.style.display = 'none';
-                            modal.style.display = 'block';
-                            modal.style.zIndex = '2147483647';
-                        }
-                    } catch(e) { console.error("Admin strict error:", e); }
+                    document.getElementById('secretAdminModal').style.display = 'block';
                 };
-
                 window.openAdminPanel = function() { window.openAdminPanelStrict(); };
 
                 window.approveDeposit = function(idx) { 
-                    let d = JSON.parse(localStorage.getItem("admin_deposit_requests")); 
-                    if(d[idx].status==='Approved') { alert("Already approved!"); return; }
+                    let d = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]"); 
+                    if(!d[idx] || d[idx].status==='Approved') return;
                     d[idx].status='Approved'; localStorage.setItem("admin_deposit_requests", JSON.stringify(d)); 
-                    realCoins+=d[idx].amount; syncUserCloudWallet(loggedUserPhone); pushAuditLog(`Approved deposit ₹${d[idx].amount} for ${d[idx].phone}`); window.updateBalancesDisplay(); window.openAdminPanelStrict(); 
+                    realCoins+=d[idx].amount; updateBalancesDisplay(); window.openAdminPanelStrict(); 
                 };
-                window.rejectDeposit = function(idx) { let d = JSON.parse(localStorage.getItem("admin_deposit_requests")); d[idx].status='Rejected'; localStorage.setItem("admin_deposit_requests", JSON.stringify(d)); pushAuditLog(`Rejected deposit index ${idx}`); window.openAdminPanelStrict(); };
-                window.successWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests")); w[idx].status='Success'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); pushAuditLog(`Paid withdrawal index ${idx}`); window.openAdminPanelStrict(); };
-                window.rejectWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests")); realCoins+=w[idx].amount; w[idx].status='Rejected (Refunded)'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); window.openAdminPanelStrict(); };
+                window.rejectDeposit = function(idx) { let d = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]"); if(d[idx]) d[idx].status='Rejected'; localStorage.setItem("admin_deposit_requests", JSON.stringify(d)); window.openAdminPanelStrict(); };
+                window.successWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]"); if(w[idx]) w[idx].status='Success'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); window.openAdminPanelStrict(); };
+                window.rejectWithdraw = function(idx) { let w = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]"); if(w[idx]) { realCoins+=w[idx].amount; w[idx].status='Rejected (Refunded)'; localStorage.setItem("admin_withdraw_requests", JSON.stringify(w)); updateBalancesDisplay(); } window.openAdminPanelStrict(); };
 
                 const gridTableDiv = document.getElementById('gridTableDiv');
                 if(gridTableDiv) {
@@ -1183,36 +741,24 @@
                     });
                 }
 
-                let currentActiveChip = 50, userActiveBets = {}, currentTotalBet = 0, isGameSpinning = false, betHistoryStack = [];
+                let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
                 window.placeTableBet = function(key, el) {
-                    if (isEmergencyMaintenance) { alert("System under maintenance."); return; }
                     let { timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;
-                    
-                    if (currentTotalBet + currentActiveChip > MAX_BET) { alert(`Max bet limit per round is ₹${MAX_BET}`); return; }
-                    if (currentActiveChip < MIN_BET) { alert(`Min bet is ₹${MIN_BET}`); return; }
-
                     if (activeGameMode === 'real') { if (realCoins < currentActiveChip) { alert("Low Real Balance!"); return; } realCoins -= currentActiveChip; }
                     else { if (testCoins < currentActiveChip) testCoins = 10000; testCoins -= currentActiveChip; }
-
                     currentTotalBet += currentActiveChip; userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
                     betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                    syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-
-                    let roundNum = getCleanRoundCounter();
-                    localStorage.setItem("total_bet_round_clean_" + roundNum, currentTotalBet);
-                    let breakdownKey = "bets_breakdown_clean_" + roundNum;
-                    let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-                    betsMap[key] = (betsMap[key] || 0) + currentActiveChip; localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
-
-                    let pKey = loggedUserPhone || loggedVipId || "GUEST_USER";
-                    let prbKey = "player_round_bets_clean_" + roundNum;
-                    let prbMap = JSON.parse(localStorage.getItem(prbKey) || "{}");
-                    if (!prbMap[pKey]) prbMap[pKey] = { vipId: loggedVipId || pKey, bets: {} };
-                    prbMap[pKey].bets[key] = (prbMap[pKey].bets[key] || 0) + currentActiveChip;
-                    localStorage.setItem(prbKey, JSON.stringify(prbMap));
+                    updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                    
+                    if (activeGameMode === 'real') {
+                        let cleanRNum = getCleanRoundCounter();
+                        let breakdownKey = "bets_breakdown_clean_" + cleanRNum;
+                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+                        betsMap[key] = (betsMap[key] || 0) + currentActiveChip; localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
+                    }
 
                     if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText=userActiveBets[key]; }
                 };
@@ -1221,54 +767,40 @@
                     let { timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
                     let lastBet = betHistoryStack.pop();
-                    if (lastBet.mode === 'real') realCoins += lastBet.amount; else testCoins += lastBet.amount;
+                    if (lastBet.mode === 'real') {
+                        realCoins += lastBet.amount;
+                        let cleanRNum = getCleanRoundCounter();
+                        let breakdownKey = "bets_breakdown_clean_" + cleanRNum;
+                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
+                        if (betsMap[lastBet.key]) {
+                            betsMap[lastBet.key] -= lastBet.amount;
+                            if (betsMap[lastBet.key] <= 0) delete betsMap[lastBet.key];
+                            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
+                        }
+                    } else { 
+                        testCoins += lastBet.amount; 
+                    }
                     currentTotalBet -= lastBet.amount; userActiveBets[lastBet.key] -= lastBet.amount;
                     if (userActiveBets[lastBet.key] <= 0) { delete userActiveBets[lastBet.key]; if(lastBet.element){lastBet.element.classList.remove('has-bet'); let b=lastBet.element.querySelector('.cell-badge'); if(b)b.remove();} }
-                    syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                    updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                 };
 
-                function getGlobalRound() {
-                    let nowSec = Math.floor(Date.now() / 1000);
-                    return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
-                }
-
-                function getMasterWinningNumber(roundId) {
-                    let cleanRNum = getCleanRoundCounter();
-                    let savedWin = localStorage.getItem("saved_winner_r_" + cleanRNum);
-                    if (savedWin !== null) return parseInt(savedWin);
-                    let rigSel = localStorage.getItem('admin_rig_selection');
-                    if (rigSel && rigSel !== "random") return parseInt(rigSel);
-                    let adminRigVal = document.getElementById('adminRigSelect') ? document.getElementById('adminRigSelect').value : 'random';
-                    if (adminRigVal !== "random") return parseInt(adminRigVal);
-                    let seed = (roundId * 9301 + 49297) % 233280;
-                    let rnd = seed / 233280;
-                    return numbersList[Math.floor(rnd * numbersList.length)];
-                }
-
-                function getUniversalHistoryForRound(rId) {
-                    let list = [];
-                    for (let i = 1; i <= 5; i++) {
-                        let pastRoundNum = getCleanRoundCounter() - i;
-                        let lockedWin = localStorage.getItem("saved_winner_r_" + pastRoundNum);
-                        if (lockedWin !== null) {
-                            list.push(parseInt(lockedWin));
-                        } else {
-                            let seed = ((rId - i) * 9301 + 49297) % 233280;
-                            let rnd = seed / 233280;
-                            list.push(numbersList[Math.floor(rnd * numbersList.length)]);
-                        }
-                    }
-                    return list;
-                }
-
-                let lastProcessedRound = -1, announcedNoMoreBets = false;
+                let lastProcessedRound = -1;
                 const ballOrbitEl = document.getElementById('rouletteBallOrbit');
 
                 setInterval(() => {
-                    if (isEmergencyMaintenance) return;
                     try {
                         let { roundId, timeLeft } = getGlobalRound();
                         let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+                        let mainTimerVal = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+                        let mainEl = document.getElementById('lobbyTimerMain');
+                        let boxEl = document.getElementById('lobbyTimerBox');
+                        if (mainEl) mainEl.innerText = mainTimerVal;
+                        if (boxEl) {
+                            if (timeLeft > 10) boxEl.classList.remove('closed-state');
+                            else boxEl.classList.add('closed-state');
+                        }
+
                         let histNums = getUniversalHistoryForRound(roundId);
                         let historyHTML = "";
                         histNums.forEach(pastNum => {
@@ -1278,44 +810,21 @@
                         let historyBallsCont = document.getElementById('historyBallsContainer');
                         if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
 
-                        let onlineOnlineCountDisplay = document.getElementById('loginOnlineCount');
-                        let masterAllUsers = JSON.parse(localStorage.getItem("master_all_registered_users") || "{}");
-                        let realOnlineNum = Object.keys(masterAllUsers).length;
-                        if(onlineOnlineCountDisplay) onlineOnlineCountDisplay.innerText = `🟢 ONLINE: ${realOnlineNum} VIPs`;
-
                         if (roundId !== lastProcessedRound) {
                             if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
-                            lastProcessedRound = roundId; announcedNoMoreBets = false; userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            lastProcessedRound = roundId; userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
                             document.getElementById('lobbyTotalBet').innerText = 0;
                             document.querySelectorAll('.table-cell, .color-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
-                        }
-
-                        if (timeLeft === 10 && !announcedNoMoreBets) { announcedNoMoreBets = true; window.speakVoice("No more bets, please!", true); }
-                        
-                        let mainTimerVal = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-                        let mainEl = document.getElementById('lobbyTimerMain');
-                        let boxEl = document.getElementById('lobbyTimerBox');
-                        let statusMsgEl = document.getElementById('lobbyStatusMsg');
-                        
-                        if (mainEl) mainEl.innerText = mainTimerVal;
-                        if (boxEl && statusMsgEl) {
-                            if (timeLeft > 10) {
-                                boxEl.classList.remove('closed-state');
-                                statusMsgEl.innerText = "Place bets! Game ready...";
-                            } else {
-                                boxEl.classList.add('closed-state');
-                                statusMsgEl.innerText = "⚠️ BETS CLOSED!";
-                            }
                         }
                     }catch(e){}
                 }, 1000);
 
                 function executeGlobalSpinAnimation(endedRoundId) {
                     isGameSpinning = true; document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
-                    window.playBallRollingSound(); window.speakVoice("Spinning the wheel.");
-                    let winningNum = getMasterWinningNumber(endedRoundId);
+                    let winningNum = getSmartWinnerForRound(endedRoundId);
                     let cleanRNum = getCleanRoundCounter();
                     localStorage.setItem("saved_winner_r_" + cleanRNum, winningNum);
+                    
                     let totalPockets = numbersList.length, degreesPerPocket = 360 / totalPockets, winningIndex = numbersList.indexOf(winningNum);
                     accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + (winningIndex * degreesPerPocket + (degreesPerPocket / 2));
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
@@ -1328,20 +837,22 @@
                             else if (betKey === 'red' && isRedWin) totalWonAmount += stakedAmt * 2;
                             else if (betKey === 'black' && !isRedWin && winningNum !== 0) totalWonAmount += stakedAmt * 2;
                         }
-                        if (totalWonAmount > 0) { if (activeGameMode === 'real') realCoins += totalWonAmount; else testCoins += totalWonAmount; window.speakVoice("Winner! Number " + winningNum + " " + colorName, true); }
-                        else { if (activeGameMode === 'test') testCoins += currentTotalBet; window.speakVoice("Winner! Number " + winningNum + " " + colorName, true); }
+                        if (totalWonAmount > 0) { if (activeGameMode === 'real') realCoins += totalWonAmount; else testCoins += totalWonAmount; }
+                        else if (activeGameMode === 'test') { testCoins += currentTotalBet; }
 
+                        let popup = document.getElementById('cinematicResultPopup');
+                        document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
+                        document.getElementById('popupPayoutDisplay').innerText = totalWonAmount > 0 ? `You Won 🪙${totalWonAmount}!` : `Round Finished.`;
+                        
                         let historyContainer = document.getElementById('historyBallsContainer');
                         if (historyContainer) {
                             let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
                             let newBall = document.createElement('div'); newBall.className = `history-ball ${cls}`; newBall.innerText = winningNum;
                             historyContainer.insertBefore(newBall, historyContainer.firstChild);
-                            if (historyContainer.children.length > 5) historyContainer.removeChild(historyContainer.lastChild);
+                            if (historyContainer.children.length > 6) historyContainer.removeChild(historyContainer.lastChild);
                         }
-                        let popup = document.getElementById('cinematicResultPopup');
-                        document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
-                        document.getElementById('popupPayoutDisplay').innerText = totalWonAmount > 0 ? `You Won 🪙${totalWonAmount}!` : `Round Finished.`;
-                        syncUserCloudWallet(loggedUserPhone); updateBalancesDisplay(); if(popup) popup.style.display = 'flex';
+
+                        updateBalancesDisplay(); if(popup) popup.style.display = 'flex';
                         setTimeout(() => { if(popup) popup.style.display = 'none'; isGameSpinning = false; }, 3000);
                     }, 6000);
                 }
@@ -1351,130 +862,39 @@
                 window.openTransferModal = function() { document.getElementById('transferModalBox').style.display = 'flex'; };
                 window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
                 window.selectDepositPkg = function(amt, btn) { document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('customDepositInput').value = amt; };
-                window.selectWithdrawPkg = function(amt, btn) { document.getElementById('withdrawAmtInput').value = amt; document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); };
+                window.selectWithdrawPkg = function(amt, btn) { document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('withdrawAmtInput').value = amt; };
 
                 window.triggerCashfreeSandboxDeposit = function() {
                     let customAmt = parseInt(document.getElementById('customDepositInput').value);
                     if (isNaN(customAmt) || customAmt < 50) { alert("Valid amount needed!"); return; }
-                    closeWalletModals(); alert("🔒 Cashfree Sandbox Processing ₹" + customAmt);
-                    setTimeout(() => {
-                        let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                        let utrStr = "CF_" + Math.floor(Math.random()*900000+100000);
-                        deposits.push({ phone: loggedUserPhone, amount: customAmt, utr: utrStr, status: 'Pending', time: new Date().toLocaleTimeString() });
-                        localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits)); syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay();
-                        pushAuditLog(`New deposit req ₹${customAmt} [${utrStr}]`);
-                    }, 1000);
+                    closeWalletModals(); 
+                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
+                    deposits.push({ phone: loggedUserPhone, amount: customAmt, utr: "RD_" + Math.floor(100000+Math.random()*900000), status: 'Pending', time: new Date().toLocaleTimeString() });
+                    localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
+                    updateBalancesDisplay();
+                    alert("✅ Deposit request submitted for Royal Digital: ₹" + customAmt);
                 };
 
                 window.submitWithdrawCoins = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value), upi = document.getElementById('withdrawUpiInput').value.trim();
                     if (!amt || amt < 100 || realCoins < amt || !upi) { alert("Check withdrawal details/balance!"); return; }
-                    realCoins -= amt; syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay();
+                    realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
                     withdraws.push({ phone: loggedUserPhone, amount: amt, upi: upi, status: 'Pending Payout', time: new Date().toLocaleTimeString() });
-                    localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws)); closeWalletModals(); window.updateBalancesDisplay();
-                    pushAuditLog(`Withdraw request ₹${amt} by ${loggedUserPhone}`);
+                    localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
+                    updateBalancesDisplay();
+                    alert("Withdrawal requested for ₹" + amt + "!");
                 };
 
                 window.executeCoinTransfer = function() {
-                    let targetEl = document.getElementById('transferTargetId');
-                    let amtEl = document.getElementById('transferCoinAmt');
-                    let targetId = targetEl ? targetEl.value : "";
-                    let sendAmt = amtEl ? parseInt(amtEl.value) : 0;
+                    let targetId = document.getElementById('transferTargetId').value;
+                    let sendAmt = parseInt(document.getElementById('transferCoinAmt').value);
                     if (!targetId || !sendAmt || realCoins < sendAmt) { alert("Check details!"); return; }
-                    realCoins -= sendAmt; syncUserCloudWallet(loggedUserPhone); window.updateBalancesDisplay(); closeWalletModals(); 
-                    pushAuditLog(`Transfer ₹${sendAmt} to VIP #${targetId}`);
-                    alert(`Successfully transferred ₹${sendAmt} to VIP #${targetId}!`);
+                    realCoins -= sendAmt; updateBalancesDisplay(); closeWalletModals();
+                    alert(`Transferred ${sendAmt} coins to ${targetId}`);
                 };
             }catch(err){console.error("Engine guard error:", err);}
         })();
     </script>
-    <script>
-  window.addEventListener('load', () => {
-    if (window.supabase) {
-      window.supabase.createClient('https://fifqewznpxllackprwut.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpZnFld3pucHhsbGFja3Byd3V0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwMDM5NjAsImV4cCI6MjA1NjU3OTk2MH0.dummy_key_or_actual_anon');
-    }
-  });
-</script>
-    <script>
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (typeof window.syncuserCloudWallet === 'function') {
-        const _baseSync = window.syncuserCloudWallet;
-        window.syncuserCloudWallet = function(phone) {
-          _baseSync(phone);
-          try {
-            if (window.supabase && phone) {
-              window.supabase.from('profiles').upsert({
-                phone: phone,
-                real_coins: typeof realCoins !== 'undefined' ? realCoins : 0,
-                test_coins: typeof testCoins !== 'undefined' ? testCoins : 0
-              }, { onConflict: 'phone' }).then(() => {});
-            }
-          } catch(e) {}
-        };
-      }
-    }, 1500);
-  });
-</script>
-    <div style="margin: 15px 0; background: rgba(10,25,10,0.9); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
-    <p style="color: #00ffcc; font-size: 13px; margin-bottom: 10px; font-weight: bold;">➕ DIRECT PLAYER COIN ADDER</p>
-    
-    <!-- ऑप्शन 1: कस्टमर/प्लेयर की आईडी (फोन नंबर) -->
-    <input type="text" id="targetPlayerPhone" placeholder="Enter Player Phone/ID (e.g. 9399...)" style="width: 100%; padding: 9px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box;" />
-    
-    <!-- ऑप्शन 2: कितने कॉइन डालने हैं -->
-    <input type="number" id="targetAddCoins" placeholder="Coins to Add (e.g. 500)" style="width: 100%; padding: 9px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box;" />
-    
-    <!-- नीचे अप्लाई का ऑप्शन/बटन -->
-    <button onclick="window.applyDirectPlayerCoins()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #00ffcc, #00aa88); color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Apply & Add Coins</button>
-</div>
-
-<script>
-  if (!window.applyDirectPlayerCoins) {
-    window.applyDirectPlayerCoins = function() {
-        let phone = document.getElementById('targetPlayerPhone').value.trim();
-        let addAmt = parseInt(document.getElementById('targetAddCoins').value) || 0;
-        
-        if (!phone || addAmt <= 0) {
-            alert('कृपया सही प्लेयर आईडी और कॉइन संख्या डालें!');
-            return;
-        }
-        
-        if (window.supabase) {
-            window.supabase.from('profiles').select('real_coins').eq('phone', phone).single().then(({ data }) => {
-                let currentCoins = data && data.real_coins ? data.real_coins : 0;
-                let updatedCoins = currentCoins + addAmt;
-                
-                window.supabase.from('profiles').upsert({
-                    phone: phone,
-                    real_coins: updatedCoins
-                }, { onConflict: 'phone' }).then(({ error }) => {
-                    if (error) {
-                        alert('एरर: ' + error.message);
-                    } else {
-                        alert(`सफलतापूर्वक ${phone} की आईडी में ${add_Amt_safe(addAmt)} कॉइन जोड़ दिए गए! नया कुल बैलेंस: ${updatedCoins}`);
-                    }
-                });
-            }).catch(() => {
-                // अगर रो मौजूद नहीं है तो डायरेक्ट upsert कर दें
-                window.supabase.from('profiles').upsert({
-                    phone: phone,
-                    real_coins: addAmt
-                }, { onConflict: 'phone' }).then(({ error }) => {
-                    if (error) {
-                        alert('एरर: ' + error.message);
-                    } else {
-                        alert(`सफलतापूर्वक ${phone} की आईडी में ${addAmt} कॉइन जोड़ दिए गए!`);
-                    }
-                });
-            });
-        } else {
-            alert('सुपाबेस कनेक्टेड नहीं है!');
-        }
-    };
-  }
-  function add_Amt_safe(n) { return n; }
-</script>
 </body>
 </html>

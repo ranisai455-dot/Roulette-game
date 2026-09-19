@@ -312,7 +312,7 @@
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close Panel</button>
             </div>
 
-            <!-- 📱 ADMIN QR CODE FILE UPLOADER (गैलरी से QR इमेज सेलेक्ट करके अपलोड करने का ऑप्शन) -->
+            <!-- 📱 ADMIN QR CODE FILE UPLOADER -->
             <div style="background: rgba(0,30,15,0.95); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
                 <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER (LIVE SYNC)</p>
                 <p style="font-size: 10.5px; color: #ccc; margin-bottom: 8px;">अपने फोन की गैलरी से QR कोड का स्क्रीनशॉट सेलेक्ट करें। यह तुरंत पूरी दुनिया के सभी प्लेयर्स के डिपॉजिट मोडल में लाइव सेट हो जाएगा।</p>
@@ -363,7 +363,7 @@
                 </div>
             </div>
 
-            <!-- Active Bets Breakdown (Real Mode Only) -->
+            <!-- Active Bets Breakdown -->
             <div class="admin-section-box">
                 <div class="admin-section-title"><span>🎯 Active Real-Mode Bets Breakdown (This Round)</span></div>
                 <div id="admDetailedBetsList" style="font-size:11.5px; color:#ccc; max-height:90px; overflow-y:auto;">No active real bets placed yet.</div>
@@ -387,7 +387,7 @@
         </div>
     </div>
 
-    <!-- डिपॉजिट मोडल (एडमिन द्वारा अपलोड किया गया लाइव QR कोड) -->
+    <!-- डिपॉजिट मोडल -->
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - SECURE DEPOSIT</h3>
@@ -483,6 +483,7 @@
                     adminQrUrl: localStorage.getItem("royal_admin_qr_url") || "https://i.ibb.co/3yk54L2/1000532596.jpg"
                 };
 
+                // --- SUPABASE CLOUD DATABASE & REALTIME SYNC INTEGRATION ---
                 if (sbClient) {
                     const globalChannel = sbClient.channel('royal_global_master_sync', {
                         config: { broadcast: { self: true } }
@@ -503,13 +504,46 @@
                         }
                     }).subscribe();
 
-                    window.publishToCloudMaster = function(winnerNum, histArr, rigVal, qrVal) {
-                        globalChannel.send({
-                            type: 'broadcast',
-                            event: 'master_game_update',
-                            payload: { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }
-                        });
+                    window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal) {
+                        try {
+                            globalChannel.send({
+                                type: 'broadcast',
+                                event: 'master_game_update',
+                                payload: { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }
+                            });
+
+                            // Supabase game_rounds table में ग्लोबल हिस्ट्री और विनर सेव करें
+                            await sbClient.from('game_rounds').insert([{
+                                round_id: Math.floor(Date.now() / 1000 / ROUND_TIME),
+                                winner_num: winnerNum,
+                                history: JSON.stringify(histArr)
+                            }]);
+
+                            // Supabase game_state table में ग्लोबल स्टेट सेव करें
+                            await sbClient.from('game_state').upsert([{
+                                key: 'global_config',
+                                value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal })
+                            }], { onConflict: 'key' });
+                        } catch(e) {
+                            console.error("Supabase Sync Error:", e);
+                        }
                     };
+
+                    // ऐप लोड होने पर Supabase से लेटेस्ट डेटा फेच करें
+                    async function fetchLatestCloudState() {
+                        try {
+                            let { data } = await sbClient.from('game_rounds').select('*').order('created_at', { ascending: false }).limit(1);
+                            if (data && data.length > 0 && data[0].history) {
+                                let parsedHist = JSON.parse(data[0].history);
+                                if (Array.isArray(parsedHist)) {
+                                    window.cloudSyncStore.historyList = parsedHist;
+                                }
+                            }
+                        } catch(e) {
+                            console.error("Fetch Cloud State Error:", e);
+                        }
+                    }
+                    fetchLatestCloudState();
                 }
 
                 function updateActiveQrDisplay() {
@@ -536,7 +570,7 @@
                         if(window.publishToCloudMaster) {
                             window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, base64Img);
                         }
-                        alert("✅ QR Code uploaded & broadcasted to all players successfully!");
+                        alert("✅ QR Code uploaded & broadcasted to all players successfully via Supabase!");
                     };
                     reader.readAsDataURL(file);
                 };
@@ -970,7 +1004,6 @@
                     alert("✅ डिपॉजिट रिक्वेस्ट स्क्रीनशॉट और UTR के साथ भेज दी गई है!");
                 };
 
-                // विड्रॉल रिक्वेस्ट में 2.5% GST काटने का लॉजिक
                 window.submitWithdrawCoins = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
@@ -982,7 +1015,7 @@
                         return; 
                     }
                     
-                    let gstDeducted = Math.round(amt * 0.025 * 100) / 100; // 2.5% GST
+                    let gstDeducted = Math.round(amt * 0.025 * 100) / 100;
                     let netAmount = Math.round((amt - gstDeducted) * 100) / 100;
 
                     realCoins -= amt; 

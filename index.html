@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="manifest.json">
     <style>
         a[href*="netlify.com"] { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }
         body { overflow-y: auto !important; min-height: 100vh; padding-bottom: 30px !important; }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL ROULETTE - SECURE MASTER CASINO</title>
-    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+    <title>ROYAL ROULETTE - CLOUD DATABASE MASTER</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -310,7 +308,7 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER</h2>
+                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (CLOUD SYNC)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close Panel</button>
             </div>
 
@@ -362,11 +360,11 @@
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ One-Time Rig / Override Next Round (Realtime Broadcast)</span></div>
+                <div class="admin-section-title"><span>⚙️ Global Cloud Override / Rig Next Round</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 10px;">
-                    <option value="random">Auto Dynamic Pool (5% House + ₹95 Cap Match - Real Bets Only)</option>
+                    <option value="random">Auto Dynamic Pool (5% House + Random - Cloud Master)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast Override</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast to Worldwide Cloud</button>
             </div>
         </div>
     </div>
@@ -379,15 +377,10 @@
         </div>
     </div>
 
-    <!-- डिपॉजिट मोडल -->
+    <!-- डिपॉजिट मोडल (Direct UPI Intent + QR Code + UTR & Screenshot) -->
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - DEPOSIT & PROOF</h3>
-            <div style="background:#fff; padding:12px; border-radius:8px; color:#000; margin-bottom:10px;">
-                <p style="font-weight:bold; color:#d32f2f;">Scan & Pay via UPI / QR</p>
-                <p style="font-size:13px; font-weight:bold;">Name: ROYAL DIGITAL</p>
-                <p style="font-size:10.5px; color:#555;">Payment करने के बाद UTR नंबर दर्ज करें और स्क्रीनशॉट अपलोड करें।</p>
-            </div>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - INSTANT UPI PAY</h3>
             
             <div class="deposit-packages-grid">
                 <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
@@ -399,14 +392,26 @@
             </div>
 
             <input type="number" id="customDepositInput" value="300" placeholder="Enter Amount">
+            
+            <!-- ⚡ Direct UPI App Pay Button (PhonePe, GPay, Paytm) -->
+            <button onclick="openDirectUpiApp()" class="login-btn" style="background: linear-gradient(135deg, #00c853, #1b5e20); color:#fff; padding:12px; font-size:13px; margin: 8px 0; border: 2px solid #ffd700;">
+                🚀 PAY INSTANTLY VIA PHONEPE / GPAY / PAYTM
+            </button>
+
+            <div style="background:#fff; padding:8px; border-radius:6px; color:#000; margin: 8px 0; display: flex; flex-direction: column; align-items: center;">
+                <p style="font-size:10px; font-weight:bold; color:#d32f2f; margin-bottom: 3px;">Or Scan QR via any UPI App:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=royalmp@okaxis&pn=ROYAL%20DIGITAL&am=300&cu=INR" alt="QR" style="width: 100px; height: 100px; object-fit: contain;" />
+                <p style="font-size:11px; font-weight:bold;">Name: ROYAL DIGITAL</p>
+            </div>
+
             <input type="text" id="depositUtrInput" placeholder="Enter UTR / Transaction Reference No." style="width:100%; padding:10px; margin-top:5px; background:#000; border:1.5px solid #f1c40f; color:#f1c40f; border-radius:8px; text-align:center; font-weight:bold; font-size:12px;">
             
-            <div style="margin-top:8px; text-align:left; font-size:11px; color:#ffd700;">
+            <div style="margin-top:6px; text-align:left; font-size:11px; color:#ffd700;">
                 📸 Upload Payment Screenshot (Proof): 
                 <input type="file" id="depositScreenshotFile" accept="image/*" style="margin-top:4px; color:#fff; font-size:10px;">
             </div>
 
-            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; font-size:13px; margin-top:10px;">🚀 SUBMIT DEPOSIT REQUEST</button>
+            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; font-size:13px; margin-top:10px;">🚀 SUBMIT DEPOSIT REQUEST TO ADMIN</button>
             <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">Close</button>
         </div>
     </div>
@@ -450,28 +455,9 @@
     <script>
         (function() {
             try {
-                // Supabase कॉन्फ़िगरेशन
                 const SUPABASE_URL = "https://fifqewznpxllackprwut.supabase.co";
                 const SUPABASE_KEY = "sb_publishable_Oh2OjV9trsWZ0RXFxvrn_Q_9Km13JPT";
                 const sbClient = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
-                window.globalMasterSyncChannel = null;
-                if (sbClient) {
-                    window.globalMasterSyncChannel = sbClient.channel('royal_roulette_master_sync', {
-                        config: { broadcast: { self: false } }
-                    });
-                    
-                    window.globalMasterSyncChannel.on('broadcast', { event: 'admin_override_sync' }, payload => {
-                        if (payload && payload.payload) {
-                            let rId = payload.payload.targetRound;
-                            let wNum = payload.payload.rigVal;
-                            localStorage.setItem("global_locked_winner_r_" + rId, wNum);
-                            
-                            let sel = document.getElementById('adminRigSelect');
-                            if (sel) sel.value = wNum;
-                        }
-                    }).subscribe();
-                }
 
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
@@ -481,9 +467,40 @@
 
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
-                let loggedUserPhone = "", loggedVipId = "RD001001", loggedAvatar = "😎";
+                let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
+                
+                window.cloudSyncStore = {
+                    currentWinner: 14,
+                    historyList: [24, 14, 5, 22, 10, 3],
+                    adminRig: "random"
+                };
+
+                if (sbClient) {
+                    const globalChannel = sbClient.channel('royal_global_master_sync', {
+                        config: { broadcast: { self: true } }
+                    });
+
+                    globalChannel.on('broadcast', { event: 'master_game_update' }, payload => {
+                        if (payload && payload.payload) {
+                            window.cloudSyncStore.currentWinner = payload.payload.winner;
+                            window.cloudSyncStore.historyList = payload.payload.history;
+                            window.cloudSyncStore.adminRig = payload.payload.rig;
+                            
+                            let sel = document.getElementById('adminRigSelect');
+                            if (sel) sel.value = payload.payload.rig;
+                        }
+                    }).subscribe();
+
+                    window.publishToCloudMaster = function(winnerNum, histArr, rigVal) {
+                        globalChannel.send({
+                            type: 'broadcast',
+                            event: 'master_game_update',
+                            payload: { winner: winnerNum, history: histArr, rig: rigVal }
+                        });
+                    };
+                }
 
                 function getOrCreateUniqueRoyalId(phone) {
                     let reg = JSON.parse(localStorage.getItem("royal_registered_map") || "{}");
@@ -507,34 +524,12 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                function getUniversalHistoryForRound(rId) {
-                    let list = [];
-                    let cleanRNum = getCleanRoundCounter();
-                    for (let i = 1; i <= 6; i++) {
-                        let pastRoundNum = cleanRNum - i;
-                        let lockedWin = localStorage.getItem("global_locked_winner_r_" + pastRoundNum);
-                        if (lockedWin !== null) {
-                            let parsed = parseInt(lockedWin);
-                            list.push(isNaN(parsed) ? numbersList[(pastRoundNum * 7) % numbersList.length] : parsed);
-                        } else {
-                            // बिल्कुल फिक्स और स्थिर ऐतिहासिक नंबर जनरेटर
-                            let stableIdx = Math.abs((pastRoundNum * 7853 + 123) % numbersList.length);
-                            list.push(numbersList[stableIdx]);
-                        }
-                    }
-                    return list;
-                }
-
-                // 🔥 **नया और आखिरी अचूक समाधान (True Dynamic Auto-Random & 5% House Pool Engine)**
                 function getSmartWinnerForRound(roundId) {
-                    // 1. एडमिन पैनल का कमांड (सर्वोच्च प्राथमिकता, 100% नॉन-टच)
-                    let forcedNum = localStorage.getItem("global_locked_winner_r_" + roundId);
-                    if (forcedNum !== null && forcedNum !== "random") {
-                        let parsedNum = parseInt(forcedNum);
+                    if (window.cloudSyncStore.adminRig !== "random") {
+                        let parsedNum = parseInt(window.cloudSyncStore.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
 
-                    // 2. 5% हाउस पूल लॉजिक (जब रियल बेट्स लगी हों)
                     let breakdownKey = "bets_breakdown_clean_" + roundId;
                     let poolBreakdown = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
                     let totalPool = Object.values(poolBreakdown).reduce((a, b) => a + Number(b), 0);
@@ -574,13 +569,17 @@
                         }
                     }
 
-                    // 3. जब कोई बेट न हो (Testing / Auto Mode): 
-                    // यहाँ हमने Math.random() या किसी फिक्स सीड की जगह 'roundId' और 'performance.now()' का उपयोग किया है, 
-                    // ताकि हर नए राउंड में बिल्कुल अलग, नया और कभी न रिपीट होने वाला नंबर खुले (जैसे 24 आया था, तो अब कभी 24 या 0 नहीं फंसेगा)।
                     let uniqueRandomPool = [32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26, 0];
                     let mixIndex = Math.abs((roundId * 397 + Math.floor(Date.now() / 1000)) % uniqueRandomPool.length);
                     return uniqueRandomPool[mixIndex];
                 }
+
+                window.openDirectUpiApp = function() {
+                    let amt = document.getElementById('customDepositInput').value || "300";
+                    let upiId = "royalmp@okaxis"; // यहाँ अपनी मर्चेंट या पर्सनल UPI आईडी डाल सकते हैं
+                    let upiUrl = `upi://pay?pa=${upiId}&pn=ROYAL%20DIGITAL&am=${amt}&cu=INR`;
+                    window.location.href = upiUrl;
+                };
 
                 window.applyAdminCoinsDirect = function() {
                     let targetId = document.getElementById('targetMemberId').value.trim();
@@ -632,24 +631,18 @@
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Rig Force Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Cloud Rig Force Number " + num; adminSelect.appendChild(opt); });
                 }
                 
-                // एडमिन सेटिंग्स सेव (100% नॉन-टच और लाइव ब्रॉडकास्ट)
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    let currentRound = getCleanRoundCounter(); 
+                    window.cloudSyncStore.adminRig = sel;
                     
-                    localStorage.setItem("global_locked_winner_r_" + currentRound, sel);
-
-                    if (window.globalMasterSyncChannel) {
-                        let payloadData = { rigVal: sel, targetRound: currentRound };
-                        window.globalMasterSyncChannel.send({ type: 'broadcast', event: 'admin_override_sync', payload: payloadData });
-                        setTimeout(() => window.globalMasterSyncChannel.send({ type: 'broadcast', event: 'admin_override_sync', payload: payloadData }), 500);
-                        setTimeout(() => window.globalMasterSyncChannel.send({ type: 'broadcast', event: 'admin_override_sync', payload: payloadData }), 1000);
+                    if (window.publishToCloudMaster) {
+                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, sel);
                     }
                     
-                    alert(`✅ 100% SUCCESS!\nRound #${currentRound} के लिए '${sel}' का रिजल्ट लॉक कर दिया गया है!`);
+                    alert(`✅ CLOUD MASTER SUCCESS!\nWorldwide Cloud Rig set to '${sel}' for all players!`);
                     document.getElementById('secretAdminModal').style.display = 'none';
                 };
 
@@ -843,9 +836,8 @@
                             else boxEl.classList.add('closed-state');
                         }
 
-                        let histNums = getUniversalHistoryForRound(roundId);
                         let historyHTML = "";
-                        histNums.forEach(pastNum => {
+                        window.cloudSyncStore.historyList.forEach(pastNum => {
                             let validNum = isNaN(pastNum) ? 0 : pastNum;
                             let cls = validNum === 0 ? 'green' : (redList.includes(validNum) ? 'red' : 'black');
                             historyHTML += `<div class="history-ball ${cls}">${validNum}</div>`;
@@ -868,8 +860,13 @@
                     let winningNum = getSmartWinnerForRound(endedRoundId);
                     if (isNaN(winningNum)) winningNum = 0;
                     
-                    let cleanRNum = getCleanRoundCounter();
-                    localStorage.setItem("global_locked_winner_r_" + cleanRNum, winningNum);
+                    window.cloudSyncStore.currentWinner = winningNum;
+                    window.cloudSyncStore.historyList.unshift(winningNum);
+                    if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
+
+                    if (window.publishToCloudMaster) {
+                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig);
+                    }
                     
                     let totalPockets = numbersList.length;
                     let degreesPerPocket = 360 / totalPockets;
@@ -900,14 +897,6 @@
                         document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${colorName})`;
                         document.getElementById('popupPayoutDisplay').innerText = totalWonAmount > 0 ? `You Won 🪙${totalWonAmount}!` : `Round Finished.`;
                         
-                        let historyContainer = document.getElementById('historyBallsContainer');
-                        if (historyContainer) {
-                            let cls = winningNum === 0 ? 'green' : (redList.includes(winningNum) ? 'red' : 'black');
-                            let newBall = document.createElement('div'); newBall.className = `history-ball ${cls}`; newBall.innerText = winningNum;
-                            historyContainer.insertBefore(newBall, historyContainer.firstChild);
-                            if (historyContainer.children.length > 6) historyContainer.removeChild(historyContainer.lastChild);
-                        }
-
                         updateBalancesDisplay(); if(popup) popup.style.display = 'flex';
                         setTimeout(() => { if(popup) popup.style.display = 'none'; isGameSpinning = false; }, 3000);
                     }, 6000);

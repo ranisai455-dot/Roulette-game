@@ -7,7 +7,7 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL ROULETTE - CLOUD DATABASE MASTER</title>
+    <title>ROYAL ROULETTE - 100% CLOUD DATABASE MASTER</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -308,18 +308,18 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (CLOUD SYNC)</h2>
+                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% CLOUD SYNC)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close Panel</button>
             </div>
 
             <!-- 📱 ADMIN QR CODE FILE UPLOADER -->
             <div style="background: rgba(0,30,15,0.95); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER (LIVE SYNC)</p>
-                <p style="font-size: 10.5px; color: #ccc; margin-bottom: 8px;">अपने फोन की गैलरी से QR कोड का स्क्रीनशॉट सेलेक्ट करें। यह तुरंत पूरी दुनिया के सभी प्लेयर्स के डिपॉजिट मोडल में लाइव सेट हो जाएगा।</p>
+                <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER (LIVE CLOUD SYNC)</p>
+                <p style="font-size: 10.5px; color: #ccc; margin-bottom: 8px;">यहाँ से QR कोड अपलोड करें। यह सीधे Supabase डेटाबेस में सेव होकर तुरंत सभी प्लेयर्स के फोन्स पर लाइव हो जाएगा।</p>
                 
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 6px; font-size: 11px; margin-bottom: 8px;" />
                 
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Broadcast QR Code Now</button>
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Save QR Code to Cloud</button>
             </div>
 
             <!-- DIRECT PLAYER COIN & QR PAYMENT CREDITOR -->
@@ -483,53 +483,10 @@
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg"
                 };
 
-                // --- 100% ONLINE SUPABASE CLOUD SYNC & REALTIME POLLING ---
+                // --- 100% PURE SUPABASE CLOUD MASTER SYNC ---
                 if (sbClient) {
-                    const globalChannel = sbClient.channel('royal_global_master_sync', {
-                        config: { broadcast: { self: true } }
-                    });
-
-                    globalChannel.on('broadcast', { event: 'master_game_update' }, payload => {
-                        if (payload && payload.payload) {
-                            window.cloudSyncStore.currentWinner = payload.payload.winner;
-                            window.cloudSyncStore.historyList = payload.payload.history;
-                            window.cloudSyncStore.adminRig = payload.payload.rig;
-                            if(payload.payload.qrUrl) {
-                                window.cloudSyncStore.adminQrUrl = payload.payload.qrUrl;
-                                updateActiveQrDisplay();
-                            }
-                            let sel = document.getElementById('adminRigSelect');
-                            if (sel) sel.value = payload.payload.rig;
-                        }
-                    }).subscribe();
-
-                    window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal) {
-                        try {
-                            // ब्रॉडकास्ट भेजें
-                            globalChannel.send({
-                                type: 'broadcast',
-                                event: 'master_game_update',
-                                payload: { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }
-                            });
-
-                            // Supabase game_state table में परमानेंटली सेव करें (ताकि हर प्लेयर को लाइव मिले)
-                            await sbClient.from('game_state').upsert([
-                                { key: 'global_config', value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }) }
-                            ], { onConflict: 'key' });
-
-                            // Supabase game_rounds table में भी राउंड और हिस्ट्री सेव करें
-                            await sbClient.from('game_rounds').insert([{
-                                round_id: Math.floor(Date.now() / 1000 / ROUND_TIME),
-                                winner_num: winnerNum,
-                                history: JSON.stringify(histArr)
-                            }]);
-                        } catch(e) {
-                            console.error("Cloud Master Publish Error:", e);
-                        }
-                    };
-
-                    // हर 2 सेकंड में Supabase से लाइव स्टेट और QR कोड फेच करें (ताकि दोस्त के फोन पर भी ऑटोमैटिक सिंक हो)
-                    setInterval(async () => {
+                    // हर सेकंड Supabase game_state टेबल से लाइव डेटा खींचने वाला लूप (Polling)
+                    async function fetchGlobalCloudState() {
                         try {
                             let { data, error } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
                             if (data && data.value) {
@@ -548,7 +505,26 @@
                                 }
                             }
                         } catch(e) {}
-                    }, 2000);
+                    }
+                    setInterval(fetchGlobalCloudState, 1500);
+
+                    window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal) {
+                        try {
+                            // Supabase game_state टेबल में परमानेंटली सेव करें ताकि दुनिया के हर फोन को तुरंत मिले
+                            await sbClient.from('game_state').upsert([
+                                { key: 'global_config', value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }) }
+                            ], { onConflict: 'key' });
+
+                            // Supabase game_rounds टेबल में भी राउंड और हिस्ट्री सेव करें
+                            await sbClient.from('game_rounds').insert([{
+                                round_id: Math.floor(Date.now() / 1000 / ROUND_TIME),
+                                winner_num: winnerNum,
+                                history: JSON.stringify(histArr)
+                            }]);
+                        } catch(e) {
+                            console.error("Cloud Master Push Error:", e);
+                        }
+                    };
                 }
 
                 function updateActiveQrDisplay() {
@@ -574,7 +550,7 @@
                         if(window.publishToCloudMaster) {
                             window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, base64Img);
                         }
-                        alert("✅ QR Code uploaded & broadcasted to all players successfully via Supabase Cloud!");
+                        alert("✅ QR Code saved to Supabase Cloud! Now it will instantly update on all players' phones.");
                     };
                     reader.readAsDataURL(file);
                 };
@@ -605,45 +581,6 @@
                     if (window.cloudSyncStore.adminRig !== "random") {
                         let parsedNum = parseInt(window.cloudSyncStore.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
-                    }
-
-                    let breakdownKey = "bets_breakdown_clean_" + roundId;
-                    let poolBreakdown = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-                    let totalPool = Object.values(poolBreakdown).reduce((a, b) => a + Number(b), 0);
-
-                    if (totalPool > 0) {
-                        let allowedPayout = totalPool * 0.95;
-                        let safeNumbers = [];
-
-                        for (let i = 0; i < numbersList.length; i++) {
-                            let testNum = numbersList[i];
-                            let payoutForThisNum = 0;
-
-                            if (poolBreakdown[testNum.toString()]) {
-                                payoutForThisNum += Number(poolBreakdown[testNum.toString()]) * 36;
-                            }
-                            if (poolBreakdown['red'] && redList.includes(testNum)) {
-                                payoutForThisNum += Number(poolBreakdown['red']) * 2;
-                            }
-                            if (poolBreakdown['black'] && !redList.includes(testNum) && testNum !== 0) {
-                                payoutForThisNum += Number(poolBreakdown['black']) * 2;
-                            }
-
-                            if (!isNaN(payoutForThisNum) && payoutForThisNum <= allowedPayout) {
-                                safeNumbers.push(testNum);
-                            }
-                        }
-
-                        if (safeNumbers.length > 0) {
-                            let pseudoIndex = Math.abs((roundId * 9301 + 49297) % safeNumbers.length);
-                            return safeNumbers[pseudoIndex];
-                        } else {
-                            let zeroBetNums = numbersList.filter(n => !poolBreakdown[n.toString()]);
-                            if (zeroBetNums.length > 0) {
-                                let pseudoIndex = Math.abs((roundId * 9301 + 49297) % zeroBetNums.length);
-                                return zeroBetNums[pseudoIndex];
-                            }
-                        }
                     }
 
                     let uniqueRandomPool = [32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26, 0];
@@ -856,11 +793,6 @@
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { alert("Low Balance!"); return; } 
                         realCoins -= currentActiveChip; 
-                        let cleanRNum = getCleanRoundCounter();
-                        let breakdownKey = "bets_breakdown_clean_" + cleanRNum;
-                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-                        betsMap[key] = (betsMap[key] || 0) + currentActiveChip; 
-                        localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
@@ -876,19 +808,8 @@
                     let { timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
                     let lastBet = betHistoryStack.pop();
-                    if (lastBet.mode === 'real') { 
-                        realCoins += lastBet.amount; 
-                        let cleanRNum = getCleanRoundCounter();
-                        let breakdownKey = "bets_breakdown_clean_" + cleanRNum;
-                        let betsMap = JSON.parse(localStorage.getItem(breakdownKey) || "{}");
-                        if (betsMap[lastBet.key]) {
-                            betsMap[lastBet.key] -= lastBet.amount;
-                            if (betsMap[lastBet.key] <= 0) delete betsMap[lastBet.key];
-                            localStorage.setItem(breakdownKey, JSON.stringify(betsMap));
-                        }
-                    } else { 
-                        testCoins += lastBet.amount; 
-                    }
+                    if (lastBet.mode === 'real') { realCoins += lastBet.amount; } 
+                    else { testCoins += lastBet.amount; }
                     currentTotalBet -= lastBet.amount; userActiveBets[lastBet.key] -= lastBet.amount;
                     if (userActiveBets[lastBet.key] <= 0) { delete userActiveBets[lastBet.key]; if(lastBet.element){lastBet.element.classList.remove('has-bet'); let b=lastBet.element.querySelector('.cell-badge'); if(b)b.remove();} }
                     updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;

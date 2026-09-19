@@ -480,10 +480,10 @@
                     currentWinner: 14,
                     historyList: [24, 14, 5, 22, 10, 3],
                     adminRig: "random",
-                    adminQrUrl: localStorage.getItem("royal_admin_qr_url") || "https://i.ibb.co/3yk54L2/1000532596.jpg"
+                    adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg"
                 };
 
-                // --- SUPABASE CLOUD DATABASE & REALTIME SYNC INTEGRATION ---
+                // --- 100% ONLINE SUPABASE CLOUD SYNC & REALTIME POLLING ---
                 if (sbClient) {
                     const globalChannel = sbClient.channel('royal_global_master_sync', {
                         config: { broadcast: { self: true } }
@@ -498,7 +498,6 @@
                                 window.cloudSyncStore.adminQrUrl = payload.payload.qrUrl;
                                 updateActiveQrDisplay();
                             }
-                            
                             let sel = document.getElementById('adminRigSelect');
                             if (sel) sel.value = payload.payload.rig;
                         }
@@ -506,44 +505,50 @@
 
                     window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal) {
                         try {
+                            // ब्रॉडकास्ट भेजें
                             globalChannel.send({
                                 type: 'broadcast',
                                 event: 'master_game_update',
                                 payload: { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }
                             });
 
-                            // Supabase game_rounds table में ग्लोबल हिस्ट्री और विनर सेव करें
+                            // Supabase game_state table में परमानेंटली सेव करें (ताकि हर प्लेयर को लाइव मिले)
+                            await sbClient.from('game_state').upsert([
+                                { key: 'global_config', value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }) }
+                            ], { onConflict: 'key' });
+
+                            // Supabase game_rounds table में भी राउंड और हिस्ट्री सेव करें
                             await sbClient.from('game_rounds').insert([{
                                 round_id: Math.floor(Date.now() / 1000 / ROUND_TIME),
                                 winner_num: winnerNum,
                                 history: JSON.stringify(histArr)
                             }]);
-
-                            // Supabase game_state table में ग्लोबल स्टेट सेव करें
-                            await sbClient.from('game_state').upsert([{
-                                key: 'global_config',
-                                value: JSON.stringify({ winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal })
-                            }], { onConflict: 'key' });
                         } catch(e) {
-                            console.error("Supabase Sync Error:", e);
+                            console.error("Cloud Master Publish Error:", e);
                         }
                     };
 
-                    // ऐप लोड होने पर Supabase से लेटेस्ट डेटा फेच करें
-                    async function fetchLatestCloudState() {
+                    // हर 2 सेकंड में Supabase से लाइव स्टेट और QR कोड फेच करें (ताकि दोस्त के फोन पर भी ऑटोमैटिक सिंक हो)
+                    setInterval(async () => {
                         try {
-                            let { data } = await sbClient.from('game_rounds').select('*').order('created_at', { ascending: false }).limit(1);
-                            if (data && data.length > 0 && data[0].history) {
-                                let parsedHist = JSON.parse(data[0].history);
-                                if (Array.isArray(parsedHist)) {
-                                    window.cloudSyncStore.historyList = parsedHist;
+                            let { data, error } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
+                            if (data && data.value) {
+                                let parsed = JSON.parse(data.value);
+                                if (parsed) {
+                                    if (parsed.history && Array.isArray(parsed.history)) {
+                                        window.cloudSyncStore.historyList = parsed.history;
+                                    }
+                                    if (parsed.rig) {
+                                        window.cloudSyncStore.adminRig = parsed.rig;
+                                    }
+                                    if (parsed.qrUrl && parsed.qrUrl !== window.cloudSyncStore.adminQrUrl) {
+                                        window.cloudSyncStore.adminQrUrl = parsed.qrUrl;
+                                        updateActiveQrDisplay();
+                                    }
                                 }
                             }
-                        } catch(e) {
-                            console.error("Fetch Cloud State Error:", e);
-                        }
-                    }
-                    fetchLatestCloudState();
+                        } catch(e) {}
+                    }, 2000);
                 }
 
                 function updateActiveQrDisplay() {
@@ -564,13 +569,12 @@
                     reader.onload = function(e) {
                         let base64Img = e.target.result;
                         window.cloudSyncStore.adminQrUrl = base64Img;
-                        localStorage.setItem("royal_admin_qr_url", base64Img);
                         updateActiveQrDisplay();
 
                         if(window.publishToCloudMaster) {
                             window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, base64Img);
                         }
-                        alert("✅ QR Code uploaded & broadcasted to all players successfully via Supabase!");
+                        alert("✅ QR Code uploaded & broadcasted to all players successfully via Supabase Cloud!");
                     };
                     reader.readAsDataURL(file);
                 };

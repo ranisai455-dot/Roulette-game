@@ -312,6 +312,16 @@
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close Panel</button>
             </div>
 
+            <!-- 📱 ADMIN QR CODE FILE UPLOADER (गैलरी से QR इमेज सेलेक्ट करके अपलोड करने का ऑप्शन) -->
+            <div style="background: rgba(0,30,15,0.95); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
+                <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER (LIVE SYNC)</p>
+                <p style="font-size: 10.5px; color: #ccc; margin-bottom: 8px;">अपने फोन की गैलरी से QR कोड का स्क्रीनशॉट सेलेक्ट करें। यह तुरंत पूरी दुनिया के सभी प्लेयर्स के डिपॉजिट मोडल में लाइव सेट हो जाएगा।</p>
+                
+                <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 6px; font-size: 11px; margin-bottom: 8px;" />
+                
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Broadcast QR Code Now</button>
+            </div>
+
             <!-- DIRECT PLAYER COIN & QR PAYMENT CREDITOR -->
             <div style="background: rgba(30,20,5,0.95); padding: 14px; border: 2px solid #ffaa00; border-radius: 8px;">
                 <p style="color: #ffaa00; font-size: 13px; margin-bottom: 10px; font-weight: bold;">⚡ DIRECT COIN & QR PAYMENT CREDITOR (ROYAL DIGITAL)</p>
@@ -377,10 +387,10 @@
         </div>
     </div>
 
-    <!-- डिपॉजिट मोडल (Direct UPI Intent + QR Code + UTR & Screenshot) -->
+    <!-- डिपॉजिट मोडल (एडमिन द्वारा अपलोड किया गया लाइव QR कोड) -->
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - INSTANT UPI PAY</h3>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - SECURE DEPOSIT</h3>
             
             <div class="deposit-packages-grid">
                 <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
@@ -393,15 +403,10 @@
 
             <input type="number" id="customDepositInput" value="300" placeholder="Enter Amount">
             
-            <!-- ⚡ Direct UPI App Pay Button (PhonePe, GPay, Paytm) -->
-            <button onclick="openDirectUpiApp()" class="login-btn" style="background: linear-gradient(135deg, #00c853, #1b5e20); color:#fff; padding:12px; font-size:13px; margin: 8px 0; border: 2px solid #ffd700;">
-                🚀 PAY INSTANTLY VIA PHONEPE / GPAY / PAYTM
-            </button>
-
-            <div style="background:#fff; padding:8px; border-radius:6px; color:#000; margin: 8px 0; display: flex; flex-direction: column; align-items: center;">
-                <p style="font-size:10px; font-weight:bold; color:#d32f2f; margin-bottom: 3px;">Or Scan QR via any UPI App:</p>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=royalmp@okaxis&pn=ROYAL%20DIGITAL&am=300&cu=INR" alt="QR" style="width: 100px; height: 100px; object-fit: contain;" />
-                <p style="font-size:11px; font-weight:bold;">Name: ROYAL DIGITAL</p>
+            <div style="background:#fff; padding:12px; border-radius:8px; color:#000; margin: 8px 0; display: flex; flex-direction: column; align-items: center;">
+                <p style="font-size:11px; font-weight:bold; color:#d32f2f; margin-bottom: 5px;">Scan & Pay via PhonePe / GPay / Paytm</p>
+                <img id="dynamicPlayerQrImg" src="https://i.ibb.co/3yk54L2/1000532596.jpg" alt="Deposit QR Code" style="width: 150px; height: 150px; object-fit: contain; border: 1.5px solid #333; border-radius: 6px;" />
+                <p style="font-size:10px; color:#555; margin-top:6px;">पेमेंट करने के बाद UTR नंबर और स्क्रीनशॉट सबमिट करें।</p>
             </div>
 
             <input type="text" id="depositUtrInput" placeholder="Enter UTR / Transaction Reference No." style="width:100%; padding:10px; margin-top:5px; background:#000; border:1.5px solid #f1c40f; color:#f1c40f; border-radius:8px; text-align:center; font-weight:bold; font-size:12px;">
@@ -416,11 +421,11 @@
         </div>
     </div>
 
-    <!-- विड्रॉल मोडल -->
+    <!-- विड्रॉल मोडल (2.5% GST Deduction Included) -->
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL (UPI / QR CODE)</h3>
-            <p style="font-size:10.5px; color:#ccc; margin-bottom:8px;">अपनी UPI आईडी दें या अपना QR कोड इमेज अपलोड करें।</p>
+            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL (2.5% GST)</h3>
+            <p style="font-size:10.5px; color:#ccc; margin-bottom:8px;">विड्रॉल राशि पर 2.5% GST काटकर शेष राशि भेजी जाएगी।</p>
             
             <div class="withdraw-packages-grid">
                 <button class="wd-pkg-btn selected" onclick="selectWithdrawPkg(500, this)">₹500</button>
@@ -437,7 +442,7 @@
                 <input type="file" id="withdrawQrFile" accept="image/*" style="margin-top:4px; color:#fff; font-size:10px;">
             </div>
 
-            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; font-size:13px; margin-top:10px;">Request Payout</button>
+            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; font-size:13px; margin-top:10px;">Request Payout (2.5% GST Applicable)</button>
             <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:10px;">Close</button>
         </div>
     </div>
@@ -474,7 +479,8 @@
                 window.cloudSyncStore = {
                     currentWinner: 14,
                     historyList: [24, 14, 5, 22, 10, 3],
-                    adminRig: "random"
+                    adminRig: "random",
+                    adminQrUrl: localStorage.getItem("royal_admin_qr_url") || "https://i.ibb.co/3yk54L2/1000532596.jpg"
                 };
 
                 if (sbClient) {
@@ -487,20 +493,53 @@
                             window.cloudSyncStore.currentWinner = payload.payload.winner;
                             window.cloudSyncStore.historyList = payload.payload.history;
                             window.cloudSyncStore.adminRig = payload.payload.rig;
+                            if(payload.payload.qrUrl) {
+                                window.cloudSyncStore.adminQrUrl = payload.payload.qrUrl;
+                                updateActiveQrDisplay();
+                            }
                             
                             let sel = document.getElementById('adminRigSelect');
                             if (sel) sel.value = payload.payload.rig;
                         }
                     }).subscribe();
 
-                    window.publishToCloudMaster = function(winnerNum, histArr, rigVal) {
+                    window.publishToCloudMaster = function(winnerNum, histArr, rigVal, qrVal) {
                         globalChannel.send({
                             type: 'broadcast',
                             event: 'master_game_update',
-                            payload: { winner: winnerNum, history: histArr, rig: rigVal }
+                            payload: { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal }
                         });
                     };
                 }
+
+                function updateActiveQrDisplay() {
+                    let qrImgs = document.querySelectorAll('#dynamicPlayerQrImg');
+                    qrImgs.forEach(img => {
+                        img.src = window.cloudSyncStore.adminQrUrl;
+                    });
+                }
+
+                window.uploadAndBroadcastAdminQr = function() {
+                    let fileInput = document.getElementById('adminQrImageFile');
+                    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                        alert("कृपया गैलरी से QR कोड की इमेज सेलेक्ट करें!");
+                        return;
+                    }
+                    let file = fileInput.files[0];
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        let base64Img = e.target.result;
+                        window.cloudSyncStore.adminQrUrl = base64Img;
+                        localStorage.setItem("royal_admin_qr_url", base64Img);
+                        updateActiveQrDisplay();
+
+                        if(window.publishToCloudMaster) {
+                            window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, base64Img);
+                        }
+                        alert("✅ QR Code uploaded & broadcasted to all players successfully!");
+                    };
+                    reader.readAsDataURL(file);
+                };
 
                 function getOrCreateUniqueRoyalId(phone) {
                     let reg = JSON.parse(localStorage.getItem("royal_registered_map") || "{}");
@@ -574,13 +613,6 @@
                     return uniqueRandomPool[mixIndex];
                 }
 
-                window.openDirectUpiApp = function() {
-                    let amt = document.getElementById('customDepositInput').value || "300";
-                    let upiId = "royalmp@okaxis"; // यहाँ अपनी मर्चेंट या पर्सनल UPI आईडी डाल सकते हैं
-                    let upiUrl = `upi://pay?pa=${upiId}&pn=ROYAL%20DIGITAL&am=${amt}&cu=INR`;
-                    window.location.href = upiUrl;
-                };
-
                 window.applyAdminCoinsDirect = function() {
                     let targetId = document.getElementById('targetMemberId').value.trim();
                     let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
@@ -626,7 +658,11 @@
                     ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
                 }
 
-                window.onload = () => { drawCanvasWheel('loginWheelCanvasBg'); drawCanvasWheel('lobbyWheelCanvas'); };
+                window.onload = () => { 
+                    drawCanvasWheel('loginWheelCanvasBg'); 
+                    drawCanvasWheel('lobbyWheelCanvas'); 
+                    updateActiveQrDisplay();
+                };
                 window.closeComingSoonModal = function() { document.getElementById('comingSoonNoticeModal').style.display = 'none'; };
 
                 const adminSelect = document.getElementById('adminRigSelect');
@@ -639,7 +675,7 @@
                     window.cloudSyncStore.adminRig = sel;
                     
                     if (window.publishToCloudMaster) {
-                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, sel);
+                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, sel, window.cloudSyncStore.adminQrUrl);
                     }
                     
                     alert(`✅ CLOUD MASTER SUCCESS!\nWorldwide Cloud Rig set to '${sel}' for all players!`);
@@ -712,7 +748,7 @@
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
                     let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
                         <div class="req-table-row">
-                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span><br>UPI/QR: <b style="color:#00ffff;">${w.upi}</b><br><span style="color:#ffd700; font-size:10px;">QR Image: ${w.hasQr ? 'Uploaded QR 📱' : 'UPI Only'}</span></div>
+                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">${w.amount} Coins</span> (GST Cut: ₹${w.gstDeducted})<br>Net Payout: <b style="color:#2ecc71;">₹${w.netAmount}</b><br>UPI/QR: <b style="color:#00ffff;">${w.upi}</b></div>
                             <div class="req-actions"><span style="color:#f39c12; font-weight:bold;">${w.status}</span></div>
                         </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending withdrawals.</div>";
                     let wdListEl = document.getElementById('admWithdrawList');
@@ -727,7 +763,7 @@
                         html += `<div>📥 Deposit: ₹${d.amount} | UTR: ${d.utr} | Status: ${d.status}</div>`;
                     });
                     withdraws.filter(w => w.phone === loggedUserPhone).forEach(w => {
-                        html += `<div>📤 Withdraw: ₹${w.amount} | UPI/QR: ${w.upi} | Status: ${w.status}</div>`;
+                        html += `<div>📤 Withdraw: ₹${w.amount} (Net: ₹${w.netAmount} after 2.5% GST) | Status: ${w.status}</div>`;
                     });
                     if (html === "") html = "No transactions yet.";
                     let listEl = document.getElementById('playerTransactionHistoryList');
@@ -865,7 +901,7 @@
                     if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
 
                     if (window.publishToCloudMaster) {
-                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig);
+                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl);
                     }
                     
                     let totalPockets = numbersList.length;
@@ -902,7 +938,7 @@
                     }, 6000);
                 }
 
-                window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; };
+                window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; updateActiveQrDisplay(); };
                 window.openWithdrawModal = function() { document.getElementById('withdrawModalBox').style.display = 'flex'; };
                 window.openTransferModal = function() { document.getElementById('transferModalBox').style.display = 'flex'; };
                 window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
@@ -934,6 +970,7 @@
                     alert("✅ डिपॉजिट रिक्वेस्ट स्क्रीनशॉट और UTR के साथ भेज दी गई है!");
                 };
 
+                // विड्रॉल रिक्वेस्ट में 2.5% GST काटने का लॉजिक
                 window.submitWithdrawCoins = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
@@ -945,6 +982,9 @@
                         return; 
                     }
                     
+                    let gstDeducted = Math.round(amt * 0.025 * 100) / 100; // 2.5% GST
+                    let netAmount = Math.round((amt - gstDeducted) * 100) / 100;
+
                     realCoins -= amt; 
                     updateBalancesDisplay(); 
                     closeWalletModals();
@@ -953,13 +993,15 @@
                     withdraws.push({ 
                         phone: loggedUserPhone, 
                         amount: amt, 
+                        gstDeducted: gstDeducted,
+                        netAmount: netAmount,
                         upi: upi || (hasQr ? 'Uploaded QR Code Image 📱' : 'Not Provided'), 
                         hasQr: hasQr,
                         status: 'Pending Payout' 
                     });
                     localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
                     updateBalancesDisplay();
-                    alert("विड्रॉल रिक्वेस्ट सफलतापूर्वक भेज दी गई है!");
+                    alert(`विड्रॉल रिक्वेस्ट भेज दी गई है!\nRequested: ₹${amt} | 2.5% GST Cut: ₹${gstDeducted} | Net Payout: ₹${netAmount}`);
                 };
 
                 window.executeCoinTransfer = function() {

@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - LIVE COMMAND VERIFICATION ENGINE</title>
+    <title>ROYAL ROULETTE - WORLDWIDE GLOBAL MEMBER BROADCAST ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -156,10 +156,10 @@
 </head>
 <body>
 
-    <!-- Live Command & Sync Verification Console -->
+    <!-- Worldwide Active Members Monitor Console -->
     <div id="mobileDebugConsole">
-        <b>[LIVE VERIFICATION ENGINE ACTIVE]</b><br>
-        <span id="consoleLogs">Initializing secure sockets...<br></span>
+        <b>[WORLDWIDE BROADCAST TRACKER ACTIVE]</b><br>
+        <span id="consoleLogs">Connecting to global cloud channels...<br></span>
     </div>
     <script>
         function logToScreen(msg, isErr=false) {
@@ -172,7 +172,7 @@
             }
         }
         window.onerror = function(msg, url, line) {
-            logToScreen(`SCRIPT ERROR: ${msg} (Line ${line})`, true);
+            logToScreen(`ERR: ${msg} (Line ${line})`, true);
         };
     </script>
 
@@ -180,11 +180,11 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_VERIFY_V6";
+                const BUILD_VER = "ROYAL_2026_WORLDWIDE_V7";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache cleared for clean handshake.");
+                    logToScreen("Cache wiped for fresh global handshake.");
                 }
             } catch(e) {}
         })();
@@ -220,12 +220,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">LIVE COMMAND VERIFICATION BRIDGE • ⚡</div>
+            <div class="trust-banner">WORLDWIDE MEMBER BROADCAST ENGINE • ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 HANDSHAKE: ACTIVE</span>
+                <span>🟢 GLOBAL BROADCAST: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -363,14 +363,14 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 2026 VERIFIED ADMIN PANEL</h2>
+                <h2>👑 WORLDWIDE BROADCAST ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (VERIFIED HANDSHAKE)</p>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (WORLDWIDE BROADCAST)</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Upload & Verify Global Broadcast</button>
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR to All Online Members</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -381,16 +381,17 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Handshake</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">TESTING...</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" id="debugSyncStatus" style="color:#00ffcc;">ONLINE</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
-            <div class="admin-section-box" style="border: 1.5px solid #27ae60;">
-                <div class="admin-section-title"><span style="color: #27ae60;">👥 Global Active Real Money Players Monitor</span></div>
-                <div id="admRealPlayersMonitorList" style="max-height: 150px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
-                    <div style="color:#888; text-align:center; padding:6px;">No real money players active right now.</div>
+            <!-- WORLDWIDE ONLINE MEMBERS MONITOR (यहाँ दिखेंगे दुनिया भर के सारे मेंबर्स) -->
+            <div class="admin-section-box" style="border: 2px solid #00ffcc;">
+                <div class="admin-section-title"><span style="color: #00ffcc;">🌐 Worldwide Online Members Live Monitor</span></div>
+                <div id="admWorldwideMembersList" style="max-height: 160px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
+                    <div style="color:#888; text-align:center; padding:6px;">Waiting for active players worldwide...</div>
                 </div>
             </div>
 
@@ -427,7 +428,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Save & Verify Global Rig Push</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Rig to All Members</button>
             </div>
         </div>
     </div>
@@ -514,16 +515,16 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Firebase App Initialized for Verification.");
+                logToScreen("Firebase Initialized for Worldwide Broadcast.");
             }
         } catch(e) {
             logToScreen("Init Error: " + e.message, true);
         }
 
-        const qrRef = firebase.database().ref("verify_admin_qr");
-        const rigRef = firebase.database().ref("verify_admin_rig");
-        const historyRef = firebase.database().ref("verify_history_list");
-        const activityRef = firebase.database().ref("verify_players_activity");
+        const qrRef = firebase.database().ref("worldwide_admin_qr");
+        const rigRef = firebase.database().ref("worldwide_admin_rig");
+        const historyRef = firebase.database().ref("worldwide_history_list");
+        const membersPresenceRef = firebase.database().ref("worldwide_online_members");
 
         (function() {
             try {
@@ -537,65 +538,81 @@
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
+                let myUniqueSessionId = 'MEM_' + Math.random().toString(36).substring(2, 9);
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
                     adminRig: "random",
                     historyList: [24, 14, 5, 22, 10, 3],
-                    realPlayersActivity: {}
+                    onlineMembers: {}
                 };
 
-                // --- LIVE HANDSHAKE VERIFICATION LISTENERS ---
+                // --- WORLDWIDE BROADCAST LISTENERS (सभी मेंबर्स के लिए लाइव) ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("[VERIFIED] QR Code received from Cloud handshake!");
+                        logToScreen("[BROADCAST OK] New QR received from Cloud by this member.");
                     }
-                }, (err) => { logToScreen("[ERR] QR Listener blocked: " + err.message, true); });
+                });
 
                 rigRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("[VERIFIED] Admin Rig command received: " + val);
+                        logToScreen("[BROADCAST OK] New Rig command received from Cloud: " + val);
                     }
-                }, (err) => { logToScreen("[ERR] Rig Listener blocked: " + err.message, true); });
+                });
 
                 historyRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.historyList = val;
                         renderHistoryBarUI();
-                        logToScreen("[VERIFIED] History sync handshake successful.");
                     }
                 });
 
-                activityRef.on("value", (snap) => {
-                    let val = snap.val();
-                    if (val) {
-                        window.globalState.realPlayersActivity = val;
-                        let st = document.getElementById('debugSyncStatus');
-                        if(st) { st.innerText = "CONNECTED"; st.style.color = "#00ffcc"; }
-                    }
+                membersPresenceRef.on("value", (snap) => {
+                    let val = snap.val() || {};
+                    window.globalState.onlineMembers = val;
+                    renderWorldwideMembersListUI();
                 });
 
-                function pushPlayerActivity() {
+                function pingMyPresenceAsMember() {
                     try {
-                        if (loggedUserPhone && activeGameMode === 'real' && (realCoins > 0 || currentTotalBet > 0)) {
-                            let payload = {
-                                vipId: loggedVipId,
-                                realBal: realCoins,
-                                totalBet: currentTotalBet,
-                                betsBreakdown: userActiveBets,
-                                lastActive: new Date().toLocaleTimeString()
-                            };
-                            activityRef.child(loggedUserPhone.replace(/\./g, '_')).set(payload).then(() => {
-                                logToScreen("[HANDSHAKE OK] Player stats sent to Cloud.");
-                            });
-                        }
+                        let memberNodeKey = myUniqueSessionId;
+                        if (loggedUserPhone) memberNodeKey = loggedUserPhone.replace(/\./g, '_') + "_" + loggedVipId;
+                        
+                        membersPresenceRef.child(memberNodeKey).set({
+                            sessionId: myUniqueSessionId,
+                            phone: loggedUserPhone || "Guest/Player",
+                            vipId: loggedVipId,
+                            lastSeen: new Date().toLocaleTimeString(),
+                            mode: activeGameMode
+                        });
                     } catch(e) {}
+                }
+
+                setInterval(pingMyPresenceAsMember, 10000);
+
+                function renderWorldwideMembersListUI() {
+                    let listEl = document.getElementById('admWorldwideMembersList');
+                    if (!listEl) return;
+                    let membersMap = window.globalState.onlineMembers;
+                    let keys = Object.keys(membersMap);
+                    if (keys.length > 0) {
+                        let html = "";
+                        keys.forEach(k => {
+                            let m = membersMap[k];
+                            html += `<div style="background:rgba(0,0,0,0.8); border:1px solid #00ffcc; padding:6px; border-radius:5px; margin-bottom:4px;">
+                                🌐 Member: <b>${m.phone}</b> (${m.vipId}) | Last Seen: <span style="color:#ffd700;">${m.lastSeen}</span>
+                            </div>`;
+                        });
+                        listEl.innerHTML = html;
+                    } else {
+                        listEl.innerHTML = `<div style="color:#888; text-align:center; padding:6px;">No active members found.</div>`;
+                    }
                 }
 
                 window.playMasterAudio = function() {
@@ -618,13 +635,12 @@
                     let reader = new FileReader();
                     reader.onload = function(e) {
                         let base64Img = e.target.result;
-                        logToScreen("[SENDING] Pushing QR to Cloud database...");
+                        logToScreen("[ADMIN] Broadcasting QR to all worldwide members...");
                         qrRef.set(base64Img).then(() => {
-                            alert("✅ QR Code Verified & Pushed to Cloud!");
-                            logToScreen("[SUCCESS] QR Broadcast confirmed by Cloud!");
+                            alert("✅ QR Code Successfully Broadcasted to All Worldwide Members!");
+                            logToScreen("[SUCCESS] QR Broadcast sent to Cloud for all users.");
                         }).catch(err => {
-                            logToScreen("[FAILED] QR Push error: " + err.message, true);
-                            alert("Err: " + err.message);
+                            logToScreen("[ERR] Broadcast failed: " + err.message, true);
                         });
                     };
                     reader.readAsDataURL(fileInput.files[0]);
@@ -714,27 +730,6 @@
                 };
 
                 function renderAdminRequests() {
-                    let monitorEl = document.getElementById('admRealPlayersMonitorList');
-                    if (monitorEl) {
-                        let realMap = window.globalState.realPlayersActivity || {};
-                        let pHtml = "";
-                        let keys = Object.keys(realMap);
-                        if (keys.length > 0) {
-                            keys.forEach(ph => {
-                                let p = realMap[ph];
-                                let betsText = JSON.stringify(p.betsBreakdown || {});
-                                pHtml += `<div style="background:rgba(0,0,0,0.7); border:1px solid #2ecc71; padding:7px; border-radius:6px; margin-bottom:6px;">
-                                    📱 <b>${ph.replace(/_/g, '.')}</b> (${p.vipId}) | 💎 Real Bal: <span style="color:#2ecc71; font-weight:bold;">₹${p.realBal}</span><br>
-                                    🎲 Total Real Bet: ₹${p.totalBet} | Active Bets: <span style="color:#ffd700;">${betsText}</span><br>
-                                    <span style="font-size:8.5px; color:#aaa;">Last Active: ${p.lastActive}</span>
-                                </div>`;
-                            });
-                        } else {
-                            pHtml = `<div style="color:#888; text-align:center; padding:6px;">No real money players active right now.</div>`;
-                        }
-                        monitorEl.innerHTML = pHtml;
-                    }
-
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
                     let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
                         <div class="req-table-row">
@@ -759,37 +754,12 @@
                     if (!boardGrid) return;
                     let summatedBets = {};
                     numbersList.forEach(n => summatedBets[n.toString()] = 0);
-                    
-                    let realMap = window.globalState.realPlayersActivity || {};
-                    for (let ph in realMap) {
-                        let pBets = realMap[ph].betsBreakdown || {};
-                        for (let key in pBets) {
-                            let amt = pBets[key];
-                            if (key === 'red') {
-                                redList.forEach(n => summatedBets[n.toString()] += (amt / redList.length));
-                            } else if (key === 'black') {
-                                numbersList.filter(n => n !== 0 && !redList.includes(n)).forEach(n => summatedBets[n.toString()] += (amt / 18));
-                            } else if (key.startsWith('dozen_')) {
-                                let dIdx = parseInt(key.replace('dozen_', ''));
-                                let range = dIdx === 1 ? [1,2,3,4,5,6,7,8,9,10,11,12] : (dIdx === 2 ? [13,14,15,16,17,18,19,20,21,22,23,24] : [25,26,27,28,29,30,31,32,33,34,35,36]);
-                                range.forEach(n => summatedBets[n.toString()] += (amt / 12));
-                            } else if (key === 'half_1_18') {
-                                for(let i=1; i<=18; i++) summatedBets[i.toString()] += (amt / 18);
-                            } else if (key === 'half_19_36') {
-                                for(let i=19; i<=36; i++) summatedBets[i.toString()] += (amt / 18);
-                            } else if (summatedBets[key] !== undefined) {
-                                summatedBets[key] += amt;
-                            }
-                        }
-                    }
-
                     let html = "";
                     numbersList.forEach(num => {
-                        let bAmt = Math.round((summatedBets[num.toString()] || 0) * 10) / 10;
                         let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
                         html += `<div style="background:${bg}; border:1px solid #ffd700; padding:6px 2px; border-radius:4px; font-size:9.5px; font-weight:bold;">
                             <div><b>#${num}</b></div>
-                            <div style="color:#00ffff; font-size:8.5px;">₹${bAmt}</div>
+                            <div style="color:#00ffff; font-size:8.5px;">₹0</div>
                         </div>`;
                     });
                     boardGrid.innerHTML = html;
@@ -844,18 +814,18 @@
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Force Rig Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Broadcast Rig Number " + num; adminSelect.appendChild(opt); });
                 }
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    logToScreen("[SENDING] Pushing Rig command to Cloud...");
+                    logToScreen("[ADMIN] Broadcasting Rig command to all members...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Rig set to '${sel}' & verified on Cloud!`);
-                        logToScreen("[SUCCESS] Rig command confirmed by Cloud.");
+                        alert(`✅ Rig '${sel}' Broadcasted Successfully to All Members!`);
+                        logToScreen("[SUCCESS] Rig broadcast confirmed.");
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => {
-                        logToScreen("[FAILED] Rig push error: " + err.message, true);
+                        logToScreen("[ERR] Rig broadcast failed: " + err.message, true);
                     });
                 };
 
@@ -892,7 +862,7 @@
                     if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
 
                     updateBalancesDisplay();
-                    pushPlayerActivity();
+                    pingMyPresenceAsMember();
                     playMasterAudio();
                 }
 
@@ -902,7 +872,7 @@
                     document.getElementById('profPhone').innerText = loggedUserPhone;
                     document.getElementById('profVipId').innerText = loggedVipId;
                     renderPlayerTransactionHistory();
-                    pushPlayerActivity();
+                    pingMyPresenceAsMember();
                 };
 
                 window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };

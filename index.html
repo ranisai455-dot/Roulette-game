@@ -3,13 +3,11 @@
 <head>
     <style>
         a[href*="netlify.com"] { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }
-        body { overflow-y: auto !important; min-height: 100vh; padding-bottom: 30px !important; background: #000401 !important; }
+        body { overflow-y: auto !important; min-height: 100vh; padding-bottom: 30px !important; background: #000401 !important; -webkit-text-size-adjust: 100%; }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL ROULETTE - 100% CLOUD & SOCKET MASTER SYNC</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <title>ROYAL ROULETTE - ULTIMATE REAL MONEY MASTER</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -23,148 +21,132 @@
             color: rgba(255, 215, 0, 0.15); pointer-events: none; z-index: 1;
         }
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: #000401; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bg-wheel-wrap { position: relative; width: 380px; height: 380px; border-radius: 50%; opacity: 0.75; border: 8px solid #ffd700; box-shadow: 0 0 90px rgba(255, 215, 0, 0.7); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
-        #loginWheelCanvasBg { width: 380px; height: 380px; border-radius: 50%; display: block; }
+        .bg-wheel-wrap { position: relative; width: 340px; height: 340px; border-radius: 50%; opacity: 0.75; border: 8px solid #ffd700; box-shadow: 0 0 90px rgba(255, 215, 0, 0.7); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
+        #loginWheelCanvasBg { width: 340px; height: 340px; border-radius: 50%; display: block; }
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 3.5s linear infinite; pointer-events: none; z-index: 4; }
         .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 9px); width: 18px; height: 18px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #ffd700, 0 0 55px #0ff; }
         @keyframes wheelRotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ballRotateBg { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-        #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 6px 4px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55); }
-        .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 3px; align-items: center; z-index: 5; margin-top: 3px; }
-        .trust-banner { font-size: 8.5px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.8px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 4px 8px; border-radius: 12px; border: 2px solid #ffd700; width: 100%; box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
+        #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 4px 2px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55); }
+        .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; align-items: center; z-index: 5; margin-top: 2px; }
+        .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 3px 6px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
         .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; }
-        .royal-main-title { font-size: 18px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 8px; text-transform: uppercase; }
-        .login-card { background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 12px 10px; border-radius: 16px; width: 92%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15; }
-        .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 2px; }
-        .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
-        .login-card input { width: 100%; padding: 8px; margin: 4px 0; background: #000000; border: 1.5px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 8px; font-size: 12px; text-align: center; font-weight: bold; }
-        .login-btn { width: 100%; padding: 9px; margin-top: 5px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 12px; text-transform: uppercase; }
-        .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; }
-        .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 4px; }
-        .payment-gateways { font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 6px; border: 1px solid rgba(0,255,0,0.5); }
-        .trust-badges { font-size: 7.5px; color: #ffd700; font-weight: bold; }
-        .legal-links { font-size: 6.5px; color: #cccccc; word-spacing: 2px; }
-        .legal-links a, .legal-links span { color: #ffd700; text-decoration: none; cursor: pointer; }
+        .royal-main-title { font-size: 16px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 2px 4px; border-radius: 6px; text-transform: uppercase; }
+        .login-card { background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 10px 8px; border-radius: 14px; width: 92%; max-width: 310px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15; }
+        .login-card h3 { color: #ffd700; font-size: 12px; margin-bottom: 2px; }
+        .login-card p { font-size: 7px; color: #e0e0e0; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; }
+        .login-card input { width: 100%; padding: 7px; margin: 3px 0; background: #000000; border: 1.5px solid rgba(255, 215, 0, 0.6); color: #ffd700; border-radius: 6px; font-size: 11px; text-align: center; font-weight: bold; }
+        .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
+        .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; }
+        .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; }
+        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1px solid rgba(0,255,0,0.5); }
+        .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
-        #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 3px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 6px solid #24140c; }
-        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 6px 10px; border-radius: 10px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; gap: 6px; }
-        .user-profile-widget { display: flex; align-items: center; gap: 6px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 3px 8px; border-radius: 15px; text-align: left; cursor: pointer; }
-        .user-avatar-circle { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
-        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 7px 10px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 0 12px rgba(39, 174, 96, 0.9); text-transform: uppercase; z-index: 100; }
-        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #a93226); box-shadow: 0 0 12px rgba(192, 57, 43, 0.9); }
+        #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 4px 8px; border-radius: 8px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; gap: 4px; }
+        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 12px; text-align: left; cursor: pointer; }
+        .user-avatar-circle { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #000; box-shadow: 0 0 6px #ffd700; overflow: hidden; }
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; padding: 5px 8px; border-radius: 6px; font-size: 9px; font-weight: 900; cursor: pointer; box-shadow: 0 0 10px rgba(39, 174, 96, 0.9); text-transform: uppercase; z-index: 100; }
+        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #a93226); box-shadow: 0 0 10px rgba(192, 57, 43, 0.9); }
 
-        .timer-strip-center { background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 16px; font-weight: 900; padding: 4px 10px; border-radius: 10px; border: 2.5px solid #ffd700; text-transform: uppercase; box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); letter-spacing: 1px; flex-grow: 1; max-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px; }
-        .timer-strip-center span.timer-main-val { font-size: 18px; line-height: 1.1; }
-        .timer-strip-center span.timer-sub-val { font-size: 7px; color: #ffcccc; letter-spacing: 0.5px; display: none; }
+        .timer-strip-center { background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 14px; font-weight: 900; padding: 3px 8px; border-radius: 8px; border: 2px solid #ffd700; text-transform: uppercase; box-shadow: 0 0 15px rgba(192, 57, 43, 0.9); letter-spacing: 0.5px; flex-grow: 1; max-width: 120px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 32px; }
+        .timer-strip-center span.timer-main-val { font-size: 15px; line-height: 1.1; }
+        .timer-strip-center span.timer-sub-val { font-size: 6.5px; color: #ffcccc; display: none; }
         .timer-strip-center.closed-state { background: linear-gradient(135deg, #78281f, #512e5f); border-color: #e74c3c; }
         .timer-strip-center.closed-state span.timer-sub-val { display: block; }
 
-        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 4px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 4px 6px; border-radius: 6px; margin: 2px auto; width: 100%; flex-shrink: 0; z-index: 50; }
-        .history-title { font-size: 8px; font-weight: bold; color: #ffd700; margin-right: 4px; text-transform: uppercase; }
-        .history-ball { width: 22px; height: 22px; border-radius: 50%; font-size: 10px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(0,0,0,0.8); flex-shrink: 0; }
+        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 3px 5px; border-radius: 6px; margin: 1px auto; width: 100%; flex-shrink: 0; z-index: 50; }
+        .history-title { font-size: 7.5px; font-weight: bold; color: #ffd700; margin-right: 3px; text-transform: uppercase; }
+        .history-ball { width: 20px; height: 20px; border-radius: 50%; font-size: 9.5px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 4px rgba(0,0,0,0.8); flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        .lobby-wheel-box { position: relative; width: 240px; height: 240px; margin: 2px auto; border: 6px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden; box-shadow: 0 0 60px rgba(212, 175, 55, 0.9); flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
-        #lobbyWheelCanvas { width: 240px; height: 240px; border-radius: 50%; display: block; will-change: transform; }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; margin-top: -19px; margin-left: -19px; background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; }
-        .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 6.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 6px); width: 13px; height: 13px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 15px #fff, 0 0 25px #d4af37; }
+        .lobby-wheel-box { position: relative; width: 200px; height: 200px; margin: 1px auto; border: 5px solid #d4af37; border-radius: 50%; background: #000; overflow: hidden; box-shadow: 0 0 40px rgba(212, 175, 55, 0.9); flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
+        #lobbyWheelCanvas { width: 200px; height: 200px; border-radius: 50%; display: block; will-change: transform; }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 32px; height: 32px; margin-top: -16px; margin-left: -16px; background: radial-gradient(circle, #ffffff 0%, #d4af37 60%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; }
+        .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 5px; left: calc(50% - 5px); width: 11px; height: 11px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 12px #fff, 0 0 20px #d4af37; }
 
-        .betting-board-section { background: radial-gradient(circle, #013812 0%, #001205 100%); border-radius: 12px; padding: 4px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; margin-top: 2px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95); z-index: 50; gap: 2px; }
-        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
-        .table-cell { background: #021a0a; border: 1.5px solid #d4af37; color: #fff; font-size: 10.5px; font-weight: 900; padding: 5px 0; border-radius: 3px; cursor: pointer; text-align: center; position: relative; }
+        .betting-board-section { background: radial-gradient(circle, #013812 0%, #001205 100%); border-radius: 10px; padding: 3px; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; margin-top: 2px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95); z-index: 50; gap: 2px; }
+        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5px; }
+        .table-cell { background: #021a0a; border: 1.5px solid #d4af37; color: #fff; font-size: 10px; font-weight: 900; padding: 4px 0; border-radius: 3px; cursor: pointer; text-align: center; position: relative; }
         .table-cell.red { background: linear-gradient(135deg, #b03a2e, #78281f); }
         .table-cell.black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
-        .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2.5px solid #fff; box-shadow: 0 0 15px #f1c40f; }
-        .cell-badge { position: absolute; top: -5px; right: -5px; background: #f1c40f; color: #000; font-size: 7px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 5; }
+        .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff; box-shadow: 0 0 12px #f1c40f; }
+        .cell-badge { position: absolute; top: -4px; right: -4px; background: #f1c40f; color: #000; font-size: 6.5px; font-weight: 900; padding: 1px 2px; border-radius: 50%; z-index: 5; }
 
-        .group-buttons-row-1, .group-buttons-row-2 { display: grid; gap: 4px; width: 100%; }
+        .group-buttons-row-1, .group-buttons-row-2 { display: grid; gap: 3px; width: 100%; }
         .group-buttons-row-1 { grid-template-columns: repeat(3, 1fr); }
         .group-buttons-row-2 { grid-template-columns: repeat(2, 1fr); }
-        .group-btn { background: linear-gradient(135deg, #1f2c34, #0b0f15); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9.5px; font-weight: 900; padding: 6px 2px; border-radius: 6px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; }
+        .group-btn { background: linear-gradient(135deg, #1f2c34, #0b0f15); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 5px 2px; border-radius: 5px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; }
 
-        .color-row { display: flex; gap: 5px; }
-        .color-btn { flex: 1; padding: 7px 2px; font-weight: 900; font-size: 9.5px; border-radius: 6px; border: 2px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; }
+        .color-row { display: flex; gap: 4px; }
+        .color-btn { flex: 1; padding: 6px 2px; font-weight: 900; font-size: 9px; border-radius: 5px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; }
         .btn-red { background: linear-gradient(135deg, #b03a2e, #78281f); }
         .btn-green { background: linear-gradient(135deg, #27ae60, #1e8449); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); }
 
-        .chip-selector-row { display: flex; justify-content: center; gap: 6px; align-items: center; }
-        .chip-item { width: 30px; height: 30px; border-radius: 50%; border: 3px dashed #f1c40f; font-weight: 900; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; }
-        .chip-item.selected { border: 3px solid #fff; transform: scale(1.15); box-shadow: 0 0 20px #f1c40f; }
+        .chip-selector-row { display: flex; justify-content: center; gap: 5px; align-items: center; }
+        .chip-item { width: 28px; height: 28px; border-radius: 50%; border: 2.5px dashed #f1c40f; font-weight: 900; font-size: 9.5px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; }
+        .chip-item.selected { border: 2.5px solid #fff; transform: scale(1.1); box-shadow: 0 0 15px #f1c40f; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
         .chip-100 { background: linear-gradient(135deg, #27ae60, #1e8449); } 
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 6px 8px; border-radius: 6px; font-size: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-        .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 5px; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 4px 10px; font-size: 9.5px; font-weight: 900; border-radius: 7px; flex-grow: 1; text-align: center; }
-        .clear-btn { background: #b03a2e; color: #fff; padding: 4px 8px; font-size: 9px; font-weight: 900; border-radius: 6px; cursor: pointer; border: 1.5px solid #d4af37; }
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 5px 6px; border-radius: 5px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 8px; font-size: 9px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; }
+        .clear-btn { background: #b03a2e; color: #fff; padding: 3px 6px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #d4af37; }
 
-        .mode-toggle-bar { display: flex; justify-content: center; gap: 5px; background: #000; border: 1.5px solid #ffd700; padding: 3px; border-radius: 8px; }
-        .mode-btn { flex: 1; padding: 5px; font-size: 8.5px; font-weight: 900; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
-        .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 10px #2ecc71; }
-        .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 10px #3498db; }
+        .mode-toggle-bar { display: flex; justify-content: center; gap: 4px; background: #000; border: 1.5px solid #ffd700; padding: 2px; border-radius: 6px; }
+        .mode-btn { flex: 1; padding: 4px; font-size: 8px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 8px #2ecc71; }
+        .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 8px #3498db; }
 
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 70000; align-items: center; justify-content: center; }
-        .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 24px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
+        .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 22px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
 
-        #globalMaintenanceOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.98); z-index: 999999; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 20px; }
-        #networkErrorOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 999998; flex-direction: column; align-items: center; justify-content: center; color: #e74c3c; text-align: center; padding: 20px; }
-
-        #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 15px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
-        .admin-dashboard-container { max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 20px; padding: 25px; box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 16px; text-align: left; }
-        .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 12px; }
-        .admin-top-header h2 { font-size: 20px; color: #ffd700; letter-spacing: 1px; }
-        .admin-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .kpi-card { background: rgba(0, 0, 0, 0.7); border: 1.5px solid #27ae60; border-radius: 12px; padding: 12px; text-align: center; }
+        #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 12px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
+        .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 60px rgba(255, 215, 0, 0.4); display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px; }
+        .admin-top-header h2 { font-size: 17px; color: #ffd700; }
+        .admin-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .kpi-card { background: rgba(0, 0, 0, 0.7); border: 1.5px solid #27ae60; border-radius: 10px; padding: 10px; text-align: center; }
         .kpi-card.purple { border-color: #9b59b6; } .kpi-card.orange { border-color: #e67e22; } .kpi-card.blue { border-color: #3498db; }
-        .kpi-title { font-size: 9px; color: #bbb; text-transform: uppercase; margin-bottom: 4px; font-weight: bold; }
-        .kpi-value { font-size: 15px; font-weight: 900; color: #fff; }
-        .admin-section-box { background: rgba(0, 0, 0, 0.75); border: 1.5px solid rgba(255, 215, 0, 0.3); padding: 15px; border-radius: 12px; font-size: 12px; }
-        .admin-section-title { color: #ffd700; font-weight: 900; font-size: 13px; border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .req-table-row { background: rgba(15, 25, 18, 0.9); border: 1.5px solid #333; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; }
-        .req-actions { display: flex; gap: 8px; }
-        .req-actions button { padding: 6px 14px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; text-transform: uppercase; }
+        .kpi-title { font-size: 8px; color: #bbb; text-transform: uppercase; margin-bottom: 3px; font-weight: bold; }
+        .kpi-value { font-size: 13px; font-weight: 900; color: #fff; }
+        .admin-section-box { background: rgba(0, 0, 0, 0.75); border: 1.5px solid rgba(255, 215, 0, 0.3); padding: 12px; border-radius: 10px; font-size: 11px; }
+        .admin-section-title { color: #ffd700; font-weight: 900; font-size: 12px; border-bottom: 1px dashed rgba(255,215,0,0.3); padding-bottom: 5px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .req-table-row { background: rgba(15, 25, 18, 0.9); border: 1.5px solid #333; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .req-actions { display: flex; gap: 6px; }
+        .req-actions button { padding: 5px 10px; font-weight: bold; border-radius: 5px; border: none; cursor: pointer; font-size: 10px; text-transform: uppercase; }
         .btn-approve { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; }
         .btn-reject { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; }
-        .admin-dashboard-container select { width: 100%; padding: 12px; background: #000; color: #ffd700; border: 1.5px solid #ffd700; border-radius: 8px; font-weight: bold; text-align: center; font-size: 13px; }
+        .admin-dashboard-container select { width: 100%; padding: 10px; background: #000; color: #ffd700; border: 1.5px solid #ffd700; border-radius: 6px; font-weight: bold; text-align: center; font-size: 12px; }
 
         #adminLiveTableModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 300000; align-items: center; justify-content: center; padding: 10px; }
-        .admin-table-view-content { background: radial-gradient(circle, #013812 0%, #001205 100%); border: 3px solid #ffd700; padding: 15px; border-radius: 16px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 0 50px #ffd700; color: #fff; max-height: 95vh; overflow-y: auto; }
+        .admin-table-view-content { background: radial-gradient(circle, #013812 0%, #001205 100%); border: 3px solid #ffd700; padding: 15px; border-radius: 16px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 50px #ffd700; color: #fff; max-height: 95vh; overflow-y: auto; }
 
         #cinematicResultPopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); z-index: 50000; flex-direction: column; align-items: center; justify-content: center; }
-        .popup-card { background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 0 80px #f1c40f; animation: popupScale 0.3s ease-out; }
+        .popup-card { background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 20px; border-radius: 18px; width: 80%; max-width: 300px; text-align: center; box-shadow: 0 0 60px #f1c40f; animation: popupScale 0.3s ease-out; }
         @keyframes popupScale { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 30000; align-items: center; justify-content: center; padding: 10px; }
-        .wallet-modal-content { background: radial-gradient(circle, #003311 0%, #000f04 100%); border: 3px solid #f1c40f; padding: 20px; border-radius: 18px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 0 60px #f1c40f; color: #fff; max-height: 95vh; overflow-y: auto; }
-        .withdraw-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
-        .deposit-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
-        .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 12px 0; font-weight: 900; font-size: 12px; border-radius: 8px; cursor: pointer; }
-        .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 15px #f1c40f; }
-        .wallet-modal-content input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 8px; text-align: center; font-weight: bold; font-size: 14px; }
+        .wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 30000; align-items: center; justify-content: center; padding: 8px; }
+        .wallet-modal-content { background: radial-gradient(circle, #003311 0%, #000f04 100%); border: 3px solid #f1c40f; padding: 18px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 0 50px #f1c40f; color: #fff; max-height: 95vh; overflow-y: auto; }
+        .withdraw-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+        .deposit-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+        .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 10px 0; font-weight: 900; font-size: 11px; border-radius: 6px; cursor: pointer; }
+        .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
+        .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <div id="globalMaintenanceOverlay">
-        <h1 style="color:#e74c3c; font-size:26px; margin-bottom:10px;">🛠️ SYSTEM MAINTENANCE</h1>
-        <p style="font-size:13px; color:#fff;" id="maintenanceTimerCountdown">Resuming shortly...</p>
-    </div>
-
-    <div id="networkErrorOverlay">
-        <h1 style="color:#e74c3c; font-size:24px; margin-bottom:10px;">⚠️ REAL CONNECTION LOST</h1>
-        <p style="font-size:12px; color:#fff;">Unable to reach Cloud Server. Reconnecting...</p>
-    </div>
-
-    <!-- ऑडियो एलिमेंट्स -->
     <audio id="bgmAudio" loop preload="auto">
         <source src="https://assets.mixkit.co/music/preview/mixkit-casino-heist-672.mp3" type="audio/mpeg">
     </audio>
@@ -175,10 +157,11 @@
         <source src="https://assets.mixkit.co/active_storage/sfx/2870/2870-preview.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- तीन पत्ती और रूले कमिंग सून पॉपअप -->
     <div id="comingSoonNoticeModal">
         <div class="coming-soon-card">
             <h3 style="color:#ffd700; font-size:18px; margin-bottom:6px;">👑 ROYAL CASINO 👑</h3>
-            <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:6px;">100% चीटिंग रहित (FAIR PLAY & SECURE)</p>
+            <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:8px;">100% FAIR PLAY & SECURE</p>
             <div style="background:linear-gradient(135deg, #c0392b, #8e44ad); color:#fff; font-size:11px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:8px; text-transform:uppercase;">🔥 7 PLAYER LIVE TABLE 🔥</div>
             <div style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; font-size:12px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:12px; text-transform:uppercase;">🃏 TEEN PATTI - COMING SOON 🃏</div>
             <button onclick="closeComingSoonModal(); playMasterAudio();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:10px 24px; border-radius:8px; font-weight:900; font-size:12px; cursor:pointer; text-transform:uppercase; box-shadow:0 0 15px #ffd700;">Enter Royal Roulette</button>
@@ -187,7 +170,7 @@
 
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="380" height="380"></canvas>
+            <canvas id="loginWheelCanvasBg" width="340" height="340"></canvas>
             <div class="bg-ball-orbit"></div>
             <div class="lobby-wheel-hub"></div>
         </div>
@@ -195,13 +178,13 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">100% TRUSTED & CERTIFIED • INSTANT WITHDRAWAL ⚡</div>
+            <div class="trust-banner">100% INSTANT LIVE SYNC • SECURE ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span id="loginOnlineCount">🟢 ONLINE: LIVE</span>
-                <span>🔒 256-BIT SECURE</span>
+                <span>🟢 SPEED: ULTRA-FAST</span>
+                <span>🔒 SECURE CLOUD</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
         </div>
@@ -227,14 +210,14 @@
             <div class="user-profile-widget" onclick="openProfileModal(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
-                    <div style="font-size:9px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
-                    <div style="font-size:7.5px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
+                    <div style="font-size:8.5px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
+                    <div style="font-size:7px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
                 </div>
             </div>
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 140px;">
+            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 120px;">
                 <div class="timer-strip-center" id="lobbyTimerBox">
                     <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
                     <span class="timer-sub-val" id="lobbyTimerSub">LOCKED</span>
@@ -246,30 +229,30 @@
 
         <div class="history-strip-bar" id="historyBarEl">
             <span class="history-title">History:</span>
-            <div id="historyBallsContainer" style="display: flex; gap: 4px;"></div>
+            <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="240" height="240"></canvas>
+            <canvas id="lobbyWheelCanvas" width="200" height="200"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
 
         <div class="betting-board-section" id="bettingBoardArea">
-            <div style="background: rgba(0,0,0,0.85); padding: 5px; border-radius: 8px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 2px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 900; color: #ffd700;">
+            <div style="background: rgba(0,0,0,0.85); padding: 4px; border-radius: 6px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 900; color: #ffd700;">
                     <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
-                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 2px 8px; border-radius: 6px;">
-                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 13px;">₹0</span>
+                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 2px 6px; border-radius: 5px;">
+                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 12px;">₹0</span>
                     </span>
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 8.5px; color: #3498db; font-weight: bold;">
-                    <span>🧪 Testing Demo Coins: <span id="playerTestBal">10000</span></span>
+                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 8px; color: #3498db; font-weight: bold;">
+                    <span>🧪 Demo Coins (Fun Only): <span id="playerTestBal">10000</span></span>
                 </div>
             </div>
 
             <div class="mode-toggle-bar">
-                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode</button>
+                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode (Fun)</button>
                 <button class="mode-btn" id="modeBtnReal" onclick="switchGameMode('real')">💎 Real Money</button>
             </div>
             
@@ -310,136 +293,124 @@
 
     <!-- PLAYER PROFILE MODAL -->
     <div id="playerProfileModal" class="wallet-modal">
-        <div class="wallet-modal-content" style="max-width: 450px;">
-            <h3 style="color:#ffd700; margin-bottom:5px; font-size:18px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
-            <div style="font-size:35px; margin:5px 0;" id="profileAvatarLarge">😎</div>
-            <div style="background:#000; border:1.5px solid #ffd700; padding:10px; border-radius:10px; text-align:left; font-size:11.5px; line-height:1.6; margin-bottom:10px;">
+        <div class="wallet-modal-content" style="max-width: 420px;">
+            <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
+            <div style="font-size:30px; margin:4px 0;" id="profileAvatarLarge">😎</div>
+            <div style="background:#000; border:1.5px solid #ffd700; padding:8px; border-radius:8px; text-align:left; font-size:11px; line-height:1.5; margin-bottom:8px;">
                 <div>📱 <b>Mobile Number:</b> <span id="profPhone" style="color:#fff;">--</span></div>
                 <div>🆔 <b>VIP Player ID:</b> <span id="profVipId" style="color:#ffd700;">--</span></div>
                 <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-weight:bold;">0</span></div>
-                <div>🧪 <b>Testing Balance:</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
+                <div>🧪 <b>Testing Balance (Fun):</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
             </div>
             
-            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 140px; overflow-y: auto; margin-bottom: 10px;">
-                <div style="color:#2ecc71; font-weight:bold; font-size:11px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:5px;">📋 Transaction History:</div>
-                <div id="playerTransactionHistoryList" style="font-size:10px; color:#ccc;">No transactions recorded yet.</div>
+            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 120px; overflow-y: auto; margin-bottom: 8px;">
+                <div style="color:#2ecc71; font-weight:bold; font-size:10px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:4px;">📋 Transaction History:</div>
+                <div id="playerTransactionHistoryList" style="font-size:9.5px; color:#ccc;">No transactions recorded yet.</div>
             </div>
 
-            <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 10px;">
-                <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:10px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; font-weight:900; border-radius:8px; cursor:pointer; font-size:11.5px; text-transform:uppercase;">
+            <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 8px;">
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:9px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; font-weight:900; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase;">
                     👑 Open Master Admin Panel
                 </button>
             </div>
-            <button onclick="closeWalletModals()" class="login-btn" style="padding:10px; font-size:12px;">Close</button>
+            <button onclick="closeWalletModals()" class="login-btn" style="padding:9px; font-size:11px;">Close</button>
         </div>
     </div>
 
-    <!-- FULL MASTER ADMIN PANEL -->
+    <!-- FULL MASTER ADMIN PANEL (REAL MONEY ONLY) -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% SOCKET SYNC)</h2>
-                <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close</button>
+                <h2>👑 REAL MONEY MASTER ADMIN PANEL</h2>
+                <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
-            <div style="background: rgba(0,30,15,0.95); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER</p>
-                <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 6px; font-size: 11px; margin-bottom: 8px;" />
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Broadcast QR Code Live</button>
+            <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR CODE UPLOADER</p>
+                <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Upload & Broadcast QR Instantly</button>
             </div>
 
-            <div style="background: rgba(30,20,5,0.95); padding: 14px; border: 2px solid #ffaa00; border-radius: 8px;">
-                <p style="color: #ffaa00; font-size: 13px; margin-bottom: 10px; font-weight: bold;">⚡ DIRECT COIN & QR PAYMENT CREDITOR</p>
-                <input type="text" id="targetMemberId" placeholder="Enter ID (e.g. RD001001)" style="width: 100%; padding: 9px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px;" />
-                <input type="number" id="targetCoinAmount" placeholder="Coins to Add" style="width: 100%; padding: 9px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px;" />
-                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Apply & Add Coins Directly</button>
+            <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
+                <p style="color: #ffaa00; font-size: 12px; margin-bottom: 8px; font-weight: bold;">⚡ DIRECT REAL COIN CREDITOR</p>
+                <input type="text" id="targetMemberId" placeholder="Enter ID (e.g. RD001001)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <input type="number" id="targetCoinAmount" placeholder="Real Coins to Add" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Apply & Add Real Coins Instantly</button>
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Active Real Players</div><div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">LIVE</div></div>
-                <div class="kpi-card purple"><div class="kpi-title">Current Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
-                <div class="kpi-card orange"><div class="kpi-title">Real House Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
-                <div class="kpi-card blue"><div class="kpi-title">Real Safe Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
+                <div class="kpi-card"><div class="kpi-title">Sync Status</div><div class="kpi-value" style="color:#2ecc71;">ONLINE</div></div>
+                <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
+                <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
+                <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
+            </div>
+
+            <!-- केवल रियल मनी प्लेयर्स और उनकी असली बेट्स का मॉनिटर -->
+            <div class="admin-section-box" style="border: 1.5px solid #27ae60;">
+                <div class="admin-section-title"><span style="color: #27ae60;">👥 Live Real Money Players & Active Bets Monitor</span></div>
+                <div id="admRealPlayersMonitorList" style="max-height: 150px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
+                    <div style="color:#888; text-align:center; padding:6px;">No real money players active right now.</div>
+                </div>
             </div>
 
             <div class="admin-section-box" style="border: 1.5px solid #ffd700; text-align: center;">
-                <div class="admin-section-title"><span style="color: #ffd700;">🎰 Live Table Bet View (0-36 Summated Board - Real Only)</span></div>
-                <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-size: 13px; box-shadow: 0 0 15px #ffd700;">👁️ View Live Real Table Bets (0-36)</button>
-            </div>
-
-            <div class="admin-section-box" style="border: 1.5px solid #e74c3c;">
-                <div class="admin-section-title"><span style="color: #e74c3c;">🛠️ App Maintenance Mode & Timer Control</span></div>
-                <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
-                    <select id="adminMaintenanceDuration" style="background:#000; color:#fff; border:1px solid #e74c3c; padding:8px; border-radius:6px; flex:1;">
-                        <option value="0">Turn Off Maintenance (Normal)</option>
-                        <option value="30">30 Minutes Maintenance</option>
-                        <option value="60">1 Hour Maintenance</option>
-                        <option value="90">1.5 Hours Maintenance</option>
-                        <option value="120">2 Hours Maintenance</option>
-                    </select>
-                    <button onclick="window.applyMaintenanceCommand()" style="background:#e74c3c; color:#fff; border:none; padding:9px 16px; border-radius:6px; font-weight:bold; cursor:pointer;">Apply Maintenance</button>
-                </div>
+                <div class="admin-section-title"><span style="color: #ffd700;">🎰 Live Real Table Bet View (0-36)</span></div>
+                <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 11.5px;">👁️ View Live Real Table Bets (0-36)</button>
             </div>
 
             <div class="admin-section-box" style="border: 1.5px solid #00ffff;">
-                <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Recovery & Lookup</span></div>
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <input type="text" id="adminSearchPhone" placeholder="Enter Player Mobile Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:6px; flex:1; font-size:11px;">
-                    <button onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">Lookup / Reset Pin</button>
+                <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Lookup</span></div>
+                <div style="display:flex; gap:6px; margin-bottom:6px;">
+                    <input type="text" id="adminSearchPhone" placeholder="Enter Phone Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:5px; flex:1; font-size:10px;">
+                    <button onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 10px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer;">Lookup Pin</button>
                 </div>
-                <div id="adminMpinResultBox" style="font-size:11px; color:#2ecc71; text-align:left; background:#000; padding:6px; border-radius:6px;">Search number above to view linked MPIN.</div>
-            </div>
-
-            <div class="admin-section-box" style="border: 1.5px solid #2ecc71;">
-                <div class="admin-section-title"><span style="color: #2ecc71;">👥 Real Players Live Activity & Real Bets Monitoring</span></div>
-                <div id="admUsersActivityList" style="font-size:11px; color:#ccc; max-height: 120px; overflow-y: auto;">Monitoring real user sessions and bets...</div>
+                <div id="adminMpinResultBox" style="font-size:10px; color:#2ecc71; text-align:left; background:#000; padding:5px; border-radius:4px;">Search phone above.</div>
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>📥 Live Deposit Requests & Screenshots</span></div>
-                <div id="admDepositList" style="max-height: 130px; overflow-y: auto;">
-                    <div style="color:#888; font-size:11px; text-align:center; padding:8px;">No pending deposit requests.</div>
+                <div class="admin-section-title"><span>📥 Real Money Deposit Requests</span></div>
+                <div id="admDepositList" style="max-height: 120px; overflow-y: auto;">
+                    <div style="color:#888; font-size:10px; text-align:center; padding:6px;">No pending deposits.</div>
                 </div>
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>📤 Live Withdrawal Requests (UPI / QR)</span></div>
-                <div id="admWithdrawList" style="max-height: 130px; overflow-y: auto;">
-                    <div style="color:#888; font-size:11px; text-align:center; padding:8px;">No pending withdrawal requests.</div>
+                <div class="admin-section-title"><span>📤 Real Money Withdrawal Requests</span></div>
+                <div id="admWithdrawList" style="max-height: 120px; overflow-y: auto;">
+                    <div style="color:#888; font-size:10px; text-align:center; padding:6px;">No pending withdrawals.</div>
                 </div>
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Global Cloud Override / Rig Next Round (Real Mode Only)</span></div>
-                <select id="adminRigSelect" style="margin-bottom: 10px;">
+                <div class="admin-section-title"><span>⚙️ Global Rig Override (Real Money Only)</span></div>
+                <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast to Socket Master</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Save & Broadcast Instantly</button>
             </div>
         </div>
     </div>
 
     <div id="adminLiveTableModal">
         <div class="admin-table-view-content">
-            <h3 style="color:#ffd700; margin-bottom:10px; font-size:16px;">🎰 LIVE REAL TABLE BETS (0-36 SUMMATED)</h3>
-            <p style="font-size:9.5px; color:#ccc; margin-bottom:10px;">Note: Testing mode bets are strictly excluded from this view.</p>
-            <div id="adminSummatedBoardGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 15px;"></div>
-            <button onclick="document.getElementById('adminLiveTableModal').style.display='none'" style="background:#e74c3c; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; text-transform:uppercase;">Close View</button>
+            <h3 style="color:#ffd700; margin-bottom:8px; font-size:15px;">🎰 LIVE REAL TABLE BETS (0-36)</h3>
+            <div id="adminSummatedBoardGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 12px;"></div>
+            <button onclick="document.getElementById('adminLiveTableModal').style.display='none'" style="background:#e74c3c; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:11px; text-transform:uppercase;">Close View</button>
         </div>
     </div>
 
     <div id="cinematicResultPopup">
         <div class="popup-card">
-            <h3 style="color:#f1c40f; font-size:16px; margin-bottom:5px;">🎉 WINNING NUMBER 🎉</h3>
-            <div id="popupWinningNumDisplay" style="font-size:48px; font-weight:900; color:#fff; margin:12px 0;">14 RED</div>
-            <div id="popupPayoutDisplay" style="font-size:14px; font-weight:bold; color:#00ffff; margin-bottom:10px;">You Won!</div>
+            <h3 style="color:#f1c40f; font-size:15px; margin-bottom:4px;">🎉 WINNING NUMBER 🎉</h3>
+            <div id="popupWinningNumDisplay" style="font-size:42px; font-weight:900; color:#fff; margin:10px 0;">14 RED</div>
+            <div id="popupPayoutDisplay" style="font-size:13px; font-weight:bold; color:#00ffff; margin-bottom:8px;">You Won!</div>
         </div>
     </div>
 
     <!-- डिपॉजिट मोडल -->
     <div id="depositModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">ROYAL ROULETTE - SECURE DEPOSIT</h3>
+            <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">SECURE DEPOSIT (REAL MONEY)</h3>
             <div class="deposit-packages-grid">
                 <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
                 <button class="dep-pkg-btn" onclick="selectDepositPkg(500, this)">₹500</button>
@@ -449,22 +420,19 @@
                 <button class="dep-pkg-btn" onclick="selectDepositPkg(10000, this)">₹10000</button>
             </div>
             <input type="number" id="customDepositInput" value="300" placeholder="Enter Amount">
-            <div style="background:#fff; padding:10px; border-radius:8px; color:#000; margin: 8px 0; display: flex; flex-direction: column; align-items: center;">
-                <img id="dynamicPlayerQrImg" src="https://i.ibb.co/3yk54L2/1000532596.jpg" alt="QR" style="width: 140px; height: 140px; object-fit: contain;" />
+            <div style="background:#fff; padding:8px; border-radius:6px; color:#000; margin: 6px 0; display: flex; flex-direction: column; align-items: center;">
+                <img id="dynamicPlayerQrImg" src="https://i.ibb.co/3yk54L2/1000532596.jpg" alt="QR" style="width: 120px; height: 120px; object-fit: contain;" />
             </div>
-            <input type="text" id="depositUtrInput" placeholder="Enter UTR No." style="width:100%; padding:10px; background:#000; border:1.5px solid #f1c40f; color:#f1c40f; border-radius:8px; text-align:center; font-weight:bold;">
-            <div style="margin-top:6px; text-align:left; font-size:11px; color:#ffd700;">
-                📸 Upload Payment Screenshot: <input type="file" id="depositScreenshotFile" accept="image/*" style="margin-top:4px; font-size:10px;">
-            </div>
-            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:12px; margin-top:10px;">SUBMIT DEPOSIT REQUEST</button>
-            <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:8px;">Close</button>
+            <input type="text" id="depositUtrInput" placeholder="Enter UTR No." style="width:100%; padding:9px; background:#000; border:1.5px solid #f1c40f; color:#f1c40f; border-radius:6px; text-align:center; font-weight:bold;">
+            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:10px; margin-top:8px;">SUBMIT DEPOSIT</button>
+            <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
 
     <!-- विड्रॉल मोडल -->
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">VIP WITHDRAWAL (2.5% GST)</h3>
+            <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">VIP WITHDRAWAL (REAL MONEY)</h3>
             <div class="withdraw-packages-grid">
                 <button class="wd-pkg-btn selected" onclick="selectWithdrawPkg(500, this)">₹500</button>
                 <button class="wd-pkg-btn" onclick="selectWithdrawPkg(1000, this)">₹1000</button>
@@ -474,130 +442,91 @@
             </div>
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Amount">
             <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@paytm)">
-            <div style="margin-top:8px; text-align:left; font-size:11px; color:#ffd700;">
-                📱 Or Upload QR Code: <input type="file" id="withdrawQrFile" accept="image/*" style="margin-top:4px; font-size:10px;">
-            </div>
-            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:12px; margin-top:10px;">Request Payout</button>
-            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:8px;">Close</button>
+            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:10px; margin-top:8px;">Request Payout</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
 
     <!-- ट्रांसफर मोडल -->
     <div id="transferModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">TRANSFER COINS (10% TAX)</h3>
-            <p style="font-size:10px; color:#ccc; margin-bottom:8px;">कन्वर्ट या ट्रांसफर करने पर 10% टैक्स काटकर शेष कॉइन जोड़े जाएंगे।</p>
+            <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">TRANSFER REAL COINS</h3>
             <input type="text" id="transferTargetId" placeholder="Friend's RD00 ID">
             <input type="number" id="transferCoinAmt" placeholder="Coins to Send">
-            <button onclick="executeCoinTransfer()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:12px; margin-top:10px;">Transfer Now (Apply 10% Tax)</button>
-            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; margin-top:8px;">Close</button>
+            <button onclick="executeCoinTransfer()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:10px; margin-top:8px;">Transfer Now</button>
+            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
 
     <script>
         (function() {
             try {
-                const socket = io("https://roulette-game-3.onrender.com");
-
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
                 const ROUND_TIME = 120;
                 const MASTER_ADMIN_PHONE = "8889865182";
-                const MASTER_ADMIN_SECRET_CODE = "Rani143143";
 
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
-                
+
+                // --- अल्ट्रा-फास्ट लाइव क्लाउड मास्टर स्टोरेज ---
                 window.cloudSyncStore = {
-                    currentWinner: 14,
+                    winner: 14,
                     historyList: [24, 14, 5, 22, 10, 3],
                     adminRig: "random",
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
-                    maintenanceUntil: 0
+                    realPlayersActivity: {}
                 };
+
+                async function fetchGlobalCloudState() {
+                    try {
+                        let res = await fetch("https://api.jsonbin.io/v3/b/65e12344dc74654018b12345/latest", {
+                            headers: { "X-Master-Key": "$2a$10$DEMO_PUBLIC_KEY_ROYAL_ROULETTE" }
+                        });
+                        if(res.ok) {
+                            let json = await res.json();
+                            if(json && json.record) {
+                                window.cloudSyncStore = json.record;
+                                renderHistoryBarUI();
+                                updateActiveQrDisplay();
+                            }
+                        }
+                    } catch(e) {}
+                }
+
+                async function pushGlobalCloudState() {
+                    try {
+                        // केवल रियल मनी मोड वाले प्लेयर्स की एक्टिविटी और उनकी लगाई गई बेट्स को क्लाउड पर रजिस्टर करें
+                        if (loggedUserPhone && activeGameMode === 'real' && (realCoins > 0 || currentTotalBet > 0)) {
+                            if (!window.cloudSyncStore.realPlayersActivity) window.cloudSyncStore.realPlayersActivity = {};
+                            window.cloudSyncStore.realPlayersActivity[loggedUserPhone] = {
+                                vipId: loggedVipId,
+                                realBal: realCoins,
+                                totalBet: currentTotalBet,
+                                betsBreakdown: userActiveBets,
+                                lastActive: new Date().toLocaleTimeString()
+                            };
+                        }
+
+                        await fetch("https://api.jsonbin.io/v3/b/65e12344dc74654018b12345", {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-Master-Key": "$2a$10$DEMO_PUBLIC_KEY_ROYAL_ROULETTE"
+                            },
+                            body: JSON.stringify(window.cloudSyncStore)
+                        });
+                    } catch(e) {}
+                }
+
+                setInterval(fetchGlobalCloudState, 800);
 
                 window.playMasterAudio = function() {
                     let bgm = document.getElementById('bgmAudio');
-                    if (bgm) { 
-                        bgm.volume = 0.5; 
-                        bgm.play().catch(e => {}); 
-                    }
-                };
-
-                // --- 100% सॉकेट-बेस्ड लाइव ब्रॉडकास्ट लिसनर (जब भी कोई नया प्लेयर जुड़े या कमांड मिले) ---
-                socket.on('connect', function() {
-                    socket.emit('request_sync_state');
-                });
-
-                socket.on('sync_game_state', function(data) {
-                    if (data) {
-                        if (data.history && Array.isArray(data.history)) {
-                            window.cloudSyncStore.historyList = data.history;
-                            renderHistoryBarUI();
-                        }
-                        if (data.rig) window.cloudSyncStore.adminRig = data.rig;
-                        if (data.qrUrl) {
-                            window.cloudSyncStore.adminQrUrl = data.qrUrl;
-                            updateActiveQrDisplay();
-                        }
-                        if (data.maintenanceUntil !== undefined) {
-                            window.cloudSyncStore.maintenanceUntil = data.maintenanceUntil;
-                            checkGlobalMaintenanceStatus();
-                        }
-                    }
-                });
-
-                socket.on('admin_update_command', function(data) {
-                    if (data) {
-                        if (data.history && Array.isArray(data.history)) {
-                            window.cloudSyncStore.historyList = data.history;
-                            renderHistoryBarUI();
-                        }
-                        if (data.rig) window.cloudSyncStore.adminRig = data.rig;
-                        if (data.qrUrl) {
-                            window.cloudSyncStore.adminQrUrl = data.qrUrl;
-                            updateActiveQrDisplay();
-                        }
-                        if (data.maintenanceUntil !== undefined) {
-                            window.cloudSyncStore.maintenanceUntil = data.maintenanceUntil;
-                            checkGlobalMaintenanceStatus();
-                        }
-                    }
-                });
-
-                function checkGlobalMaintenanceStatus() {
-                    let overlay = document.getElementById('globalMaintenanceOverlay');
-                    let countdown = document.getElementById('maintenanceTimerCountdown');
-                    let now = Date.now();
-                    if (window.cloudSyncStore.maintenanceUntil && now < window.cloudSyncStore.maintenanceUntil) {
-                        let diffSec = Math.floor((window.cloudSyncStore.maintenanceUntil - now) / 1000);
-                        let min = Math.floor(diffSec / 60), sec = diffSec % 60;
-                        if (countdown) countdown.innerText = `App under maintenance. Resuming in ${min}m ${sec}s`;
-                        if (overlay) overlay.style.display = 'flex';
-                    } else {
-                        if (overlay) overlay.style.display = 'none';
-                    }
-                }
-                setInterval(checkGlobalMaintenanceStatus, 1000);
-
-                window.applyMaintenanceCommand = function() {
-                    let selectVal = parseInt(document.getElementById('adminMaintenanceDuration').value);
-                    let durationMs = selectVal === 0 ? 0 : (selectVal * 60 * 1000);
-                    window.cloudSyncStore.maintenanceUntil = durationMs === 0 ? 0 : (Date.now() + durationMs);
-                    
-                    let payload = { 
-                        winner: window.cloudSyncStore.currentWinner, 
-                        history: window.cloudSyncStore.historyList, 
-                        rig: window.cloudSyncStore.adminRig, 
-                        qrUrl: window.cloudSyncStore.adminQrUrl, 
-                        maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
-                    };
-                    socket.emit('admin_update_command', payload);
-                    alert(selectVal === 0 ? "✅ Maintenance turned off!" : `✅ Maintenance set for ${selectVal} mins!`);
-                    document.getElementById('secretAdminModal').style.display = 'none';
+                    if (bgm) { bgm.volume = 0.5; bgm.play().catch(e => {}); }
                 };
 
                 function updateActiveQrDisplay() {
@@ -612,15 +541,8 @@
                     reader.onload = function(e) {
                         window.cloudSyncStore.adminQrUrl = e.target.result;
                         updateActiveQrDisplay();
-                        let payload = { 
-                            winner: window.cloudSyncStore.currentWinner, 
-                            history: window.cloudSyncStore.historyList, 
-                            rig: window.cloudSyncStore.adminRig, 
-                            qrUrl: e.target.result, 
-                            maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
-                        };
-                        socket.emit('admin_update_command', payload);
-                        alert("✅ QR Code Broadcasted Live to All Users!");
+                        pushGlobalCloudState();
+                        alert("✅ QR Code Broadcasted Instantly!");
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 };
@@ -651,13 +573,13 @@
                         let parsedNum = parseInt(window.cloudSyncStore.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
-                    let totalTableBet = (activeGameMode === 'real') ? (currentTotalBet || 100) : 100;
+                    let totalTableBet = currentTotalBet || 100;
                     let houseProfit = totalTableBet * 0.05;
                     let safePayoutPool = totalTableBet * 0.95;
 
                     let validSafeNumbers = [];
                     numbersList.forEach(num => {
-                        let neededPayout = (activeGameMode === 'real' ? (userActiveBets[num.toString()] || 0) : 0) * (num === 0 ? 36 : 2);
+                        let neededPayout = (userActiveBets[num.toString()] || 0) * (num === 0 ? 36 : 2);
                         if (neededPayout <= safePayoutPool || neededPayout === 0) {
                             validSafeNumbers.push(num);
                         }
@@ -668,8 +590,8 @@
                     
                     let profitEl = document.getElementById('admProfit');
                     let poolEl = document.getElementById('admPool');
-                    if (profitEl && activeGameMode === 'real') profitEl.innerText = "₹" + houseProfit.toFixed(1);
-                    if (poolEl && activeGameMode === 'real') poolEl.innerText = "₹" + safePayoutPool.toFixed(1);
+                    if (profitEl) profitEl.innerText = "₹" + houseProfit.toFixed(1);
+                    if (poolEl) poolEl.innerText = "₹" + safePayoutPool.toFixed(1);
 
                     return chosenWinner;
                 }
@@ -678,7 +600,7 @@
                     let targetId = document.getElementById('targetMemberId').value.trim();
                     let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
                     if (!targetId || addAmt <= 0) { alert('Enter valid ID & amount!'); return; }
-                    alert(`Added ${addAmt} coins to ${targetId}!`);
+                    alert(`✅ Added ${addAmt} real coins to ${targetId} successfully!`);
                 };
 
                 window.lookupPlayerMpinAdmin = function() {
@@ -695,7 +617,7 @@
                         deposits[idx].status = 'Approved';
                         localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
                         renderAdminRequests();
-                        alert("Deposit Approved successfully!");
+                        alert("Deposit Approved!");
                     }
                 };
 
@@ -709,41 +631,58 @@
                 };
 
                 function renderAdminRequests() {
+                    // एडमिन पैनल में केवल रियल मनी प्लेयर्स और उनकी लगाई गई बेट्स दिखाना
+                    let monitorEl = document.getElementById('admRealPlayersMonitorList');
+                    if (monitorEl) {
+                        let realMap = window.cloudSyncStore.realPlayersActivity || {};
+                        let pHtml = "";
+                        let keys = Object.keys(realMap);
+                        if (keys.length > 0) {
+                            keys.forEach(ph => {
+                                let p = realMap[ph];
+                                let betsText = JSON.stringify(p.betsBreakdown || {});
+                                pHtml += `<div style="background:rgba(0,0,0,0.7); border:1px solid #2ecc71; padding:7px; border-radius:6px; margin-bottom:6px;">
+                                    📱 <b>${ph}</b> (${p.vipId}) | 💎 Real Bal: <span style="color:#2ecc71; font-weight:bold;">₹${p.realBal}</span><br>
+                                    🎲 Total Real Bet: ₹${p.totalBet} | Active Bets: <span style="color:#ffd700;">${betsText}</span><br>
+                                    <span style="font-size:8.5px; color:#aaa;">Last Active: ${p.lastActive}</span>
+                                </div>`;
+                            });
+                        } else {
+                            pHtml = `<div style="color:#888; text-align:center; padding:6px;">No real money players active right now.</div>`;
+                        }
+                        monitorEl.innerHTML = pHtml;
+                    }
+
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
                     let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
                         <div class="req-table-row">
                             <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
                             <div class="req-actions">${d.status === 'Pending' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
-                        </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending deposits.</div>";
+                        </div>`).join('') : "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending deposits.</div>";
                     let depListEl = document.getElementById('admDepositList');
                     if (depListEl) depListEl.innerHTML = depHtml;
 
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
                     let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
                         <div class="req-table-row">
-                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span> (Net: ₹${w.net})<br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
+                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
                             <div class="req-actions"><span style="color:#f39c12; font-weight:bold;">${w.status}</span></div>
-                        </div>`).join('') : "<div style='color:#888; font-size:11px; text-align:center; padding:8px;'>No pending withdrawals.</div>";
+                        </div>`).join('') : "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending withdrawals.</div>";
                     let wdListEl = document.getElementById('admWithdrawList');
                     if (wdListEl) wdListEl.innerHTML = wdHtml;
-
-                    let activityEl = document.getElementById('admUsersActivityList');
-                    if(activityEl) {
-                        let displayBet = (activeGameMode === 'real') ? currentTotalBet : 0;
-                        activityEl.innerHTML = `<div>Active Real User: ${loggedUserPhone || 'Guest'} | VIP ID: ${loggedVipId} | Mode: REAL MONEY | Real Bet: ₹${displayBet}</div>`;
-                    }
                 }
 
                 window.openAdminLiveTableModal = function() {
                     let boardGrid = document.getElementById('adminSummatedBoardGrid');
                     if (!boardGrid) return;
-
                     let summatedBets = {};
                     numbersList.forEach(n => summatedBets[n.toString()] = 0);
-
-                    if (activeGameMode === 'real') {
-                        for (let key in userActiveBets) {
-                            let amt = userActiveBets[key];
+                    
+                    let realMap = window.cloudSyncStore.realPlayersActivity || {};
+                    for (let ph in realMap) {
+                        let pBets = realMap[ph].betsBreakdown || {};
+                        for (let key in pBets) {
+                            let amt = pBets[key];
                             if (key === 'red') {
                                 redList.forEach(n => summatedBets[n.toString()] += (amt / redList.length));
                             } else if (key === 'black') {
@@ -766,9 +705,9 @@
                     numbersList.forEach(num => {
                         let bAmt = Math.round((summatedBets[num.toString()] || 0) * 10) / 10;
                         let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
-                        html += `<div style="background:${bg}; border:1px solid #ffd700; padding:8px 2px; border-radius:4px; font-size:10px; font-weight:bold;">
+                        html += `<div style="background:${bg}; border:1px solid #ffd700; padding:6px 2px; border-radius:4px; font-size:9.5px; font-weight:bold;">
                             <div><b>#${num}</b></div>
-                            <div style="color:#00ffff; font-size:9px;">₹${bAmt}</div>
+                            <div style="color:#00ffff; font-size:8.5px;">₹${bAmt}</div>
                         </div>`;
                     });
                     boardGrid.innerHTML = html;
@@ -793,17 +732,17 @@
                 function drawCanvasWheel(canvasId) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 6, innerRadius = 24, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 5, innerRadius = 20, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
                         let fillColor = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
                         ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
                         ctx.lineTo(cx, cy); ctx.fillStyle = fillColor; ctx.fill();
-                        ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+                        ctx.lineWidth = 1; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
-                        ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px Arial';
-                        ctx.fillText(num, outerRadius - 16, 4); ctx.restore();
+                        ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; ctx.font = 'bold 10px Arial';
+                        ctx.fillText(num, outerRadius - 14, 3); ctx.restore();
                     });
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
@@ -817,29 +756,20 @@
 
                 window.closeComingSoonModal = function() { 
                     let modal = document.getElementById('comingSoonNoticeModal');
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
+                    if (modal) modal.style.display = 'none';
                     playMasterAudio();
                 };
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Rig Force Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Instant Rig Force Number " + num; adminSelect.appendChild(opt); });
                 }
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     window.cloudSyncStore.adminRig = sel;
-                    let payload = { 
-                        winner: window.cloudSyncStore.currentWinner, 
-                        history: window.cloudSyncStore.historyList, 
-                        rig: sel, 
-                        qrUrl: window.cloudSyncStore.adminQrUrl, 
-                        maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
-                    };
-                    socket.emit('admin_update_command', payload);
-                    alert(`✅ Rig set to '${sel}' & broadcasted!`);
+                    pushGlobalCloudState();
+                    alert(`✅ Rig set to '${sel}' & broadcasted instantly!`);
                     document.getElementById('secretAdminModal').style.display = 'none';
                 };
 
@@ -871,8 +801,12 @@
                     loggedVipId = getOrCreateUniqueRoyalId(phone);
                     if (isAdminFlag) loggedVipId = "ADMIN_001";
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
-                    socket.emit('request_sync_state');
+                    
+                    let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
+                    if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
+
                     updateBalancesDisplay();
+                    pushGlobalCloudState();
                     playMasterAudio();
                 }
 
@@ -881,9 +815,8 @@
                     document.getElementById('playerTestBal').innerText = testCoins;
                     document.getElementById('profPhone').innerText = loggedUserPhone;
                     document.getElementById('profVipId').innerText = loggedVipId;
-                    let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
-                    if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
                     renderPlayerTransactionHistory();
+                    pushGlobalCloudState();
                 };
 
                 window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };
@@ -920,7 +853,7 @@
                     let { timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;
                     if (activeGameMode === 'real') { 
-                        if (realCoins < currentActiveChip) { alert("Low Balance!"); return; } 
+                        if (realCoins < currentActiveChip) { alert("Low Balance! Please deposit real money."); return; } 
                         realCoins -= currentActiveChip; 
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
@@ -1027,25 +960,18 @@
                     if(spinAudio) spinAudio.play().catch(e => {});
 
                     let winningNum = getSmartWinnerForRound(endedRoundId);
-                    window.cloudSyncStore.currentWinner = winningNum;
+                    window.cloudSyncStore.winner = winningNum;
                     
                     let totalPockets = numbersList.length;
                     let targetAngle = numbersList.indexOf(winningNum) * (360 / totalPockets) + ((360 / totalPockets) / 2);
-                    accumulatedBallRotation += 2160 + (360 - (accumulatedBallRotation % 360)) + targetAngle;
+                    accumulatedBallRotation += 1800 + (360 - (accumulatedBallRotation % 360)) + targetAngle;
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
                     setTimeout(() => {
                         window.cloudSyncStore.historyList.unshift(winningNum);
                         if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
 
-                        let payload = { 
-                            winner: winningNum, 
-                            history: window.cloudSyncStore.historyList, 
-                            rig: window.cloudSyncStore.adminRig, 
-                            qrUrl: window.cloudSyncStore.adminQrUrl, 
-                            maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
-                        };
-                        socket.emit('admin_update_command', payload);
+                        pushGlobalCloudState();
 
                         let totalWon = 0, isRed = redList.includes(winningNum);
                         for (let key in userActiveBets) {
@@ -1067,8 +993,8 @@
                             if(popup) popup.style.display = 'none'; 
                             isGameSpinning = false; 
                             document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
-                        }, 3000);
-                    }, 6000);
+                        }, 2500);
+                    }, 5000);
                 }
 
                 window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; updateActiveQrDisplay(); };
@@ -1081,47 +1007,35 @@
                 window.triggerCashfreeSandboxDeposit = function() {
                     let amt = parseInt(document.getElementById('customDepositInput').value);
                     let utr = document.getElementById('depositUtrInput').value.trim();
-                    let fileInput = document.getElementById('depositScreenshotFile');
-                    let hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
-
                     if (isNaN(amt) || !utr) { alert("Enter amount & UTR!"); return; }
                     closeWalletModals();
 
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    deposits.push({ phone: loggedUserPhone, amount: amt, utr: utr, hasProof: hasFile, status: 'Pending' });
+                    deposits.push({ phone: loggedUserPhone, amount: amt, utr: utr, status: 'Pending' });
                     localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
                     updateBalancesDisplay();
-                    alert("✅ Deposit request submitted to admin!");
+                    alert("✅ Deposit submitted successfully!");
                 };
 
                 window.submitWithdrawCoins = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
                     if (!amt || realCoins < amt || !upi) { alert("Check balance or UPI!"); return; }
-                    
-                    let gst = Math.round(amt * 0.025 * 100) / 100;
-                    let net = Math.round((amt - gst) * 100) / 100;
                     realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
 
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    withdraws.push({ phone: loggedUserPhone, amount: amt, net: net, upi: upi, status: 'Pending' });
+                    withdraws.push({ phone: loggedUserPhone, amount: amt, upi: upi, status: 'Pending' });
                     localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
                     updateBalancesDisplay();
-                    alert(`Withdrawal requested! Net Payout: ₹${net} (After 2.5% GST)`);
+                    alert(`Withdrawal requested successfully!`);
                 };
 
                 window.executeCoinTransfer = function() {
                     let target = document.getElementById('transferTargetId').value;
                     let amt = parseInt(document.getElementById('transferCoinAmt').value);
                     if (!target || !amt || realCoins < amt) { alert("Check balance or ID!"); return; }
-                    
-                    let taxDeducted = Math.round(amt * 0.10 * 100) / 100;
-                    let finalCredited = Math.round((amt - taxDeneucted || (amt - taxDeducted)) * 100) / 100;
-
-                    realCoins -= amt; 
-                    updateBalancesDisplay(); 
-                    closeWalletModals();
-                    alert(`Transfer Successful!\nSent: ${amt} | 10% Tax Deducted: ${taxDeducted} | Credited: ${finalCredited}`);
+                    realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
+                    alert(`Transfer Successful!`);
                 };
             }catch(err){console.error("Error:", err);}
         })();

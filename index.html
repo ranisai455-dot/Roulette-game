@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - ULTIMATE UNBREAKABLE GLOBAL SYNC</title>
+    <title>ROYAL ROULETTE - LIVE COMMAND VERIFICATION ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -147,7 +147,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 110px; background: rgba(0,0,0,0.92); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 4px; text-align: left; overflow-y: auto; pointer-events: none; }
+        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 120px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -156,31 +156,37 @@
 </head>
 <body>
 
-    <div id="mobileDebugConsole">🚀 Engine Initializing...<br></div>
+    <!-- Live Command & Sync Verification Console -->
+    <div id="mobileDebugConsole">
+        <b>[LIVE VERIFICATION ENGINE ACTIVE]</b><br>
+        <span id="consoleLogs">Initializing secure sockets...<br></span>
+    </div>
     <script>
         function logToScreen(msg, isErr=false) {
-            let box = document.getElementById('mobileDebugConsole');
-            if(box) {
-                box.innerHTML += `<span style="color:${isErr?'#ff4444':'#00ffcc'}">[${new Date().toLocaleTimeString()}] ${msg}</span><br>`;
+            let logs = document.getElementById('consoleLogs');
+            if(logs) {
+                let timeStr = new Date().toLocaleTimeString();
+                logs.innerHTML += `<span style="color:${isErr?'#ff4444':'#00ffcc'}">[${timeStr}] ${msg}</span><br>`;
+                let box = document.getElementById('mobileDebugConsole');
                 box.scrollTop = box.scrollHeight;
             }
         }
         window.onerror = function(msg, url, line) {
-            logToScreen(`ERR: ${msg} (Line ${line})`, true);
+            logToScreen(`SCRIPT ERROR: ${msg} (Line ${line})`, true);
         };
     </script>
 
-    <!-- AUTO-PURGE OLD CACHE ENGINE -->
+    <!-- AUTO-PURGE CACHE -->
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_EVENT_SYNC_V5";
+                const BUILD_VER = "ROYAL_2026_VERIFY_V6";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache purged completely.");
+                    logToScreen("Cache cleared for clean handshake.");
                 }
-            } catch(e) { logToScreen("Cache purge err: " + e.message, true); }
+            } catch(e) {}
         })();
     </script>
 
@@ -214,12 +220,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">EVENT-DRIVEN GLOBAL SYNC • SECURE ⚡</div>
+            <div class="trust-banner">LIVE COMMAND VERIFICATION BRIDGE • ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 ADMIN: EVENT LIVE</span>
+                <span>🟢 HANDSHAKE: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -357,14 +363,14 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 2026 EVENT-DRIVEN ADMIN PANEL</h2>
+                <h2>👑 2026 VERIFIED ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (EVENT SYNC)</p>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (VERIFIED HANDSHAKE)</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Upload & Force-Push QR Globally</button>
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Upload & Verify Global Broadcast</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -375,7 +381,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Event Sync</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">CONNECTING...</div></div>
+                <div class="kpi-card"><div class="kpi-title">Handshake</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">TESTING...</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -421,7 +427,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Save & Force-Push Rig Globally</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Save & Verify Global Rig Push</button>
             </div>
         </div>
     </div>
@@ -494,7 +500,6 @@
     </div>
 
     <script>
-        // --- ADVANCED EVENT-DRIVEN FIREBASE REALTIME BRIDGE ---
         const firebaseConfig = {
             apiKey: "AIzaSyCifZeAzMLHBij4sBZYg8uLW2FnwKKDQ",
             authDomain: "royal-dijital.firebaseapp.com",
@@ -509,18 +514,16 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Firebase Initialized Successfully.");
+                logToScreen("Firebase App Initialized for Verification.");
             }
         } catch(e) {
-            logToScreen("Firebase Init Error: " + e.message, true);
+            logToScreen("Init Error: " + e.message, true);
         }
 
-        // Direct Root & Child References for Event-Driven Sync
-        const rootRef = firebase.database().ref();
-        const qrRef = firebase.database().ref("global_admin_qr");
-        const rigRef = firebase.database().ref("global_admin_rig");
-        const historyRef = firebase.database().ref("global_history_list");
-        const activityRef = firebase.database().ref("global_players_activity");
+        const qrRef = firebase.database().ref("verify_admin_qr");
+        const rigRef = firebase.database().ref("verify_admin_rig");
+        const historyRef = firebase.database().ref("verify_history_list");
+        const activityRef = firebase.database().ref("verify_players_activity");
 
         (function() {
             try {
@@ -535,7 +538,6 @@
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
 
-                // Global Memory Store
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
                     adminRig: "random",
@@ -543,30 +545,30 @@
                     realPlayersActivity: {}
                 };
 
-                // --- INDEPENDENT EVENT LISTENERS (असली लाइव सिंकिंग इंजन) ---
+                // --- LIVE HANDSHAKE VERIFICATION LISTENERS ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("SYNC: QR Code Updated from Cloud.");
+                        logToScreen("[VERIFIED] QR Code received from Cloud handshake!");
                     }
-                });
+                }, (err) => { logToScreen("[ERR] QR Listener blocked: " + err.message, true); });
 
                 rigRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("SYNC: Admin Rig Updated -> " + val);
+                        logToScreen("[VERIFIED] Admin Rig command received: " + val);
                     }
-                });
+                }, (err) => { logToScreen("[ERR] Rig Listener blocked: " + err.message, true); });
 
                 historyRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.historyList = val;
                         renderHistoryBarUI();
-                        logToScreen("SYNC: History Updated.");
+                        logToScreen("[VERIFIED] History sync handshake successful.");
                     }
                 });
 
@@ -575,7 +577,7 @@
                     if (val) {
                         window.globalState.realPlayersActivity = val;
                         let st = document.getElementById('debugSyncStatus');
-                        if(st) { st.innerText = "ONLINE"; st.style.color = "#00ffcc"; }
+                        if(st) { st.innerText = "CONNECTED"; st.style.color = "#00ffcc"; }
                     }
                 });
 
@@ -589,7 +591,9 @@
                                 betsBreakdown: userActiveBets,
                                 lastActive: new Date().toLocaleTimeString()
                             };
-                            activityRef.child(loggedUserPhone.replace(/\./g, '_')).set(payload);
+                            activityRef.child(loggedUserPhone.replace(/\./g, '_')).set(payload).then(() => {
+                                logToScreen("[HANDSHAKE OK] Player stats sent to Cloud.");
+                            });
                         }
                     } catch(e) {}
                 }
@@ -614,10 +618,12 @@
                     let reader = new FileReader();
                     reader.onload = function(e) {
                         let base64Img = e.target.result;
+                        logToScreen("[SENDING] Pushing QR to Cloud database...");
                         qrRef.set(base64Img).then(() => {
-                            alert("✅ QR Code Force-Pushed Globally via Event Engine!");
-                            logToScreen("ADMIN: QR Broadcasted.");
+                            alert("✅ QR Code Verified & Pushed to Cloud!");
+                            logToScreen("[SUCCESS] QR Broadcast confirmed by Cloud!");
                         }).catch(err => {
+                            logToScreen("[FAILED] QR Push error: " + err.message, true);
                             alert("Err: " + err.message);
                         });
                     };
@@ -843,9 +849,13 @@
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
+                    logToScreen("[SENDING] Pushing Rig command to Cloud...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Rig set to '${sel}' & synced globally!`);
+                        alert(`✅ Rig set to '${sel}' & verified on Cloud!`);
+                        logToScreen("[SUCCESS] Rig command confirmed by Cloud.");
                         document.getElementById('secretAdminModal').style.display = 'none';
+                    }).catch(err => {
+                        logToScreen("[FAILED] Rig push error: " + err.message, true);
                     });
                 };
 

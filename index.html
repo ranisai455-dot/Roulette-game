@@ -7,11 +7,10 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Cache-Killer Meta Tags to force fresh load across the globe -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - 2026 GLOBAL ULTRA-SECURE FIREBASE ENGINE</title>
+    <title>ROYAL ROULETTE - MOBILE DEBUGGER BRIDGE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -147,25 +146,43 @@
         .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 10px 0; font-weight: 900; font-size: 11px; border-radius: 6px; cursor: pointer; }
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
+
+        /* Mobile In-Game Debugger Console UI */
+        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 110px; background: rgba(0,0,0,0.92); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 4px; text-align: left; overflow-y: auto; pointer-events: none; }
     </style>
 
-    <!-- Google Firebase SDKs (Official & Secure) -->
+    <!-- Google Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <!-- AUTO-PURGE OLD CACHE ENGINE ON LAUNCH -->
+    <!-- On-Screen Mobile Console Box -->
+    <div id="mobileDebugConsole">🚀 System Initializing...<br></div>
+    <script>
+        function logToScreen(msg, isErr=false) {
+            let box = document.getElementById('mobileDebugConsole');
+            if(box) {
+                box.innerHTML += `<span style="color:${isErr?'#ff4444':'#00ffcc'}">[${new Date().toLocaleTimeString()}] ${msg}</span><br>`;
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+        window.onerror = function(msg, url, line) {
+            logToScreen(`ERR: ${msg} (Line ${line})`, true);
+        };
+    </script>
+
+    <!-- AUTO-PURGE OLD CACHE ENGINE -->
     <script>
         (function() {
             try {
-                // Check if global version token changed, if so flush obsolete local caches
-                const BUILD_VER = "ROYAL_2026_V3_GLOBAL";
+                const BUILD_VER = "ROYAL_2026_DEBUG_V4";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
+                    logToScreen("Cache purged successfully.");
                 }
-            } catch(e) {}
+            } catch(e) { logToScreen("Cache purge err: " + e.message, true); }
         })();
     </script>
 
@@ -360,7 +377,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Sync</div><div class="kpi-value" style="color:#00ffcc;">ONLINE</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Sync</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">CONNECTING...</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -492,9 +509,15 @@
         };
 
         // Initialize Firebase safely
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                logToScreen("Firebase App Initialized.");
+            }
+        } catch(e) {
+            logToScreen("Firebase Init Err: " + e.message, true);
         }
+
         const dbRef = firebase.database().ref("royal_roulette_state");
 
         (function() {
@@ -510,7 +533,6 @@
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
 
-                // --- GLOBAL CLOUD STORE SYNC ---
                 window.cloudSyncStore = {
                     winner: 14,
                     historyList: [24, 14, 5, 22, 10, 3],
@@ -519,14 +541,24 @@
                     realPlayersActivity: {}
                 };
 
-                // Realtime Firebase Global Listener (दुनिया के किसी भी कोने में बदलाव तुरंत दिखेगा)
+                // Realtime Firebase Listener with Error Catching
                 dbRef.on("value", (snapshot) => {
                     let val = snapshot.val();
                     if (val) {
                         window.cloudSyncStore = val;
                         renderHistoryBarUI();
                         updateActiveQrDisplay();
+                        logToScreen("SYNC OK: Data received from Cloud.");
+                        let st = document.getElementById('debugSyncStatus');
+                        if(st) { st.innerText = "ONLINE"; st.style.color = "#00ffcc"; }
+                    } else {
+                        logToScreen("SYNC WARN: Database node is empty, pushing default.");
+                        dbRef.set(window.cloudSyncStore);
                     }
+                }, (error) => {
+                    logToScreen("FIREBASE ERR: " + error.message, true);
+                    let st = document.getElementById('debugSyncStatus');
+                    if(st) { st.innerText = "BLOCKED/ERR"; st.style.color = "#ff4444"; }
                 });
 
                 function pushGlobalCloudState() {
@@ -541,8 +573,14 @@
                                 lastActive: new Date().toLocaleTimeString()
                             };
                         }
-                        dbRef.set(window.cloudSyncStore);
-                    } catch(e) {}
+                        dbRef.set(window.cloudSyncStore).then(() => {
+                            logToScreen("PUSH OK: State sent to Cloud.");
+                        }).catch(err => {
+                            logToScreen("PUSH ERR: " + err.message, true);
+                        });
+                    } catch(e) {
+                        logToScreen("PUSH EXCEPTION: " + e.message, true);
+                    }
                 }
 
                 window.playMasterAudio = function() {

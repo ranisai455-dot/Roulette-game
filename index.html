@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - ZERO DELAY REALTIME ENGINE</title>
+    <title>ROYAL ROULETTE - 100% GLOBAL CLOUD ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -154,7 +154,7 @@
 </head>
 <body>
 
-    <!-- STRICT OFFLINE AUTO-KILLER -->
+    <!-- STRICT OFFLINE AUTO-KILLER (इंटरनेट बंद होते ही स्क्रीन तुरंत बंद/ब्लैंक) -->
     <script>
         function checkRealNetwork() {
             if (!navigator.onLine) {
@@ -171,7 +171,7 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_ZERO_DELAY_LIVE_V21";
+                const BUILD_VER = "ROYAL_2026_100_PERCENT_CLOUD_V22";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -215,8 +215,8 @@
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 ZERO DELAY LIVE</span>
-                <span>🔒 CLOUD 2026</span>
+                <span>🟢 100% CLOUD LIVE</span>
+                <span>🔒 SECURE 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
         </div>
@@ -334,17 +334,11 @@
                 <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-weight:bold;">0</span></div>
                 <div>🧪 <b>Testing Balance (Fun):</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
             </div>
-            
-            <div style="background:#001205; border:1.5px solid #27ae60; padding:8px; border-radius:8px; text-align:left; max-height: 120px; overflow-y: auto; margin-bottom: 8px;">
-                <div style="color:#2ecc71; font-weight:bold; font-size:10px; border-bottom:1px solid #333; padding-bottom:3px; margin-bottom:4px;">📋 Transaction History:</div>
-                <div id="playerTransactionHistoryList" style="font-size:9.5px; color:#ccc;">No transactions recorded yet.</div>
-            </div>
-
             <button onclick="closeWalletModals()" class="login-btn" style="padding:9px; font-size:11px;">Close</button>
         </div>
     </div>
 
-    <!-- MASTER ADMIN DASHBOARD (प्रोफाइल पर क्लिक करने पर खुलेगा) -->
+    <!-- MASTER ADMIN CONTROL DASHBOARD (100% CLOUD CONNECTED) -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
@@ -352,17 +346,17 @@
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
-            <!-- 🟢 LIVE ONLINE CONNECTED PLAYERS LIST (तुरंत 0 सेकंड में अपडेट) -->
+            <!-- 🟢 LIVE ONLINE CONNECTED PLAYERS LIST -->
             <div style="background: rgba(0,25,12,0.95); padding: 12px; border: 2px solid #2ecc71; border-radius: 8px;">
-                <div class="admin-section-title"><span style="color:#2ecc71;">🟢 INSTANT LIVE PLAYERS (ONLINE NOW)</span></div>
+                <div class="admin-section-title"><span style="color:#2ecc71;">🟢 LIVE CONNECTED PLAYERS (ONLINE NOW)</span></div>
                 <div id="adminLiveOnlinePlayersList" style="max-height: 120px; overflow-y: auto; font-size: 11px;">
                     <div style="color:#888; text-align:center; padding:5px;">Waiting for live users to connect...</div>
                 </div>
             </div>
 
-            <!-- क्यूआर कोड अपलोड + यूआरएल लाइव पुश -->
+            <!-- क्यूआर कोड अपलोड + यूआरएल लाइव पुश (GLOBAL CLOUD) -->
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; font-weight: bold;">📱 DEPOSIT QR CODE MANAGER (LIVE PUSH)</p>
+                <p style="color: #00ffcc; font-size: 12px; font-weight: bold;">📱 DEPOSIT QR CODE MANAGER (LIVE PUSH TO ALL USERS)</p>
                 
                 <div style="display: flex; gap: 6px; align-items: center;">
                     <input type="file" id="adminQrFileInput" accept="image/*" style="display: none;" onchange="handleAdminQrFileUpload(this)" />
@@ -375,16 +369,16 @@
                 <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px; box-shadow: 0 0 10px #27ae60;">⚡ 1-Click Push QR to All Users Live</button>
             </div>
 
-            <!-- डायरेक्ट कॉइन क्रेडिट -->
+            <!-- डायरेक्ट रियल कॉइन एडिटर (सीधे यूजर के फोन में रियल-टाइम पहुंचेगा) -->
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
-                <p style="color: #ffaa00; font-size: 12px; margin-bottom: 8px; font-weight: bold;">⚡ DIRECT REAL COIN CREDITOR</p>
-                <input type="text" id="targetMemberId" placeholder="Enter Member ID (e.g. RD001001)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
-                <input type="number" id="targetCoinAmount" placeholder="Real Coins Amount" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
-                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Apply Coins Instantly</button>
+                <p style="color: #ffaa00; font-size: 12px; margin-bottom: 8px; font-weight: bold;">⚡ DIRECT REAL COIN CREDITOR (LIVE IN USER'S PHONE)</p>
+                <input type="text" id="targetMemberPhone" placeholder="Enter Member Phone Number (10 Digits)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <input type="number" id="targetCoinAmount" placeholder="Real Coins Amount to Add" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Apply Coins Live to Player</button>
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">ONLINE LIVE</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">CLOUD SYNC</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -396,9 +390,9 @@
                 <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 11.5px;">👁️ View Live Real Table Bets (0-36)</button>
             </div>
 
-            <!-- एमपीआईएन लुकअप -->
+            <!-- एमपीआईएन लुकअप (सीधे क्लाउड से) -->
             <div class="admin-section-box" style="border: 1.5px solid #00ffff;">
-                <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Lookup</span></div>
+                <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Lookup (Cloud)</span></div>
                 <div style="display:flex; gap:6px; margin-bottom:6px;">
                     <input type="text" id="adminSearchPhone" placeholder="Enter Phone Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:5px; flex:1; font-size:10px;">
                     <button onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 10px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer;">Lookup Pin</button>
@@ -406,23 +400,25 @@
                 <div id="adminMpinResultBox" style="font-size:10px; color:#2ecc71; text-align:left; background:#000; padding:5px; border-radius:4px;">Search phone above.</div>
             </div>
 
+            <!-- ग्लोबल डिपॉजिट रिक्वेस्ट्स (दुनिया के किसी भी कोने से आएगी) -->
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>📥 Real Money Deposit Requests</span></div>
-                <div id="admDepositList" style="max-height: 120px; overflow-y: auto;">
+                <div class="admin-section-title"><span>📥 Global Real Deposit Requests</span></div>
+                <div id="admDepositList" style="max-height: 140px; overflow-y: auto;">
                     <div style="color:#888; font-size:10px; text-align:center; padding:6px;">No pending deposits.</div>
                 </div>
             </div>
 
+            <!-- ग्लोबल विड्रॉल रिक्वेस्ट्स -->
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>📤 Real Money Withdrawal Requests</span></div>
-                <div id="admWithdrawList" style="max-height: 120px; overflow-y: auto;">
+                <div class="admin-section-title"><span>📤 Global Real Withdrawal Requests</span></div>
+                <div id="admWithdrawList" style="max-height: 140px; overflow-y: auto;">
                     <div style="color:#888; font-size:10px; text-align:center; padding:6px;">No pending withdrawals.</div>
                 </div>
             </div>
 
-            <!-- मास्टर विनिंग नंबर (Rig) सेट करने का बटन -->
+            <!-- मास्टर विनिंग नंबर (Rig) सेट करने का बटन (पूरी दुनिया पर लागू) -->
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Users)</span></div>
+                <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Users in the World)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
@@ -464,7 +460,7 @@
                 <img id="dynamicPlayerQrImg" src="https://i.ibb.co/3yk54L2/1000532596.jpg" alt="QR" style="width: 120px; height: 120px; object-fit: contain;" />
             </div>
             <input type="text" id="depositUtrInput" placeholder="Enter UTR No." style="width:100%; padding:9px; background:#000; border:1.5px solid #f1c40f; color:#f1c40f; border-radius:6px; text-align:center; font-weight:bold;">
-            <button onclick="triggerCashfreeSandboxDeposit();" class="login-btn lobby" style="padding:10px; margin-top:8px;">SUBMIT DEPOSIT</button>
+            <button onclick="triggerCloudDepositSubmit();" class="login-btn lobby" style="padding:10px; margin-top:8px;">SUBMIT DEPOSIT</button>
             <button onclick="closeWalletModals();" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
@@ -482,7 +478,7 @@
             </div>
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Amount">
             <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@paytm)">
-            <button onclick="submitWithdrawCoins()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:10px; margin-top:8px;">Request Payout</button>
+            <button onclick="triggerCloudWithdrawSubmit()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:10px; margin-top:8px;">Request Payout</button>
             <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
@@ -491,9 +487,9 @@
     <div id="transferModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">TRANSFER REAL COINS</h3>
-            <input type="text" id="transferTargetId" placeholder="Friend's RD00 ID">
+            <input type="text" id="transferTargetPhone" placeholder="Friend's Mobile Number">
             <input type="number" id="transferCoinAmt" placeholder="Coins to Send">
-            <button onclick="executeCoinTransfer()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:10px; margin-top:8px;">Transfer Now</button>
+            <button onclick="executeCoinTransferCloud()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:10px; margin-top:8px;">Transfer Now</button>
             <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
@@ -516,11 +512,15 @@
             }
         } catch(e) {}
 
-        const masterRoot = firebase.database().ref("royal_roulette_master_state_v21");
+        // GLOBAL CLOUD ROOT - 100% SHARED ACROSS ALL DEVICES WORLDWIDE
+        const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v22");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
         const livePlayersRef = masterRoot.child("active_online_players");
+        const usersRef = masterRoot.child("users");
+        const depositsRef = masterRoot.child("deposit_requests");
+        const withdrawsRef = masterRoot.child("withdraw_requests");
 
         (function() {
             try {
@@ -565,7 +565,7 @@
                     }
                 });
 
-                // ZERO DELAY LIVE PLAYERS TRACKER (एडमिन पैनल पर तुरंत 0 सेकंड में दिखना और हटना)
+                // 1. एडमिन के लिए लाइव ऑनलाइन प्लेयर्स (क्लाउड से)
                 livePlayersRef.on("value", (snap) => {
                     let players = snap.val() || {};
                     let listEl = document.getElementById('adminLiveOnlinePlayersList');
@@ -577,7 +577,6 @@
 
                     keys.forEach(k => {
                         let p = players[k];
-                        // अगर पल्स 4 सेकंड से ज्यादा पुरानी है तो तुरंत हटाओ
                         if (p && (now - p.lastSeen < 4000)) {
                             activeCount++;
                             html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.7); padding:6px 10px; border-radius:5px; margin-bottom:4px; border:1.5px solid #2ecc71;">
@@ -588,7 +587,6 @@
                                 <span style="color:#2ecc71; font-weight:900; font-size:11px;">🟢 LIVE NOW</span>
                             </div>`;
                         } else {
-                            // पुरानी एंट्री को सर्वर से तुरंत डिलीट करो
                             livePlayersRef.child(k).remove();
                         }
                     });
@@ -599,7 +597,85 @@
                     listEl.innerHTML = html;
                 });
 
-                // INSTANT ZERO-DELAY PRESENCE HEARTBEAT (हर 1 सेकंड में पल्स और बाहर निकलते ही 0 सेकंड में डिलीट)
+                // 2. एडमिन के लिए ग्लोबल डिपॉजिट लिस्ट (क्लाउड से)
+                depositsRef.on("value", (snap) => {
+                    let deps = snap.val() || {};
+                    let listEl = document.getElementById('admDepositList');
+                    if (!listEl) return;
+                    let html = "";
+                    let keys = Object.keys(deps);
+                    let pendingCount = 0;
+
+                    keys.forEach(key => {
+                        let d = deps[key];
+                        if (d.status === 'Pending') {
+                            pendingCount++;
+                            html += `<div class="req-table-row">
+                                <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
+                                <div class="req-actions">
+                                    <button class="btn-approve" onclick="approveCloudDeposit('${key}', '${d.phone}', ${d.amount})">Approve</button>
+                                    <button class="btn-reject" onclick="rejectCloudDeposit('${key}')">Reject</button>
+                                </div>
+                            </div>`;
+                        }
+                    });
+
+                    if (pendingCount === 0) {
+                        html = "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending deposits.</div>";
+                    }
+                    listEl.innerHTML = html;
+                });
+
+                // 3. एडमिन के लिए ग्लोबल विड्रॉल लिस्ट (क्लाउड से)
+                withdrawsRef.on("value", (snap) => {
+                    let wds = snap.val() || {};
+                    let listEl = document.getElementById('admWithdrawList');
+                    if (!listEl) return;
+                    let html = "";
+                    let keys = Object.keys(wds);
+                    let pendingCount = 0;
+
+                    keys.forEach(key => {
+                        let w = wds[key];
+                        if (w.status === 'Pending') {
+                            pendingCount++;
+                            html += `<div class="req-table-row">
+                                <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
+                                <div class="req-actions">
+                                    <button class="btn-approve" onclick="approveCloudWithdraw('${key}')">Mark Paid</button>
+                                    <button class="btn-reject" onclick="rejectCloudWithdraw('${key}', '${w.phone}', ${w.amount})">Reject</button>
+                                </div>
+                            </div>`;
+                        }
+                    });
+
+                    if (pendingCount === 0) {
+                        html = "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending withdrawals.</div>";
+                    }
+                    listEl.innerHTML = html;
+                });
+
+                // 4. यूजर का बैलेंस क्लाउड से रियल-टाइम सिंक होना (किसी भी फोन में तुरंत लाइव अपडेट)
+                function bindUserCloudWallet(phone) {
+                    usersRef.child(phone).on("value", (snap) => {
+                        let data = snap.val();
+                        if (data) {
+                            realCoins = data.balance || 0;
+                            loggedVipId = data.vipId || ("RD00" + phone.slice(-4));
+                        } else {
+                            usersRef.child(phone).set({
+                                phone: phone,
+                                vipId: "RD00" + phone.slice(-4),
+                                balance: 0
+                            });
+                            realCoins = 0;
+                            loggedVipId = "RD00" + phone.slice(-4);
+                        }
+                        updateBalancesDisplay();
+                    });
+                }
+
+                // 5. यूजर की लाइव उपस्थिति (Heartbeat Presence)
                 function startUserLiveHeartbeat(phone, vipId) {
                     if (!phone || phone === MASTER_ADMIN_PHONE) return;
                     let userNode = livePlayersRef.child(phone);
@@ -619,32 +695,24 @@
                         userNode.remove();
                     }
 
-                    // फ़ायरबेस डिस्कनेक्ट गार्ड
                     userNode.onDisconnect().remove();
-
-                    // पहली बार तुरंत सेट करो
                     sendPulse();
 
                     if (presenceHeartbeatInterval) clearInterval(presenceHeartbeatInterval);
                     presenceHeartbeatInterval = setInterval(sendPulse, 1000);
 
-                    // जैसे ही यूज़र टैब बंद करे, बैक करे या स्क्रीन से बाहर जाए -> 0 सेकंड में सर्वर से डिलीट
                     window.addEventListener('visibilitychange', () => {
-                        if (document.visibilityState === 'hidden') {
-                            removeInstantly();
-                        } else {
-                            sendPulse();
-                        }
+                        if (document.visibilityState === 'hidden') removeInstantly();
+                        else sendPulse();
                     });
                     window.addEventListener('pagehide', removeInstantly);
                     window.addEventListener('beforeunload', removeInstantly);
                 }
 
-                // प्रोफ़ाइल क्लिक हैंडलर
+                // प्रोफ़ाइल क्लिक हैंडलर (8889865182 पर ही एडमिन खुलेगा)
                 window.handleProfileClick = function() {
                     if (loggedUserPhone === MASTER_ADMIN_PHONE) {
                         document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
-                        renderAdminRequests();
                         document.getElementById('secretAdminModal').style.display = 'block';
                     } else {
                         window.updateBalancesDisplay();
@@ -666,7 +734,6 @@
                     });
                 }
 
-                // क्यूआर कोड फ़ाइल अपलोड
                 window.handleAdminQrFileUpload = function(input) {
                     if (input.files && input.files[0]) {
                         let reader = new FileReader();
@@ -678,26 +745,134 @@
                     }
                 };
 
-                // 1-क्लिक ब्रॉडकास्ट
+                // 1-क्लिक ब्रॉडकास्ट (दुनिया भर में सभी फोनों पर लाइव पुश)
                 window.broadcastMasterQr = function() {
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
                     if (!urlInput) { alert("Please enter or select image!"); return; }
                     qrRef.set(urlInput).then(() => {
-                        alert("✅ 1-Click: QR Code successfully pushed live to all users!");
+                        alert("✅ 1-Click: QR Code successfully pushed live to ALL users in the world!");
                     }).catch(err => { alert("Error: " + err.message); });
                 };
 
-                function getOrCreateUniqueRoyalId(phone) {
-                    if (phone === MASTER_ADMIN_PHONE) return "ADMIN_001";
-                    let reg = JSON.parse(localStorage.getItem("royal_registered_map") || "{}");
-                    if (reg[phone]) return reg[phone];
-                    let lastSeq = parseInt(localStorage.getItem("royal_seq_counter") || "1000") + 1;
-                    localStorage.setItem("royal_seq_counter", lastSeq.toString());
-                    let newId = "RD00" + lastSeq;
-                    reg[phone] = newId;
-                    localStorage.setItem("royal_registered_map", JSON.stringify(reg));
-                    return newId;
-                }
+                // डायरेक्ट कॉइन जोड़ना (क्लाउड के जरिए सीधे उस यूजर के फोन में लाइव)
+                window.applyAdminCoinsDirect = function() {
+                    let targetPhone = document.getElementById('targetMemberPhone').value.trim();
+                    let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
+                    if (!targetPhone || addAmt <= 0) { alert('Enter valid 10-digit Phone & Amount!'); return; }
+
+                    usersRef.child(targetPhone).once("value", (snap) => {
+                        let currentBal = (snap.val() && snap.val().balance) || 0;
+                        usersRef.child(targetPhone).update({
+                            balance: currentBal + addAmt
+                        }).then(() => {
+                            alert(`✅ Successfully added ₹${addAmt} coins live to player ${targetPhone}!`);
+                            document.getElementById('targetCoinAmount').value = "";
+                        });
+                    });
+                };
+
+                // डिपॉजिट अप्रूव करना (सीधे यूजर के अकाउंट में पैसे जुड़ना)
+                window.approveCloudDeposit = function(depKey, userPhone, amount) {
+                    usersRef.child(userPhone).once("value", (snap) => {
+                        let cur = (snap.val() && snap.val().balance) || 0;
+                        usersRef.child(userPhone).update({
+                            balance: cur + amount
+                        }).then(() => {
+                            depositsRef.child(depKey).update({ status: 'Approved' });
+                            alert(`✅ Deposit of ₹${amount} approved live for ${userPhone}!`);
+                        });
+                    });
+                };
+
+                window.rejectCloudDeposit = function(depKey) {
+                    depositsRef.child(depKey).update({ status: 'Rejected' });
+                };
+
+                window.approveCloudWithdraw = function(wdKey) {
+                    withdrawsRef.child(wdKey).update({ status: 'Approved' });
+                    alert("✅ Marked as Paid!");
+                };
+
+                window.rejectCloudWithdraw = function(wdKey, userPhone, amount) {
+                    usersRef.child(userPhone).once("value", (snap) => {
+                        let cur = (snap.val() && snap.val().balance) || 0;
+                        usersRef.child(userPhone).update({
+                            balance: cur + amount
+                        }).then(() => {
+                            withdrawsRef.child(wdKey).update({ status: 'Rejected' });
+                            alert("Withdrawal rejected & coins refunded to player.");
+                        });
+                    });
+                };
+
+                // यूजर का डिपॉजिट सबमिट करना (सीधे एडमिन के पास जाएगा)
+                window.triggerCloudDepositSubmit = function() {
+                    let amt = parseInt(document.getElementById('customDepositInput').value);
+                    let utr = document.getElementById('depositUtrInput').value.trim();
+                    if (isNaN(amt) || !utr) { alert("Enter valid Amount & UTR Number!"); return; }
+                    closeWalletModals();
+
+                    depositsRef.push({
+                        phone: loggedUserPhone,
+                        amount: amt,
+                        utr: utr,
+                        status: 'Pending',
+                        timestamp: Date.now()
+                    }).then(() => {
+                        alert("✅ Deposit submitted to Admin successfully! Please wait for approval.");
+                    });
+                };
+
+                // यूजर का विड्रॉल सबमिट करना (सीधे क्लाउड में)
+                window.triggerCloudWithdrawSubmit = function() {
+                    let amt = parseInt(document.getElementById('withdrawAmtInput').value);
+                    let upi = document.getElementById('withdrawUpiInput').value.trim();
+                    if (!amt || realCoins < amt || !upi) { alert("Check balance or UPI ID!"); return; }
+                    
+                    usersRef.child(loggedUserPhone).update({
+                        balance: realCoins - amt
+                    }).then(() => {
+                        withdrawsRef.push({
+                            phone: loggedUserPhone,
+                            amount: amt,
+                            upi: upi,
+                            status: 'Pending',
+                            timestamp: Date.now()
+                        });
+                        closeWalletModals();
+                        alert("✅ Withdrawal request submitted to Admin successfully!");
+                    });
+                };
+
+                // कॉइन ट्रांसफर (सीधे क्लाउड में)
+                window.executeCoinTransferCloud = function() {
+                    let targetPhone = document.getElementById('transferTargetPhone').value.trim();
+                    let amt = parseInt(document.getElementById('transferCoinAmt').value);
+                    if (!targetPhone || !amt || realCoins < amt) { alert("Check balance or Target Phone!"); return; }
+                    
+                    usersRef.child(targetPhone).once("value", (snap) => {
+                        if (!snap.exists()) { alert("Target player does not exist!"); return; }
+                        let targetCur = snap.val().balance || 0;
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins - amt });
+                        usersRef.child(targetPhone).update({ balance: targetCur + amt });
+                        closeWalletModals();
+                        alert(`✅ Transfer of ₹${amt} to ${targetPhone} successful!`);
+                    });
+                };
+
+                // एमपीआईएन लुकअप
+                window.lookupPlayerMpinAdmin = function() {
+                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
+                    let box = document.getElementById('adminMpinResultBox');
+                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Enter phone number.</span>"; return; }
+                    usersRef.child(searchPhone).once("value", (snap) => {
+                        if (snap.exists() && snap.val().mpin) {
+                            box.innerHTML = `MPIN: <b>${snap.val().mpin}</b> | Bal: ₹${snap.val().balance || 0}`;
+                        } else {
+                            box.innerHTML = `<span style='color:#e74c3c;'>User not found or MPIN not set.</span>`;
+                        }
+                    });
+                };
 
                 function getGlobalRound() {
                     let nowSec = Math.floor(Date.now() / 1000);
@@ -730,52 +905,6 @@
                     return chosenWinner;
                 }
 
-                window.applyAdminCoinsDirect = function() {
-                    let targetId = document.getElementById('targetMemberId').value.trim();
-                    let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
-                    if (!targetId || addAmt <= 0) { alert('Enter valid ID & amount!'); return; }
-                    alert(`✅ Added ${addAmt} real coins to ${targetId} successfully!`);
-                };
-
-                window.approveDeposit = function(idx) {
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    if(deposits[idx]) {
-                        deposits[idx].status = 'Approved';
-                        localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-                        renderAdminRequests();
-                        alert("Deposit Approved!");
-                    }
-                };
-
-                window.rejectDeposit = function(idx) {
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    if(deposits[idx]) {
-                        deposits[idx].status = 'Rejected';
-                        localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-                        renderAdminRequests();
-                    }
-                };
-
-                function renderAdminRequests() {
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    let depHtml = deposits.length > 0 ? deposits.map((d, idx) => `
-                        <div class="req-table-row">
-                            <div>📱 <b>${d.phone}</b> | Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span><br>UTR: <b style="color:#ffd700;">${d.utr}</b></div>
-                            <div class="req-actions">${d.status === 'Pending' ? `<button class="btn-approve" onclick="approveDeposit(${idx})">Approve</button><button class="btn-reject" onclick="rejectDeposit(${idx})">Reject</button>` : d.status}</div>
-                        </div>`).join('') : "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending deposits.</div>";
-                    let depListEl = document.getElementById('admDepositList');
-                    if (depListEl) depListEl.innerHTML = depHtml;
-
-                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    let wdHtml = withdraws.length > 0 ? withdraws.map((w, idx) => `
-                        <div class="req-table-row">
-                            <div>📱 <b>${w.phone}</b> | Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span><br>UPI: <b style="color:#00ffff;">${w.upi}</b></div>
-                            <div class="req-actions"><span style="color:#f39c12; font-weight:bold;">${w.status}</span></div>
-                        </div>`).join('') : "<div style='color:#888; font-size:10px; text-align:center; padding:6px;'>No pending withdrawals.</div>";
-                    let wdListEl = document.getElementById('admWithdrawList');
-                    if (wdListEl) wdListEl.innerHTML = wdHtml;
-                }
-
                 window.openAdminLiveTableModal = function() {
                     let boardGrid = document.getElementById('adminSummatedBoardGrid');
                     if (!boardGrid) return;
@@ -790,21 +919,6 @@
                     boardGrid.innerHTML = html;
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
-
-                function renderPlayerTransactionHistory() {
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    let html = "";
-                    deposits.filter(d => d.phone === loggedUserPhone).forEach(d => {
-                        html += `<div>📥 Deposit: ₹${d.amount} | Status: ${d.status}</div>`;
-                    });
-                    withdraws.filter(w => w.phone === loggedUserPhone).forEach(w => {
-                        html += `<div>📤 Withdraw: ₹${w.amount} | Status: ${w.status}</div>`;
-                    });
-                    if (html === "") html = "No transactions yet.";
-                    let listEl = document.getElementById('playerTransactionHistoryList');
-                    if (listEl) listEl.innerHTML = html;
-                }
 
                 function drawCanvasWheel(canvasId) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
@@ -842,10 +956,11 @@
                     numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Force Winning Number " + num; adminSelect.appendChild(opt); });
                 }
                 
+                // ग्लोबल मास्टर रिग सेव करना
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning number '${sel}' pushed live to all users!`);
+                        alert(`✅ Winning number '${sel}' pushed live to ALL users in the world!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => { alert("Error: " + err.message); });
                 };
@@ -863,28 +978,35 @@
 
                 window.requestStrictOtp = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
+                    let mpin = document.getElementById('inputMpin').value.trim();
                     if (phone.length < 10) { alert("Enter 10-digit number!"); return; }
                     let code = Math.floor(100000 + Math.random() * 900000);
                     document.getElementById('inputOtp').value = code;
+                    if (mpin) {
+                        usersRef.child(phone).update({ mpin: mpin });
+                    }
                 };
 
                 window.verifyCloudWalletLogin = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
-                    finalizeLogin(phone);
+                    let mpin = document.getElementById('inputMpin').value.trim();
+                    if (phone.length < 10) { alert("Enter valid 10-digit number!"); return; }
+                    finalizeLogin(phone, mpin);
                 };
 
-                function finalizeLogin(phone) {
+                function finalizeLogin(phone, mpin) {
                     document.getElementById('fullscreenWheelBg').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'none';
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
-                    loggedVipId = getOrCreateUniqueRoyalId(phone);
-                    document.getElementById('userDisplayPhone').innerText = loggedVipId;
                     
-                    // लाइव हर्टबीट चालू करना (एडमिन को 0 सेकंड में दिखेगा)
-                    startUserLiveHeartbeat(phone, loggedVipId);
+                    if (mpin) {
+                        usersRef.child(phone).update({ mpin: mpin });
+                    }
 
-                    updateBalancesDisplay();
+                    // क्लाउड से वॉलेट और लाइव उपस्थिति कनेक्ट करना
+                    bindUserCloudWallet(phone);
+                    startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
                     playMasterAudio();
                 }
 
@@ -893,21 +1015,13 @@
                     document.getElementById('playerTestBal').innerText = testCoins;
                     document.getElementById('profPhone').innerText = loggedUserPhone;
                     document.getElementById('profVipId').innerText = loggedVipId;
-                    renderPlayerTransactionHistory();
+                    document.getElementById('userDisplayPhone').innerText = loggedVipId;
                 };
 
                 window.switchGameMode = function(mode) {
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
-                };
-
-                window.lookupPlayerMpinAdmin = function() {
-                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
-                    let box = document.getElementById('adminMpinResultBox');
-                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
-                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Enter phone number.</span>"; return; }
-                    box.innerHTML = storedMpins[searchPhone] ? `MPIN: <b>${storedMpins[searchPhone]}</b>` : `<span style='color:#e74c3c;'>Not found.</span>`;
                 };
 
                 const gridTableDiv = document.getElementById('gridTableDiv');
@@ -931,14 +1045,14 @@
                     if (isGameSpinning || timeLeft <= 10) return;
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { alert("Low Balance! Please deposit real money."); return; } 
-                        realCoins -= currentActiveChip; 
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins - currentActiveChip });
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
                     }
                     currentTotalBet += currentActiveChip; userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
                     betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                    updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                    document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
                     if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText=userActiveBets[key]; }
                 };
@@ -949,7 +1063,7 @@
                     let totalNeeded = currentActiveChip * numbersArray.length;
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { alert("Low Balance for Group Bet!"); return; }
-                        realCoins -= totalNeeded;
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins - totalNeeded });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
@@ -959,7 +1073,6 @@
                     });
                     currentTotalBet += totalNeeded;
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
-                    updateBalancesDisplay();
                     document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     if (el) el.classList.add('has-bet');
                 };
@@ -968,7 +1081,11 @@
                     let { timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
-                    if (last.mode === 'real') realCoins += last.amount; else testCoins += last.amount;
+                    if (last.mode === 'real') {
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins + last.amount });
+                    } else {
+                        testCoins += last.amount;
+                    }
                     currentTotalBet -= last.amount;
                     if (last.numbers) {
                         last.numbers.forEach(num => {
@@ -982,7 +1099,7 @@
                         delete userActiveBets[last.key];
                         if(last.element){last.element.classList.remove('has-bet'); let b=last.element.querySelector('.cell-badge'); if(b)b.remove();}
                     }
-                    updateBalancesDisplay(); document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                    document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                 };
 
                 let lastProcessedRound = -1;
@@ -1059,8 +1176,15 @@
                             else if (key === 'red' && isRed) totalWon += amt * 2;
                             else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
                         }
-                        if (totalWon > 0) { if (activeGameMode === 'real') realCoins += totalWon; else testCoins += totalWon; }
-                        else if (activeGameMode === 'test') testCoins += currentTotalBet;
+                        if (totalWon > 0) { 
+                            if (activeGameMode === 'real') {
+                                usersRef.child(loggedUserPhone).update({ balance: realCoins + totalWon });
+                            } else {
+                                testCoins += totalWon; 
+                            }
+                        } else if (activeGameMode === 'test') {
+                            testCoins += currentTotalBet;
+                        }
 
                         let popup = document.getElementById('cinematicResultPopup');
                         document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
@@ -1082,40 +1206,6 @@
                 window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
                 window.selectDepositPkg = function(amt, btn) { document.querySelectorAll('.dep-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('customDepositInput').value = amt; };
                 window.selectWithdrawPkg = function(amt, btn) { document.querySelectorAll('.wd-pkg-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); document.getElementById('withdrawAmtInput').value = amt; };
-
-                window.triggerCashfreeSandboxDeposit = function() {
-                    let amt = parseInt(document.getElementById('customDepositInput').value);
-                    let utr = document.getElementById('depositUtrInput').value.trim();
-                    if (isNaN(amt) || !utr) { alert("Enter amount & UTR!"); return; }
-                    closeWalletModals();
-
-                    let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
-                    deposits.push({ phone: loggedUserPhone, amount: amt, utr: utr, status: 'Pending' });
-                    localStorage.setItem("admin_deposit_requests", JSON.stringify(deposits));
-                    updateBalancesDisplay();
-                    alert("✅ Deposit submitted successfully!");
-                };
-
-                window.submitWithdrawCoins = function() {
-                    let amt = parseInt(document.getElementById('withdrawAmtInput').value);
-                    let upi = document.getElementById('withdrawUpiInput').value.trim();
-                    if (!amt || realCoins < amt || !upi) { alert("Check balance or UPI!"); return; }
-                    realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
-
-                    let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
-                    withdraws.push({ phone: loggedUserPhone, amount: amt, upi: upi, status: 'Pending' });
-                    localStorage.setItem("admin_withdraw_requests", JSON.stringify(withdraws));
-                    updateBalancesDisplay();
-                    alert(`Withdrawal requested successfully!`);
-                };
-
-                window.executeCoinTransfer = function() {
-                    let target = document.getElementById('transferTargetId').value;
-                    let amt = parseInt(document.getElementById('transferCoinAmt').value);
-                    if (!target || !amt || realCoins < amt) { alert("Check balance or ID!"); return; }
-                    realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
-                    alert(`Transfer Successful!`);
-                };
             }catch(err){}
         })();
     </script>

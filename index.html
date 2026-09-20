@@ -3,11 +3,11 @@
 <head>
     <style>
         a[href*="netlify.com"] { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }
-        body { overflow-y: auto !important; min-height: 100vh; padding-bottom: 30px !important; }
+        body { overflow-y: auto !important; min-height: 100vh; padding-bottom: 30px !important; background: #000401 !important; }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL ROULETTE - 100% CLOUD DATABASE MASTER</title>
+    <title>ROYAL ROULETTE - 100% CLOUD DATABASE MASTER SYNC</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
@@ -362,7 +362,6 @@
                 <div class="kpi-card blue"><div class="kpi-title">Real Safe Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
-            <!-- एडमिन लाइव टेबल व्यू बटन (केवल रियल बेट्स का समेशन व्यू) -->
             <div class="admin-section-box" style="border: 1.5px solid #ffd700; text-align: center;">
                 <div class="admin-section-title"><span style="color: #ffd700;">🎰 Live Table Bet View (0-36 Summated Board - Real Only)</span></div>
                 <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-size: 13px; box-shadow: 0 0 15px #ffd700;">👁️ View Live Real Table Bets (0-36)</button>
@@ -420,7 +419,6 @@
         </div>
     </div>
 
-    <!-- एडमिन लाइव टेबल व्यू मोडल (केवल रियल मनी बेट्स का समूचा व्यू) -->
     <div id="adminLiveTableModal">
         <div class="admin-table-view-content">
             <h3 style="color:#ffd700; margin-bottom:10px; font-size:16px;">🎰 LIVE REAL TABLE BETS (0-36 SUMMATED)</h3>
@@ -534,6 +532,7 @@
                     }
                 };
 
+                // --- 100% सटीक मास्टर क्लॉक और ग्लोबल डेटा सिंक (यूनिफॉर्म हिस्ट्री लॉक) ---
                 if (sbClient) {
                     async function fetchGlobalCloudState() {
                         try {
@@ -546,6 +545,7 @@
                                 if (parsed) {
                                     if (parsed.history && Array.isArray(parsed.history)) {
                                         window.cloudSyncStore.historyList = parsed.history;
+                                        renderHistoryBarUI();
                                     }
                                     if (parsed.rig) window.cloudSyncStore.adminRig = parsed.rig;
                                     if (parsed.qrUrl) {
@@ -565,7 +565,7 @@
                             }
                         }
                     }
-                    setInterval(fetchGlobalCloudState, 1500);
+                    setInterval(fetchGlobalCloudState, 1000);
 
                     window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal, maintVal) {
                         try {
@@ -588,7 +588,10 @@
                     if (data) {
                         failedCloudPings = 0;
                         document.getElementById('networkErrorOverlay').style.display = 'none';
-                        if (data.history && Array.isArray(data.history)) window.cloudSyncStore.historyList = data.history;
+                        if (data.history && Array.isArray(data.history)) {
+                            window.cloudSyncStore.historyList = data.history;
+                            renderHistoryBarUI();
+                        }
                         if (data.rig) window.cloudSyncStore.adminRig = data.rig;
                         if (data.qrUrl) {
                             window.cloudSyncStore.adminQrUrl = data.qrUrl;
@@ -667,7 +670,6 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 5% हाउस मार्जिन और 95% सेफ पूल इंजन (नो-लॉस)
                 function getSmartWinnerForRound(roundId) {
                     if (window.cloudSyncStore.adminRig !== "random") {
                         let parsedNum = parseInt(window.cloudSyncStore.adminRig);
@@ -765,7 +767,6 @@
                     }
                 }
 
-                // --- एडमिन लाइव टेबल व्यू जनरेटर (केवल रियल मनी बेट्स का समूचा बोर्ड) ---
                 window.openAdminLiveTableModal = function() {
                     let boardGrid = document.getElementById('adminSummatedBoardGrid');
                     if (!boardGrid) return;
@@ -773,7 +774,6 @@
                     let summatedBets = {};
                     numbersList.forEach(n => summatedBets[n.toString()] = 0);
 
-                    // यदि एक्टिव मोड 'real' है, तभी टेबल व्यू में बेट्स दिखेंगी (टेस्टिंग इग्नोर होगी)
                     if (activeGameMode === 'real') {
                         for (let key in userActiveBets) {
                             let amt = userActiveBets[key];

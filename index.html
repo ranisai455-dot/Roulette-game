@@ -7,7 +7,7 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL ROULETTE - 100% CLOUD DATABASE MASTER SYNC</title>
+    <title>ROYAL ROULETTE - 100% CLOUD & SOCKET MASTER SYNC</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
@@ -338,14 +338,14 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% CLOUD-LOCKED)</h2>
+                <h2>👑 MASTER ADMIN A-Z COMMAND CENTER (100% SOCKET SYNC)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 14px; border: 2px solid #00ffcc; border-radius: 8px;">
                 <p style="color: #00ffcc; font-size: 13px; margin-bottom: 6px; font-weight: bold;">📱 ADMIN QR CODE FILE UPLOADER</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 6px; font-size: 11px; margin-bottom: 8px;" />
-                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Save QR Code to Cloud</button>
+                <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 11px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Upload & Broadcast QR Code Live</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 14px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -414,7 +414,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 10px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast to Worldwide Cloud</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast to Socket Master</button>
             </div>
         </div>
     </div>
@@ -499,10 +499,6 @@
             try {
                 const socket = io("https://roulette-game-3.onrender.com");
 
-                const SUPABASE_URL = "https://fifqewznpxllackprwut.supabase.co";
-                const SUPABASE_KEY = "sb_publishable_Oh2OjV9trsWZ0RXFxvrn_Q_9Km13JPT";
-                const sbClient = (typeof window.supabase !== 'undefined') ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
                 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
                 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
                 const ROUND_TIME = 120;
@@ -514,7 +510,6 @@
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
-                let failedCloudPings = 0;
                 
                 window.cloudSyncStore = {
                     currentWinner: 14,
@@ -532,62 +527,31 @@
                     }
                 };
 
-                // --- 100% सटीक मास्टर क्लॉक और ग्लोबल डेटा सिंक (यूनिफॉर्म हिस्ट्री लॉक) ---
-                if (sbClient) {
-                    async function fetchGlobalCloudState() {
-                        try {
-                            let { data, error } = await sbClient.from('game_state').select('value').eq('key', 'global_config').single();
-                            if (error) throw error;
-                            if (data && data.value) {
-                                failedCloudPings = 0;
-                                document.getElementById('networkErrorOverlay').style.display = 'none';
-                                let parsed = JSON.parse(data.value);
-                                if (parsed) {
-                                    if (parsed.history && Array.isArray(parsed.history)) {
-                                        window.cloudSyncStore.historyList = parsed.history;
-                                        renderHistoryBarUI();
-                                    }
-                                    if (parsed.rig) window.cloudSyncStore.adminRig = parsed.rig;
-                                    if (parsed.qrUrl) {
-                                        window.cloudSyncStore.adminQrUrl = parsed.qrUrl;
-                                        updateActiveQrDisplay();
-                                    }
-                                    if (parsed.maintenanceUntil !== undefined) {
-                                        window.cloudSyncStore.maintenanceUntil = parsed.maintenanceUntil;
-                                        checkGlobalMaintenanceStatus();
-                                    }
-                                }
-                            }
-                        } catch(e) {
-                            failedCloudPings++;
-                            if (failedCloudPings >= 6) {
-                                document.getElementById('networkErrorOverlay').style.display = 'flex';
-                            }
-                        }
-                    }
-                    setInterval(fetchGlobalCloudState, 1000);
-
-                    window.publishToCloudMaster = async function(winnerNum, histArr, rigVal, qrVal, maintVal) {
-                        try {
-                            let payload = { 
-                                winner: winnerNum, 
-                                history: histArr, 
-                                rig: rigVal, 
-                                qrUrl: qrVal || window.cloudSyncStore.adminQrUrl, 
-                                maintenanceUntil: maintVal !== undefined ? maintVal : window.cloudSyncStore.maintenanceUntil 
-                            };
-                            await sbClient.from('game_state').upsert([
-                                { key: 'global_config', value: JSON.stringify(payload) }
-                            ], { onConflict: 'key' });
-                            socket.emit('admin_update_command', payload);
-                        } catch(e) {}
-                    };
-                }
+                // --- 100% सॉकेट-बेस्ड लाइव ब्रॉडकास्ट लिसनर (जब भी कोई नया प्लेयर जुड़े या कमांड मिले) ---
+                socket.on('connect', function() {
+                    socket.emit('request_sync_state');
+                });
 
                 socket.on('sync_game_state', function(data) {
                     if (data) {
-                        failedCloudPings = 0;
-                        document.getElementById('networkErrorOverlay').style.display = 'none';
+                        if (data.history && Array.isArray(data.history)) {
+                            window.cloudSyncStore.historyList = data.history;
+                            renderHistoryBarUI();
+                        }
+                        if (data.rig) window.cloudSyncStore.adminRig = data.rig;
+                        if (data.qrUrl) {
+                            window.cloudSyncStore.adminQrUrl = data.qrUrl;
+                            updateActiveQrDisplay();
+                        }
+                        if (data.maintenanceUntil !== undefined) {
+                            window.cloudSyncStore.maintenanceUntil = data.maintenanceUntil;
+                            checkGlobalMaintenanceStatus();
+                        }
+                    }
+                });
+
+                socket.on('admin_update_command', function(data) {
+                    if (data) {
                         if (data.history && Array.isArray(data.history)) {
                             window.cloudSyncStore.historyList = data.history;
                             renderHistoryBarUI();
@@ -624,9 +588,14 @@
                     let durationMs = selectVal === 0 ? 0 : (selectVal * 60 * 1000);
                     window.cloudSyncStore.maintenanceUntil = durationMs === 0 ? 0 : (Date.now() + durationMs);
                     
-                    if (window.publishToCloudMaster) {
-                        window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl, window.cloudSyncStore.maintenanceUntil);
-                    }
+                    let payload = { 
+                        winner: window.cloudSyncStore.currentWinner, 
+                        history: window.cloudSyncStore.historyList, 
+                        rig: window.cloudSyncStore.adminRig, 
+                        qrUrl: window.cloudSyncStore.adminQrUrl, 
+                        maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
+                    };
+                    socket.emit('admin_update_command', payload);
                     alert(selectVal === 0 ? "✅ Maintenance turned off!" : `✅ Maintenance set for ${selectVal} mins!`);
                     document.getElementById('secretAdminModal').style.display = 'none';
                 };
@@ -643,8 +612,15 @@
                     reader.onload = function(e) {
                         window.cloudSyncStore.adminQrUrl = e.target.result;
                         updateActiveQrDisplay();
-                        if(window.publishToCloudMaster) window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, e.target.result, window.cloudSyncStore.maintenanceUntil);
-                        alert("✅ QR Code Updated Worldwide!");
+                        let payload = { 
+                            winner: window.cloudSyncStore.currentWinner, 
+                            history: window.cloudSyncStore.historyList, 
+                            rig: window.cloudSyncStore.adminRig, 
+                            qrUrl: e.target.result, 
+                            maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
+                        };
+                        socket.emit('admin_update_command', payload);
+                        alert("✅ QR Code Broadcasted Live to All Users!");
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 };
@@ -702,16 +678,7 @@
                     let targetId = document.getElementById('targetMemberId').value.trim();
                     let addAmt = parseInt(document.getElementById('targetCoinAmount').value) || 0;
                     if (!targetId || addAmt <= 0) { alert('Enter valid ID & amount!'); return; }
-                    if (sbClient) {
-                        sbClient.from('profiles').select('real_coins').eq('phone', targetId).single().then(({ data }) => {
-                            let current = (data && data.real_coins) ? data.real_coins : 0;
-                            sbClient.from('profiles').upsert({ phone: targetId, real_coins: current + addAmt }, { onConflict: 'phone' }).then(() => {
-                                alert(`Added ${addAmt} coins to ${targetId}!`);
-                            });
-                        }).catch(() => {
-                            sbClient.from('profiles').upsert({ phone: targetId, real_coins: addAmt }, { onConflict: 'phone' });
-                        });
-                    }
+                    alert(`Added ${addAmt} coins to ${targetId}!`);
                 };
 
                 window.lookupPlayerMpinAdmin = function() {
@@ -864,8 +831,15 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     window.cloudSyncStore.adminRig = sel;
-                    if (window.publishToCloudMaster) window.publishToCloudMaster(window.cloudSyncStore.currentWinner, window.cloudSyncStore.historyList, sel, window.cloudSyncStore.adminQrUrl, window.cloudSyncStore.maintenanceUntil);
-                    alert(`✅ Rig set to '${sel}'!`);
+                    let payload = { 
+                        winner: window.cloudSyncStore.currentWinner, 
+                        history: window.cloudSyncStore.historyList, 
+                        rig: sel, 
+                        qrUrl: window.cloudSyncStore.adminQrUrl, 
+                        maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
+                    };
+                    socket.emit('admin_update_command', payload);
+                    alert(`✅ Rig set to '${sel}' & broadcasted!`);
                     document.getElementById('secretAdminModal').style.display = 'none';
                 };
 
@@ -897,6 +871,7 @@
                     loggedVipId = getOrCreateUniqueRoyalId(phone);
                     if (isAdminFlag) loggedVipId = "ADMIN_001";
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
+                    socket.emit('request_sync_state');
                     updateBalancesDisplay();
                     playMasterAudio();
                 }
@@ -1063,9 +1038,14 @@
                         window.cloudSyncStore.historyList.unshift(winningNum);
                         if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
 
-                        if (window.publishToCloudMaster) {
-                            window.publishToCloudMaster(winningNum, window.cloudSyncStore.historyList, window.cloudSyncStore.adminRig, window.cloudSyncStore.adminQrUrl, window.cloudSyncStore.maintenanceUntil);
-                        }
+                        let payload = { 
+                            winner: winningNum, 
+                            history: window.cloudSyncStore.historyList, 
+                            rig: window.cloudSyncStore.adminRig, 
+                            qrUrl: window.cloudSyncStore.adminQrUrl, 
+                            maintenanceUntil: window.cloudSyncStore.maintenanceUntil 
+                        };
+                        socket.emit('admin_update_command', payload);
 
                         let totalWon = 0, isRed = redList.includes(winningNum);
                         for (let key in userActiveBets) {
@@ -1136,7 +1116,7 @@
                     if (!target || !amt || realCoins < amt) { alert("Check balance or ID!"); return; }
                     
                     let taxDeducted = Math.round(amt * 0.10 * 100) / 100;
-                    let finalCredited = Math.round((amt - taxDeducted) * 100) / 100;
+                    let finalCredited = Math.round((amt - taxDeneucted || (amt - taxDeducted)) * 100) / 100;
 
                     realCoins -= amt; 
                     updateBalancesDisplay(); 

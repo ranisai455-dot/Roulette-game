@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - 100% LIVE REALTIME ENGINE</title>
+    <title>ROYAL ROULETTE - ZERO DELAY REALTIME ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -154,7 +154,7 @@
 </head>
 <body>
 
-    <!-- STRICT OFFLINE AUTO-KILLER (इंटरनेट बंद होते ही स्क्रीन तुरंत बंद/ब्लैंक) -->
+    <!-- STRICT OFFLINE AUTO-KILLER -->
     <script>
         function checkRealNetwork() {
             if (!navigator.onLine) {
@@ -164,14 +164,14 @@
             }
         }
         window.addEventListener('offline', checkRealNetwork);
-        setInterval(checkRealNetwork, 1000);
+        setInterval(checkRealNetwork, 500);
         checkRealNetwork();
     </script>
 
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_PERFECT_FINAL_V18";
+                const BUILD_VER = "ROYAL_2026_ZERO_DELAY_LIVE_V21";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -215,7 +215,7 @@
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 LIVE SYNC: ACTIVE</span>
+                <span>🟢 ZERO DELAY LIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -323,7 +323,7 @@
         </div>
     </div>
 
-    <!-- PLAYER PROFILE MODAL (आम यूज़र्स के लिए) -->
+    <!-- PLAYER PROFILE MODAL (आम यूजर्स के लिए) -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 420px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
@@ -344,7 +344,7 @@
         </div>
     </div>
 
-    <!-- MASTER ADMIN DASHBOARD (प्रोफ़ाइल क्लिक पर केवल एडमिन 8889865182 के लिए खुलेगा) -->
+    <!-- MASTER ADMIN DASHBOARD (प्रोफाइल पर क्लिक करने पर खुलेगा) -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
@@ -352,7 +352,15 @@
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
-            <!-- क्यूआर कोड अपलोड + यूआरएल लाइव पुश सेक्शन -->
+            <!-- 🟢 LIVE ONLINE CONNECTED PLAYERS LIST (तुरंत 0 सेकंड में अपडेट) -->
+            <div style="background: rgba(0,25,12,0.95); padding: 12px; border: 2px solid #2ecc71; border-radius: 8px;">
+                <div class="admin-section-title"><span style="color:#2ecc71;">🟢 INSTANT LIVE PLAYERS (ONLINE NOW)</span></div>
+                <div id="adminLiveOnlinePlayersList" style="max-height: 120px; overflow-y: auto; font-size: 11px;">
+                    <div style="color:#888; text-align:center; padding:5px;">Waiting for live users to connect...</div>
+                </div>
+            </div>
+
+            <!-- क्यूआर कोड अपलोड + यूआरएल लाइव पुश -->
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
                 <p style="color: #00ffcc; font-size: 12px; font-weight: bold;">📱 DEPOSIT QR CODE MANAGER (LIVE PUSH)</p>
                 
@@ -508,11 +516,11 @@
             }
         } catch(e) {}
 
-        // GLOBAL MASTER REALTIME DATABASE TREE
-        const masterRoot = firebase.database().ref("royal_roulette_master_state_v18");
+        const masterRoot = firebase.database().ref("royal_roulette_master_state_v21");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
+        const livePlayersRef = masterRoot.child("active_online_players");
 
         (function() {
             try {
@@ -525,6 +533,7 @@
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
+                let presenceHeartbeatInterval = null;
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
@@ -556,7 +565,82 @@
                     }
                 });
 
-                // प्रोफ़ाइल क्लिक हैंडलर (केवल 8889865182 के लिए एडमिन खुलेगा)
+                // ZERO DELAY LIVE PLAYERS TRACKER (एडमिन पैनल पर तुरंत 0 सेकंड में दिखना और हटना)
+                livePlayersRef.on("value", (snap) => {
+                    let players = snap.val() || {};
+                    let listEl = document.getElementById('adminLiveOnlinePlayersList');
+                    if (!listEl) return;
+                    let html = "";
+                    let now = Date.now();
+                    let keys = Object.keys(players);
+                    let activeCount = 0;
+
+                    keys.forEach(k => {
+                        let p = players[k];
+                        // अगर पल्स 4 सेकंड से ज्यादा पुरानी है तो तुरंत हटाओ
+                        if (p && (now - p.lastSeen < 4000)) {
+                            activeCount++;
+                            html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.7); padding:6px 10px; border-radius:5px; margin-bottom:4px; border:1.5px solid #2ecc71;">
+                                <div>
+                                    <div style="font-size:11px; font-weight:bold; color:#fff;">📱 ${p.phone} <span style="color:#ffd700;">(${p.vipId})</span></div>
+                                    <div style="font-size:9.5px; color:#2ecc71;">💎 ₹${p.balance || 0}</div>
+                                </div>
+                                <span style="color:#2ecc71; font-weight:900; font-size:11px;">🟢 LIVE NOW</span>
+                            </div>`;
+                        } else {
+                            // पुरानी एंट्री को सर्वर से तुरंत डिलीट करो
+                            livePlayersRef.child(k).remove();
+                        }
+                    });
+
+                    if (activeCount === 0) {
+                        html = "<div style='color:#888; text-align:center; padding:8px;'>No players online right now.</div>";
+                    }
+                    listEl.innerHTML = html;
+                });
+
+                // INSTANT ZERO-DELAY PRESENCE HEARTBEAT (हर 1 सेकंड में पल्स और बाहर निकलते ही 0 सेकंड में डिलीट)
+                function startUserLiveHeartbeat(phone, vipId) {
+                    if (!phone || phone === MASTER_ADMIN_PHONE) return;
+                    let userNode = livePlayersRef.child(phone);
+
+                    function sendPulse() {
+                        if (document.visibilityState === 'visible' && navigator.onLine) {
+                            userNode.set({
+                                phone: phone,
+                                vipId: vipId,
+                                balance: realCoins,
+                                lastSeen: Date.now()
+                            });
+                        }
+                    }
+
+                    function removeInstantly() {
+                        userNode.remove();
+                    }
+
+                    // फ़ायरबेस डिस्कनेक्ट गार्ड
+                    userNode.onDisconnect().remove();
+
+                    // पहली बार तुरंत सेट करो
+                    sendPulse();
+
+                    if (presenceHeartbeatInterval) clearInterval(presenceHeartbeatInterval);
+                    presenceHeartbeatInterval = setInterval(sendPulse, 1000);
+
+                    // जैसे ही यूज़र टैब बंद करे, बैक करे या स्क्रीन से बाहर जाए -> 0 सेकंड में सर्वर से डिलीट
+                    window.addEventListener('visibilitychange', () => {
+                        if (document.visibilityState === 'hidden') {
+                            removeInstantly();
+                        } else {
+                            sendPulse();
+                        }
+                    });
+                    window.addEventListener('pagehide', removeInstantly);
+                    window.addEventListener('beforeunload', removeInstantly);
+                }
+
+                // प्रोफ़ाइल क्लिक हैंडलर
                 window.handleProfileClick = function() {
                     if (loggedUserPhone === MASTER_ADMIN_PHONE) {
                         document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
@@ -582,7 +666,7 @@
                     });
                 }
 
-                // क्यूआर कोड फ़ाइल अपलोड हैंडलर
+                // क्यूआर कोड फ़ाइल अपलोड
                 window.handleAdminQrFileUpload = function(input) {
                     if (input.files && input.files[0]) {
                         let reader = new FileReader();
@@ -594,7 +678,7 @@
                     }
                 };
 
-                // 1-क्लिक ब्रॉडकास्ट (सभी यूज़र्स को लाइव क्यूआर भेजना)
+                // 1-क्लिक ब्रॉडकास्ट
                 window.broadcastMasterQr = function() {
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
                     if (!urlInput) { alert("Please enter or select image!"); return; }
@@ -615,7 +699,6 @@
                     return newId;
                 }
 
-                // फ्लुइड टाइमर लॉजिक
                 function getGlobalRound() {
                     let nowSec = Math.floor(Date.now() / 1000);
                     return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
@@ -768,6 +851,10 @@
                 };
 
                 window.logoutToLogin = function() {
+                    if (loggedUserPhone) {
+                        livePlayersRef.child(loggedUserPhone).remove();
+                    }
+                    if (presenceHeartbeatInterval) clearInterval(presenceHeartbeatInterval);
                     document.getElementById('gameLobbyScreen').style.display = 'none';
                     document.getElementById('secretAdminModal').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'flex';
@@ -793,6 +880,10 @@
                     loggedUserPhone = phone;
                     loggedVipId = getOrCreateUniqueRoyalId(phone);
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
+                    
+                    // लाइव हर्टबीट चालू करना (एडमिन को 0 सेकंड में दिखेगा)
+                    startUserLiveHeartbeat(phone, loggedVipId);
+
                     updateBalancesDisplay();
                     playMasterAudio();
                 }

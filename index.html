@@ -136,6 +136,9 @@
         .btn-reject { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; }
         .admin-dashboard-container select { width: 100%; padding: 12px; background: #000; color: #ffd700; border: 1.5px solid #ffd700; border-radius: 8px; font-weight: bold; text-align: center; font-size: 13px; }
 
+        #adminLiveTableModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 300000; align-items: center; justify-content: center; padding: 10px; }
+        .admin-table-view-content { background: radial-gradient(circle, #013812 0%, #001205 100%); border: 3px solid #ffd700; padding: 15px; border-radius: 16px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 0 50px #ffd700; color: #fff; max-height: 95vh; overflow-y: auto; }
+
         #cinematicResultPopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); z-index: 50000; flex-direction: column; align-items: center; justify-content: center; }
         .popup-card { background: radial-gradient(circle, #034519 0%, #001205 100%); border: 4px solid #f1c40f; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 0 80px #f1c40f; animation: popupScale 0.3s ease-out; }
         @keyframes popupScale { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -359,6 +362,12 @@
                 <div class="kpi-card blue"><div class="kpi-title">Real Safe Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
+            <!-- एडमिन लाइव टेबल व्यू बटन (केवल रियल बेट्स का समेशन व्यू) -->
+            <div class="admin-section-box" style="border: 1.5px solid #ffd700; text-align: center;">
+                <div class="admin-section-title"><span style="color: #ffd700;">🎰 Live Table Bet View (0-36 Summated Board - Real Only)</span></div>
+                <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; font-size: 13px; box-shadow: 0 0 15px #ffd700;">👁️ View Live Real Table Bets (0-36)</button>
+            </div>
+
             <div class="admin-section-box" style="border: 1.5px solid #e74c3c;">
                 <div class="admin-section-title"><span style="color: #e74c3c;">🛠️ App Maintenance Mode & Timer Control</span></div>
                 <div style="display:flex; gap:8px; margin-bottom:8px; align-items:center;">
@@ -408,6 +417,16 @@
                 </select>
                 <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:12px; font-size:13px;">Save & Broadcast to Worldwide Cloud</button>
             </div>
+        </div>
+    </div>
+
+    <!-- एडमिन लाइव टेबल व्यू मोडल (केवल रियल मनी बेट्स का समूचा व्यू) -->
+    <div id="adminLiveTableModal">
+        <div class="admin-table-view-content">
+            <h3 style="color:#ffd700; margin-bottom:10px; font-size:16px;">🎰 LIVE REAL TABLE BETS (0-36 SUMMATED)</h3>
+            <p style="font-size:9.5px; color:#ccc; margin-bottom:10px;">Note: Testing mode bets are strictly excluded from this view.</p>
+            <div id="adminSummatedBoardGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 15px;"></div>
+            <button onclick="document.getElementById('adminLiveTableModal').style.display='none'" style="background:#e74c3c; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:12px; text-transform:uppercase;">Close View</button>
         </div>
     </div>
 
@@ -648,6 +667,7 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
+                // 5% हाउस मार्जिन और 95% सेफ पूल इंजन (नो-लॉस)
                 function getSmartWinnerForRound(roundId) {
                     if (window.cloudSyncStore.adminRig !== "random") {
                         let parsedNum = parseInt(window.cloudSyncStore.adminRig);
@@ -659,7 +679,7 @@
 
                     let validSafeNumbers = [];
                     numbersList.forEach(num => {
-                        let neededPayout = (userActiveBets[num.toString()] || 0) * (num === 0 ? 36 : 2);
+                        let neededPayout = (activeGameMode === 'real' ? (userActiveBets[num.toString()] || 0) : 0) * (num === 0 ? 36 : 2);
                         if (neededPayout <= safePayoutPool || neededPayout === 0) {
                             validSafeNumbers.push(num);
                         }
@@ -745,6 +765,49 @@
                     }
                 }
 
+                // --- एडमिन लाइव टेबल व्यू जनरेटर (केवल रियल मनी बेट्स का समूचा बोर्ड) ---
+                window.openAdminLiveTableModal = function() {
+                    let boardGrid = document.getElementById('adminSummatedBoardGrid');
+                    if (!boardGrid) return;
+
+                    let summatedBets = {};
+                    numbersList.forEach(n => summatedBets[n.toString()] = 0);
+
+                    // यदि एक्टिव मोड 'real' है, तभी टेबल व्यू में बेट्स दिखेंगी (टेस्टिंग इग्नोर होगी)
+                    if (activeGameMode === 'real') {
+                        for (let key in userActiveBets) {
+                            let amt = userActiveBets[key];
+                            if (key === 'red') {
+                                redList.forEach(n => summatedBets[n.toString()] += (amt / redList.length));
+                            } else if (key === 'black') {
+                                numbersList.filter(n => n !== 0 && !redList.includes(n)).forEach(n => summatedBets[n.toString()] += (amt / 18));
+                            } else if (key.startsWith('dozen_')) {
+                                let dIdx = parseInt(key.replace('dozen_', ''));
+                                let range = dIdx === 1 ? [1,2,3,4,5,6,7,8,9,10,11,12] : (dIdx === 2 ? [13,14,15,16,17,18,19,20,21,22,23,24] : [25,26,27,28,29,30,31,32,33,34,35,36]);
+                                range.forEach(n => summatedBets[n.toString()] += (amt / 12));
+                            } else if (key === 'half_1_18') {
+                                for(let i=1; i<=18; i++) summatedBets[i.toString()] += (amt / 18);
+                            } else if (key === 'half_19_36') {
+                                for(let i=19; i<=36; i++) summatedBets[i.toString()] += (amt / 18);
+                            } else if (summatedBets[key] !== undefined) {
+                                summatedBets[key] += amt;
+                            }
+                        }
+                    }
+
+                    let html = "";
+                    numbersList.forEach(num => {
+                        let bAmt = Math.round((summatedBets[num.toString()] || 0) * 10) / 10;
+                        let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
+                        html += `<div style="background:${bg}; border:1px solid #ffd700; padding:8px 2px; border-radius:4px; font-size:10px; font-weight:bold;">
+                            <div><b>#${num}</b></div>
+                            <div style="color:#00ffff; font-size:9px;">₹${bAmt}</div>
+                        </div>`;
+                    });
+                    boardGrid.innerHTML = html;
+                    document.getElementById('adminLiveTableModal').style.display = 'flex';
+                };
+
                 function renderPlayerTransactionHistory() {
                     let deposits = JSON.parse(localStorage.getItem("admin_deposit_requests") || "[]");
                     let withdraws = JSON.parse(localStorage.getItem("admin_withdraw_requests") || "[]");
@@ -785,7 +848,6 @@
                     updateActiveQrDisplay();
                 };
 
-                // फिक्स: पॉप-अप को हटाने वाला फंक्शन और ऑडियो चालू करना
                 window.closeComingSoonModal = function() { 
                     let modal = document.getElementById('comingSoonNoticeModal');
                     if (modal) {

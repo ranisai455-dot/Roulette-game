@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - 100% STRICT ONLINE ENGINE</title>
+    <title>ROYAL ROULETTE - 100% LIVE REALTIME ENGINE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -34,7 +34,7 @@
         #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 4px 2px; position: absolute; top: 0; left: 0; background: rgba(0,0,0,0.55); }
         .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; align-items: center; z-index: 5; margin-top: 2px; }
         .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 3px 6px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
-        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; cursor: pointer; }
+        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; }
         .royal-main-title { font-size: 16px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 35px #b8860b; letter-spacing: 1px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 2px 4px; border-radius: 6px; text-transform: uppercase; }
         .login-card { background: rgba(1, 20, 8, 0.95); border: 1.5px solid rgba(255, 215, 0, 0.4); padding: 10px 8px; border-radius: 14px; width: 92%; max-width: 310px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative; z-index: 15; }
@@ -154,7 +154,7 @@
 </head>
 <body>
 
-    <!-- STRICT OFFLINE AUTO-KILLER (इंटरनेट बंद होते ही स्क्रीन तुरंत खाली/बंद) -->
+    <!-- STRICT OFFLINE AUTO-KILLER (इंटरनेट बंद होते ही स्क्रीन तुरंत बंद/ब्लैंक) -->
     <script>
         function checkRealNetwork() {
             if (!navigator.onLine) {
@@ -171,7 +171,7 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_NO_POPUP_SYNC_V17";
+                const BUILD_VER = "ROYAL_2026_PERFECT_FINAL_V18";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -211,7 +211,7 @@
     <div id="loginScreenContainer">
         <div class="header-container">
             <div class="trust-banner">ROYAL LIVE PLATFORM • ⚡</div>
-            <div class="royal-title-wrap" id="hiddenAdminTriggerLogo" onclick="triggerHiddenAdminPanel()">
+            <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
@@ -239,7 +239,7 @@
 
     <div id="gameLobbyScreen">
         <div class="lobby-header" id="lobbyHeaderEl">
-            <div class="user-profile-widget" onclick="openProfileModal(); event.stopPropagation();">
+            <div class="user-profile-widget" onclick="handleProfileClick(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
                     <div style="font-size:8.5px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
@@ -323,7 +323,7 @@
         </div>
     </div>
 
-    <!-- PLAYER PROFILE MODAL -->
+    <!-- PLAYER PROFILE MODAL (आम यूज़र्स के लिए) -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 420px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
@@ -344,39 +344,51 @@
         </div>
     </div>
 
-    <!-- MASTER ADMIN PANEL -->
+    <!-- MASTER ADMIN DASHBOARD (प्रोफ़ाइल क्लिक पर केवल एडमिन 8889865182 के लिए खुलेगा) -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 MASTER CONTROL PANEL (8889865182)</h2>
+                <h2>👑 MASTER ADMIN CONTROL PANEL (8889865182)</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
-            <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 BROADCAST DEPOSIT QR URL (ALL USERS)</p>
-                <input type="text" id="adminQrUrlInput" placeholder="Paste direct image URL (e.g. https://...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px; margin-bottom: 6px;" />
-                <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Push QR to All Online Users</button>
+            <!-- क्यूआर कोड अपलोड + यूआरएल लाइव पुश सेक्शन -->
+            <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                <p style="color: #00ffcc; font-size: 12px; font-weight: bold;">📱 DEPOSIT QR CODE MANAGER (LIVE PUSH)</p>
+                
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <input type="file" id="adminQrFileInput" accept="image/*" style="display: none;" onchange="handleAdminQrFileUpload(this)" />
+                    <button onclick="document.getElementById('adminQrFileInput').click()" style="padding: 8px; background: #3498db; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px; font-weight: bold; flex: 1;">📁 Choose/Upload QR File</button>
+                    <span id="qrUploadStatus" style="font-size: 10px; color: #ffd700; flex: 1; text-align: left;">No file selected</span>
+                </div>
+
+                <input type="text" id="adminQrUrlInput" placeholder="Direct Image URL (e.g. https://i.ibb.co/...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px;" />
+                
+                <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px; box-shadow: 0 0 10px #27ae60;">⚡ 1-Click Push QR to All Users Live</button>
             </div>
 
+            <!-- डायरेक्ट कॉइन क्रेडिट -->
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
                 <p style="color: #ffaa00; font-size: 12px; margin-bottom: 8px; font-weight: bold;">⚡ DIRECT REAL COIN CREDITOR</p>
-                <input type="text" id="targetMemberId" placeholder="Enter ID (e.g. RD001001)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
-                <input type="number" id="targetCoinAmount" placeholder="Real Coins to Add" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
-                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Apply & Add Real Coins Instantly</button>
+                <input type="text" id="targetMemberId" placeholder="Enter Member ID (e.g. RD001001)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <input type="number" id="targetCoinAmount" placeholder="Real Coins Amount" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <button onclick="window.applyAdminCoinsDirect()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #ffaa00, #ff5500); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Apply Coins Instantly</button>
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">LIVE SYNC</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">ONLINE LIVE</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
             </div>
 
+            <!-- लाइव टेबल बेट व्यू 0-36 -->
             <div class="admin-section-box" style="border: 1.5px solid #ffd700; text-align: center;">
                 <div class="admin-section-title"><span style="color: #ffd700;">🎰 Live Real Table Bet View (0-36)</span></div>
                 <button onclick="window.openAdminLiveTableModal()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #d4af37, #aa771c); color: #000; font-weight: 900; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 11.5px;">👁️ View Live Real Table Bets (0-36)</button>
             </div>
 
+            <!-- एमपीआईएन लुकअप -->
             <div class="admin-section-box" style="border: 1.5px solid #00ffff;">
                 <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Lookup</span></div>
                 <div style="display:flex; gap:6px; margin-bottom:6px;">
@@ -400,12 +412,13 @@
                 </div>
             </div>
 
+            <!-- मास्टर विनिंग नंबर (Rig) सेट करने का बटन -->
             <div class="admin-section-box">
                 <div class="admin-section-title"><span>⚙️ Global Master Rig (For All Users)</span></div>
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users</button>
+                <button onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users Live</button>
             </div>
         </div>
     </div>
@@ -495,7 +508,8 @@
             }
         } catch(e) {}
 
-        const masterRoot = firebase.database().ref("royal_roulette_master_state_v17");
+        // GLOBAL MASTER REALTIME DATABASE TREE
+        const masterRoot = firebase.database().ref("royal_roulette_master_state_v18");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
@@ -518,7 +532,7 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // LIVE LISTENERS (सीधे क्लाउड से सिंक)
+                // REAL-TIME CLOUD SYNC LISTENERS
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
@@ -542,30 +556,15 @@
                     }
                 });
 
-                // HIDDEN MASTER TRIGGER
-                let tapCount = 0;
-                let tapTimer = null;
-                window.triggerHiddenAdminPanel = function() {
-                    tapCount++;
-                    if (tapTimer) clearTimeout(tapTimer);
-                    tapTimer = setTimeout(() => { tapCount = 0; }, 1000);
-
-                    if (tapCount >= 4) {
-                        tapCount = 0;
-                        if (loggedUserPhone === MASTER_ADMIN_PHONE) {
-                            document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
-                            renderAdminRequests();
-                            document.getElementById('secretAdminModal').style.display = 'block';
-                        } else {
-                            let enteredPhone = prompt("Enter Master Admin Phone Number (8889865182):", "");
-                            if (enteredPhone === MASTER_ADMIN_PHONE) {
-                                document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
-                                renderAdminRequests();
-                                document.getElementById('secretAdminModal').style.display = 'block';
-                            } else if (enteredPhone !== null) {
-                                alert("Access Denied! Master Admin Only.");
-                            }
-                        }
+                // प्रोफ़ाइल क्लिक हैंडलर (केवल 8889865182 के लिए एडमिन खुलेगा)
+                window.handleProfileClick = function() {
+                    if (loggedUserPhone === MASTER_ADMIN_PHONE) {
+                        document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
+                        renderAdminRequests();
+                        document.getElementById('secretAdminModal').style.display = 'block';
+                    } else {
+                        window.updateBalancesDisplay();
+                        document.getElementById('playerProfileModal').style.display = 'flex';
                     }
                 };
 
@@ -583,11 +582,24 @@
                     });
                 }
 
+                // क्यूआर कोड फ़ाइल अपलोड हैंडलर
+                window.handleAdminQrFileUpload = function(input) {
+                    if (input.files && input.files[0]) {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('adminQrUrlInput').value = e.target.result;
+                            document.getElementById('qrUploadStatus').innerText = "Ready to Push!";
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                };
+
+                // 1-क्लिक ब्रॉडकास्ट (सभी यूज़र्स को लाइव क्यूआर भेजना)
                 window.broadcastMasterQr = function() {
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
-                    if (!urlInput) { alert("Enter valid image URL!"); return; }
+                    if (!urlInput) { alert("Please enter or select image!"); return; }
                     qrRef.set(urlInput).then(() => {
-                        alert("✅ QR Code pushed successfully to all online users!");
+                        alert("✅ 1-Click: QR Code successfully pushed live to all users!");
                     }).catch(err => { alert("Error: " + err.message); });
                 };
 
@@ -603,7 +615,7 @@
                     return newId;
                 }
 
-                // SMOOTH UNBROKEN FLUID TIMER (कभी 02:00 पर नहीं फँसेगा)
+                // फ्लुइड टाइमर लॉजिक
                 function getGlobalRound() {
                     let nowSec = Math.floor(Date.now() / 1000);
                     return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
@@ -750,7 +762,7 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning number '${sel}' pushed to all online users successfully!`);
+                        alert(`✅ Winning number '${sel}' pushed live to all users!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => { alert("Error: " + err.message); });
                 };
@@ -793,7 +805,6 @@
                     renderPlayerTransactionHistory();
                 };
 
-                window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };
                 window.switchGameMode = function(mode) {
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";

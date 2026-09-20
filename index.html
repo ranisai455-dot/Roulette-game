@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - MOBILE DEBUGGER BRIDGE</title>
+    <title>ROYAL ROULETTE - ULTIMATE UNBREAKABLE GLOBAL SYNC</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -147,7 +147,6 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
 
-        /* Mobile In-Game Debugger Console UI */
         #mobileDebugConsole { position: fixed; bottom: 0; left: 0; width: 100%; max-height: 110px; background: rgba(0,0,0,0.92); border-top: 2px solid #00ffcc; color: #00ffcc; font-size: 9px; font-family: monospace; z-index: 999999; padding: 4px; text-align: left; overflow-y: auto; pointer-events: none; }
     </style>
 
@@ -157,8 +156,7 @@
 </head>
 <body>
 
-    <!-- On-Screen Mobile Console Box -->
-    <div id="mobileDebugConsole">🚀 System Initializing...<br></div>
+    <div id="mobileDebugConsole">🚀 Engine Initializing...<br></div>
     <script>
         function logToScreen(msg, isErr=false) {
             let box = document.getElementById('mobileDebugConsole');
@@ -176,11 +174,11 @@
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_DEBUG_V4";
+                const BUILD_VER = "ROYAL_2026_EVENT_SYNC_V5";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
-                    logToScreen("Cache purged successfully.");
+                    logToScreen("Cache purged completely.");
                 }
             } catch(e) { logToScreen("Cache purge err: " + e.message, true); }
         })();
@@ -216,12 +214,12 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">GLOBAL REALTIME FIREBASE SYNC • SECURE ⚡</div>
+            <div class="trust-banner">EVENT-DRIVEN GLOBAL SYNC • SECURE ⚡</div>
             <div class="royal-title-wrap">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 ADMIN: GLOBAL LIVE</span>
+                <span>🟢 ADMIN: EVENT LIVE</span>
                 <span>🔒 CLOUD 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
@@ -359,12 +357,12 @@
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
-                <h2>👑 2026 GLOBAL FIREBASE ADMIN PANEL</h2>
+                <h2>👑 2026 EVENT-DRIVEN ADMIN PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background: #e74c3c; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">✕ Close</button>
             </div>
 
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
-                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (GLOBAL SYNC)</p>
+                <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 INSTANT QR UPLOADER (EVENT SYNC)</p>
                 <input type="file" id="adminQrImageFile" accept="image/*" style="width: 100%; padding: 6px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 10px; margin-bottom: 6px;" />
                 <button onclick="window.uploadAndBroadcastAdminQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Upload & Force-Push QR Globally</button>
             </div>
@@ -377,7 +375,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Sync</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">CONNECTING...</div></div>
+                <div class="kpi-card"><div class="kpi-title">Event Sync</div><div class="kpi-value" id="debugSyncStatus" style="color:#ff4444;">CONNECTING...</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -496,7 +494,7 @@
     </div>
 
     <script>
-        // --- SECURE GOOGLE FIREBASE REALTIME DATABASE CONFIGURATION ---
+        // --- ADVANCED EVENT-DRIVEN FIREBASE REALTIME BRIDGE ---
         const firebaseConfig = {
             apiKey: "AIzaSyCifZeAzMLHBij4sBZYg8uLW2FnwKKDQ",
             authDomain: "royal-dijital.firebaseapp.com",
@@ -508,17 +506,21 @@
             measurementId: "G-7WKF885TDL"
         };
 
-        // Initialize Firebase safely
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
-                logToScreen("Firebase App Initialized.");
+                logToScreen("Firebase Initialized Successfully.");
             }
         } catch(e) {
-            logToScreen("Firebase Init Err: " + e.message, true);
+            logToScreen("Firebase Init Error: " + e.message, true);
         }
 
-        const dbRef = firebase.database().ref("royal_roulette_state");
+        // Direct Root & Child References for Event-Driven Sync
+        const rootRef = firebase.database().ref();
+        const qrRef = firebase.database().ref("global_admin_qr");
+        const rigRef = firebase.database().ref("global_admin_rig");
+        const historyRef = firebase.database().ref("global_history_list");
+        const activityRef = firebase.database().ref("global_players_activity");
 
         (function() {
             try {
@@ -533,54 +535,63 @@
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let isAdminLoggedIn = false;
 
-                window.cloudSyncStore = {
-                    winner: 14,
-                    historyList: [24, 14, 5, 22, 10, 3],
-                    adminRig: "random",
+                // Global Memory Store
+                window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
+                    adminRig: "random",
+                    historyList: [24, 14, 5, 22, 10, 3],
                     realPlayersActivity: {}
                 };
 
-                // Realtime Firebase Listener with Error Catching
-                dbRef.on("value", (snapshot) => {
-                    let val = snapshot.val();
+                // --- INDEPENDENT EVENT LISTENERS (असली लाइव सिंकिंग इंजन) ---
+                qrRef.on("value", (snap) => {
+                    let val = snap.val();
                     if (val) {
-                        window.cloudSyncStore = val;
-                        renderHistoryBarUI();
+                        window.globalState.adminQrUrl = val;
                         updateActiveQrDisplay();
-                        logToScreen("SYNC OK: Data received from Cloud.");
-                        let st = document.getElementById('debugSyncStatus');
-                        if(st) { st.innerText = "ONLINE"; st.style.color = "#00ffcc"; }
-                    } else {
-                        logToScreen("SYNC WARN: Database node is empty, pushing default.");
-                        dbRef.set(window.cloudSyncStore);
+                        logToScreen("SYNC: QR Code Updated from Cloud.");
                     }
-                }, (error) => {
-                    logToScreen("FIREBASE ERR: " + error.message, true);
-                    let st = document.getElementById('debugSyncStatus');
-                    if(st) { st.innerText = "BLOCKED/ERR"; st.style.color = "#ff4444"; }
                 });
 
-                function pushGlobalCloudState() {
+                rigRef.on("value", (snap) => {
+                    let val = snap.val();
+                    if (val !== null) {
+                        window.globalState.adminRig = val;
+                        logToScreen("SYNC: Admin Rig Updated -> " + val);
+                    }
+                });
+
+                historyRef.on("value", (snap) => {
+                    let val = snap.val();
+                    if (val) {
+                        window.globalState.historyList = val;
+                        renderHistoryBarUI();
+                        logToScreen("SYNC: History Updated.");
+                    }
+                });
+
+                activityRef.on("value", (snap) => {
+                    let val = snap.val();
+                    if (val) {
+                        window.globalState.realPlayersActivity = val;
+                        let st = document.getElementById('debugSyncStatus');
+                        if(st) { st.innerText = "ONLINE"; st.style.color = "#00ffcc"; }
+                    }
+                });
+
+                function pushPlayerActivity() {
                     try {
                         if (loggedUserPhone && activeGameMode === 'real' && (realCoins > 0 || currentTotalBet > 0)) {
-                            if (!window.cloudSyncStore.realPlayersActivity) window.cloudSyncStore.realPlayersActivity = {};
-                            window.cloudSyncStore.realPlayersActivity[loggedUserPhone] = {
+                            let payload = {
                                 vipId: loggedVipId,
                                 realBal: realCoins,
                                 totalBet: currentTotalBet,
                                 betsBreakdown: userActiveBets,
                                 lastActive: new Date().toLocaleTimeString()
                             };
+                            activityRef.child(loggedUserPhone.replace(/\./g, '_')).set(payload);
                         }
-                        dbRef.set(window.cloudSyncStore).then(() => {
-                            logToScreen("PUSH OK: State sent to Cloud.");
-                        }).catch(err => {
-                            logToScreen("PUSH ERR: " + err.message, true);
-                        });
-                    } catch(e) {
-                        logToScreen("PUSH EXCEPTION: " + e.message, true);
-                    }
+                    } catch(e) {}
                 }
 
                 window.playMasterAudio = function() {
@@ -591,8 +602,8 @@
                 function updateActiveQrDisplay() {
                     let qrImgs = document.querySelectorAll('#dynamicPlayerQrImg');
                     qrImgs.forEach(img => { 
-                        if (window.cloudSyncStore.adminQrUrl && img.src !== window.cloudSyncStore.adminQrUrl) {
-                            img.src = window.cloudSyncStore.adminQrUrl; 
+                        if (window.globalState.adminQrUrl && img.src !== window.globalState.adminQrUrl) {
+                            img.src = window.globalState.adminQrUrl; 
                         }
                     });
                 }
@@ -602,10 +613,13 @@
                     if (!fileInput || !fileInput.files || fileInput.files.length === 0) { alert("Select QR Image!"); return; }
                     let reader = new FileReader();
                     reader.onload = function(e) {
-                        window.cloudSyncStore.adminQrUrl = e.target.result;
-                        updateActiveQrDisplay();
-                        pushGlobalCloudState();
-                        alert("✅ QR Code Force-Broadcasted Globally via Firebase!");
+                        let base64Img = e.target.result;
+                        qrRef.set(base64Img).then(() => {
+                            alert("✅ QR Code Force-Pushed Globally via Event Engine!");
+                            logToScreen("ADMIN: QR Broadcasted.");
+                        }).catch(err => {
+                            alert("Err: " + err.message);
+                        });
                     };
                     reader.readAsDataURL(fileInput.files[0]);
                 };
@@ -632,8 +646,8 @@
                 }
 
                 function getSmartWinnerForRound(roundId) {
-                    if (window.cloudSyncStore.adminRig !== "random") {
-                        let parsedNum = parseInt(window.cloudSyncStore.adminRig);
+                    if (window.globalState.adminRig !== "random") {
+                        let parsedNum = parseInt(window.globalState.adminRig);
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
                     let totalTableBet = currentTotalBet || 100;
@@ -696,7 +710,7 @@
                 function renderAdminRequests() {
                     let monitorEl = document.getElementById('admRealPlayersMonitorList');
                     if (monitorEl) {
-                        let realMap = window.cloudSyncStore.realPlayersActivity || {};
+                        let realMap = window.globalState.realPlayersActivity || {};
                         let pHtml = "";
                         let keys = Object.keys(realMap);
                         if (keys.length > 0) {
@@ -704,7 +718,7 @@
                                 let p = realMap[ph];
                                 let betsText = JSON.stringify(p.betsBreakdown || {});
                                 pHtml += `<div style="background:rgba(0,0,0,0.7); border:1px solid #2ecc71; padding:7px; border-radius:6px; margin-bottom:6px;">
-                                    📱 <b>${ph}</b> (${p.vipId}) | 💎 Real Bal: <span style="color:#2ecc71; font-weight:bold;">₹${p.realBal}</span><br>
+                                    📱 <b>${ph.replace(/_/g, '.')}</b> (${p.vipId}) | 💎 Real Bal: <span style="color:#2ecc71; font-weight:bold;">₹${p.realBal}</span><br>
                                     🎲 Total Real Bet: ₹${p.totalBet} | Active Bets: <span style="color:#ffd700;">${betsText}</span><br>
                                     <span style="font-size:8.5px; color:#aaa;">Last Active: ${p.lastActive}</span>
                                 </div>`;
@@ -740,7 +754,7 @@
                     let summatedBets = {};
                     numbersList.forEach(n => summatedBets[n.toString()] = 0);
                     
-                    let realMap = window.cloudSyncStore.realPlayersActivity || {};
+                    let realMap = window.globalState.realPlayersActivity || {};
                     for (let ph in realMap) {
                         let pBets = realMap[ph].betsBreakdown || {};
                         for (let key in pBets) {
@@ -829,10 +843,10 @@
                 
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
-                    window.cloudSyncStore.adminRig = sel;
-                    pushGlobalCloudState();
-                    alert(`✅ Rig set to '${sel}' & force-pushed globally!`);
-                    document.getElementById('secretAdminModal').style.display = 'none';
+                    rigRef.set(sel).then(() => {
+                        alert(`✅ Rig set to '${sel}' & synced globally!`);
+                        document.getElementById('secretAdminModal').style.display = 'none';
+                    });
                 };
 
                 window.logoutToLogin = function() {
@@ -868,7 +882,7 @@
                     if (adminWrap) adminWrap.style.display = isAdminLoggedIn ? 'block' : 'none';
 
                     updateBalancesDisplay();
-                    pushGlobalCloudState();
+                    pushPlayerActivity();
                     playMasterAudio();
                 }
 
@@ -878,7 +892,7 @@
                     document.getElementById('profPhone').innerText = loggedUserPhone;
                     document.getElementById('profVipId').innerText = loggedVipId;
                     renderPlayerTransactionHistory();
-                    pushGlobalCloudState();
+                    pushPlayerActivity();
                 };
 
                 window.openProfileModal = function() { window.updateBalancesDisplay(); document.getElementById('playerProfileModal').style.display = 'flex'; };
@@ -1006,8 +1020,8 @@
 
                 function renderHistoryBarUI() {
                     let html = "";
-                    if (window.cloudSyncStore.historyList) {
-                        window.cloudSyncStore.historyList.forEach(num => {
+                    if (window.globalState.historyList) {
+                        window.globalState.historyList.forEach(num => {
                             let cls = num === 0 ? 'green' : (redList.includes(num) ? 'red' : 'black');
                             html += `<div class="history-ball ${cls}">${num}</div>`;
                         });
@@ -1024,7 +1038,6 @@
                     if(spinAudio) spinAudio.play().catch(e => {});
 
                     let winningNum = getSmartWinnerForRound(endedRoundId);
-                    window.cloudSyncStore.winner = winningNum;
                     
                     let totalPockets = numbersList.length;
                     let targetAngle = numbersList.indexOf(winningNum) * (360 / totalPockets) + ((360 / totalPockets) / 2);
@@ -1032,11 +1045,11 @@
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
                     setTimeout(() => {
-                        if (!window.cloudSyncStore.historyList) window.cloudSyncStore.historyList = [];
-                        window.cloudSyncStore.historyList.unshift(winningNum);
-                        if (window.cloudSyncStore.historyList.length > 6) window.cloudSyncStore.historyList.pop();
-
-                        pushGlobalCloudState();
+                        let currentHist = window.globalState.historyList || [];
+                        currentHist.unshift(winningNum);
+                        if (currentHist.length > 6) currentHist.pop();
+                        
+                        historyRef.set(currentHist);
 
                         let totalWon = 0, isRed = redList.includes(winningNum);
                         for (let key in userActiveBets) {

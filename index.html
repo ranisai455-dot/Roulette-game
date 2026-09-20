@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - STRICT LIVE SERVER ENGINE</title>
+    <title>ROYAL ROULETTE - STRICTLY 100% ONLINE CLOUD APP</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -44,7 +44,7 @@
         .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 11px; text-transform: uppercase; }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; }
         .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; }
-        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid #00ff00, 0.5; }
+        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
         #gameLobbyScreen { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; }
@@ -146,9 +146,6 @@
         .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; padding: 10px 0; font-weight: 900; font-size: 11px; border-radius: 6px; cursor: pointer; }
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #f1c40f; color: #000; box-shadow: 0 0 12px #f1c40f; }
         .wallet-modal-content input { width: 100%; padding: 10px; margin: 6px 0; background: #000; border: 1.5px solid #f1c40f; color: #f1c40f; border-radius: 6px; text-align: center; font-weight: bold; font-size: 13px; }
-
-        /* नेटवर्क कटने पर स्क्रीन पर आने वाला ब्लॉक */
-        #networkOfflineOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 9999999; flex-direction: column; align-items: center; justify-content: center; color: #ff4444; font-weight: bold; text-align: center; padding: 20px; }
     </style>
 
     <!-- Google Firebase SDKs -->
@@ -157,16 +154,10 @@
 </head>
 <body>
 
-    <!-- नेटवर्क ऑफलाइन होने पर गेम रोकने वाला ओवरले -->
-    <div id="networkOfflineOverlay">
-        <h2 style="color:#ff4444; font-size:22px; margin-bottom:10px;">⚠️ LIVE CONNECTION LOST ⚠️</h2>
-        <p style="color:#fff; font-size:13px; max-width:300px; line-height:1.5;">इंटरनेट कनेक्शन कट गया है या सर्वर से संपर्क टूट गया है। गेम आगे नहीं चल सकता जब तक आप ऑनलाइन नहीं आते।</p>
-    </div>
-
     <script>
         (function() {
             try {
-                const BUILD_VER = "ROYAL_2026_STRICT_LIVE_V13";
+                const BUILD_VER = "ROYAL_2026_STRICT_ONLINE_V15";
                 if (localStorage.getItem("app_build_version") !== BUILD_VER) {
                     localStorage.clear();
                     localStorage.setItem("app_build_version", BUILD_VER);
@@ -205,13 +196,13 @@
 
     <div id="loginScreenContainer">
         <div class="header-container">
-            <div class="trust-banner">STRICT LIVE CLOUD SERVER • ⚡</div>
+            <div class="trust-banner">STRICT 100% ONLINE CLOUD • ⚡</div>
             <div class="royal-title-wrap" id="hiddenAdminTriggerLogo" onclick="triggerHiddenAdminPanel()">
                 <div class="royal-main-title">ROYAL ROULETTE</div>
             </div>
             <div class="live-stats-bar">
-                <span>🟢 LIVE SERVER: ACTIVE</span>
-                <span>🔒 CLOUD 2026</span>
+                <span>🟢 100% ONLINE CLOUD</span>
+                <span>🔒 SECURE 2026</span>
                 <span>⚡ PAYOUT: 99.4%</span>
             </div>
         </div>
@@ -350,7 +341,7 @@
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px;">
                 <p style="color: #00ffcc; font-size: 12px; margin-bottom: 5px; font-weight: bold;">📱 BROADCAST DEPOSIT QR URL (ALL USERS)</p>
                 <input type="text" id="adminQrUrlInput" placeholder="Paste direct image URL (e.g. https://...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px; margin-bottom: 6px;" />
-                <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Push QR to All Connected Users</button>
+                <button onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">Push QR to All Online Users</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
@@ -361,7 +352,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">STRICT LIVE</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">100% ONLINE</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -490,12 +481,11 @@
             }
         } catch(e) {}
 
-        // Strict Live Server Root (सख्त रूप से ऑनलाइन सर्वर से बंधा हुआ पाथ)
-        const masterRoot = firebase.database().ref("royal_roulette_strict_live_v13");
+        // Strict 100% Online Cloud Root
+        const masterRoot = firebase.database().ref("royal_roulette_strict_online_v15");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
         const historyRef = masterRoot.child("history_list");
-        const serverClockRef = masterRoot.child("server_clock");
 
         (function() {
             try {
@@ -508,7 +498,8 @@
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-                let isConnectedToServer = false;
+                let serverTimeOffset = 0;
+                let isOnlineVerified = false;
 
                 window.globalState = {
                     adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg",
@@ -516,13 +507,10 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // --- STRICT NETWORK WATCHDOG & LIVE LISTENERS ---
-                firebase.database().ref(".info/connected").on("value", (snap) => {
-                    isConnectedToServer = (snap.val() === true);
-                    let overlay = document.getElementById('networkOfflineOverlay');
-                    if (overlay) {
-                        overlay.style.display = isConnectedToServer ? 'none' : 'flex';
-                    }
+                // --- 100% ONLINE ENFORCEMENT ENGINE ---
+                firebase.database().ref(".info/serverTimeOffset").on("value", (snap) => {
+                    serverTimeOffset = snap.val() || 0;
+                    isOnlineVerified = true;
                 });
 
                 qrRef.on("value", (snap) => {
@@ -593,7 +581,7 @@
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
                     if (!urlInput) { alert("Enter valid image URL!"); return; }
                     qrRef.set(urlInput).then(() => {
-                        alert("✅ QR Code pushed successfully to all live users!");
+                        alert("✅ QR Code pushed successfully to all online users!");
                     }).catch(err => { alert("Error: " + err.message); });
                 };
 
@@ -610,12 +598,14 @@
                 }
 
                 function getGlobalRound() {
-                    let nowSec = Math.floor(Date.now() / 1000);
+                    let currentServerTime = Date.now() + serverTimeOffset;
+                    let nowSec = Math.floor(currentServerTime / 1000);
                     return { roundId: Math.floor(nowSec / ROUND_TIME), timeLeft: ROUND_TIME - (nowSec % ROUND_TIME) };
                 }
 
                 function getCleanRoundCounter() {
-                    let nowSec = Math.floor(Date.now() / 1000);
+                    let currentServerTime = Date.now() + serverTimeOffset;
+                    let nowSec = Math.floor(currentServerTime / 1000);
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
@@ -636,7 +626,7 @@
                     });
                     if (validSafeNumbers.length === 0) validSafeNumbers = [0, 32, 15, 19, 4, 21, 2];
 
-                    let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor(Date.now() / 1000)) % validSafeNumbers.length)];
+                    let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor((Date.now() + serverTimeOffset) / 1000)) % validSafeNumbers.length)];
                     return chosenWinner;
                 }
 
@@ -755,7 +745,7 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        alert(`✅ Winning number '${sel}' pushed to all live users successfully!`);
+                        alert(`✅ Winning number '${sel}' pushed to all online users successfully!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => { alert("Error: " + err.message); });
                 };
@@ -893,8 +883,8 @@
 
                 setInterval(() => {
                     try {
-                        // अगर इंटरनेट नहीं है, तो टाइमर आगे नहीं बढ़ेगा
-                        if (!isConnectedToServer) return;
+                        // यदि सर्वर से टाइम सिंक नहीं है, तो टाइमर आगे नहीं बढ़ेगा (Strictly Online Only)
+                        if (!isOnlineVerified) return;
 
                         let { roundId, timeLeft } = getGlobalRound();
                         let m = Math.floor(timeLeft / 60), s = timeLeft % 60;

@@ -125,28 +125,30 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील की परफेक्ट और शानदार साइज़ (आधे मोबाइल स्क्रीन के बराबर) */
+        /* 🌟 व्हील की बड़ी, चमकदार और परफेक्ट साइज़ (मोबाइल स्क्रीन के हिसाब से बिल्कुल शानदार) */
         .lobby-wheel-box { 
             position: relative; 
-            width: 255px; 
-            height: 255px; 
+            width: 345px; 
+            height: 345px; 
             margin: 4px auto; 
-            border: 6px solid #ffd700; 
+            border: 8px solid #ffd700; 
             border-radius: 50%; 
-            background: radial-gradient(circle, #111 0%, #000 100%); 
+            background: radial-gradient(circle, #0a2e12 0%, #000 80%); 
             overflow: hidden; 
-            box-shadow: 0 0 35px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(0, 255, 100, 0.6), 0 0 60px rgba(0, 150, 255, 0.4); 
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.95), inset 0 0 30px rgba(0, 255, 100, 0.6), 0 0 80px rgba(0, 180, 255, 0.5); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
+            max-width: 85vw; 
+            max-height: 85vw; 
         }
-        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.8)) brightness(1.15) contrast(1.1); }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 34px; height: 34px; margin-top: -17px; margin-left: -17px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #b8860b 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 15px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin-top: -22px; margin-left: -22px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2.5px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 20px #ffd700, inset 0 0 6px #fff; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 7px); width: 14px; height: 14px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 18px #fff, 0 0 30px #00ffcc, 0 0 45px #ff0055, inset 0 0 4px #fff; animation: ballColorPulse 1s infinite alternate; }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 8px; left: calc(50% - 9px); width: 18px; height: 18px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 22px #fff, 0 0 38px #00ffcc, 0 0 55px #ff0055, inset 0 0 5px #fff; animation: ballColorPulse 1s infinite alternate; }
         @keyframes ballColorPulse { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
         .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 420px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 3px; border: 2px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
@@ -386,7 +388,7 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="300" height="300"></canvas>
+            <canvas id="lobbyWheelCanvas" width="345" height="345"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
@@ -1291,28 +1293,28 @@
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 6, innerRadius = radiusSize || 32, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 8, innerRadius = radiusSize || 42, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
                         let fillColor = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
                         ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
                         ctx.lineTo(cx, cy); ctx.fillStyle = fillColor; ctx.fill();
-                        ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+                        ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; 
-                        ctx.font = `bold ${fontSize || 12}px Arial`;
-                        ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-                        ctx.shadowBlur = 4;
-                        ctx.fillText(num, outerRadius - 14, 4); ctx.restore();
+                        ctx.font = `bold ${fontSize || 14}px Arial`;
+                        ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+                        ctx.shadowBlur = 6;
+                        ctx.fillText(num, outerRadius - 16, 5); ctx.restore();
                     });
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#fff'; ctx.stroke();
                 }
 
                 window.onload = () => { 
-                    drawCanvasWheel('loginWheelCanvasBg', 36, 14); 
-                    drawCanvasWheel('lobbyWheelCanvas', 32, 12); 
+                    drawCanvasWheel('loginWheelCanvasBg', 42, 15); 
+                    drawCanvasWheel('lobbyWheelCanvas', 40, 14); 
                     updateActiveQrDisplay();
                 };
 

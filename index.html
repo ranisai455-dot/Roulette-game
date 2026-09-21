@@ -35,14 +35,12 @@
             color: rgba(255, 215, 0, 0.08); pointer-events: none; z-index: 1;
         }
         
-        /* 🌟 लॉगिन पेज का व्हील: 3D, 4D, 5D, 8K अल्ट्रा एचडी क्लियर और चमकदार */
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
         .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 15px); width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 35px #fff, 0 0 55px #00ffcc, 0 0 90px #ffd700; }
         
-        /* लॉगिन पेज पर टिमटिमाते हुए स्टार्स और सिक्के गिरते हुए (Shower Animation) */
         .login-shower-particle {
             position: fixed; top: -20px; width: 12px; height: 12px;
             background: radial-gradient(circle, #fff 0%, #ffd700 70%, #b8860b 100%);
@@ -110,7 +108,6 @@
         .payment-gateways { font-size: 6.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 6.5px; color: #ffd700; font-weight: bold; }
 
-        /* 🌟 गेम लॉबी: खाली जगह (Dead Space) खत्म करके सभी बटन्स और सेक्शंस को बिल्कुल पास-पास और बड़ा सेट किया गया है */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
@@ -160,7 +157,6 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 लॉबी व्हील बॉक्स: बड़ा और भव्य */
         .lobby-wheel-box { 
             position: relative; 
             width: 360px; 
@@ -182,7 +178,6 @@
 
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 14px rgba(255,215,0,0.95)) brightness(1.25) contrast(1.2); border: 3px solid #ffd700; }
         
-        /* 🌟 परफ़ेक्ट छोटा सेंटर हब (रॉयल ऊपर, 3 स्टार्स बीच में, डिजिटल नीचे - प्योर गोल्डन डिम-फुल ब्लिंकिंग) */
         .wheel-center-graphic {
             position: absolute;
             top: 50%; left: 50%;
@@ -388,7 +383,6 @@
         })();
     </script>
 
-    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर (मास्टर एडमिन 8889865182 के लिए हमेशा बाईपास) -->
     <div id="globalMaintenanceBanner" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#ffd700; text-align:center; padding:20px;">
         <h2 style="font-size:24px; margin-bottom:10px; color:#ff3333; text-shadow:0 0 15px #ff3333;">⚠️ SYSTEM MAINTENANCE ⚠️</h2>
         <p id="maintenanceReasonText" style="font-size:14px; color:#fff; font-weight:bold; max-width:320px; line-height:1.5;"></p>
@@ -404,7 +398,6 @@
         </div>
     </div>
 
-    <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
             <canvas id="loginWheelCanvasBg" width="450" height="450"></canvas>
@@ -459,7 +452,6 @@
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <!-- 🌟 टाइम बार: चौकोर, कॉम्पैक्ट और चमकता हुआ -->
             <div class="timer-strip-center" id="lobbyTimerBox">
                 <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
                 <span class="timer-sub-val" id="lobbyTimerSub">BETTING OPEN</span>
@@ -468,7 +460,6 @@
             <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
         </div>
 
-        <!-- 🌟 हिस्ट्री बार के ऊपर रॉयल स्टार डिजाइन बैनर -->
         <div class="royal-star-banner">
             <span class="rs-star-sm">★</span>
             <span class="rs-star-md">★</span>
@@ -484,7 +475,6 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 🌟 लॉबी व्हील बॉक्स -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
             <div class="wheel-center-graphic">
@@ -727,7 +717,6 @@
         </div>
     </div>
 
-    <!-- 🌟 विड्रॉल मोडल (UPI ID या QR कोड में से कोई एक होने पर भी सक्सेस) -->
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:8px; font-size:16px; letter-spacing:0.5px;">💎 VIP WITHDRAWAL GATEWAY</h3>
@@ -808,9 +797,9 @@
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
                 let isGameSpinning = false;
-                let globalTableBets = {}; // सभी ऑनलाइन प्लेयर्स के बेट्स का ग्लोबल पुल
-                let myActiveBets = {};   // सिर्फ करंट यूजर के अपने बेट्स
-                let currentTotalBet = 0; // ग्लोबल टोटल बेट
+                let globalTableBets = {}; 
+                let myActiveBets = {};   
+                let currentTotalBet = 0; 
                 let betHistoryStack = [];
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
@@ -1406,7 +1395,7 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 ग्लोबल राउंड बेट्स लिसनर (सारे ऑनलाइन प्लेयर्स के लाइव बेट्स को एक जगह जोड़ने वाला इंजन)
+                // 🌟 ग्लोबल राउंड बेट्स लिसनर (लाइव सिंकिंग इंजन)
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1438,7 +1427,7 @@
                     });
                 }
 
-                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (ग्लोबल टेबल बेट्स पर आधारित)
+                // 🌟 5% हाउसफुल / 95% पूल इंजन
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1454,7 +1443,7 @@
                     }
 
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; // 95% सुरक्षित पूल
+                    let safePayoutPool = totalTableBet - houseCut; 
 
                     let validSafeNumbers = [];
                     let allNumberPayouts = {};
@@ -1627,7 +1616,7 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 🌟 ऑनलाइन रियल-मनी बेटिंग सिंक (डेटाबेस पर लाइव सेव होना)
+                // 🌟 रियल-टाइम बेटिंग सिंक (डेटाबेस पर लाइव सेव होना)
                 window.placeTableBet = function(key, el) {
                     let { roundId, timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;

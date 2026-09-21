@@ -66,11 +66,10 @@
             100% { transform: scale(1); }
         }
 
-        /* 🌟 अट्रैक्टिव 3D अल्ट्रा एचडी लॉगिन स्क्रीन */
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
             padding: 10px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
-            backdrop-filter: blur(4px); border: 6px solid #d4af37; box-shadow: inset 0 0 40px rgba(255,215,0,0.4), 0 0 50px rgba(0,0,0,0.9);
+            backdrop-filter: blur(4px); border: 2px solid #d4af37; box-shadow: inset 0 0 30px rgba(255,215,0,0.3), 0 0 40px rgba(0,0,0,0.9);
         }
         .header-container { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 4px; align-items: center; z-index: 5; margin-top: 4px; }
         .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 4px 8px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
@@ -78,7 +77,7 @@
         .royal-main-title { font-size: 20px; font-weight: 900; color: #ffd700; text-shadow: 0 0 25px #ffd700, 0 0 45px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 6px; text-transform: uppercase; }
         
-        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 3px solid #ffd700; padding: 12px 10px; border-radius: 18px; width: 92%; max-width: 300px; box-shadow: 0 15px 40px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.4); position: relative; z-index: 15; }
+        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 2px solid #ffd700; padding: 12px 10px; border-radius: 18px; width: 92%; max-width: 300px; box-shadow: 0 15px 40px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.4); position: relative; z-index: 15; }
         .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
         .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
         .login-card input { width: 100%; padding: 7px; margin: 3px 0; background: #000000; border: 2px solid rgba(255, 215, 0, 0.8); color: #ffd700; border-radius: 8px; font-size: 11px; text-align: center; font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.2); }
@@ -95,27 +94,27 @@
         .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
-        /* 🌟 गेम लॉबी: चारों तरफ 3D प्योर गोल्डन बॉर्डर और परफेक्ट पैडिंग (कोई बटन बाहर नहीं कटेगा) */
+        /* 🌟 गेम लॉबी: बिल्कुल बारीक (0.8px) एलिगेंट प्योर गोल्डन बॉर्डर और सुरक्षित पैडिंग */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
             z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; 
-            padding: 6px 8px; border: 5px solid #ffd700; 
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.8), 0 0 70px rgba(0,0,0,1); 
+            padding: 5px 6px; border: 0.8px solid #ffd700; 
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 15px rgba(212, 175, 55, 0.5); 
             overflow: hidden; 
         }
-        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 3px 6px; border-radius: 8px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 3px; }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 1.5px solid #d4af37; padding: 3px 6px; border-radius: 8px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.6); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 3px; }
         .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 5px; border-radius: 12px; text-align: left; cursor: pointer; }
         .user-avatar-circle { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
         
-        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 5px 8px; border-radius: 8px; font-size: 9px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; padding: 5px 8px; border-radius: 8px; font-size: 9px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
         .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; }
 
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
             color: #fff; padding: 3px 8px; border-radius: 8px; 
-            border: 2px solid #ffd700; text-transform: uppercase; 
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 10px rgba(255, 0, 0, 0.6); 
+            border: 1.5px solid #ffd700; text-transform: uppercase; 
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 0, 0, 0.6); 
             letter-spacing: 1px; flex-grow: 1; max-width: 125px; text-align: center; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px; 
             transition: all 0.4s ease; position: relative; overflow: hidden;
@@ -131,32 +130,60 @@
             margin-top: 1px; text-shadow: 0 0 4px #000; text-transform: uppercase;
         }
 
-        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 2px 4px; border-radius: 6px; margin: 2px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; }
-        .history-title { font-size: 7px; font-weight: bold; color: #ffd700; margin-right: 2px; text-transform: uppercase; }
-        .history-ball { width: 16px; height: 16px; border-radius: 50%; font-size: 8.5px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 4px rgba(0,0,0,0.8); flex-shrink: 0; }
+        /* 🌟 बड़े और स्पष्ट अक्षरों वाली हिस्ट्री बार */
+        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 4px; background: rgba(0, 15, 5, 0.95); border: 1.5px solid rgba(212, 175, 55, 0.8); padding: 3px 8px; border-radius: 8px; margin: 2px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
+        .history-title { font-size: 9px; font-weight: 900; color: #ffd700; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 5px #ffd700; }
+        .history-ball { width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 2px solid #ffd700; box-shadow: 0 0 8px rgba(0,0,0,0.9); flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील की परफेक्ट साइज़ और एचडी 3D लुक */
+        /* 🌟 व्हील और चारों कोनों में बिल्कुल परफेक्ट 3D गोल सर्कल्स (Badges) */
         .lobby-wheel-box { 
             position: relative; 
-            width: 320px; 
-            height: 320px; 
+            width: 330px; 
+            height: 330px; 
             margin: 2px auto; 
-            border: 7px solid #ffd700; 
+            border: 6px solid #ffd700; 
             border-radius: 50%; 
             background: radial-gradient(circle, #0a2e12 0%, #000 80%); 
-            overflow: hidden; 
-            box-shadow: 0 0 45px rgba(255, 215, 0, 0.9), inset 0 0 25px rgba(0, 255, 100, 0.6), 0 0 70px rgba(0, 180, 255, 0.4); 
+            overflow: visible; 
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(0, 255, 100, 0.6); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 78vw; 
-            max-height: 78vw; 
+            max-width: 76vw; 
+            max-height: 76vw; 
         }
+
+        /* कोनों के 4 गोल सर्कल विजेट्स (बिल्कुल सटीक मैचिंग) */
+        .corner-badge {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0c3b17 0%, #021205 100%);
+            border: 2px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            font-size: 8px;
+            font-weight: 900;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 6px rgba(0, 255, 100, 0.5);
+            z-index: 130;
+            text-transform: uppercase;
+            text-shadow: 0 1px 2px #000;
+        }
+        .corner-badge.top-left { top: -8px; left: -8px; }
+        .corner-badge.top-right { top: -8px; right: -8px; }
+        .corner-badge.bottom-left { bottom: -8px; left: -8px; }
+        .corner-badge.bottom-right { bottom: -8px; right: -8px; }
+        .corner-badge span { font-size: 11px; color: #fff; font-weight: 900; text-shadow: 0 0 6px #2ecc71; }
+
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
         .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
         
@@ -164,7 +191,7 @@
         .game-ball-orbit::after { content: ""; position: absolute; top: 7px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; animation: ballColorPulse 1s infinite alternate; }
         @keyframes ballColorPulse { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
-        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 2px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
+        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
         
         .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
@@ -397,11 +424,17 @@
 
         <div class="history-strip-bar" id="historyBarEl">
             <span class="history-title">History:</span>
-            <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
+            <div id="historyBallsContainer" style="display: flex; gap: 4px;"></div>
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="320" height="320"></canvas>
+            <!-- 🌟 चारों कोनों में बिल्कुल परफेक्ट गोल सर्कल्स (Badges) -->
+            <div class="corner-badge top-left">HOT<span id="badgeHotNum">14</span></div>
+            <div class="corner-badge top-right">POOL<span style="font-size:9px; color:#ffd700;">₹50K</span></div>
+            <div class="corner-badge bottom-left">WIN<span style="font-size:8.5px; color:#00ffcc;">VIP</span></div>
+            <div class="corner-badge bottom-right">NEXT<span style="font-size:9px; color:#ff3366;" id="badgeNextTrend">RED</span></div>
+
+            <canvas id="lobbyWheelCanvas" width="330" height="330"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
@@ -1601,13 +1634,18 @@
                         document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
                         document.getElementById('popupPayoutDisplay').innerText = totalWon > 0 ? `You Won 🪙${totalWon}!` : `Round Finished.`;
                         updateBalancesDisplay();
-                        if(popup) popup.style.display = 'flex';
-                        
-                        setTimeout(() => { 
-                            if(popup) popup.style.display = 'none'; 
+                        // 🌟 विनिंग पॉप-अप केवल तभी दिखेगा जब यूज़र लॉबी के अंदर एक्टिवली खेल रहा हो
+                        if(popup && document.getElementById('gameLobbyScreen').style.display === 'flex') {
+                            popup.style.display = 'flex';
+                            setTimeout(() => { 
+                                popup.style.display = 'none'; 
+                                isGameSpinning = false; 
+                                document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
+                            }, 2500);
+                        } else {
                             isGameSpinning = false; 
                             document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
-                        }, 2500);
+                        }
                     }, 5000);
                 }
 

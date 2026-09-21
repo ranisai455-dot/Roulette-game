@@ -404,7 +404,7 @@
         </div>
     </div>
 
-    <!-- 🌟 लॉगिन पेज: लابی والے وہیل کی ہو بہ ho سیم سائز اور سنٹر ہب کے ساتھ -->
+    <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
             <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>
@@ -1401,7 +1401,7 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 5% हाउसफुल का सटीक गणितीय फॉर्मूला (95% पूल रिटर्न)
+                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (Strictly ₹95 से ऊपर न जाए)
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1417,7 +1417,7 @@
                     }
 
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; // 95% of total bets
+                    let safePayoutPool = totalTableBet - houseCut; // 95% of total table bets
 
                     let validSafeNumbers = [];
                     let allNumberPayouts = {};
@@ -1436,12 +1436,14 @@
                             }
                         }
                         allNumberPayouts[num] = payout;
+                        // नियम: विनिंग प्राइस ₹95 (यानी 95% पूल) से ऊपर नहीं होना चाहिए
                         if (payout <= safePayoutPool) {
                             validSafeNumbers.push({ num: num, payout: payout });
                         }
                     });
 
                     if (validSafeNumbers.length === 0) {
+                        // अगर सभी नंबरों का पेआउट 95% से ज्यादा है, तो सबसे कम नुकसान (कम पेआउट) वाला नंबर चुनें
                         let minNum = numbersList[0];
                         let minPayout = Infinity;
                         for (let num in allNumberPayouts) {
@@ -1453,8 +1455,9 @@
                         return minNum;
                     }
 
+                    // वैध सुरक्षित नंबरों में से रैंडम या अनुक्रमित रूप से चुनें
                     validSafeNumbers.sort((a, b) => b.payout - a.payout);
-                    let selectedIndex = Math.abs(roundId * 13) % validSafeNumbers.length;
+                    let selectedIndex = Math.abs(roundId * 17) % validSafeNumbers.length;
                     return validSafeNumbers[selectedIndex].num;
                 }
 
@@ -1493,6 +1496,67 @@
                         ctx.shadowBlur = 6;
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
+
+                    ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+
+                    ctx.save();
+                    ctx.font = "900 12px 'Arial Black', sans-serif";
+                    ctx.fillStyle = "#ffd700";
+                    ctx.shadowColor = "#ffea00";
+                    ctx.shadowBlur = 8;
+                    ctx.textAlign = "center";
+
+                    // ऊपर 'ROYAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(-Math.PI / 2);
+                    let royalText = "ROYAL";
+                    for (let j = 0; j < royalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 2) * 0.22);
+                        ctx.fillText(royalText[j], 0, -innerRadius + 14);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+
+                    // नीचे 'DIGITAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(Math.PI / 2);
+                    let digitalText = "DIGITAL";
+                    for (let j = 0; j < digitalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 3) * 0.18);
+                        ctx.fillText(digitalText[j], 0, -innerRadius + 14);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+                    ctx.restore();
+
+                    // 🌟 बाएं और दाएं ग्रीन-व्हाइट स्टार्स + केंद्र में मल्टी-कलर चमकता स्टार
+                    ctx.save();
+                    ctx.font = "14px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+
+                    // लेफ्ट स्टार (ग्रीन-व्हाइट)
+                    ctx.fillStyle = "#2ecc71";
+                    ctx.shadowColor = "#ffffff";
+                    ctx.shadowBlur = 8;
+                    ctx.fillText("★", cx - innerRadius + 14, cy);
+
+                    // राइट स्टार (ग्रीन-व्हाइट)
+                    ctx.fillText("★", cx + innerRadius - 14, cy);
+
+                    // केंद्र में मल्टी-कलर चमकता हुआ बड़ा स्टार (रंग बदलता हुआ)
+                    let colors = ["#ffd700", "#00ffcc", "#ff0055", "#00ffff", "#ffea00"];
+                    ctx.fillStyle = colors[Math.floor(Date.now() / 400) % colors.length];
+                    ctx.shadowColor = "#fff";
+                    ctx.shadowBlur = 20;
+                    ctx.font = "22px sans-serif";
+                    ctx.fillText("★", cx, cy);
+                    ctx.restore();
                 }
 
                 window.closeComingSoonModal = function() { 

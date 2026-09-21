@@ -66,6 +66,18 @@
             100% { transform: scale(1); }
         }
 
+        @keyframes starSpinRotate {
+            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 8px #ffd700); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 18px #ffea00); }
+            100% { transform: rotate(360deg) scale(1); filter: drop-shadow(0 0 8px #ffd700); }
+        }
+
+        @keyframes coinShowerDrop {
+            0% { transform: translateY(-10px) scale(0.8); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(15px) scale(1.1); opacity: 0; }
+        }
+
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
             padding: 10px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
@@ -94,12 +106,12 @@
         .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
-        /* 🌟 गेम लॉबी: बिल्कुल बारीक (0.8px) एलिगेंट प्योर गोल्डन बॉर्डर और सुरक्षित पैडिंग */
+        /* 🌟 गेम लॉबी: बिल्कुल बारीक (0.8px) एलिगेंट प्योर गोल्डन बॉर्डर */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
             z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; 
-            padding: 5px 6px; border: 0.8px solid #ffd700; 
+            padding: 4px 6px; border: 0.8px solid #ffd700; 
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 15px rgba(212, 175, 55, 0.5); 
             overflow: hidden; 
         }
@@ -138,57 +150,82 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील और चारों कोनों में बिल्कुल परफेक्ट 3D गोल सर्कल्स (Badges) */
+        /* 🌟 व्हील की भव्य और बड़ी साइज़ (आधी स्क्रीन) और 4 शानदार 3D/4D गोल्डन स्टार्स */
         .lobby-wheel-box { 
             position: relative; 
-            width: 330px; 
-            height: 330px; 
+            width: 350px; 
+            height: 350px; 
             margin: 2px auto; 
-            border: 6px solid #ffd700; 
+            border: 7px solid #ffd700; 
             border-radius: 50%; 
             background: radial-gradient(circle, #0a2e12 0%, #000 80%); 
             overflow: visible; 
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(0, 255, 100, 0.6); 
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.95), inset 0 0 25px rgba(0, 255, 100, 0.6); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 76vw; 
-            max-height: 76vw; 
+            max-width: 84vw; 
+            max-height: 84vw; 
         }
 
-        /* कोनों के 4 गोल सर्कल विजेट्स (बिल्कुल सटीक मैचिंग) */
-        .corner-badge {
+        /* 🌟 4 शानदार 3D/4D गोल्डन स्टार्स कोनों के लिए */
+        .corner-star-badge {
             position: absolute;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #fff35c 0%, #ffd700 50%, #b8860b 100%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 18px #ffd700, 0 0 30px #ffea00;
+            z-index: 140;
+            animation: starSpinRotate 6s linear infinite;
+            cursor: pointer;
+        }
+        .corner-star-inner {
+            width: 34px;
+            height: 34px;
+            background: radial-gradient(circle, #022b10 0%, #000a03 100%);
             border-radius: 50%;
-            background: radial-gradient(circle, #0c3b17 0%, #021205 100%);
-            border: 2px solid #ffd700;
+            border: 2px solid #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #ffd700;
-            font-size: 8px;
+            font-size: 7.5px;
             font-weight: 900;
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 6px rgba(0, 255, 100, 0.5);
-            z-index: 130;
-            text-transform: uppercase;
+            color: #ffd700;
+            box-shadow: inset 0 0 6px #ffd700;
             text-shadow: 0 1px 2px #000;
         }
-        .corner-badge.top-left { top: -8px; left: -8px; }
-        .corner-badge.top-right { top: -8px; right: -8px; }
-        .corner-badge.bottom-left { bottom: -8px; left: -8px; }
-        .corner-badge.bottom-right { bottom: -8px; right: -8px; }
-        .corner-badge span { font-size: 11px; color: #fff; font-weight: 900; text-shadow: 0 0 6px #2ecc71; }
 
-        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
+        .corner-star-badge.top-left { top: -12px; left: -12px; }
+        .corner-star-badge.top-right { top: -12px; right: -12px; animation-direction: reverse; }
+        .corner-star-badge.bottom-left { bottom: -12px; left: -12px; }
+        .corner-star-badge.bottom-right { bottom: -12px; right: -12px; animation-direction: reverse; }
+
+        /* कॉइन शावर इफ़ेक्ट */
+        .coin-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #fff 0%, #ffd700 70%, #b8860b 100%);
+            border-radius: 50%;
+            border: 1px solid #fff;
+            box-shadow: 0 0 8px #ffd700;
+            animation: coinShowerDrop 1.5s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 150;
+        }
+
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 15px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 42px; height: 42px; margin-top: -21px; margin-left: -21px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2.5px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 20px #ffd700, inset 0 0 6px #fff; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 7px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; animation: ballColorPulse 1s infinite alternate; }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 8px; left: calc(50% - 9px); width: 18px; height: 18px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 22px #fff, 0 0 38px #00ffcc, 0 0 55px #ff0055, inset 0 0 5px #fff; animation: ballColorPulse 1s infinite alternate; }
         @keyframes ballColorPulse { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
         .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
@@ -306,7 +343,6 @@
         </div>
     </div>
 
-    <!-- एडमिन पिन वेरिफिकेशन मोडल -->
     <div id="adminPinModal">
         <div class="admin-pin-box">
             <h3 style="color:#ffd700; font-size:15px; margin-bottom:8px;">🔐 ADMIN PIN REQUIRED</h3>
@@ -428,13 +464,26 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <!-- 🌟 चारों कोनों में बिल्कुल परफेक्ट गोल सर्कल्स (Badges) -->
-            <div class="corner-badge top-left">HOT<span id="badgeHotNum">14</span></div>
-            <div class="corner-badge top-right">POOL<span style="font-size:9px; color:#ffd700;">₹50K</span></div>
-            <div class="corner-badge bottom-left">WIN<span style="font-size:8.5px; color:#00ffcc;">VIP</span></div>
-            <div class="corner-badge bottom-right">NEXT<span style="font-size:9px; color:#ff3366;" id="badgeNextTrend">RED</span></div>
+            <div class="corner-star-badge top-left" style="top:-14px; left:-14px;">
+                <div class="corner-star-inner">🌟<span style="font-size:6.5px;">GOLD</span></div>
+                <div class="coin-particle" style="top:5px; left:15px;"></div>
+                <div class="coin-particle" style="top:12px; left:25px; animation-delay: 0.5s;"></div>
+            </div>
+            <div class="corner-star-badge top-right" style="top:-14px; right:-14px;">
+                <div class="corner-star-inner">✨<span style="font-size:6.5px;">LUCKY</span></div>
+                <div class="coin-particle" style="top:5px; right:15px;"></div>
+                <div class="coin-particle" style="top:12px; right:25px; animation-delay: 0.7s;"></div>
+            </div>
 
-            <canvas id="lobbyWheelCanvas" width="330" height="330"></canvas>
+            <div class="corner-star-badge bottom-left" style="bottom:-14px; left:-14px;" onclick="toggleMasterAudioMute()">
+                <div class="corner-star-inner" id="muteStarInner">🎵<span style="font-size:5.5px;" id="muteTextLbl">SOUND</span></div>
+            </div>
+
+            <div class="corner-star-badge bottom-right" style="bottom:-14px; right:-14px;">
+                <div class="corner-star-inner" style="font-size:5px; line-height:1.1; color:#00ffcc; font-weight:900;">ROYAL<br><span style="color:#ffd700; font-size:4.5px;">DIGITAL</span></div>
+            </div>
+
+            <canvas id="lobbyWheelCanvas" width="360" height="360"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
@@ -492,7 +541,6 @@
         </div>
     </div>
 
-    <!-- PLAYER PROFILE MODAL -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 420px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
@@ -510,7 +558,6 @@
         </div>
     </div>
 
-    <!-- MASTER ADMIN DASHBOARD -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
@@ -749,6 +796,20 @@
 
                 let lastKnownDepositCount = -1;
                 let lastKnownWithdrawCount = -1;
+                let isAudioMuted = false;
+
+                window.toggleMasterAudioMute = function() {
+                    isAudioMuted = !isAudioMuted;
+                    let bgm = document.getElementById('bgmAudio');
+                    let lbl = document.getElementById('muteTextLbl');
+                    if (bgm) {
+                        bgm.muted = isAudioMuted;
+                    }
+                    if (lbl) {
+                        lbl.innerText = isAudioMuted ? "MUTED" : "SOUND";
+                        lbl.style.color = isAudioMuted ? "#ff3333" : "#2ecc71";
+                    }
+                };
 
                 let savedPermanentQr = localStorage.getItem("permanent_admin_qr_url") || "https://i.ibb.co/3yk54L2/1000532596.jpg";
 
@@ -758,7 +819,12 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
+                // 🌟 इंस्टेंट कैनवास और फ्रेम प्री-लोडर (ब्लैक फ्रेम या लैग हमेशा के लिए खत्म)
                 window.addEventListener('DOMContentLoaded', () => {
+                    drawCanvasWheel('loginWheelCanvasBg', 45, 15);
+                    drawCanvasWheel('lobbyWheelCanvas', 45, 14);
+                    updateActiveQrDisplay();
+
                     let rememberedPhone = localStorage.getItem("royal_saved_user_phone");
                     if (rememberedPhone) {
                         finalizeLogin(rememberedPhone, null, true);
@@ -1029,7 +1095,7 @@
 
                 window.playMasterAudio = function() {
                     let bgm = document.getElementById('bgmAudio');
-                    if (bgm) { 
+                    if (bgm && !isAudioMuted) { 
                         bgm.volume = 0.25; 
                         bgm.play().catch(e => {}); 
                     }
@@ -1339,7 +1405,7 @@
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 8, innerRadius = radiusSize || 40, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 8, innerRadius = radiusSize || 45, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
@@ -1349,20 +1415,14 @@
                         ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; 
-                        ctx.font = `bold ${fontSize || 13}px Arial`;
+                        ctx.font = `bold ${fontSize || 14}px Arial`;
                         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
                         ctx.shadowBlur = 6;
-                        ctx.fillText(num, outerRadius - 15, 4); ctx.restore();
+                        ctx.fillText(num, outerRadius - 16, 4); ctx.restore();
                     });
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#fff'; ctx.stroke();
                 }
-
-                window.onload = () => { 
-                    drawCanvasWheel('loginWheelCanvasBg', 42, 15); 
-                    drawCanvasWheel('lobbyWheelCanvas', 40, 13); 
-                    updateActiveQrDisplay();
-                };
 
                 window.closeComingSoonModal = function() { 
                     let modal = document.getElementById('comingSoonNoticeModal');
@@ -1551,7 +1611,7 @@
                                 if (subEl) subEl.innerText = "NO MORE BETS (LOCKED)";
                                 if (timeLeft === 10) {
                                     let sfx = document.getElementById('betClosedSfx');
-                                    if(sfx) sfx.play().catch(e => {});
+                                    if(sfx && !isAudioMuted) sfx.play().catch(e => {});
                                     if (navigator.vibrate) navigator.vibrate(400);
                                 }
                             }
@@ -1585,7 +1645,7 @@
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";
                     
                     let ballRollAudio = document.getElementById('ballRollSfx');
-                    if (ballRollAudio) {
+                    if (ballRollAudio && !isAudioMuted) {
                         ballRollAudio.currentTime = 0;
                         ballRollAudio.volume = 0.8;
                         ballRollAudio.play().catch(e => {});
@@ -1601,7 +1661,7 @@
                     setTimeout(() => {
                         if (ballRollAudio) ballRollAudio.pause();
                         let ballDropAudio = document.getElementById('ballDropSfx');
-                        if (ballDropAudio) {
+                        if (ballDropAudio && !isAudioMuted) {
                             ballDropAudio.currentTime = 0;
                             ballDropAudio.volume = 1.0;
                             ballDropAudio.play().catch(e => {});
@@ -1634,7 +1694,7 @@
                         document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
                         document.getElementById('popupPayoutDisplay').innerText = totalWon > 0 ? `You Won 🪙${totalWon}!` : `Round Finished.`;
                         updateBalancesDisplay();
-                        // 🌟 विनिंग पॉप-अप केवल तभी दिखेगा जब यूज़र लॉबी के अंदर एक्टिवली खेल रहा हो
+                        
                         if(popup && document.getElementById('gameLobbyScreen').style.display === 'flex') {
                             popup.style.display = 'flex';
                             setTimeout(() => { 

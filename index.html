@@ -181,8 +181,49 @@
         }
 
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 14px rgba(255,215,0,0.95)) brightness(1.25) contrast(1.2); border: 3px solid #ffd700; }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 16px #ffd700, inset 0 0 6px #fff; }
         
+        /* 🌟 परफ़ेक्ट छोटा सेंटर हब (रॉयल ऊपर, 3 स्टार्स बीच में, डिजिटल नीचे - प्योर गोल्डन डिम-फुल ब्लिंकिंग) */
+        .wheel-center-graphic {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 72px; height: 72px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #021a08 0%, #000 100%);
+            border-radius: 50%;
+            border: 2.5px solid #ffd700;
+            z-index: 110;
+            box-shadow: 0 0 18px rgba(0,0,0,0.9), inset 0 0 8px rgba(255,215,0,0.8);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            pointer-events: none;
+            gap: 1.5px;
+        }
+        .hub-text-royal, .hub-text-digital {
+            font-size: 8.5px;
+            font-weight: 900;
+            font-family: 'Arial Black', Impact, sans-serif;
+            color: #ffd700;
+            text-shadow: 0 0 8px #ffd700, 0 0 14px #ffea00;
+            animation: goldBlinkDimFull 1.6s infinite ease-in-out;
+            letter-spacing: 0.6px;
+            line-height: 1;
+        }
+        .hub-stars-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5px;
+            font-size: 9.5px;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700, 0 0 16px #ffea00;
+            animation: goldBlinkDimFull 1.6s infinite ease-in-out;
+            line-height: 1;
+        }
+        @keyframes goldBlinkDimFull {
+            0% { opacity: 0.3; transform: scale(0.92); text-shadow: 0 0 2px #ffd700; }
+            50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 18px #ffd700, 0 0 30px #ffea00; }
+            100% { opacity: 0.3; transform: scale(0.92); text-shadow: 0 0 2px #ffd700; }
+        }
+
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
         .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; }
 
@@ -366,9 +407,13 @@
     <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="450" height="450"></canvas>
+            <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>
             <div class="bg-ball-orbit"></div>
-            <div class="lobby-wheel-hub"></div>
+            <div class="wheel-center-graphic">
+                <div class="hub-text-royal">ROYAL</div>
+                <div class="hub-stars-row"><span>★</span><span style="font-size:14px; color:#ffd700; text-shadow: 0 0 12px #ffea00; animation: goldBlinkDimFull 1.6s infinite ease-in-out;">★</span><span>★</span></div>
+                <div class="hub-text-digital">DIGITAL</div>
+            </div>
         </div>
     </div>
 
@@ -439,10 +484,14 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 🌟 लॉबी व्हील बॉक्स: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार -->
+        <!-- 🌟 लॉबी व्हील बॉक्स: छोटा और सटीक सेंटर हब -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
-            <div class="lobby-wheel-hub"></div>
+            <div class="wheel-center-graphic">
+                <div class="hub-text-royal">ROYAL</div>
+                <div class="hub-stars-row"><span>★</span><span style="font-size:14px; color:#ffd700; text-shadow: 0 0 12px #ffea00; animation: goldBlinkDimFull 1.6s infinite ease-in-out;">★</span><span>★</span></div>
+                <div class="hub-text-digital">DIGITAL</div>
+            </div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
 

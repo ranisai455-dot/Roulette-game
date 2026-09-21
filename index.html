@@ -484,7 +484,7 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 🌟 लॉबी व्हील बॉक्स: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार -->
+        <!-- 🌟 लॉबी व्हील बॉक्स -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
             <div class="wheel-center-graphic">
@@ -1494,6 +1494,67 @@
                         ctx.shadowBlur = 6;
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
+
+                    ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+
+                    ctx.save();
+                    ctx.font = "900 12px 'Arial Black', sans-serif";
+                    ctx.fillStyle = "#ffd700";
+                    ctx.shadowColor = "#ffea00";
+                    ctx.shadowBlur = 8;
+                    ctx.textAlign = "center";
+
+                    // ऊपर 'ROYAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(-Math.PI / 2);
+                    let royalText = "ROYAL";
+                    for (let j = 0; j < royalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 2) * 0.22);
+                        ctx.fillText(royalText[j], 0, -innerRadius + 14);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+
+                    // नीचे 'DIGITAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(Math.PI / 2);
+                    let digitalText = "DIGITAL";
+                    for (let j = 0; j < digitalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 3) * 0.18);
+                        ctx.fillText(digitalText[j], 0, -innerRadius + 14);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+                    ctx.restore();
+
+                    // 🌟 बाएं और दाएं ग्रीन-व्हाइट स्टार्स + केंद्र में मल्टी-कलर चमकता स्टार
+                    ctx.save();
+                    ctx.font = "14px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+
+                    // लेफ्ट स्टार (ग्रीन-व्हाइट)
+                    ctx.fillStyle = "#2ecc71";
+                    ctx.shadowColor = "#ffffff";
+                    ctx.shadowBlur = 8;
+                    ctx.fillText("★", cx - innerRadius + 14, cy);
+
+                    // राइट स्टार (ग्रीन-व्हाइट)
+                    ctx.fillText("★", cx + innerRadius - 14, cy);
+
+                    // केंद्र में मल्टी-कलर चमकता हुआ बड़ा स्टार (रंग बदलता हुआ)
+                    let colors = ["#ffd700", "#00ffcc", "#ff0055", "#00ffff", "#ffea00"];
+                    ctx.fillStyle = colors[Math.floor(Date.now() / 400) % colors.length];
+                    ctx.shadowColor = "#fff";
+                    ctx.shadowBlur = 20;
+                    ctx.font = "22px sans-serif";
+                    ctx.fillText("★", cx, cy);
+                    ctx.restore();
                 }
 
                 window.closeComingSoonModal = function() { 
@@ -1768,7 +1829,7 @@
                                     let currentBal = (snap.exists() && snap.val().balance) ? parseInt(snap.val().balance) : 0;
                                     let newUpdatedBal = currentBal + totalWon;
                                     
-                                    // 🌟 सुरक्षित रूप से .update() का उपयोग करके बैलेंस अपडेट करें
+                                    // 🌟 सुरक्षित रूप से डेटाबेस में विनिंग कॉइन जोड़ें
                                     usersRef.child(loggedUserPhone).update({ 
                                         balance: newUpdatedBal,
                                         turnover: totalUserTurnover,

@@ -35,12 +35,14 @@
             color: rgba(255, 215, 0, 0.08); pointer-events: none; z-index: 1;
         }
         
+        /* 🌟 लॉगिन पेज का व्हील: 3D, 4D, 5D अल्ट्रा एचडी क्लियर */
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 420px; height: 420px; border-radius: 50%; opacity: 0.98; border: 12px solid #ffd700; box-shadow: 0 0 150px rgba(255, 215, 0, 1), inset 0 0 80px rgba(0, 255, 100, 0.8); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         #loginWheelCanvasBg { width: 420px; height: 420px; border-radius: 50%; display: block; filter: drop-shadow(0 0 30px rgba(255,215,0,1)) brightness(1.35) contrast(1.25); }
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
         .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 14px); width: 28px; height: 28px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 30px #fff, 0 0 50px #00ffcc, 0 0 80px #ffd700; }
         
+        /* लॉगिन पेज पर शाइनिंग कॉइन और स्टार शॉवर एनीमेशन[span_7](start_span)[span_7](end_span) */
         .login-shower-particle {
             position: fixed; top: -20px; width: 12px; height: 12px;
             background: radial-gradient(circle, #fff 0%, #ffd700 70%, #b8860b 100%);
@@ -229,7 +231,7 @@
         #adminPinModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 200000; align-items: center; justify-content: center; padding: 15px; }
         .admin-pin-box { background: #011c08; border: 3px solid #ffd700; padding: 20px; border-radius: 16px; width: 100%; max-width: 280px; text-align: center; box-shadow: 0 0 40px #ffd700; }
 
-        /* 🌟 एडमिन पैनल की फ्रेम और लेआउट (नीचे तक पूरी कवरिंग + एडमिन के लिए मेंटेनेंस बाईपास सुरक्षा) */
+        /* 🌟 एडमिन पैनल फ्रेम और लेआउट */
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 12px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
         .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2.5px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 70px rgba(255, 215, 0, 0.5), inset 0 0 30px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 14px; text-align: left; min-height: 96%; }
         .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px; }
@@ -344,7 +346,7 @@
         })();
     </script>
 
-    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर (मास्टर एडमिन 8889865182 के लिए हमेशा बाईपास रहेगा) -->
+    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर (मास्टर एडमिन 8889865182 के लिए हमेशा बाईपास)[span_8](start_span)[span_8](end_span) -->
     <div id="globalMaintenanceBanner" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#ffd700; text-align:center; padding:20px;">
         <h2 style="font-size:24px; margin-bottom:10px; color:#ff3333; text-shadow:0 0 15px #ff3333;">⚠️ SYSTEM MAINTENANCE ⚠️</h2>
         <p id="maintenanceReasonText" style="font-size:14px; color:#fff; font-weight:bold; max-width:320px; line-height:1.5;"></p>
@@ -360,6 +362,7 @@
         </div>
     </div>
 
+    <!-- 🌟 लॉगिन पेज का व्हील: 3D, 4D अल्ट्रा एचडी क्लियर और चमकदार -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
             <canvas id="loginWheelCanvasBg" width="420" height="420"></canvas>
@@ -435,7 +438,7 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 🌟 लॉबी व्हील बॉक्स: [छोटा स्टार] -> [रॉयल ऊपर] -> [छोटा स्टार] -> [डिजिटल नीचे] -> [बीच में बड़ा स्टार] -->
+        <!-- 🌟 लॉबी व्हील बॉक्स: [छोटा स्टार] -> [रॉयल ऊपर] -> [छोटा स्टार] -> [डिजिटल नीचे] -> [बीच में बड़ा स्टार][span_9](start_span)[span_9](end_span) -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="360" height="360"></canvas>
             <div class="lobby-wheel-hub"></div>
@@ -769,7 +772,6 @@
                     let banner = document.getElementById('globalMaintenanceBanner');
                     let textEl = document.getElementById('maintenanceReasonText');
                     
-                    // 🌟 यदि मेंटेनेंस चालू भी है, तो मास्टर एडमिन (8889865182) के लिए इसे हमेशा बाईपास (छिपा) रखें ताकि एडमिन कभी लॉक न हो
                     if (m && m.active && loggedUserPhone !== MASTER_ADMIN_PHONE) {
                         if (textEl) textEl.innerText = m.message || "System under maintenance. Please wait.";
                         if (banner) banner.style.display = 'flex';
@@ -805,7 +807,6 @@
                     }
                 });
 
-                // 🌟 लॉगिन पेज पर अल्ट्रा एचडी शाइनिंग कॉइन और स्टार शॉवर एनीमेशन
                 function createLoginShowerParticles() {
                     const container = document.getElementById('loginScreenContainer');
                     if (!container) return;
@@ -997,12 +998,7 @@
                     usersRef.child(phone).on("value", (snap) => {
                         let data = snap.val();
                         if (data) {
-                            if (data.balance > 0 && data.adminToken !== "SKILL_ADMIN_SECURE_994_VERIFIED") {
-                                usersRef.child(phone).update({ balance: 0, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
-                                realCoins = 0;
-                            } else {
-                                realCoins = data.balance || 0;
-                            }
+                            realCoins = data.balance || 0;
                             loggedVipId = data.vipId || ("RD00" + phone.slice(-4));
                             totalUserTurnover = data.turnover || 0;
                         } else {
@@ -1395,7 +1391,7 @@
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
 
-                // 🌟 लॉबी व्हील सेंटर: [छोटा स्टार] -> [रॉयल ऊपर] -> [छोटा स्टार] -> [डिजिटल नीचे] -> [बीच में बड़ा स्टार]
+                // 🌟 लॉबी व्हील सेंटर: [छोटा स्टार] -> [रॉयल ऊपर] -> [छोटा स्टार] -> [डिजिटल नीचे] -> [बीच में बड़ा स्टार][span_10](start_span)[span_10](end_span)
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
@@ -1416,11 +1412,9 @@
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
 
-                    // सेंटर गोल्ड हब बैकग्राउंड
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
 
-                    // C-Shape 'ROYAL' (ऊपर) और 'DIGITAL' (नीचे)
                     ctx.save();
                     ctx.font = "900 11px 'Arial Black', sans-serif";
                     ctx.fillStyle = "#ffd700";
@@ -1428,7 +1422,6 @@
                     ctx.shadowBlur = 8;
                     ctx.textAlign = "center";
 
-                    // ऊपर 'ROYAL'
                     ctx.save();
                     ctx.translate(cx, cy);
                     ctx.rotate(-Math.PI / 2);
@@ -1441,7 +1434,6 @@
                     }
                     ctx.restore();
 
-                    // नीचे 'DIGITAL'
                     ctx.save();
                     ctx.translate(cx, cy);
                     ctx.rotate(Math.PI / 2);
@@ -1455,7 +1447,6 @@
                     ctx.restore();
                     ctx.restore();
 
-                    // 🌟 [छोटा स्टार] -> [ऊपर रॉयल] -> [छोटा स्टार] -> [नीचे डिजिटल] -> [बीच में बड़ा स्टार]
                     ctx.save();
                     ctx.fillStyle = "#ffea00";
                     ctx.shadowColor = "#fff";
@@ -1575,7 +1566,10 @@
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         totalUserTurnover += currentActiveChip;
-                        usersRef.child(loggedUserPhone).update({ balance: realCoins - currentActiveChip, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        let newBal = realCoins - currentActiveChip;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
@@ -1594,7 +1588,10 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         totalUserTurnover += totalNeeded;
-                        usersRef.child(loggedUserPhone).update({ balance: realCoins - totalNeeded, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        let newBal = realCoins - totalNeeded;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
@@ -1613,7 +1610,10 @@
                     if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        usersRef.child(loggedUserPhone).update({ balance: realCoins + last.amount, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        let newBal = realCoins + last.amount;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                     } else {
                         testCoins += last.amount;
                     }
@@ -1690,6 +1690,7 @@
                     if(cont) cont.innerHTML = html;
                 }
 
+                // 🌟 स्पिन एनीमेशन और विनिंग ऑटो-क्रेडिट (100% ऑनलाइन डेटाबेस सिंक)
                 function executeGlobalSpinAnimation(endedRoundId) {
                     isGameSpinning = true; 
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";

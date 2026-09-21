@@ -35,11 +35,26 @@
             color: rgba(255, 215, 0, 0.08); pointer-events: none; z-index: 1;
         }
         
-        #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #011a08 0%, #000201 80%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bg-wheel-wrap { position: relative; width: 390px; height: 390px; border-radius: 50%; opacity: 0.85; border: 10px solid #ffd700; box-shadow: 0 0 120px rgba(255, 215, 0, 0.9), inset 0 0 60px rgba(0, 255, 100, 0.5); animation: wheelRotateBg 40s linear infinite; display: flex; align-items: center; justify-content: center; }
-        #loginWheelCanvasBg { width: 390px; height: 390px; border-radius: 50%; display: block; filter: drop-shadow(0 0 20px rgba(255,215,0,0.6)); }
-        .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 3.0s linear infinite; pointer-events: none; z-index: 4; }
-        .bg-ball-orbit::after { content: ""; position: absolute; top: 10px; left: calc(50% - 12px); width: 24px; height: 24px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 60%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 25px #fff, 0 0 45px #00ffcc, 0 0 70px #ffd700; }
+        /* 🌟 लॉगिन पेज का व्हील: बिल्कुल अल्ट्रा एचडी, 3D, 4D, 5D क्लियर और चमकदार */
+        #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .bg-wheel-wrap { position: relative; width: 420px; height: 420px; border-radius: 50%; opacity: 0.98; border: 12px solid #ffd700; box-shadow: 0 0 150px rgba(255, 215, 0, 1), inset 0 0 80px rgba(0, 255, 100, 0.8); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
+        #loginWheelCanvasBg { width: 420px; height: 420px; border-radius: 50%; display: block; filter: drop-shadow(0 0 30px rgba(255,215,0,1)) brightness(1.35) contrast(1.25); }
+        .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
+        .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 14px); width: 28px; height: 28px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 30px #fff, 0 0 50px #00ffcc, 0 0 80px #ffd700; }
+        
+        /* लॉगिन पेज पर शाइनिंग कॉइन और स्टार शॉवर एनीमेशन */
+        .login-shower-particle {
+            position: fixed; top: -20px; width: 12px; height: 12px;
+            background: radial-gradient(circle, #fff 0%, #ffd700 70%, #b8860b 100%);
+            border-radius: 50%; pointer-events: none; z-index: 3;
+            box-shadow: 0 0 15px #ffd700;
+            animation: loginShowerAnim 2.8s linear infinite;
+        }
+        @keyframes loginShowerAnim {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(102vh) rotate(360deg); opacity: 0; }
+        }
+
         @keyframes wheelRotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ballRotateBg { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
@@ -66,147 +81,116 @@
             100% { transform: scale(1); }
         }
 
-        @keyframes royalShine {
-            0% { filter: drop-shadow(0 0 5px #ffd700); transform: scale(1); }
-            50% { filter: drop-shadow(0 0 15px #ffea00); transform: scale(1.05); }
-            100% { filter: drop-shadow(0 0 5px #ffd700); transform: scale(1); }
-        }
-
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
-            padding: 10px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
-            backdrop-filter: blur(4px); border: 2px solid #d4af37; box-shadow: inset 0 0 30px rgba(255,215,0,0.3), 0 0 40px rgba(0,0,0,0.9);
+            padding: 8px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.8) 0%, rgba(0,2,1,0.92) 100%); 
+            backdrop-filter: blur(2px); border: 2px solid #d4af37; box-shadow: inset 0 0 30px rgba(255,215,0,0.3), 0 0 40px rgba(0,0,0,0.9);
         }
-        .header-container { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 4px; align-items: center; z-index: 5; margin-top: 4px; }
-        .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 4px 8px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
-        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 2px 0; }
-        .royal-main-title { font-size: 20px; font-weight: 900; color: #ffd700; text-shadow: 0 0 25px #ffd700, 0 0 45px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 6px; text-transform: uppercase; }
+        .header-container { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 3px; align-items: center; z-index: 5; margin-top: 2px; }
+        .trust-banner { font-size: 7.5px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 3px 6px; border-radius: 8px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
+        .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 1px 0; }
+        .royal-main-title { font-size: 18px; font-weight: 900; color: #ffd700; text-shadow: 0 0 20px #ffd700, 0 0 40px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 2px 5px; border-radius: 5px; text-transform: uppercase; }
         
-        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 2px solid #ffd700; padding: 12px 10px; border-radius: 18px; width: 92%; max-width: 300px; box-shadow: 0 15px 40px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.4); position: relative; z-index: 15; }
-        .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
-        .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
-        .login-card input { width: 100%; padding: 7px; margin: 3px 0; background: #000000; border: 2px solid rgba(255, 215, 0, 0.8); color: #ffd700; border-radius: 8px; font-size: 11px; text-align: center; font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.2); }
-        .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 0 15px rgba(255,215,0,0.7); }
-        .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(39,174,96,0.8); }
+        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 2px solid #ffd700; padding: 10px 8px; border-radius: 16px; width: 92%; max-width: 290px; box-shadow: 0 12px 35px rgba(0,0,0,0.95), inset 0 0 15px rgba(255,215,0,0.4); position: relative; z-index: 15; }
+        .login-card h3 { color: #ffd700; font-size: 12px; margin-bottom: 2px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
+        .login-card p { font-size: 7px; color: #e0e0e0; margin-bottom: 4px; font-weight: bold; text-transform: uppercase; }
+        .login-card input { width: 100%; padding: 6px; margin: 2px 0; background: #000000; border: 2px solid rgba(255, 215, 0, 0.8); color: #ffd700; border-radius: 6px; font-size: 10px; text-align: center; font-weight: bold; box-shadow: inset 0 0 8px rgba(0,0,0,0.9), 0 0 6px rgba(255,215,0,0.2); }
+        .login-btn { width: 100%; padding: 7px; margin-top: 3px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; font-size: 10px; text-transform: uppercase; box-shadow: 0 0 12px rgba(255,215,0,0.7); }
+        .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; box-shadow: 0 0 12px rgba(39,174,96,0.8); }
         
-        .footer-wrap { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 4px; align-items: center; }
+        .footer-wrap { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 2px; align-items: center; }
         .telegram-support-btn {
-            display: inline-block; padding: 4px 10px; background: linear-gradient(135deg, #0088cc, #005f99); 
-            color: #ffffff; text-decoration: none; font-weight: 900; border-radius: 15px; font-size: 8.5px; 
-            text-transform: uppercase; border: 1.5px solid #00ffcc; box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-            letter-spacing: 0.5px; margin-bottom: 2px;
+            display: inline-block; padding: 3px 8px; background: linear-gradient(135deg, #0088cc, #005f99); 
+            color: #ffffff; text-decoration: none; font-weight: 900; border-radius: 12px; font-size: 8px; 
+            text-transform: uppercase; border: 1.5px solid #00ffcc; box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+            letter-spacing: 0.5px; margin-bottom: 1px;
         }
-        .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
-        .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
+        .payment-gateways { font-size: 6.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
+        .trust-badges { font-size: 6.5px; color: #ffd700; font-weight: bold; }
 
-        /* 🌟 गेम लॉबी: बिल्कुल बारीक 0.8px गोल्डन बॉर्डर */
+        /* 🌟 गेम लॉबी: यूनिवर्सल फिटिंग (सैमसंग व सभी मोबाइल्स के लिए, बिना ओवरफ्लो) */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
             z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; 
-            padding: 3px 5px; border: 0.8px solid #ffd700; 
+            padding: 2px 4px; border: 0.8px solid #ffd700; 
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 15px rgba(212, 175, 55, 0.5); 
             overflow: hidden; 
         }
-        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 1.5px solid #d4af37; padding: 4px 8px; border-radius: 8px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.6); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 4px; }
-        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 12px; text-align: left; cursor: pointer; }
-        .user-avatar-circle { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 1.5px solid #d4af37; padding: 2px 5px; border-radius: 6px; box-shadow: 0 0 8px rgba(212, 175, 55, 0.6); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 3px; }
+        .user-profile-widget { display: flex; align-items: center; gap: 3px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 4px; border-radius: 10px; text-align: left; cursor: pointer; }
+        .user-avatar-circle { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #000; box-shadow: 0 0 6px #ffd700; overflow: hidden; }
         
-        /* 🌟 बड़े और शानदार डिपॉजिट/विड्रॉल बटन्स */
-        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; box-shadow: 0 0 12px rgba(39,174,96,0.8); }
-        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; box-shadow: 0 0 12px rgba(192,57,43,0.8); }
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; padding: 6px 12px; border-radius: 6px; font-size: 9.5px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; box-shadow: 0 0 8px rgba(39,174,96,0.8); flex-shrink: 0; }
+        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; box-shadow: 0 0 8px rgba(192,57,43,0.8); }
 
+        /* 🌟 टाइम बार: चौकोर और कॉम्पैक्ट बॉक्स (ताकि डिपॉजिट और विड्रॉल बटन बड़े रहें) */
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
-            color: #fff; padding: 3px 8px; border-radius: 8px; 
+            color: #fff; padding: 2px 4px; border-radius: 6px; 
             border: 1.5px solid #ffd700; text-transform: uppercase; 
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 0, 0, 0.6); 
-            letter-spacing: 1px; flex-grow: 1; max-width: 125px; text-align: center; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px; 
-            transition: all 0.4s ease; position: relative; overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.8), inset 0 0 4px rgba(255, 0, 0, 0.6); 
+            letter-spacing: 0.5px; width: 75px; text-align: center; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 32px; 
+            transition: all 0.4s ease; position: relative; overflow: hidden; flex-shrink: 0;
         }
         .timer-strip-center span.timer-main-val { 
-            font-size: 19px; line-height: 1; font-weight: 900; 
-            color: #2ecc71; text-shadow: 0 0 10px #2ecc71, 0 0 20px #ffea00; 
+            font-size: 14px; line-height: 1; font-weight: 900; 
+            color: #2ecc71; text-shadow: 0 0 6px #2ecc71, 0 0 15px #ffea00; 
             font-family: 'Arial Black', Impact, sans-serif;
             animation: heartbeatPulse 1s infinite ease-in-out;
         }
         .timer-strip-center span.timer-sub-val { 
-            font-size: 6px; color: #ffcccc; font-weight: 900; letter-spacing: 0.5px; 
-            margin-top: 1px; text-shadow: 0 0 4px #000; text-transform: uppercase;
+            font-size: 5px; color: #ffcccc; font-weight: 900; letter-spacing: 0.2px; 
+            margin-top: 1px; text-shadow: 0 0 3px #000; text-transform: uppercase; white-space: nowrap;
         }
 
-        /* 🌟 हिस्ट्री बार के ऊपर रॉयल स्टार डिजाइन बैनर */
         .royal-star-banner {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin: 2px auto;
-            width: 100%;
-            max-width: 400px;
-            background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(10,40,15,0.95), rgba(0,0,0,0.8));
-            border: 1px solid rgba(255,215,0,0.6);
-            padding: 3px 6px;
-            border-radius: 6px;
-            box-shadow: 0 0 10px rgba(255,215,0,0.3);
-            flex-shrink: 0;
-        }
-        .rs-star-sm { font-size: 8px; color: #ffd700; filter: drop-shadow(0 0 4px #ffea00); }
-        .rs-star-md { font-size: 11px; color: #ffd700; filter: drop-shadow(0 0 6px #ffea00); }
-        .rs-star-lg { font-size: 14px; color: #ffd700; filter: drop-shadow(0 0 8px #ffea00); animation: royalShine 2s infinite; }
-        .rs-title-text {
-            font-size: 11px;
-            font-weight: 900;
-            background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(255,215,0,0.8);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin: 0 4px;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            margin: 1px auto; width: 100%; max-width: 400px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85), rgba(8,45,15,0.95), rgba(0,0,0,0.85));
+            border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 6px;
+            box-shadow: 0 0 10px rgba(255,215,0,0.5); flex-shrink: 0;
         }
 
-        /* 🌟 स्पष्ट अक्षरों वाली हिस्ट्री बार */
-        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 4px; background: rgba(0, 15, 5, 0.95); border: 1.5px solid rgba(212, 175, 55, 0.8); padding: 3px 8px; border-radius: 8px; margin: 2px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
-        .history-title { font-size: 9px; font-weight: 900; color: #ffd700; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 5px #ffd700; }
-        .history-ball { width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 2px solid #ffd700; box-shadow: 0 0 8px rgba(0,0,0,0.9); flex-shrink: 0; }
+        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 15, 5, 0.95); border: 1.5px solid rgba(212, 175, 55, 0.8); padding: 2px 5px; border-radius: 6px; margin: 1px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; box-shadow: 0 0 6px rgba(0,0,0,0.8); }
+        .history-title { font-size: 8px; font-weight: 900; color: #ffd700; margin-right: 2px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 4px #ffd700; }
+        .history-ball { width: 18px; height: 18px; border-radius: 50%; font-size: 9.5px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(0,0,0,0.9); flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील साइज़ और ग्रीन-येलो आउटर फ्रेम (बीच का बड़ा पीला सर्कल हटाया गया) */
+        /* 🌟 लॉबी व्हील बॉक्स: बिल्कुल ओरिजिनल लुक और साइज़ */
         .lobby-wheel-box { 
             position: relative; 
-            width: 360px; 
-            height: 360px; 
-            margin: 2px auto; 
+            width: 330px; 
+            height: 330px; 
+            margin: 1px auto; 
             border: 4px solid #2ecc71; 
             border-radius: 50%; 
             background: radial-gradient(circle, #0a2e12 0%, #000 85%); 
             overflow: visible; 
-            box-shadow: 0 0 45px rgba(46, 204, 113, 0.7), inset 0 0 25px rgba(255, 215, 0, 0.5); 
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.8), inset 0 0 25px rgba(255, 215, 0, 0.6); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 86vw; 
-            max-height: 86vw; 
+            max-width: 78vw; 
+            max-height: 78vw; 
         }
 
-        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); border: 3px solid #ffd700; }
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.95)) brightness(1.2) contrast(1.15); border: 3px solid #ffd700; }
         .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; margin-top: -19px; margin-left: -19px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
         .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; }
 
-        /* 🌟 सट्टा बोर्ड (Betting Board) सेक्शन - व्यवस्थित और एक समान */
-        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
-        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 8px; padding: 3px 5px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 1px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,255,100,0.2); z-index: 50; gap: 2px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
+        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5px; }
         
-        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 11px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
+        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 4.5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; box-shadow: inset 0 1px 4px rgba(255,100,100,0.4), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; box-shadow: inset 0 1px 3px rgba(200,200,200,0.2), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff !important; box-shadow: 0 0 15px #f1c40f, inset 0 0 8px rgba(255,215,0,0.8); transform: scale(1.02); z-index: 5; }
@@ -214,16 +198,16 @@
 
         .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
         .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 100%; }
-        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9.5px; font-weight: 900; padding: 5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
+        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 4px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
 
         .color-row { display: flex; gap: 2px; width: 100%; }
-        .color-btn { flex: 1; padding: 5px 2px; font-weight: 900; font-size: 9.5px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
+        .color-btn { flex: 1; padding: 4px 2px; font-weight: 900; font-size: 9px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
         .btn-red { background: linear-gradient(135deg, #962d22, #641e16); border-color: #ff4d4d; }
         .btn-green { background: linear-gradient(135deg, #1e8449, #114e2c); border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.4), inset 0 1px 4px rgba(255,255,255,0.3); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); border-color: #777; }
 
         .chip-selector-row { display: flex; justify-content: center; gap: 4px; align-items: center; width: 100%; margin: 1px 0; }
-        .chip-item { width: 28px; height: 28px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9.5px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
+        .chip-item { width: 25px; height: 25px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
         .chip-item.selected { border: 2px solid #fff; transform: scale(1.12); box-shadow: 0 0 15px #f1c40f, inset 0 0 5px #fff; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
@@ -231,15 +215,15 @@
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 3px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 6px; font-size: 9.5px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
-        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 4px 8px; font-size: 9px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 6px rgba(192,57,43,0.6); }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 2px 5px; font-size: 8.5px; font-weight: 900; border-radius: 5px; flex-grow: 1; text-align: center; box-shadow: 0 0 6px rgba(255,215,0,0.5); }
+        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3px 6px; font-size: 8.5px; font-weight: 900; border-radius: 4px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(192,57,43,0.6); }
 
-        .mode-toggle-bar { display: flex; justify-content: center; gap: 3px; background: #000; border: 1.5px solid #ffd700; padding: 2px; border-radius: 6px; width: 100%; }
-        .mode-btn { flex: 1; padding: 3px; font-size: 8.5px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
-        .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 8px #2ecc71; }
-        .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 8px #3498db; }
+        .mode-toggle-bar { display: flex; justify-content: center; gap: 2px; background: #000; border: 1.5px solid #ffd700; padding: 1.5px; border-radius: 5px; width: 100%; }
+        .mode-btn { flex: 1; padding: 2.5px; font-size: 8px; font-weight: 900; border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 6px #2ecc71; }
+        .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 6px #3498db; }
 
         #comingSoonNoticeModal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 70000; align-items: center; justify-content: center; }
         .coming-soon-card { background: linear-gradient(135deg, #0b2d13, #021207); border: 4px solid #ffd700; padding: 22px; border-radius: 20px; width: 320px; text-align: center; color: #fff; box-shadow: 0 0 60px #ffd700; animation: popupScale 0.3s ease-out; }
@@ -250,8 +234,9 @@
         #adminPinModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 200000; align-items: center; justify-content: center; padding: 15px; }
         .admin-pin-box { background: #011c08; border: 3px solid #ffd700; padding: 20px; border-radius: 16px; width: 100%; max-width: 280px; text-align: center; box-shadow: 0 0 40px #ffd700; }
 
+        /* 🌟 एडमिन पैनल की फ्रेम और लेआउट (नीचे तक पूरी कवरिंग) */
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #051a0a 0%, #000502 100%); z-index: 2147483647 !important; padding: 12px; text-align: center; color: #fff; overflow-y: auto; pointer-events: auto !important; }
-        .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 60px rgba(255, 215, 0, 0.4); display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .admin-dashboard-container { max-width: 850px; margin: 10px auto; background: rgba(2, 15, 6, 0.98); border: 2.5px solid #ffd700; border-radius: 16px; padding: 20px; box-shadow: 0 0 70px rgba(255, 215, 0, 0.5), inset 0 0 30px rgba(0,0,0,0.9); display: flex; flex-direction: column; gap: 14px; text-align: left; min-height: 96%; }
         .admin-top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 10px; }
         .admin-top-header h2 { font-size: 17px; color: #ffd700; }
         .admin-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -364,7 +349,7 @@
         })();
     </script>
 
-    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर (जो एडमिन द्वारा सेट होगा) -->
+    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर -->
     <div id="globalMaintenanceBanner" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#ffd700; text-align:center; padding:20px;">
         <h2 style="font-size:24px; margin-bottom:10px; color:#ff3333; text-shadow:0 0 15px #ff3333;">⚠️ SYSTEM MAINTENANCE ⚠️</h2>
         <p id="maintenanceReasonText" style="font-size:14px; color:#fff; font-weight:bold; max-width:320px; line-height:1.5;"></p>
@@ -382,7 +367,7 @@
 
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="390" height="390"></canvas>
+            <canvas id="loginWheelCanvasBg" width="420" height="420"></canvas>
             <div class="bg-ball-orbit"></div>
             <div class="lobby-wheel-hub"></div>
         </div>
@@ -423,18 +408,17 @@
             <div class="user-profile-widget" onclick="handleProfileClick(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
-                    <div style="font-size:8px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
-                    <div style="font-size:6.5px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
+                    <div style="font-size:7.5px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
+                    <div style="font-size:6px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
                 </div>
             </div>
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 125px;">
-                <div class="timer-strip-center" id="lobbyTimerBox">
-                    <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
-                    <span class="timer-sub-val" id="lobbyTimerSub">BETTING OPEN</span>
-                </div>
+            <!-- 🌟 टाइम बार: चौकोर और कॉम्पैक्ट बॉक्स (ताकि डिपॉजिट और विड्रॉल बटन बड़े रहें) -->
+            <div class="timer-strip-center" id="lobbyTimerBox">
+                <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
+                <span class="timer-sub-val" id="lobbyTimerSub">BETTING OPEN</span>
             </div>
 
             <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
@@ -453,24 +437,25 @@
 
         <div class="history-strip-bar" id="historyBarEl">
             <span class="history-title">History:</span>
-            <div id="historyBallsContainer" style="display: flex; gap: 4px;"></div>
+            <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
+        <!-- 🌟 लॉबी व्हील बॉक्स: ओरिजिनल व्हील + C-Shape 'ROYAL' ऊपर, 'DIGITAL' नीचे और बीच में स्टार -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
+            <canvas id="lobbyWheelCanvas" width="360" height="360"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
 
         <div class="betting-board-section" id="bettingBoardArea">
-            <div style="background: rgba(0,0,0,0.85); padding: 3px 6px; border-radius: 6px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 1px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: 900; color: #ffd700;">
+            <div style="background: rgba(0,0,0,0.85); padding: 2px 5px; border-radius: 5px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 1px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 900; color: #ffd700;">
                     <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
-                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 1.5px 5px; border-radius: 5px;">
-                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 11px;">₹0</span>
+                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 1px 4px; border-radius: 4px;">
+                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 10.5px;">₹0</span>
                     </span>
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 7.5px; color: #3498db; font-weight: bold;">
+                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 7px; color: #3498db; font-weight: bold;">
                     <span>🧪 Demo Coins: <span id="playerTestBal">10000</span></span>
                 </div>
             </div>
@@ -545,7 +530,6 @@
                 🚨 NEW FINANCIAL REQUEST RECEIVED! CHECK DEPOSIT OR WITHDRAWAL!
             </div>
 
-            <!-- 🌟 नया मेंटेनेंस ब्रॉडकास्ट मैनेजर -->
             <div style="background: rgba(40,20,0,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
                 <p style="color: #ffaa00; font-size: 12px; font-weight: bold;">🛠️ SYSTEM MAINTENANCE BROADCAST MANAGER</p>
                 <input type="text" id="adminMaintenanceMsgInput" placeholder="Enter Maintenance Message (e.g. Under maintenance for 30 mins)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #ffaa00; border-radius: 5px; font-size: 11px;" />
@@ -695,6 +679,7 @@
         </div>
     </div>
 
+    <!-- 🌟 विड्रॉल मोडल (UPI ID या QR कोड में से कोई एक होने पर भी सक्सेस) -->
     <div id="withdrawModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#f1c40f; margin-bottom:8px; font-size:16px; letter-spacing:0.5px;">💎 VIP WITHDRAWAL GATEWAY</h3>
@@ -709,7 +694,7 @@
             </div>
             
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Withdrawal Amount">
-            <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@paytm)">
+            <input type="text" id="withdrawUpiInput" placeholder="Enter UPI ID (e.g. user@paytm) [Optional if QR attached]">
             
             <div style="font-size:9.5px; color:#bbb; margin: 4px 0; font-weight:bold;">-- OR ATTACH YOUR RECEIVER QR --</div>
 
@@ -812,15 +797,30 @@
                 };
 
                 window.addEventListener('DOMContentLoaded', () => {
-                    drawCanvasWheel('loginWheelCanvasBg', 50, 15);
-                    drawCanvasWheel('lobbyWheelCanvas', 50, 14);
+                    drawCanvasWheel('loginWheelCanvasBg', 55, 15);
+                    drawCanvasWheel('lobbyWheelCanvas', 55, 14);
                     updateActiveQrDisplay();
+                    createLoginShowerParticles();
 
                     let rememberedPhone = localStorage.getItem("royal_saved_user_phone");
                     if (rememberedPhone) {
                         finalizeLogin(rememberedPhone, null, true);
                     }
                 });
+
+                // 🌟 लॉगिन पेज पर शाइनिंग कॉइन और स्टार शॉवर एनीमेशन
+                function createLoginShowerParticles() {
+                    const container = document.getElementById('loginScreenContainer');
+                    if (!container) return;
+                    for (let i = 0; i < 22; i++) {
+                        let p = document.createElement('div');
+                        p.className = 'login-shower-particle';
+                        p.style.left = (Math.random() * 100) + 'vw';
+                        p.style.animationDuration = (2.0 + Math.random() * 2.5) + 's';
+                        p.style.animationDelay = (Math.random() * 3) + 's';
+                        container.appendChild(p);
+                    }
+                }
 
                 qrRef.on("value", (snap) => {
                     let val = snap.val();
@@ -946,7 +946,7 @@
                             html += `<div class="req-table-row">
                                 <div>
                                     📱 <b>${w.phone || 'Unknown'}</b> <span style="color:#ffd700;">(${displayId})</span><br>
-                                    Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span> | UPI: <b style="color:#00ffff;">${w.upi || 'Attached QR'}</b>
+                                    Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span> | UPI/QR: <b style="color:#00ffff;">${w.upi}</b>
                                     ${w.qrCode ? `<br><button class="btn-view-proof" style="padding:2px 6px; font-size:9px; margin-top:3px;" onclick="viewProofImage('${w.qrCode}', 'Receiver QR Code')">👁️ View QR</button>` : ''}
                                 </div>
                                 <div class="req-actions">
@@ -1270,7 +1270,8 @@
                 window.triggerCloudDepositSubmit = function() {
                     let amt = parseInt(document.getElementById('customDepositInput').value);
                     let utr = document.getElementById('depositUtrInput').value.trim();
-                    if (isNaN(amt) || !utr) { showCustomAlert("Enter valid Amount & UTR Number!"); return; }
+                    if (isNaN(amt) || !utr) { showCustomAlert("Enter valid Amount & 12-Digit UTR!"); return; }
+                    if (!userDepositScreenshotData) { showCustomAlert("Payment screenshot proof is mandatory for deposit!"); return; }
                     closeWalletModals();
 
                     depositsRef.push({
@@ -1278,7 +1279,7 @@
                         vipId: loggedVipId,
                         amount: amt,
                         utr: utr,
-                        screenshot: userDepositScreenshotData || "",
+                        screenshot: userDepositScreenshotData,
                         status: 'Pending',
                         timestamp: Date.now()
                     }).then(() => {
@@ -1288,11 +1289,12 @@
                     });
                 };
 
+                // 🌟 विड्रॉल सबमिट (UPI ID या QR कोड में से कोई एक होने पर भी सक्सेस)
                 window.triggerCloudWithdrawSubmit = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
                     if (!amt || realCoins < amt) { showCustomAlert("Check your wallet balance!"); return; }
-                    if (!upi && !userWithdrawQrData) { showCustomAlert("Please enter UPI ID OR upload your QR Code!"); return; }
+                    if (!upi && !userWithdrawQrData) { showCustomAlert("Please enter UPI ID OR upload your Receiver QR Code!"); return; }
                     
                     if (totalUserTurnover < amt) {
                         showCustomAlert(`⚠️ Wagering Rule: Please play/bet at least ₹${amt} in the game before requesting withdrawal!`);
@@ -1307,7 +1309,7 @@
                             phone: loggedUserPhone,
                             vipId: loggedVipId,
                             amount: amt,
-                            upi: upi || "Attached QR",
+                            upi: upi || "Attached QR Code",
                             qrCode: userWithdrawQrData || "",
                             status: 'Pending',
                             timestamp: Date.now()
@@ -1357,9 +1359,13 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
+                // 🌟 एडमिन रिग सिंगल-शॉट रिसेट (चाहे जितनी बार क्लिक हो, रिजल्ट एक ही बार आएगा और तुरंत 5% सेफ इंजन पर सेट हो जाएगा)
                 function getSmartWinnerForRound(roundId) {
-                    if (window.globalState.adminRig !== "random") {
-                        let parsedNum = parseInt(window.globalState.adminRig);
+                    let currentRigSetting = window.globalState.adminRig;
+                    if (currentRigSetting !== "random") {
+                        let parsedNum = parseInt(currentRigSetting);
+                        rigRef.set("random");
+                        window.globalState.adminRig = "random";
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
                     let totalTableBet = currentTotalBet || 100;
@@ -1393,11 +1399,13 @@
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
 
+                // 🌟 लॉबी व्हील सेंटर: [छोटा स्टार] -> [रॉयल (ऊपर)] -> [स्टार] -> [डिजिटल (नीचे)] -> [बड़ा स्टार (केंद्र)]
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 6, innerRadius = radiusSize || 50, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 4, innerRadius = radiusSize || 55, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
                         let fillColor = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
@@ -1409,10 +1417,68 @@
                         ctx.font = `bold ${fontSize || 14}px Arial`;
                         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
                         ctx.shadowBlur = 6;
-                        ctx.fillText(num, outerRadius - 14, 4); ctx.restore();
+                        ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
+
+                    // सेंटर गोल्ड हब बैकग्राउंड
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = '#fff'; ctx.stroke();
+                    ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+
+                    // C-Shape 'ROYAL' (ऊपर) और 'DIGITAL' (नीचे)
+                    ctx.save();
+                    ctx.font = "900 11px 'Arial Black', sans-serif";
+                    ctx.fillStyle = "#ffd700";
+                    ctx.shadowColor = "#ffea00";
+                    ctx.shadowBlur = 8;
+                    ctx.textAlign = "center";
+
+                    // ऊपर 'ROYAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(-Math.PI / 2);
+                    let royalText = "ROYAL";
+                    for (let j = 0; j < royalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 2) * 0.22);
+                        ctx.fillText(royalText[j], 0, -innerRadius + 13);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+
+                    // नीचे 'DIGITAL'
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(Math.PI / 2);
+                    let digitalText = "DIGITAL";
+                    for (let j = 0; j < digitalText.length; j++) {
+                        ctx.save();
+                        ctx.rotate((j - 3) * 0.18);
+                        ctx.fillText(digitalText[j], 0, -innerRadius + 13);
+                        ctx.restore();
+                    }
+                    ctx.restore();
+                    ctx.restore();
+
+                    // 🌟 [छोटा स्टार] -> [ऊपर रॉयल] -> [स्टार] -> [नीचे डिजिटल] -> [बीच में बड़ा स्टार]
+                    ctx.save();
+                    ctx.fillStyle = "#ffea00";
+                    ctx.shadowColor = "#fff";
+                    ctx.shadowBlur = 8;
+                    ctx.font = "10px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    
+                    // छोटा स्टार (ऊपर रॉयल के पास)
+                    ctx.fillText("★", cx, cy - innerRadius + 14);
+                    // छोटा स्टार (नीचे डिजिटल के पास)
+                    ctx.fillText("★", cx, cy + innerRadius - 14);
+
+                    // बीच में बड़ा स्टार
+                    ctx.fillStyle = "#ffd700";
+                    ctx.shadowBlur = 15;
+                    ctx.font = "18px sans-serif";
+                    ctx.fillText("★", cx, cy);
+                    ctx.restore();
                 }
 
                 window.closeComingSoonModal = function() { 
@@ -1429,7 +1495,7 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        showCustomAlert(`✅ Winning number '${sel}' pushed live to ALL users in the world!`);
+                        showCustomAlert(`✅ Winning number '${sel}' pushed live for next round!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
                     }).catch(err => { showCustomAlert("Error: " + err.message); });
                 };
@@ -1595,11 +1661,11 @@
                             } else if (timeLeft > 10) {
                                 boxEl.className = "timer-strip-center warning-state";
                                 if (mainEl) mainEl.style.color = "#f1c40f";
-                                if (subEl) subEl.innerText = "HURRY UP! PLACE BETS";
+                                if (subEl) subEl.innerText = "HURRY UP!";
                             } else {
                                 boxEl.className = "timer-strip-center closed-state";
                                 if (mainEl) mainEl.style.color = "#ff3333";
-                                if (subEl) subEl.innerText = "NO MORE BETS (LOCKED)";
+                                if (subEl) subEl.innerText = "LOCKED";
                                 if (timeLeft === 10) {
                                     let sfx = document.getElementById('betClosedSfx');
                                     if(sfx) sfx.play().catch(e => {});
@@ -1671,9 +1737,28 @@
                             else if (key === 'red' && isRed) totalWon += amt * 2;
                             else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
                         }
+
+                        // 🌟 विनिंग कॉइन ऑटो-क्रेडिट फिक्स (रियल-टाइम डेटाबेस सिंकिंग)
                         if (totalWon > 0) { 
-                            if (activeGameMode === 'real') {
-                                usersRef.child(loggedUserPhone).update({ balance: realCoins + totalWon, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                            if (activeGameMode === 'real' && loggedUserPhone) {
+                                usersRef.child(loggedUserPhone).once("value", (snap) => {
+                                    let currentBal = (snap.exists() && snap.val().balance) ? parseInt(snap.val().balance) : 0;
+                                    let newUpdatedBal = currentBal + totalWon;
+                                    let vipId = (snap.val() && snap.val().vipId) ? snap.val().vipId : ("RD00" + loggedUserPhone.slice(-4));
+                                    let mpinVal = (snap.val() && snap.val().mpin) ? snap.val().mpin : "1234";
+
+                                    usersRef.child(loggedUserPhone).set({
+                                        phone: loggedUserPhone,
+                                        vipId: vipId,
+                                        balance: newUpdatedBal,
+                                        mpin: mpinVal,
+                                        adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED",
+                                        turnover: totalUserTurnover
+                                    }).then(() => {
+                                        realCoins = newUpdatedBal;
+                                        updateBalancesDisplay();
+                                    });
+                                });
                             } else {
                                 testCoins += totalWon; 
                             }

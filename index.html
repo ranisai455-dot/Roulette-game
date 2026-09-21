@@ -810,6 +810,7 @@
                 let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
+                let globalRoundBetsRef = null;
 
                 let userDepositScreenshotData = "";
                 let userWithdrawQrData = "";
@@ -1199,7 +1200,7 @@
                         }
 
                         if (!matchedPhone) {
-                            feedbackEl.innerHTML = "<span style='color:#e74c3c;'>❌ Failed: User ID/Mobile not found!</span>";
+                            feedbackEl.innerHTML = "<span style='color:#e74c3c;>❌ Failed: User ID/Mobile not found!</span>";
                             return;
                         }
 
@@ -1401,7 +1402,32 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (Strictly ₹95 से ऊपर न जाए)
+                // 🌟 ग्लोबल राउंड बेट्स लिसनर (यहाँ सारे ऑनलाइन प्लेयर्स के लाइव बेट्स सिंक होते हैं)
+                function setupGlobalRoundBetsListener(roundId) {
+                    if (globalRoundBetsRef) globalRoundBetsRef.off();
+                    globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
+                    globalRoundBetsRef.on("value", (snapshot) => {
+                        let allBetsData = snapshot.val() || {};
+                        currentTotalBet = 0;
+                        userActiveBets = {};
+
+                        // सभी ऑनलाइन प्लेयर्स के बेट्स को जोड़कर ग्लोबल पूल बनाना
+                        Object.values(allBetsData).forEach(playerBets => {
+                            if (playerBets) {
+                                Object.keys(playerBets).forEach(key => {
+                                    let amt = parseInt(playerBets[key]) || 0;
+                                    userActiveBets[key] = (userActiveBets[key] || 0) + amt;
+                                    currentTotalBet += amt;
+                                });
+                            }
+                        });
+
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if (totalBetEl) totalBetEl.innerText = currentTotalBet;
+                    });
+                }
+
+                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (ग्लोबल पूल आधारित)
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1417,7 +1443,7 @@
                     }
 
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; // 95% of total table bets
+                    let safePayoutPool = totalTableBet - houseCut; // 95% of global pool
 
                     let validSafeNumbers = [];
                     let allNumberPayouts = {};
@@ -1436,7 +1462,6 @@
                             }
                         }
                         allNumberPayouts[num] = payout;
-                        // नियम: विनिंग प्राइस 95% पूल से ऊपर नहीं होना चाहिए
                         if (payout <= safePayoutPool) {
                             validSafeNumbers.push({ num: num, payout: payout });
                         }
@@ -1465,16 +1490,16 @@
                     let html = "";
                     numbersList.forEach(num => {
                         let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
+                        let betAmt = userActiveBets[num.toString()] || 0;
                         html += `<div style="background:${bg}; border:1px solid #ffd700; padding:6px 2px; border-radius:4px; font-size:9.5px; font-weight:bold;">
                             <div><b>#${num}</b></div>
-                            <div style="color:#00ffff; font-size:8.5px;">₹0</div>
+                            <div style="color:#00ffff; font-size:8.5px;">₹${betAmt}</div>
                         </div>`;
                     });
                     boardGrid.innerHTML = html;
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
 
-                // 🌟 लॉबी व्हील सेंटर: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
@@ -1494,67 +1519,6 @@
                         ctx.shadowBlur = 6;
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
-
-                    ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
-
-                    ctx.save();
-                    ctx.font = "900 12px 'Arial Black', sans-serif";
-                    ctx.fillStyle = "#ffd700";
-                    ctx.shadowColor = "#ffea00";
-                    ctx.shadowBlur = 8;
-                    ctx.textAlign = "center";
-
-                    // ऊपर 'ROYAL'
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(-Math.PI / 2);
-                    let royalText = "ROYAL";
-                    for (let j = 0; j < royalText.length; j++) {
-                        ctx.save();
-                        ctx.rotate((j - 2) * 0.22);
-                        ctx.fillText(royalText[j], 0, -innerRadius + 14);
-                        ctx.restore();
-                    }
-                    ctx.restore();
-
-                    // नीचे 'DIGITAL'
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(Math.PI / 2);
-                    let digitalText = "DIGITAL";
-                    for (let j = 0; j < digitalText.length; j++) {
-                        ctx.save();
-                        ctx.rotate((j - 3) * 0.18);
-                        ctx.fillText(digitalText[j], 0, -innerRadius + 14);
-                        ctx.restore();
-                    }
-                    ctx.restore();
-                    ctx.restore();
-
-                    // 🌟 बाएं और दाएं ग्रीन-व्हाइट स्टार्स + केंद्र में मल्टी-कलर चमकता स्टार
-                    ctx.save();
-                    ctx.font = "14px sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-
-                    // लेफ्ट स्टार (ग्रीन-व्हाइट)
-                    ctx.fillStyle = "#2ecc71";
-                    ctx.shadowColor = "#ffffff";
-                    ctx.shadowBlur = 8;
-                    ctx.fillText("★", cx - innerRadius + 14, cy);
-
-                    // राइट स्टार (ग्रीन-व्हाइट)
-                    ctx.fillText("★", cx + innerRadius - 14, cy);
-
-                    // केंद्र में मल्टी-कलर चमकता हुआ बड़ा स्टार (रंग बदलता हुआ)
-                    let colors = ["#ffd700", "#00ffcc", "#ff0055", "#00ffff", "#ffea00"];
-                    ctx.fillStyle = colors[Math.floor(Date.now() / 400) % colors.length];
-                    ctx.shadowColor = "#fff";
-                    ctx.shadowBlur = 20;
-                    ctx.font = "22px sans-serif";
-                    ctx.fillText("★", cx, cy);
-                    ctx.restore();
                 }
 
                 window.closeComingSoonModal = function() { 
@@ -1652,8 +1616,9 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
+                // 🌟 ऑनलाइन बेटिंग सिंक फंक्शन (ग्लोबल डेटाबेस पर बेट सेव करना)
                 window.placeTableBet = function(key, el) {
-                    let { timeLeft } = getGlobalRound();
+                    let { roundId, timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
@@ -1661,20 +1626,26 @@
                         let newBal = realCoins - currentActiveChip;
                         realCoins = newBal;
                         updateBalancesDisplay();
+
+                        // डेटाबेस पर यूजर का बैलेंस और इस राउंड का बेट लाइव सिंक करें
                         usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        
+                        let playerRoundBetRef = masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone + "/" + key);
+                        playerRoundBetRef.transaction(current => (current || 0) + currentActiveChip);
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
+                        userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
+                        currentTotalBet += currentActiveChip;
+                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     }
-                    currentTotalBet += currentActiveChip; userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
-                    betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                    document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
-                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText=userActiveBets[key]; }
+                    betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
+                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (userActiveBets[key] || currentActiveChip); }
                 };
 
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
-                    let { timeLeft } = getGlobalRound();
+                    let { roundId, timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
                     if (activeGameMode === 'real') {
@@ -1684,21 +1655,26 @@
                         realCoins = newBal;
                         updateBalancesDisplay();
                         usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+
+                        numbersArray.forEach(num => {
+                            let playerRoundBetRef = masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone + "/" + num);
+                            playerRoundBetRef.transaction(current => (current || 0) + currentActiveChip);
+                        });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
+                        numbersArray.forEach(num => {
+                            userActiveBets[num.toString()] = (userActiveBets[num.toString()] || 0) + currentActiveChip;
+                        });
+                        currentTotalBet += totalNeeded;
+                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     }
-                    numbersArray.forEach(num => {
-                        userActiveBets[num.toString()] = (userActiveBets[num.toString()] || 0) + currentActiveChip;
-                    });
-                    currentTotalBet += totalNeeded;
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
-                    document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     if (el) el.classList.add('has-bet');
                 };
 
                 window.clearTableBets = function() {
-                    let { timeLeft } = getGlobalRound();
+                    let { roundId, timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10 || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
@@ -1706,21 +1682,16 @@
                         realCoins = newBal;
                         updateBalancesDisplay();
                         usersRef.child(loggedUserPhone).update({ balance: newBal, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        if (last.numbers) {
+                            last.numbers.forEach(num => {
+                                masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone + "/" + num).transaction(curr => Math.max(0, (curr || 0) - currentActiveChip));
+                            });
+                        } else {
+                            masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone + "/" + last.key).transaction(curr => Math.max(0, (curr || 0) - last.amount));
+                        }
                     } else {
                         testCoins += last.amount;
-                    }
-                    currentTotalBet -= last.amount;
-                    if (last.numbers) {
-                        last.numbers.forEach(num => {
-                            if (userActiveBets[num.toString()]) {
-                                userActiveBets[num.toString()] -= (last.amount / last.numbers.length);
-                                if (userActiveBets[num.toString()] <= 0) delete userActiveBets[num.toString()];
-                            }
-                        });
-                        if(last.element) last.element.classList.remove('has-bet');
-                    } else {
-                        delete userActiveBets[last.key];
-                        if(last.element){last.element.classList.remove('has-bet'); let b=last.element.querySelector('.cell-badge'); if(b)b.remove();}
+                        currentTotalBet -= last.amount;
                     }
                     document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                 };
@@ -1763,7 +1734,9 @@
 
                         if (roundId !== lastProcessedRound) {
                             if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
-                            lastProcessedRound = roundId; userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            lastProcessedRound = roundId;
+                            userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            setupGlobalRoundBetsListener(roundId);
                             document.getElementById('lobbyTotalBet').innerText = 0;
                             document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
                         }
@@ -1828,12 +1801,16 @@
                                 usersRef.child(loggedUserPhone).once("value", (snap) => {
                                     let currentBal = (snap.exists() && snap.val().balance) ? parseInt(snap.val().balance) : 0;
                                     let newUpdatedBal = currentBal + totalWon;
-                                    
-                                    // 🌟 सुरक्षित रूप से डेटाबेस में विनिंग कॉइन जोड़ें
-                                    usersRef.child(loggedUserPhone).update({ 
+                                    let vipId = (snap.val() && snap.val().vipId) ? snap.val().vipId : ("RD00" + loggedUserPhone.slice(-4));
+                                    let mpinVal = (snap.val() && snap.val().mpin) ? snap.val().mpin : "1234";
+
+                                    usersRef.child(loggedUserPhone).set({
+                                        phone: loggedUserPhone,
+                                        vipId: vipId,
                                         balance: newUpdatedBal,
-                                        turnover: totalUserTurnover,
-                                        adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
+                                        mpin: mpinVal,
+                                        adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED",
+                                        turnover: totalUserTurnover
                                     }).then(() => {
                                         realCoins = newUpdatedBal;
                                         updateBalancesDisplay();

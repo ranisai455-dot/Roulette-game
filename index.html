@@ -13,11 +13,26 @@
     <title>ROYAL ROULETTE - 4K ULTRA 3D MASTERPIECE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { 
-            background: radial-gradient(circle at center, #011406 0%, #000201 100%); color: #f1c40f; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; 
-            align-items: center; overflow-x: hidden; padding: 2px; position: relative; transform: translateZ(0); 
+        
+        /* मोबाइल रिस्पॉन्सिव और ऑटो-फिट फिक्स (सभी स्क्रीन साइज़ के लिए) */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #011406 0%, #000201 100%); 
+            color: #f1c40f; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            transform: translateZ(0);
         }
+
         body::before {
             content: "💎 ✨ 🌟 💎 ✨ 🌟 💎 ✨ 🌟 💎 ✨ 🌟 💎 ✨ 🌟 💎 ✨ 🌟 💎 ✨ 🌟";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; font-size: 16px; letter-spacing: 35px; line-height: 75px;
@@ -49,7 +64,6 @@
             100% { box-shadow: 0 0 10px rgba(192, 57, 43, 0.8), inset 0 0 5px rgba(255,215,0,0.5); }
         }
 
-        /* दिल की धड़कन वाला टाइमर पल्स इफ़ेक्ट */
         @keyframes heartbeatPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.06); filter: brightness(1.2); }
@@ -63,7 +77,6 @@
         .royal-main-title { font-size: 19px; font-weight: 900; color: #ffd700; text-shadow: 0 0 25px #ffd700, 0 0 45px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 6px; text-transform: uppercase; }
         
-        /* 4K एचडी लक्जरी लॉगिन कार्ड */
         .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 2.5px solid #ffd700; padding: 14px 10px; border-radius: 18px; width: 92%; max-width: 310px; box-shadow: 0 20px 50px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.3); position: relative; z-index: 15; backdrop-filter: blur(8px); }
         .login-card h3 { color: #ffd700; font-size: 13.5px; margin-bottom: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
         .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; }
@@ -89,7 +102,6 @@
         .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
         .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; }
 
-        /* 🌟 दिल की धड़कन और कलर-चेंजिंग 3D 4K टाइमर स्ट्रिप */
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
             color: #fff; padding: 4px 10px; border-radius: 10px; 
@@ -117,8 +129,8 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        .lobby-wheel-box { position: relative; width: 360px; height: 360px; margin: 2px auto; border: 8px solid #ffd700; border-radius: 50%; background: #000; overflow: hidden; box-shadow: 0 0 60px rgba(255, 215, 0, 0.95), inset 0 0 30px rgba(0,255,100,0.4); flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center; }
-        #lobbyWheelCanvas { width: 360px; height: 360px; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+        .lobby-wheel-box { position: relative; width: 360px; height: 360px; margin: 2px auto; border: 8px solid #ffd700; border-radius: 50%; background: #000; overflow: hidden; box-shadow: 0 0 60px rgba(255, 215, 0, 0.95), inset 0 0 30px rgba(0,255,100,0.4); flex-shrink: 0; z-index: 100; display: flex; align-items: center; justify-content: center; max-width: 90vw; max-height: 90vw; }
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
         .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin-top: -22px; margin-left: -22px; background: radial-gradient(circle, #ffffff 0%, #ffd700 60%, #8b6508 100%); border-radius: 50%; border: 2.5px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
@@ -346,7 +358,6 @@
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <!-- 🌟 दिल की धड़कन और कलर-चेंजिंग लाइव टाइमर (बड़ा नंबर, छोटा टेक्स्ट) -->
             <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 135px;">
                 <div class="timer-strip-center" id="lobbyTimerBox">
                     <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
@@ -362,7 +373,6 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 4K एचडी रूलेट व्हील बॉक्स -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="360" height="360"></canvas>
             <div class="lobby-wheel-hub"></div>
@@ -1445,7 +1455,6 @@
                 let lastProcessedRound = -1;
                 const ballOrbitEl = document.getElementById('rouletteBallOrbit');
 
-                // 🌟 दिल की धड़कन और कलर-शिफ्टिंग टाइमर लूप
                 setInterval(() => {
                     try {
                         let { roundId, timeLeft } = getGlobalRound();
@@ -1459,15 +1468,15 @@
                         if (boxEl) {
                             if (timeLeft > 30) {
                                 boxEl.className = "timer-strip-center";
-                                if (mainEl) mainEl.style.color = "#2ecc71"; // हरा रंग (शुरुआत)
+                                if (mainEl) mainEl.style.color = "#2ecc71";
                                 if (subEl) subEl.innerText = "BETTING OPEN";
                             } else if (timeLeft > 10) {
                                 boxEl.className = "timer-strip-center warning-state";
-                                if (mainEl) mainEl.style.color = "#f1c40f"; // गोल्डन/ऑरेंज (मध्य)
+                                if (mainEl) mainEl.style.color = "#f1c40f";
                                 if (subEl) subEl.innerText = "HURRY UP! PLACE BETS";
                             } else {
                                 boxEl.className = "timer-strip-center closed-state";
-                                if (mainEl) mainEl.style.color = "#ff3333"; // खतरनाक लाल (अंतिम 10 सेकंड)
+                                if (mainEl) mainEl.style.color = "#ff3333";
                                 if (subEl) subEl.innerText = "NO MORE BETS (LOCKED)";
                                 if (timeLeft === 10) {
                                     let sfx = document.getElementById('betClosedSfx');

@@ -14,7 +14,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         
-        /* मोबाइल रिस्पॉन्सिव और ऑटो-फिट फिक्स (सभी स्क्रीन साइज़ के लिए) */
         html, body {
             width: 100%;
             height: 100%;
@@ -443,6 +442,10 @@
                 <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-weight:bold;">0</span></div>
                 <div>🧪 <b>Testing Balance (Fun):</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
             </div>
+            <!-- एडमिन के लिए डायरेक्ट कंट्रोल पैनल बटन (सिर्फ 8889865182 नंबर पर दिखेगा) -->
+            <div id="adminDirectAccessBtnWrap" style="display:none; margin-bottom:8px;">
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanelDirectly();" style="width:100%; padding:10px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:12px; text-transform:uppercase; box-shadow:0 0 12px #ffd700;">👑 Open Master Admin Panel</button>
+            </div>
             <button onclick="closeWalletModals()" class="login-btn" style="padding:9px; font-size:11px;">Close</button>
         </div>
     </div>
@@ -536,6 +539,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
+                <!-- यहाँ फिक्स किया गया है: अब सिर्फ नीचे वाले 'Push Winning Number' बटन पर क्लिक करने पर ही रिग सेट होगा, डबल क्लिक या ऑटोमैटिक नहीं -->
                 <button class="admin-action-btn" onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users Live</button>
             </div>
         </div>
@@ -938,13 +942,20 @@
                 }
 
                 window.handleProfileClick = function() {
+                    window.updateBalancesDisplay();
+                    // अगर लॉगिन करने वाला नंबर एडमिन का है (8889865182), तो उसकी प्रोफाइल में डायरेक्ट एडमिन पैनल खोलने का बटन दिखेगा
+                    let adminBtnWrap = document.getElementById('adminDirectAccessBtnWrap');
                     if (loggedUserPhone === MASTER_ADMIN_PHONE) {
-                        document.getElementById('adminPinModal').style.display = 'flex';
-                        document.getElementById('adminSecretPassInput').value = "";
+                        if(adminBtnWrap) adminBtnWrap.style.display = 'block';
                     } else {
-                        window.updateBalancesDisplay();
-                        document.getElementById('playerProfileModal').style.display = 'flex';
+                        if(adminBtnWrap) adminBtnWrap.style.display = 'none';
                     }
+                    document.getElementById('playerProfileModal').style.display = 'flex';
+                };
+
+                window.openAdminPanelDirectly = function() {
+                    document.getElementById('admRoundId').innerText = "Round #" + getCleanRoundCounter();
+                    document.getElementById('secretAdminModal').style.display = 'flex';
                 };
 
                 window.verifyAdminPinCode = function() {

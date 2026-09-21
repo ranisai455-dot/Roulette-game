@@ -37,8 +37,8 @@
         
         /* 🌟 लॉगिन पेज का व्हील: 3D, 4D, 5D, 8K अल्ट्रा एचडी क्लियर और चमकदार */
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bg-wheel-wrap { position: relative; width: 440px; height: 440px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
-        #loginWheelCanvasBg { width: 440px; height: 440px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.4) contrast(1.3); }
+        .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
+        #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
         .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 15px); width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 35px #fff, 0 0 55px #00ffcc, 0 0 90px #ffd700; }
         
@@ -366,7 +366,7 @@
     <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>
+            <canvas id="loginWheelCanvasBg" width="450" height="450"></canvas>
             <div class="bg-ball-orbit"></div>
             <div class="lobby-wheel-hub"></div>
         </div>
@@ -811,11 +811,11 @@
                 function createLoginShowerParticles() {
                     const container = document.getElementById('loginScreenContainer');
                     if (!container) return;
-                    for (let i = 0; i < 30; i++) {
+                    for (let i = 0; i < 35; i++) {
                         let p = document.createElement('div');
                         p.className = 'login-shower-particle';
                         p.style.left = (Math.random() * 100) + 'vw';
-                        p.style.animationDuration = (1.8 + Math.random() * 2.2) + 's';
+                        p.style.animationDuration = (1.5 + Math.random() * 2.0) + 's';
                         p.style.animationDelay = (Math.random() * 3) + 's';
                         container.appendChild(p);
                     }
@@ -1397,7 +1397,7 @@
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
 
-                // 🌟 लॉबी व्हील सेंटर: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में रंग बदलता मल्टी-कलर स्टार
+                // 🌟 लॉबी व्हील सेंटर: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;

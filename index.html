@@ -407,7 +407,7 @@
     <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>
+            <canvas id="loginWheelCanvasBg" width="450" height="450"></canvas>
             <div class="bg-ball-orbit"></div>
             <div class="wheel-center-graphic">
                 <div class="hub-text-royal">ROYAL</div>
@@ -807,7 +807,11 @@
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
-                let isGameSpinning = false, userActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
+                let isGameSpinning = false;
+                let globalTableBets = {}; // सभी ऑनलाइन प्लेयर्स के बेट्स का ग्लोबल पुल
+                let myActiveBets = {};   // सिर्फ करंट यूजर के अपने बेट्स
+                let currentTotalBet = 0; // ग्लोबल टोटल बेट
+                let betHistoryStack = [];
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
@@ -1402,31 +1406,39 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 ग्लोबल राउंड बेट्स लिसनर (लाइव सिंकिंग)
+                // 🌟 ग्लोबल राउंड बेट्स लिसनर (सारे ऑनलाइन प्लेयर्स के लाइव बेट्स को एक जगह जोड़ने वाला इंजन)
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
                     globalRoundBetsRef.on("value", (snapshot) => {
                         let allBetsData = snapshot.val() || {};
                         currentTotalBet = 0;
-                        userActiveBets = {};
+                        globalTableBets = {};
+                        myActiveBets = {};
 
-                        Object.values(allBetsData).forEach(playerBets => {
-                            if (playerBets) {
-                                Object.keys(playerBets).forEach(key => {
-                                    let amt = parseInt(playerBets[key]) || 0;
-                                    userActiveBets[key] = (userActiveBets[key] || 0) + amt;
-                                    currentTotalBet += amt;
-                                });
-                            }
+                        Object.keys(allBetsData).forEach(phone => {
+                            let playerBets = allBetsData[phone] || {};
+                            Object.keys(playerBets).forEach(key => {
+                                let amt = parseInt(playerBets[key]) || 0;
+                                globalTableBets[key] = (globalTableBets[key] || 0) + amt;
+                                currentTotalBet += amt;
+
+                                if (phone === loggedUserPhone) {
+                                    myActiveBets[key] = (myActiveBets[key] || 0) + amt;
+                                }
+                            });
                         });
 
                         let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if (totalBetEl) totalBetEl.innerText = currentTotalBet;
+                        if (totalBetEl) {
+                            let mySum = 0;
+                            Object.values(myActiveBets).forEach(v => mySum += v);
+                            totalBetEl.innerText = mySum;
+                        }
                     });
                 }
 
-                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन
+                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (ग्लोबल टेबल बेट्स पर आधारित)
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1442,7 +1454,7 @@
                     }
 
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; 
+                    let safePayoutPool = totalTableBet - houseCut; // 95% सुरक्षित पूल
 
                     let validSafeNumbers = [];
                     let allNumberPayouts = {};
@@ -1450,8 +1462,8 @@
                     numbersList.forEach(num => {
                         let payout = 0;
                         let isRed = redList.includes(num);
-                        for (let key in userActiveBets) {
-                            let amt = userActiveBets[key];
+                        for (let key in globalTableBets) {
+                            let amt = globalTableBets[key];
                             if (key === num.toString()) {
                                 payout += amt * 36;
                             } else if (key === 'red' && isRed) {
@@ -1489,7 +1501,7 @@
                     let html = "";
                     numbersList.forEach(num => {
                         let bg = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0b0f15');
-                        let betAmt = userActiveBets[num.toString()] || 0;
+                        let betAmt = globalTableBets[num.toString()] || 0;
                         html += `<div style="background:${bg}; border:1px solid #ffd700; padding:6px 2px; border-radius:4px; font-size:9.5px; font-weight:bold;">
                             <div><b>#${num}</b></div>
                             <div style="color:#00ffff; font-size:8.5px;">₹${betAmt}</div>
@@ -1615,7 +1627,7 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 🌟 ऑनलाइन बेटिंग सिंक फंक्शन (ग्लोबल डेटाबेस पर बेट सेव करना)
+                // 🌟 ऑनलाइन रियल-मनी बेटिंग सिंक (डेटाबेस पर लाइव सेव होना)
                 window.placeTableBet = function(key, el) {
                     let { roundId, timeLeft } = getGlobalRound();
                     if (isGameSpinning || timeLeft <= 10) return;
@@ -1633,13 +1645,13 @@
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
-                        userActiveBets[key] = (userActiveBets[key] || 0) + currentActiveChip;
+                        myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
                         currentTotalBet += currentActiveChip;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     }
 
                     betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (userActiveBets[key] || currentActiveChip); }
+                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
                 };
 
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
@@ -1662,7 +1674,7 @@
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
                         numbersArray.forEach(num => {
-                            userActiveBets[num.toString()] = (userActiveBets[num.toString()] || 0) + currentActiveChip;
+                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
                         });
                         currentTotalBet += totalNeeded;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
@@ -1691,7 +1703,6 @@
                         testCoins += last.amount;
                         currentTotalBet -= last.amount;
                     }
-                    document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                 };
 
                 let lastProcessedRound = -1;
@@ -1733,7 +1744,7 @@
                         if (roundId !== lastProcessedRound) {
                             if (lastProcessedRound !== -1) executeGlobalSpinAnimation(lastProcessedRound);
                             lastProcessedRound = roundId;
-                            userActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                            globalTableBets = {}; myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
                             setupGlobalRoundBetsListener(roundId);
                             document.getElementById('lobbyTotalBet').innerText = 0;
                             document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
@@ -1787,8 +1798,8 @@
                         historyRef.set(currentHist);
 
                         let totalWon = 0, isRed = redList.includes(winningNum);
-                        for (let key in userActiveBets) {
-                            let amt = userActiveBets[key];
+                        for (let key in myActiveBets) {
+                            let amt = myActiveBets[key];
                             if (key === winningNum.toString()) totalWon += amt * 36;
                             else if (key === 'red' && isRed) totalWon += amt * 2;
                             else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
@@ -1813,7 +1824,9 @@
                                 testCoins += totalWon; 
                             }
                         } else if (activeGameMode === 'test') {
-                            testCoins += currentTotalBet;
+                            let myTestSum = 0;
+                            Object.values(myActiveBets).forEach(v => myTestSum += v);
+                            testCoins += myTestSum;
                         }
 
                         let popup = document.getElementById('cinematicResultPopup');

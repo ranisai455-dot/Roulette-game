@@ -66,126 +66,139 @@
             100% { transform: scale(1); }
         }
 
-        #loginScreenContainer { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; padding: 12px 4px 10px 4px; position: absolute; top: 0; left: 0; background: rgba(0,2,1,0.65); backdrop-filter: blur(2px); }
-        .header-container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 4px; align-items: center; z-index: 5; margin-top: 10px; }
+        /* 🌟 अट्रैक्टिव 3D अल्ट्रा एचडी लॉगिन स्क्रीन */
+        #loginScreenContainer { 
+            width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
+            padding: 10px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
+            backdrop-filter: blur(4px); border: 6px solid #d4af37; box-shadow: inset 0 0 40px rgba(255,215,0,0.4), 0 0 50px rgba(0,0,0,0.9);
+        }
+        .header-container { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 4px; align-items: center; z-index: 5; margin-top: 4px; }
         .trust-banner { font-size: 8px; font-weight: 900; color: #ffffff; text-shadow: 0 0 8px #000, 0 0 15px #ffd700; letter-spacing: 0.5px; text-transform: uppercase; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(15,50,25,0.95)); padding: 4px 8px; border-radius: 10px; border: 1.5px solid #ffd700; width: 100%; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7); }
         .royal-title-wrap { display: flex; align-items: center; justify-content: center; gap: 4px; width: 100%; margin: 2px 0; }
-        .royal-main-title { font-size: 19px; font-weight: 900; color: #ffd700; text-shadow: 0 0 25px #ffd700, 0 0 45px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .royal-main-title { font-size: 20px; font-weight: 900; color: #ffd700; text-shadow: 0 0 25px #ffd700, 0 0 45px #b8860b; letter-spacing: 1.5px; text-transform: uppercase; background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .live-stats-bar { display: flex; justify-content: space-between; width: 95%; font-size: 7.5px; color: #ffd700; font-weight: bold; background: rgba(0, 25, 12, 0.95); border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 6px; text-transform: uppercase; }
         
-        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 2.5px solid #ffd700; padding: 14px 10px; border-radius: 18px; width: 92%; max-width: 310px; box-shadow: 0 20px 50px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.3); position: relative; z-index: 15; backdrop-filter: blur(8px); }
-        .login-card h3 { color: #ffd700; font-size: 13.5px; margin-bottom: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
-        .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; }
-        .login-card input { width: 100%; padding: 8px; margin: 3px 0; background: #000000; border: 2px solid rgba(255, 215, 0, 0.8); color: #ffd700; border-radius: 8px; font-size: 11.5px; text-align: center; font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.2); }
-        .login-btn { width: 100%; padding: 9px; margin-top: 5px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 11.5px; text-transform: uppercase; box-shadow: 0 0 15px rgba(255,215,0,0.7); }
+        .login-card { background: radial-gradient(circle, #022b10 0%, #000a03 100%); border: 3px solid #ffd700; padding: 12px 10px; border-radius: 18px; width: 92%; max-width: 300px; box-shadow: 0 15px 40px rgba(0,0,0,0.95), inset 0 0 20px rgba(255,215,0,0.4); position: relative; z-index: 15; }
+        .login-card h3 { color: #ffd700; font-size: 13px; margin-bottom: 3px; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
+        .login-card p { font-size: 7.5px; color: #e0e0e0; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+        .login-card input { width: 100%; padding: 7px; margin: 3px 0; background: #000000; border: 2px solid rgba(255, 215, 0, 0.8); color: #ffd700; border-radius: 8px; font-size: 11px; text-align: center; font-weight: bold; box-shadow: inset 0 0 10px rgba(0,0,0,0.9), 0 0 8px rgba(255,215,0,0.2); }
+        .login-btn { width: 100%; padding: 8px; margin-top: 4px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000000; border: none; font-weight: 900; border-radius: 8px; cursor: pointer; font-size: 11px; text-transform: uppercase; box-shadow: 0 0 15px rgba(255,215,0,0.7); }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(39,174,96,0.8); }
         
-        .footer-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 3px; z-index: 5; margin-bottom: 8px; align-items: center; }
+        .footer-wrap { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 2px; z-index: 5; margin-bottom: 4px; align-items: center; }
         .telegram-support-btn {
-            display: inline-block; padding: 5px 12px; background: linear-gradient(135deg, #0088cc, #005f99); 
-            color: #ffffff; text-decoration: none; font-weight: 900; border-radius: 15px; font-size: 9px; 
+            display: inline-block; padding: 4px 10px; background: linear-gradient(135deg, #0088cc, #005f99); 
+            color: #ffffff; text-decoration: none; font-weight: 900; border-radius: 15px; font-size: 8.5px; 
             text-transform: uppercase; border: 1.5px solid #00ffcc; box-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-            letter-spacing: 0.5px; margin-bottom: 4px;
+            letter-spacing: 0.5px; margin-bottom: 2px;
         }
         .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
-        #gameLobbyScreen { display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; padding: 2px; box-shadow: inset 0 0 100px rgba(0,0,0,0.9); border: 4px solid #24140c; overflow: hidden; }
-        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 4px 6px; border-radius: 8px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); flex-shrink: 0; z-index: 50; width: 100%; max-width: 420px; gap: 4px; }
-        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 12px; text-align: left; cursor: pointer; }
-        .user-avatar-circle { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
+        /* 🌟 गेम लॉबी: चारों तरफ 3D प्योर गोल्डन बॉर्डर और परफेक्ट पैडिंग (कोई बटन बाहर नहीं कटेगा) */
+        #gameLobbyScreen { 
+            display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
+            background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
+            z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; 
+            padding: 6px 8px; border: 5px solid #ffd700; 
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.8), 0 0 70px rgba(0,0,0,1); 
+            overflow: hidden; 
+        }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 2px solid #d4af37; padding: 3px 6px; border-radius: 8px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.7); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 3px; }
+        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 5px; border-radius: 12px; text-align: left; cursor: pointer; }
+        .user-avatar-circle { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
         
-        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 6px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 5px 8px; border-radius: 8px; font-size: 9px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
         .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; }
 
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
-            color: #fff; padding: 4px 10px; border-radius: 10px; 
+            color: #fff; padding: 3px 8px; border-radius: 8px; 
             border: 2px solid #ffd700; text-transform: uppercase; 
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.8), inset 0 0 12px rgba(255, 0, 0, 0.6); 
-            letter-spacing: 1px; flex-grow: 1; max-width: 135px; text-align: center; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 42px; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 10px rgba(255, 0, 0, 0.6); 
+            letter-spacing: 1px; flex-grow: 1; max-width: 125px; text-align: center; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 38px; 
             transition: all 0.4s ease; position: relative; overflow: hidden;
         }
         .timer-strip-center span.timer-main-val { 
-            font-size: 21px; line-height: 1; font-weight: 900; 
-            color: #2ecc71; text-shadow: 0 0 12px #2ecc71, 0 0 25px #ffea00; 
+            font-size: 19px; line-height: 1; font-weight: 900; 
+            color: #2ecc71; text-shadow: 0 0 10px #2ecc71, 0 0 20px #ffea00; 
             font-family: 'Arial Black', Impact, sans-serif;
             animation: heartbeatPulse 1s infinite ease-in-out;
         }
         .timer-strip-center span.timer-sub-val { 
-            font-size: 6.5px; color: #ffcccc; font-weight: 900; letter-spacing: 0.5px; 
+            font-size: 6px; color: #ffcccc; font-weight: 900; letter-spacing: 0.5px; 
             margin-top: 1px; text-shadow: 0 0 4px #000; text-transform: uppercase;
         }
 
-        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 2px 4px; border-radius: 6px; margin: 2px auto; width: 100%; max-width: 420px; flex-shrink: 0; z-index: 50; }
+        .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 10, 3, 0.9); border: 1.5px solid rgba(212, 175, 55, 0.5); padding: 2px 4px; border-radius: 6px; margin: 2px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; }
         .history-title { font-size: 7px; font-weight: bold; color: #ffd700; margin-right: 2px; text-transform: uppercase; }
-        .history-ball { width: 18px; height: 18px; border-radius: 50%; font-size: 9px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 4px rgba(0,0,0,0.8); flex-shrink: 0; }
+        .history-ball { width: 16px; height: 16px; border-radius: 50%; font-size: 8.5px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1.5px solid #ffd700; box-shadow: 0 0 4px rgba(0,0,0,0.8); flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील की बड़ी, चमकदार और परफेक्ट साइज़ (मोबाइल स्क्रीन के हिसाब से बिल्कुल शानदार) */
+        /* 🌟 व्हील की परफेक्ट साइज़ और एचडी 3D लुक */
         .lobby-wheel-box { 
             position: relative; 
-            width: 345px; 
-            height: 345px; 
-            margin: 4px auto; 
-            border: 8px solid #ffd700; 
+            width: 320px; 
+            height: 320px; 
+            margin: 2px auto; 
+            border: 7px solid #ffd700; 
             border-radius: 50%; 
             background: radial-gradient(circle, #0a2e12 0%, #000 80%); 
             overflow: hidden; 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.95), inset 0 0 30px rgba(0, 255, 100, 0.6), 0 0 80px rgba(0, 180, 255, 0.5); 
+            box-shadow: 0 0 45px rgba(255, 215, 0, 0.9), inset 0 0 25px rgba(0, 255, 100, 0.6), 0 0 70px rgba(0, 180, 255, 0.4); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 85vw; 
-            max-height: 85vw; 
+            max-width: 78vw; 
+            max-height: 78vw; 
         }
-        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 15px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin-top: -22px; margin-left: -22px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2.5px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 20px #ffd700, inset 0 0 6px #fff; }
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin-top: -20px; margin-left: -20px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 8px; left: calc(50% - 9px); width: 18px; height: 18px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 22px #fff, 0 0 38px #00ffcc, 0 0 55px #ff0055, inset 0 0 5px #fff; animation: ballColorPulse 1s infinite alternate; }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 7px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; animation: ballColorPulse 1s infinite alternate; }
         @keyframes ballColorPulse { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
-        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 420px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 3px; border: 2px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
+        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 2px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
         
-        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 11px; font-weight: 900; padding: 6px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
+        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; box-shadow: inset 0 1px 4px rgba(255,100,100,0.4), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; box-shadow: inset 0 1px 3px rgba(200,200,200,0.2), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff !important; box-shadow: 0 0 15px #f1c40f, inset 0 0 8px rgba(255,215,0,0.8); transform: scale(1.02); z-index: 5; }
-        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 7.5px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
+        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 7px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
 
-        .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5px; width: 100%; }
-        .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5px; width: 100%; }
-        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9.5px; font-weight: 900; padding: 6px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
+        .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
+        .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 100%; }
+        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
 
-        .color-row { display: flex; gap: 2.5px; width: 100%; }
-        .color-btn { flex: 1; padding: 6px 2px; font-weight: 900; font-size: 9.5px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
+        .color-row { display: flex; gap: 2px; width: 100%; }
+        .color-btn { flex: 1; padding: 5px 2px; font-weight: 900; font-size: 9px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
         .btn-red { background: linear-gradient(135deg, #962d22, #641e16); border-color: #ff4d4d; }
         .btn-green { background: linear-gradient(135deg, #1e8449, #114e2c); border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.4), inset 0 1px 4px rgba(255,255,255,0.3); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); border-color: #777; }
 
-        .chip-selector-row { display: flex; justify-content: center; gap: 5px; align-items: center; width: 100%; margin: 1px 0; }
-        .chip-item { width: 30px; height: 30px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
-        .chip-item.selected { border: 2px solid #fff; transform: scale(1.12); box-shadow: 0 0 18px #f1c40f, inset 0 0 6px #fff; }
+        .chip-selector-row { display: flex; justify-content: center; gap: 4px; align-items: center; width: 100%; margin: 1px 0; }
+        .chip-item { width: 28px; height: 28px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9.5px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
+        .chip-item.selected { border: 2px solid #fff; transform: scale(1.12); box-shadow: 0 0 15px #f1c40f, inset 0 0 5px #fff; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
         .chip-100 { background: linear-gradient(135deg, #27ae60, #1e8449); } 
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 5px 6px; border-radius: 4px; font-size: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 4px 8px; font-size: 9.5px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
-        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 4px 7px; font-size: 9px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 6px rgba(192,57,43,0.6); }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 6px; font-size: 9px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
+        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3px 6px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 6px rgba(192,57,43,0.6); }
 
         .mode-toggle-bar { display: flex; justify-content: center; gap: 3px; background: #000; border: 1.5px solid #ffd700; padding: 2px; border-radius: 6px; width: 100%; }
-        .mode-btn { flex: 1; padding: 4px; font-size: 8.5px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-btn { flex: 1; padding: 3px; font-size: 8px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
         .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 8px #2ecc71; }
         .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 8px #3498db; }
 
@@ -365,14 +378,14 @@
             <div class="user-profile-widget" onclick="handleProfileClick(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
-                    <div style="font-size:8.5px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
-                    <div style="font-size:7px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
+                    <div style="font-size:8px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
+                    <div style="font-size:6.5px; color:#2ecc71; font-weight:bold;">Profile 👆</div>
                 </div>
             </div>
 
             <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
-            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 135px;">
+            <div style="display:flex; flex-direction:column; align-items:center; flex-grow:1; max-width: 125px;">
                 <div class="timer-strip-center" id="lobbyTimerBox">
                     <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
                     <span class="timer-sub-val" id="lobbyTimerSub">BETTING OPEN</span>
@@ -388,20 +401,20 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="345" height="345"></canvas>
+            <canvas id="lobbyWheelCanvas" width="320" height="320"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
 
         <div class="betting-board-section" id="bettingBoardArea">
             <div style="background: rgba(0,0,0,0.85); padding: 3px 6px; border-radius: 6px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 1px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 900; color: #ffd700;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: 900; color: #ffd700;">
                     <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
-                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 2px 6px; border-radius: 5px;">
-                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 11.5px;">₹0</span>
+                    <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 1.5px 5px; border-radius: 5px;">
+                        💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 11px;">₹0</span>
                     </span>
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 8px; color: #3498db; font-weight: bold;">
+                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 7.5px; color: #3498db; font-weight: bold;">
                     <span>🧪 Demo Coins: <span id="playerTestBal">10000</span></span>
                 </div>
             </div>
@@ -1293,7 +1306,7 @@
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 8, innerRadius = radiusSize || 42, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 8, innerRadius = radiusSize || 40, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
@@ -1303,10 +1316,10 @@
                         ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; 
-                        ctx.font = `bold ${fontSize || 14}px Arial`;
+                        ctx.font = `bold ${fontSize || 13}px Arial`;
                         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
                         ctx.shadowBlur = 6;
-                        ctx.fillText(num, outerRadius - 16, 5); ctx.restore();
+                        ctx.fillText(num, outerRadius - 15, 4); ctx.restore();
                     });
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#fff'; ctx.stroke();
@@ -1314,7 +1327,7 @@
 
                 window.onload = () => { 
                     drawCanvasWheel('loginWheelCanvasBg', 42, 15); 
-                    drawCanvasWheel('lobbyWheelCanvas', 40, 14); 
+                    drawCanvasWheel('lobbyWheelCanvas', 40, 13); 
                     updateActiveQrDisplay();
                 };
 

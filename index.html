@@ -66,16 +66,10 @@
             100% { transform: scale(1); }
         }
 
-        @keyframes starSpinRotate {
-            0% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 8px #ffd700); }
-            50% { transform: scale(1.08); filter: drop-shadow(0 0 18px #ffea00); }
-            100% { transform: rotate(360deg) scale(1); filter: drop-shadow(0 0 8px #ffd700); }
-        }
-
-        @keyframes coinShowerDrop {
-            0% { transform: translateY(-10px) scale(0.8); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(15px) scale(1.1); opacity: 0; }
+        @keyframes royalShine {
+            0% { filter: drop-shadow(0 0 5px #ffd700); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 15px #ffea00); transform: scale(1.05); }
+            100% { filter: drop-shadow(0 0 5px #ffd700); transform: scale(1); }
         }
 
         #loginScreenContainer { 
@@ -106,21 +100,22 @@
         .payment-gateways { font-size: 7px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 7px; color: #ffd700; font-weight: bold; }
 
-        /* 🌟 गेम लॉबी: बिल्कुल बारीक (0.8px) एलिगेंट प्योर गोल्डन बॉर्डर */
+        /* 🌟 गेम लॉबी: बिल्कुल बारीक 0.8px गोल्डन बॉर्डर */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 70%, #000301 100%); 
             z-index: 20000; flex-direction: column; justify-content: space-between; align-items: center; 
-            padding: 4px 6px; border: 0.8px solid #ffd700; 
+            padding: 3px 5px; border: 0.8px solid #ffd700; 
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 0 15px rgba(212, 175, 55, 0.5); 
             overflow: hidden; 
         }
-        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 1.5px solid #d4af37; padding: 3px 6px; border-radius: 8px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.6); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 3px; }
-        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 5px; border-radius: 12px; text-align: left; cursor: pointer; }
-        .user-avatar-circle { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #001a08, #000402); border: 1.5px solid #d4af37; padding: 4px 8px; border-radius: 8px; box-shadow: 0 0 10px rgba(212, 175, 55, 0.6); flex-shrink: 0; z-index: 50; width: 100%; max-width: 400px; gap: 4px; }
+        .user-profile-widget { display: flex; align-items: center; gap: 4px; background: rgba(0,20,8,0.9); border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 12px; text-align: left; cursor: pointer; }
+        .user-avatar-circle { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #b8860b); border: 1.5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #000; box-shadow: 0 0 8px #ffd700; overflow: hidden; }
         
-        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1.5px solid #ffd700; padding: 5px 8px; border-radius: 8px; font-size: 9px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; }
-        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; }
+        /* 🌟 बड़े और शानदार डिपॉजिट/विड्रॉल बटन्स */
+        .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 2px solid #ffd700; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; cursor: pointer; animation: pulseGlow 2s infinite; text-transform: uppercase; z-index: 100; text-shadow: 0 1px 2px #000; box-shadow: 0 0 12px rgba(39,174,96,0.8); }
+        .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); animation: pulseGlowRed 2s infinite; box-shadow: 0 0 12px rgba(192,57,43,0.8); }
 
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
@@ -142,7 +137,38 @@
             margin-top: 1px; text-shadow: 0 0 4px #000; text-transform: uppercase;
         }
 
-        /* 🌟 बड़े और स्पष्ट अक्षरों वाली हिस्ट्री बार */
+        /* 🌟 हिस्ट्री बार के ऊपर रॉयल स्टार डिजाइन बैनर */
+        .royal-star-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 2px auto;
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(10,40,15,0.95), rgba(0,0,0,0.8));
+            border: 1px solid rgba(255,215,0,0.6);
+            padding: 3px 6px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(255,215,0,0.3);
+            flex-shrink: 0;
+        }
+        .rs-star-sm { font-size: 8px; color: #ffd700; filter: drop-shadow(0 0 4px #ffea00); }
+        .rs-star-md { font-size: 11px; color: #ffd700; filter: drop-shadow(0 0 6px #ffea00); }
+        .rs-star-lg { font-size: 14px; color: #ffd700; filter: drop-shadow(0 0 8px #ffea00); animation: royalShine 2s infinite; }
+        .rs-title-text {
+            font-size: 11px;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #ffffff 20%, #ffd700 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255,215,0,0.8);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0 4px;
+        }
+
+        /* 🌟 स्पष्ट अक्षरों वाली हिस्ट्री बार */
         .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 4px; background: rgba(0, 15, 5, 0.95); border: 1.5px solid rgba(212, 175, 55, 0.8); padding: 3px 8px; border-radius: 8px; margin: 2px auto; width: 100%; max-width: 400px; flex-shrink: 0; z-index: 50; box-shadow: 0 0 10px rgba(0,0,0,0.8); }
         .history-title { font-size: 9px; font-weight: 900; color: #ffd700; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 0 5px #ffd700; }
         .history-ball { width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 2px solid #ffd700; box-shadow: 0 0 8px rgba(0,0,0,0.9); flex-shrink: 0; }
@@ -150,88 +176,37 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 व्हील की भव्य और बड़ी साइज़ (आधी स्क्रीन) और 4 शानदार 3D/4D गोल्डन स्टार्स */
+        /* 🌟 व्हील साइज़ और ग्रीन-येलो आउटर फ्रेम (बीच का बड़ा पीला सर्कल हटाया गया) */
         .lobby-wheel-box { 
             position: relative; 
-            width: 350px; 
-            height: 350px; 
+            width: 360px; 
+            height: 360px; 
             margin: 2px auto; 
-            border: 7px solid #ffd700; 
+            border: 4px solid #2ecc71; 
             border-radius: 50%; 
-            background: radial-gradient(circle, #0a2e12 0%, #000 80%); 
+            background: radial-gradient(circle, #0a2e12 0%, #000 85%); 
             overflow: visible; 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.95), inset 0 0 25px rgba(0, 255, 100, 0.6); 
+            box-shadow: 0 0 45px rgba(46, 204, 113, 0.7), inset 0 0 25px rgba(255, 215, 0, 0.5); 
             flex-shrink: 0; 
             z-index: 100; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 84vw; 
-            max-height: 84vw; 
+            max-width: 86vw; 
+            max-height: 86vw; 
         }
 
-        /* 🌟 4 शानदार 3D/4D गोल्डन स्टार्स कोनों के लिए */
-        .corner-star-badge {
-            position: absolute;
-            width: 48px;
-            height: 48px;
-            background: radial-gradient(circle, #fff35c 0%, #ffd700 50%, #b8860b 100%);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 18px #ffd700, 0 0 30px #ffea00;
-            z-index: 140;
-            animation: starSpinRotate 6s linear infinite;
-            cursor: pointer;
-        }
-        .corner-star-inner {
-            width: 34px;
-            height: 34px;
-            background: radial-gradient(circle, #022b10 0%, #000a03 100%);
-            border-radius: 50%;
-            border: 2px solid #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 7.5px;
-            font-weight: 900;
-            color: #ffd700;
-            box-shadow: inset 0 0 6px #ffd700;
-            text-shadow: 0 1px 2px #000;
-        }
-
-        .corner-star-badge.top-left { top: -12px; left: -12px; }
-        .corner-star-badge.top-right { top: -12px; right: -12px; animation-direction: reverse; }
-        .corner-star-badge.bottom-left { bottom: -12px; left: -12px; }
-        .corner-star-badge.bottom-right { bottom: -12px; right: -12px; animation-direction: reverse; }
-
-        /* कॉइन शावर इफ़ेक्ट */
-        .coin-particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle, #fff 0%, #ffd700 70%, #b8860b 100%);
-            border-radius: 50%;
-            border: 1px solid #fff;
-            box-shadow: 0 0 8px #ffd700;
-            animation: coinShowerDrop 1.5s infinite ease-in-out;
-            pointer-events: none;
-            z-index: 150;
-        }
-
-        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 15px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); }
-        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 42px; height: 42px; margin-top: -21px; margin-left: -21px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2.5px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 20px #ffd700, inset 0 0 6px #fff; }
+        #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) brightness(1.2) contrast(1.15); border: 3px solid #ffd700; }
+        .lobby-wheel-hub { position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; margin-top: -19px; margin-left: -19px; background: radial-gradient(circle, #ffffff 0%, #ffd700 50%, #8b6508 100%); border-radius: 50%; border: 2px solid #fff; z-index: 110; pointer-events: none; box-shadow: 0 0 15px #ffd700, inset 0 0 5px #fff; }
         
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 8px; left: calc(50% - 9px); width: 18px; height: 18px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 22px #fff, 0 0 38px #00ffcc, 0 0 55px #ff0055, inset 0 0 5px #fff; animation: ballColorPulse 1s infinite alternate; }
-        @keyframes ballColorPulse { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; }
 
+        /* 🌟 सट्टा बोर्ड (Betting Board) सेक्शन - व्यवस्थित और एक समान */
         .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 10px; padding: 4px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 2px; box-shadow: inset 0 0 40px rgba(0,0,0,0.95), 0 0 20px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
         
-        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
+        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 11px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; box-shadow: inset 0 1px 4px rgba(255,100,100,0.4), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; box-shadow: inset 0 1px 3px rgba(200,200,200,0.2), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff !important; box-shadow: 0 0 15px #f1c40f, inset 0 0 8px rgba(255,215,0,0.8); transform: scale(1.02); z-index: 5; }
@@ -239,10 +214,10 @@
 
         .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
         .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 100%; }
-        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
+        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9.5px; font-weight: 900; padding: 5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
 
         .color-row { display: flex; gap: 2px; width: 100%; }
-        .color-btn { flex: 1; padding: 5px 2px; font-weight: 900; font-size: 9px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
+        .color-btn { flex: 1; padding: 5px 2px; font-weight: 900; font-size: 9.5px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
         .btn-red { background: linear-gradient(135deg, #962d22, #641e16); border-color: #ff4d4d; }
         .btn-green { background: linear-gradient(135deg, #1e8449, #114e2c); border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.4), inset 0 1px 4px rgba(255,255,255,0.3); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); border-color: #777; }
@@ -258,11 +233,11 @@
 
         .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 6px; font-size: 9px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
-        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3px 6px; font-size: 8.5px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 6px rgba(192,57,43,0.6); }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 6px; font-size: 9.5px; font-weight: 900; border-radius: 6px; flex-grow: 1; text-align: center; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
+        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 4px 8px; font-size: 9px; font-weight: 900; border-radius: 5px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 6px rgba(192,57,43,0.6); }
 
         .mode-toggle-bar { display: flex; justify-content: center; gap: 3px; background: #000; border: 1.5px solid #ffd700; padding: 2px; border-radius: 6px; width: 100%; }
-        .mode-btn { flex: 1; padding: 3px; font-size: 8px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-btn { flex: 1; padding: 3px; font-size: 8.5px; font-weight: 900; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
         .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 8px #2ecc71; }
         .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 8px #3498db; }
 
@@ -343,6 +318,7 @@
         </div>
     </div>
 
+    <!-- एडमिन पिन वेरिफिकेशन मोडल -->
     <div id="adminPinModal">
         <div class="admin-pin-box">
             <h3 style="color:#ffd700; font-size:15px; margin-bottom:8px;">🔐 ADMIN PIN REQUIRED</h3>
@@ -387,6 +363,12 @@
             } catch(e) {}
         })();
     </script>
+
+    <!-- 🌟 ग्लोबल मेंटेनेंस नोटिस बैनर (जो एडमिन द्वारा सेट होगा) -->
+    <div id="globalMaintenanceBanner" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#ffd700; text-align:center; padding:20px;">
+        <h2 style="font-size:24px; margin-bottom:10px; color:#ff3333; text-shadow:0 0 15px #ff3333;">⚠️ SYSTEM MAINTENANCE ⚠️</h2>
+        <p id="maintenanceReasonText" style="font-size:14px; color:#fff; font-weight:bold; max-width:320px; line-height:1.5;"></p>
+    </div>
 
     <div id="comingSoonNoticeModal">
         <div class="coming-soon-card">
@@ -458,32 +440,24 @@
             <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
         </div>
 
+        <!-- 🌟 हिस्ट्री बार के ऊपर रॉयल स्टार डिजाइन बैनर -->
+        <div class="royal-star-banner">
+            <span class="rs-star-sm">★</span>
+            <span class="rs-star-md">★</span>
+            <span class="rs-star-lg">★</span>
+            <span class="rs-title-text">ROYAL DIGITAL</span>
+            <span class="rs-star-lg">★</span>
+            <span class="rs-star-md">★</span>
+            <span class="rs-star-sm">★</span>
+        </div>
+
         <div class="history-strip-bar" id="historyBarEl">
             <span class="history-title">History:</span>
             <div id="historyBallsContainer" style="display: flex; gap: 4px;"></div>
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <div class="corner-star-badge top-left" style="top:-14px; left:-14px;">
-                <div class="corner-star-inner">🌟<span style="font-size:6.5px;">GOLD</span></div>
-                <div class="coin-particle" style="top:5px; left:15px;"></div>
-                <div class="coin-particle" style="top:12px; left:25px; animation-delay: 0.5s;"></div>
-            </div>
-            <div class="corner-star-badge top-right" style="top:-14px; right:-14px;">
-                <div class="corner-star-inner">✨<span style="font-size:6.5px;">LUCKY</span></div>
-                <div class="coin-particle" style="top:5px; right:15px;"></div>
-                <div class="coin-particle" style="top:12px; right:25px; animation-delay: 0.7s;"></div>
-            </div>
-
-            <div class="corner-star-badge bottom-left" style="bottom:-14px; left:-14px;" onclick="toggleMasterAudioMute()">
-                <div class="corner-star-inner" id="muteStarInner">🎵<span style="font-size:5.5px;" id="muteTextLbl">SOUND</span></div>
-            </div>
-
-            <div class="corner-star-badge bottom-right" style="bottom:-14px; right:-14px;">
-                <div class="corner-star-inner" style="font-size:5px; line-height:1.1; color:#00ffcc; font-weight:900;">ROYAL<br><span style="color:#ffd700; font-size:4.5px;">DIGITAL</span></div>
-            </div>
-
-            <canvas id="lobbyWheelCanvas" width="360" height="360"></canvas>
+            <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
             <div class="lobby-wheel-hub"></div>
             <div class="game-ball-orbit" id="rouletteBallOrbit"></div>
         </div>
@@ -541,6 +515,7 @@
         </div>
     </div>
 
+    <!-- PLAYER PROFILE MODAL -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content" style="max-width: 420px;">
             <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
@@ -558,6 +533,7 @@
         </div>
     </div>
 
+    <!-- MASTER ADMIN DASHBOARD -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div class="admin-top-header">
@@ -567,6 +543,16 @@
 
             <div id="adminAlertBanner" style="display:none; background:linear-gradient(135deg, #e74c3c, #c0392b); color:#fff; padding:10px; border-radius:8px; font-weight:900; text-align:center; font-size:12px; border:2px solid #ffd700;">
                 🚨 NEW FINANCIAL REQUEST RECEIVED! CHECK DEPOSIT OR WITHDRAWAL!
+            </div>
+
+            <!-- 🌟 नया मेंटेनेंस ब्रॉडकास्ट मैनेजर -->
+            <div style="background: rgba(40,20,0,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+                <p style="color: #ffaa00; font-size: 12px; font-weight: bold;">🛠️ SYSTEM MAINTENANCE BROADCAST MANAGER</p>
+                <input type="text" id="adminMaintenanceMsgInput" placeholder="Enter Maintenance Message (e.g. Under maintenance for 30 mins)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #ffaa00; border-radius: 5px; font-size: 11px;" />
+                <div style="display: flex; gap: 6px;">
+                    <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(true)" style="flex: 1; padding: 8px; background: #c0392b; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🔴 Turn ON Maintenance</button>
+                    <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(false)" style="flex: 1; padding: 8px; background: #27ae60; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🟢 Turn OFF Maintenance</button>
+                </div>
             </div>
 
             <div style="background: rgba(0,25,12,0.95); padding: 12px; border: 2px solid #2ecc71; border-radius: 8px;">
@@ -775,6 +761,7 @@
         const depositsRef = masterRoot.child("deposit_requests");
         const withdrawsRef = masterRoot.child("withdraw_requests");
         const auditLogRef = masterRoot.child("audit_logs");
+        const maintenanceRef = masterRoot.child("system_maintenance");
 
         (function() {
             try {
@@ -796,19 +783,24 @@
 
                 let lastKnownDepositCount = -1;
                 let lastKnownWithdrawCount = -1;
-                let isAudioMuted = false;
 
-                window.toggleMasterAudioMute = function() {
-                    isAudioMuted = !isAudioMuted;
-                    let bgm = document.getElementById('bgmAudio');
-                    let lbl = document.getElementById('muteTextLbl');
-                    if (bgm) {
-                        bgm.muted = isAudioMuted;
+                maintenanceRef.on("value", (snap) => {
+                    let m = snap.val();
+                    let banner = document.getElementById('globalMaintenanceBanner');
+                    let textEl = document.getElementById('maintenanceReasonText');
+                    if (m && m.active) {
+                        if (textEl) textEl.innerText = m.message || "System under maintenance. Please wait.";
+                        if (banner) banner.style.display = 'flex';
+                    } else {
+                        if (banner) banner.style.display = 'none';
                     }
-                    if (lbl) {
-                        lbl.innerText = isAudioMuted ? "MUTED" : "SOUND";
-                        lbl.style.color = isAudioMuted ? "#ff3333" : "#2ecc71";
-                    }
+                });
+
+                window.pushMaintenanceStatus = function(isActive) {
+                    let msg = document.getElementById('adminMaintenanceMsgInput').value.trim() || "System under maintenance. Please check back soon.";
+                    maintenanceRef.set({ active: isActive, message: msg }).then(() => {
+                        showCustomAlert(`✅ Maintenance mode ${isActive ? 'ENABLED' : 'DISABLED'} successfully!`);
+                    });
                 };
 
                 let savedPermanentQr = localStorage.getItem("permanent_admin_qr_url") || "https://i.ibb.co/3yk54L2/1000532596.jpg";
@@ -819,10 +811,9 @@
                     historyList: [24, 14, 5, 22, 10, 3]
                 };
 
-                // 🌟 इंस्टेंट कैनवास और फ्रेम प्री-लोडर (ब्लैक फ्रेम या लैग हमेशा के लिए खत्म)
                 window.addEventListener('DOMContentLoaded', () => {
-                    drawCanvasWheel('loginWheelCanvasBg', 45, 15);
-                    drawCanvasWheel('lobbyWheelCanvas', 45, 14);
+                    drawCanvasWheel('loginWheelCanvasBg', 50, 15);
+                    drawCanvasWheel('lobbyWheelCanvas', 50, 14);
                     updateActiveQrDisplay();
 
                     let rememberedPhone = localStorage.getItem("royal_saved_user_phone");
@@ -1095,7 +1086,7 @@
 
                 window.playMasterAudio = function() {
                     let bgm = document.getElementById('bgmAudio');
-                    if (bgm && !isAudioMuted) { 
+                    if (bgm) { 
                         bgm.volume = 0.25; 
                         bgm.play().catch(e => {}); 
                     }
@@ -1405,23 +1396,23 @@
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 8, innerRadius = radiusSize || 45, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 6, innerRadius = radiusSize || 50, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     numbersList.forEach((num, i) => {
                         const angle = i * arcSize - Math.PI / 2;
                         let fillColor = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
                         ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
                         ctx.lineTo(cx, cy); ctx.fillStyle = fillColor; ctx.fill();
-                        ctx.lineWidth = 1.5; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+                        ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; 
                         ctx.font = `bold ${fontSize || 14}px Arial`;
                         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
                         ctx.shadowBlur = 6;
-                        ctx.fillText(num, outerRadius - 16, 4); ctx.restore();
+                        ctx.fillText(num, outerRadius - 14, 4); ctx.restore();
                     });
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#fff'; ctx.stroke();
+                    ctx.fillStyle = '#d4af37'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = '#fff'; ctx.stroke();
                 }
 
                 window.closeComingSoonModal = function() { 
@@ -1611,7 +1602,7 @@
                                 if (subEl) subEl.innerText = "NO MORE BETS (LOCKED)";
                                 if (timeLeft === 10) {
                                     let sfx = document.getElementById('betClosedSfx');
-                                    if(sfx && !isAudioMuted) sfx.play().catch(e => {});
+                                    if(sfx) sfx.play().catch(e => {});
                                     if (navigator.vibrate) navigator.vibrate(400);
                                 }
                             }
@@ -1645,7 +1636,7 @@
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";
                     
                     let ballRollAudio = document.getElementById('ballRollSfx');
-                    if (ballRollAudio && !isAudioMuted) {
+                    if (ballRollAudio) {
                         ballRollAudio.currentTime = 0;
                         ballRollAudio.volume = 0.8;
                         ballRollAudio.play().catch(e => {});
@@ -1661,7 +1652,7 @@
                     setTimeout(() => {
                         if (ballRollAudio) ballRollAudio.pause();
                         let ballDropAudio = document.getElementById('ballDropSfx');
-                        if (ballDropAudio && !isAudioMuted) {
+                        if (ballDropAudio) {
                             ballDropAudio.currentTime = 0;
                             ballDropAudio.volume = 1.0;
                             ballDropAudio.play().catch(e => {});

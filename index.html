@@ -808,7 +808,6 @@
                     }
                 });
 
-                // 🌟 लॉगिन पेज पर अल्ट्रा एचडी टिमटिमाते स्टार्स और कॉइन शॉवर एनीमेशन
                 function createLoginShowerParticles() {
                     const container = document.getElementById('loginScreenContainer');
                     if (!container) return;
@@ -1353,7 +1352,7 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 5% हाउसफुल का नया सटीक गणितीय फॉर्मूला (95% पूल रिटर्न)
+                // 🌟 5% हाउसफुल का सटीक गणितीय फॉर्मूला (95% पूल रिटर्न)
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1398,7 +1397,7 @@
                     document.getElementById('adminLiveTableModal').style.display = 'flex';
                 };
 
-                // 🌟 लॉबी व्हील सेंटर: C-Shape 'ROYAL' ऊपर, 'DIGITAL' नीचे, बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर चमकता स्टार
+                // 🌟 लॉबी व्हील सेंटर: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में रंग बदलता मल्टी-कलर स्टार
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
@@ -1419,11 +1418,9 @@
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
 
-                    // सेंटर गोल्ड हब बैकग्राउंड
                     ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
 
-                    // C-Shape 'ROYAL' (ऊपर) और 'DIGITAL' (नीचे)
                     ctx.save();
                     ctx.font = "900 12px 'Arial Black', sans-serif";
                     ctx.fillStyle = "#ffd700";
@@ -1458,22 +1455,22 @@
                     ctx.restore();
                     ctx.restore();
 
-                    // 🌟 बाएं (लेफ्ट) और दाएं (राइट) ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार
+                    // 🌟 बाएं और दाएं ग्रीन-व्हाइट स्टार्स + केंद्र में मल्टी-कलर चमकता स्टार
                     ctx.save();
                     ctx.font = "14px sans-serif";
                     ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
 
-                    // लेफ्ट स्टार (ग्रीन-व्हाइट ग्लो)
+                    // लेफ्ट स्टार (ग्रीन-व्हाइट)
                     ctx.fillStyle = "#2ecc71";
                     ctx.shadowColor = "#ffffff";
                     ctx.shadowBlur = 8;
                     ctx.fillText("★", cx - innerRadius + 14, cy);
 
-                    // राइट स्टार (ग्रीन-व्हाइट ग्लो)
+                    // राइट स्टार (ग्रीन-व्हाइट)
                     ctx.fillText("★", cx + innerRadius - 14, cy);
 
-                    // बीच में मल्टी-कलर चमकता हुआ बड़ा स्टार (रैंडम कलर इफ़ेक्ट)
+                    // केंद्र में मल्टी-कलर चमकता हुआ बड़ा स्टार (रंग बदलता हुआ)
                     let colors = ["#ffd700", "#00ffcc", "#ff0055", "#00ffff", "#ffea00"];
                     ctx.fillStyle = colors[Math.floor(Date.now() / 400) % colors.length];
                     ctx.shadowColor = "#fff";

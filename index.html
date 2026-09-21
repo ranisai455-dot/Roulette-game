@@ -35,12 +35,8 @@
             color: rgba(255, 215, 0, 0.08); pointer-events: none; z-index: 1;
         }
         
-        /* 🌟 लॉगिन पेज का व्हील: 3D, 4D, 5D, 8K अल्ट्रा एचडी क्लियर और चमकदार */
+        /* 🌟 लॉगिन पेज का व्हील: लابی والے وہیل کی ہو بہ ہو سیم سائز اور ڈیزائن */
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
-        #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
-        .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
-        .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 15px); width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 35px #fff, 0 0 55px #00ffcc, 0 0 90px #ffd700; }
         
         /* लॉगिन पेज पर टिमटिमाते हुए स्टार्स और सिक्के गिरते हुए (Shower Animation) */
         .login-shower-particle {
@@ -160,7 +156,7 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 लॉबी व्हील बॉक्स: बड़ा और भव्य */
+        /* 🌟 लॉबी व्हील और लॉगिन व्हील बॉक्स (एक जैसी साइज और स्टाइल) */
         .lobby-wheel-box { 
             position: relative; 
             width: 360px; 
@@ -404,7 +400,7 @@
         </div>
     </div>
 
-    <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
+    <!-- 🌟 लॉगिन पेज: लابی والے وہیل کی ہو بہ ho سیم سائز اور سنٹر ہب کے ساتھ -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
             <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>

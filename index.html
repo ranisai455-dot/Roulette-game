@@ -35,8 +35,12 @@
             color: rgba(255, 215, 0, 0.08); pointer-events: none; z-index: 1;
         }
         
-        /* 🌟 लॉगिन पेज का व्हील: लابی والے وہیل کی ہو بہ ہو سیم سائز اور ڈیزائن */
+        /* 🌟 लॉगिन पेज का व्हील: 3D, 4D, 5D, 8K अल्ट्रा एचडी क्लियर और चमकदार */
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
+        #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
+        .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
+        .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 15px); width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 35px #fff, 0 0 55px #00ffcc, 0 0 90px #ffd700; }
         
         /* लॉगिन पेज पर टिमटिमाते हुए स्टार्स और सिक्के गिरते हुए (Shower Animation) */
         .login-shower-particle {
@@ -156,7 +160,7 @@
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
 
-        /* 🌟 लॉबी व्हील और लॉगिन व्हील बॉक्स (एक जैसी साइज और स्टाइल) */
+        /* 🌟 लॉबी व्हील बॉक्स: बड़ा और भव्य */
         .lobby-wheel-box { 
             position: relative; 
             width: 360px; 
@@ -480,7 +484,7 @@
             <div id="historyBallsContainer" style="display: flex; gap: 3px;"></div>
         </div>
 
-        <!-- 🌟 लॉबी व्हील बॉक्स: छोटा और सटीक सेंटर हब -->
+        <!-- 🌟 लॉबी व्हील बॉक्स: C-Shape 'ROYAL' (ऊपर), 'DIGITAL' (नीचे), बाएं-दाएं ग्रीन-व्हाइट स्टार्स और बीच में मल्टी-कलर स्टार -->
         <div class="lobby-wheel-box" id="mainWheelContainer">
             <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
             <div class="wheel-center-graphic">
@@ -1407,24 +1411,51 @@
                         if (!isNaN(parsedNum)) return parsedNum;
                     }
 
-                    let totalTableBet = currentTotalBet || 100;
+                    let totalTableBet = currentTotalBet || 0;
+                    if (totalTableBet === 0) {
+                        return numbersList[Math.abs(roundId) % numbersList.length];
+                    }
+
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; 
+                    let safePayoutPool = totalTableBet - houseCut; // 95% of total bets
 
                     let validSafeNumbers = [];
+                    let allNumberPayouts = {};
+
                     numbersList.forEach(num => {
-                        let neededPayout = (userActiveBets[num.toString()] || 0) * (num === 0 ? 36 : 2);
-                        if (neededPayout <= safePayoutPool || neededPayout === 0) {
-                            validSafeNumbers.push(num);
+                        let payout = 0;
+                        let isRed = redList.includes(num);
+                        for (let key in userActiveBets) {
+                            let amt = userActiveBets[key];
+                            if (key === num.toString()) {
+                                payout += amt * 36;
+                            } else if (key === 'red' && isRed) {
+                                payout += amt * 2;
+                            } else if (key === 'black' && !isRed && num !== 0) {
+                                payout += amt * 2;
+                            }
+                        }
+                        allNumberPayouts[num] = payout;
+                        if (payout <= safePayoutPool) {
+                            validSafeNumbers.push({ num: num, payout: payout });
                         }
                     });
 
                     if (validSafeNumbers.length === 0) {
-                        validSafeNumbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34];
+                        let minNum = numbersList[0];
+                        let minPayout = Infinity;
+                        for (let num in allNumberPayouts) {
+                            if (allNumberPayouts[num] < minPayout) {
+                                minPayout = allNumberPayouts[num];
+                                minNum = parseInt(num);
+                            }
+                        }
+                        return minNum;
                     }
 
-                    let chosenWinner = validSafeNumbers[Math.abs((roundId * 397 + Math.floor(Date.now() / 1000)) % validSafeNumbers.length)];
-                    return chosenWinner;
+                    validSafeNumbers.sort((a, b) => b.payout - a.payout);
+                    let selectedIndex = Math.abs(roundId * 13) % validSafeNumbers.length;
+                    return validSafeNumbers[selectedIndex].num;
                 }
 
                 window.openAdminLiveTableModal = function() {
@@ -1462,67 +1493,6 @@
                         ctx.shadowBlur = 6;
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
                     });
-
-                    ctx.beginPath(); ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#051c0b'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#ffd700'; ctx.stroke();
-
-                    ctx.save();
-                    ctx.font = "900 12px 'Arial Black', sans-serif";
-                    ctx.fillStyle = "#ffd700";
-                    ctx.shadowColor = "#ffea00";
-                    ctx.shadowBlur = 8;
-                    ctx.textAlign = "center";
-
-                    // ऊपर 'ROYAL'
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(-Math.PI / 2);
-                    let royalText = "ROYAL";
-                    for (let j = 0; j < royalText.length; j++) {
-                        ctx.save();
-                        ctx.rotate((j - 2) * 0.22);
-                        ctx.fillText(royalText[j], 0, -innerRadius + 14);
-                        ctx.restore();
-                    }
-                    ctx.restore();
-
-                    // नीचे 'DIGITAL'
-                    ctx.save();
-                    ctx.translate(cx, cy);
-                    ctx.rotate(Math.PI / 2);
-                    let digitalText = "DIGITAL";
-                    for (let j = 0; j < digitalText.length; j++) {
-                        ctx.save();
-                        ctx.rotate((j - 3) * 0.18);
-                        ctx.fillText(digitalText[j], 0, -innerRadius + 14);
-                        ctx.restore();
-                    }
-                    ctx.restore();
-                    ctx.restore();
-
-                    // 🌟 बाएं और दाएं ग्रीन-व्हाइट स्टार्स + केंद्र में मल्टी-कलर चमकता स्टार
-                    ctx.save();
-                    ctx.font = "14px sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-
-                    // लेफ्ट स्टार (ग्रीन-व्हाइट)
-                    ctx.fillStyle = "#2ecc71";
-                    ctx.shadowColor = "#ffffff";
-                    ctx.shadowBlur = 8;
-                    ctx.fillText("★", cx - innerRadius + 14, cy);
-
-                    // राइट स्टार (ग्रीन-व्हाइट)
-                    ctx.fillText("★", cx + innerRadius - 14, cy);
-
-                    // केंद्र में मल्टी-कलर चमकता हुआ बड़ा स्टार (रंग बदलता हुआ)
-                    let colors = ["#ffd700", "#00ffcc", "#ff0055", "#00ffff", "#ffea00"];
-                    ctx.fillStyle = colors[Math.floor(Date.now() / 400) % colors.length];
-                    ctx.shadowColor = "#fff";
-                    ctx.shadowBlur = 20;
-                    ctx.font = "22px sans-serif";
-                    ctx.fillText("★", cx, cy);
-                    ctx.restore();
                 }
 
                 window.closeComingSoonModal = function() { 

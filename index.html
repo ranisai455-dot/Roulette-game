@@ -407,7 +407,7 @@
     <!-- 🌟 लॉगिन पेज: 3D/4K/8K अल्ट्रा एचडी व्हील, घूमती गेंद और टिमटिमाते स्टार्स का शॉवर -->
     <div id="fullscreenWheelBg">
         <div class="bg-wheel-wrap">
-            <canvas id="loginWheelCanvasBg" width="450" height="450"></canvas>
+            <canvas id="loginWheelCanvasBg" width="440" height="440"></canvas>
             <div class="bg-ball-orbit"></div>
             <div class="wheel-center-graphic">
                 <div class="hub-text-royal">ROYAL</div>
@@ -1200,7 +1200,7 @@
                         }
 
                         if (!matchedPhone) {
-                            feedbackEl.innerHTML = "<span style='color:#e74c3c;>❌ Failed: User ID/Mobile not found!</span>";
+                            feedbackEl.innerHTML = "<span style='color:#e74c3c;'>❌ Failed: User ID/Mobile not found!</span>";
                             return;
                         }
 
@@ -1402,7 +1402,7 @@
                     return Math.floor(nowSec / ROUND_TIME);
                 }
 
-                // 🌟 ग्लोबल राउंड बेट्स लिसनर (यहाँ सारे ऑनलाइन प्लेयर्स के लाइव बेट्स सिंक होते हैं)
+                // 🌟 ग्लोबल राउंड बेट्स लिसनर (लाइव सिंकिंग)
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1411,7 +1411,6 @@
                         currentTotalBet = 0;
                         userActiveBets = {};
 
-                        // सभी ऑनलाइन प्लेयर्स के बेट्स को जोड़कर ग्लोबल पूल बनाना
                         Object.values(allBetsData).forEach(playerBets => {
                             if (playerBets) {
                                 Object.keys(playerBets).forEach(key => {
@@ -1427,7 +1426,7 @@
                     });
                 }
 
-                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन (ग्लोबल पूल आधारित)
+                // 🌟 5% हाउसफुल / 95% पूल रिटर्न इंजन
                 function getSmartWinnerForRound(roundId) {
                     let currentRigSetting = window.globalState.adminRig;
                     if (currentRigSetting !== "random") {
@@ -1443,7 +1442,7 @@
                     }
 
                     let houseCut = totalTableBet * 0.05; 
-                    let safePayoutPool = totalTableBet - houseCut; // 95% of global pool
+                    let safePayoutPool = totalTableBet - houseCut; 
 
                     let validSafeNumbers = [];
                     let allNumberPayouts = {};
@@ -1627,7 +1626,6 @@
                         realCoins = newBal;
                         updateBalancesDisplay();
 
-                        // डेटाबेस पर यूजर का बैलेंस और इस राउंड का बेट लाइव सिंक करें
                         usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                         
                         let playerRoundBetRef = masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone + "/" + key);
@@ -1801,16 +1799,11 @@
                                 usersRef.child(loggedUserPhone).once("value", (snap) => {
                                     let currentBal = (snap.exists() && snap.val().balance) ? parseInt(snap.val().balance) : 0;
                                     let newUpdatedBal = currentBal + totalWon;
-                                    let vipId = (snap.val() && snap.val().vipId) ? snap.val().vipId : ("RD00" + loggedUserPhone.slice(-4));
-                                    let mpinVal = (snap.val() && snap.val().mpin) ? snap.val().mpin : "1234";
-
-                                    usersRef.child(loggedUserPhone).set({
-                                        phone: loggedUserPhone,
-                                        vipId: vipId,
+                                    
+                                    usersRef.child(loggedUserPhone).update({ 
                                         balance: newUpdatedBal,
-                                        mpin: mpinVal,
-                                        adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED",
-                                        turnover: totalUserTurnover
+                                        turnover: totalUserTurnover,
+                                        adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
                                     }).then(() => {
                                         realCoins = newUpdatedBal;
                                         updateBalancesDisplay();

@@ -38,15 +38,10 @@
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         
-        /* 👑 लॉगिन पेज व्हील: हल्का फेदर और क्लियर-टू-डिम (Dim/Clear Pulse) इफ़ेक्ट */
+        /* 👑 लॉगिन पेज व्हील: 100% क्रिस्टल क्लियर, शार्प और हाई-क्वालिटी */
         #loginWheelCanvasBg { 
             width: 450px; height: 450px; border-radius: 50%; display: block; 
-            animation: wheelClearDimPulse 5s ease-in-out infinite; 
-            filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); 
-        }
-        @keyframes wheelClearDimPulse {
-            0%, 100% { opacity: 0.95; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
-            50% { opacity: 0.35; filter: drop-shadow(0 0 15px rgba(255,215,0,0.5)) brightness(0.85) blur(1.2px); }
+            filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.5) contrast(1.4); 
         }
 
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
@@ -796,9 +791,13 @@
             reconnectionDelay: 1000
         });
 
+        // 👑 सॉकेट रीकनेक्शन ऑथेंटिकेशन फिक्स (सेशन हमेशा लाइव रहेगा)
         socket.on('connect', () => {
             let statusBox = document.getElementById('lobbyStatusMsg');
             if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
+            if (loggedUserPhone) {
+                socket.emit('authenticate_socket', { phone: loggedUserPhone });
+            }
         });
         socket.on('disconnect', () => {
             let statusBox = document.getElementById('lobbyStatusMsg');
@@ -836,7 +835,7 @@
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
                 let activeRoundId = 0;
-                let processedResultRoundId = null; // 👑 डुप्लीकेट प्रिवेंशन गार्ड
+                let processedResultRoundId = null; 
 
                 let userDepositScreenshotData = "";
                 let userWithdrawQrData = "";
@@ -906,11 +905,10 @@
                     }
                 });
 
-                // 👑 101% परफेक्ट सिंक: Firebase सिंगल सोर्स ऑफ़ ट्रूथ से रिजल्ट सुनना
                 activeResultRef.on("value", (snap) => {
                     let res = snap.val();
                     if (!res) return;
-                    if (processedResultRoundId === res.roundId) return; // अगर इस राउंड का रिजल्ट पहले ही दिखा चुके हैं, तो दोबारा मत दिखाओ
+                    if (processedResultRoundId === res.roundId) return;
                     
                     processedResultRoundId = res.roundId;
                     executeClientGlobalSpinAnimation(res.winningNum, res.roundId);
@@ -1090,7 +1088,6 @@
                     loadPlayerPassbook(phone);
                 }
 
-                // 🟢 लाइव पासबुक लोड करने का फंक्शन
                 function loadPlayerPassbook(phone) {
                     if (!phone) return;
                     let ledgerRef = usersRef.child(phone + "/ledger");
@@ -1279,7 +1276,6 @@
                             if (newBalance < 0) newBalance = 0;
                         }
 
-                        // लेजर में दर्ज करें
                         usersRef.child(matchedPhone + "/ledger").push({
                             amount: actionType === 'add' ? amount : -amount,
                             sourceType: actionType === 'add' ? 'ADMIN_CREDIT' : 'ADMIN_DEBIT',
@@ -1489,6 +1485,7 @@
                     });
                 };
 
+                // 👑 लाइव बेट्स लिसनर और UI सिंक (बटन हाइलाइट और बैज रेंडरर)
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1509,6 +1506,30 @@
                                     myActiveBets[key] = (myActiveBets[key] || 0) + amt;
                                 }
                             });
+                        });
+
+                        document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
+                            c.classList.remove('has-bet');
+                            let b = c.querySelector('.cell-badge');
+                            if (b) b.remove();
+                        });
+
+                        Object.keys(myActiveBets).forEach(key => {
+                            let amt = myActiveBets[key];
+                            let cell = null;
+                            if (key === 'red') cell = document.getElementById('btnColorRed');
+                            else if (key === 'black') cell = document.getElementById('btnColorBlack');
+                            else if (key === '0') cell = document.getElementById('btnColorGreen');
+                            else {
+                                cell = Array.from(document.querySelectorAll('.table-cell')).find(el => el.innerText.trim() === key);
+                            }
+
+                            if (cell) {
+                                cell.classList.add('has-bet');
+                                let b = cell.querySelector('.cell-badge');
+                                if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
+                                b.innerText = amt;
+                            }
                         });
 
                         let totalBetEl = document.getElementById('lobbyTotalBet');
@@ -1628,10 +1649,10 @@
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
 
-                    // सॉकेट ऑथेंटिकेशन बाइंडिंग
                     socket.emit('authenticate_socket', { phone: phone });
 
                     bindUserCloudWallet(phone);
+                    setupGlobalRoundBetsListener(activeRoundId); // 👑 लॉगिन पर तुरंत लिसनर बाइंड हो गया
                     startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
                     if (!isAutoLogin) playMasterAudio();
                 }
@@ -1666,7 +1687,7 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 सर्वर-ऑथोरिटेटिव सिक्योर बेटिंग (एंटी-चीट)
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड)
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
@@ -1680,15 +1701,12 @@
                         });
 
                         socket.once('bet_response', (resp) => {
-                            if (resp.success) {
+                            if (resp && resp.success) {
                                 totalUserTurnover += currentActiveChip;
                                 realCoins = resp.newBalance;
                                 updateBalancesDisplay();
-
-                                betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                                if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
                             } else {
-                                showCustomAlert(resp.msg || "Bet failed!");
+                                showCustomAlert((resp && resp.msg) || "Bet failed!");
                             }
                         });
                     } else { 
@@ -1699,42 +1717,53 @@
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
                         betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                        if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
+                        if (el) { 
+                            el.classList.add('has-bet'); 
+                            let b = el.querySelector('.cell-badge'); 
+                            if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
+                            b.innerText = myActiveBets[key]; 
+                        }
                     }
                 };
 
+                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सिंगल बैच रिक्वेस्ट फिक्स
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
+                    
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
-                        // ग्रुप बेट के लिए हर नंबर पर अलग से सिक्योर रिक्वेस्ट भेजें
-                        numbersArray.forEach(num => {
-                            socket.emit('place_secure_bet', { key: num.toString(), amount: currentActiveChip, roundId: activeRoundId });
+                        socket.emit('place_secure_group_bet', {
+                            numbers: numbersArray,
+                            amountPerNum: currentActiveChip,
+                            roundId: activeRoundId
                         });
 
-                        totalUserTurnover += totalNeeded;
-                        realCoins -= totalNeeded;
-                        updateBalancesDisplay();
+                        socket.once('group_bet_response', (resp) => {
+                            if (resp && resp.success) {
+                                totalUserTurnover += totalNeeded;
+                                realCoins = resp.newBalance;
+                                updateBalancesDisplay();
+                            } else {
+                                showCustomAlert((resp && resp.msg) || "Group bet failed!");
+                            }
+                        });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
-                        numbersArray.forEach(num => {
-                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
-                        });
+                        numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
                         currentTotalBet += totalNeeded;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                        if (el) el.classList.add('has-bet');
                     }
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
-                    if (el) el.classList.add('has-bet');
                 };
 
                 window.clearTableBets = function() {
                     if (isGameSpinning || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        // सर्वर-साइड बैट के बाद क्लियर करने पर एडमिन से संपर्क करने का नोटिस
                         showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
                     } else {
                         testCoins += last.amount;
@@ -1742,7 +1771,6 @@
                     }
                 };
 
-                // टाइमर अपडेट लिसनर (Firebase Cloud Sync)
                 masterRoot.child("game_state/timer").on("value", (snap) => {
                     let timerData = snap.val();
                     if (!timerData) return;

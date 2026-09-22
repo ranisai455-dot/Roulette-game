@@ -79,17 +79,17 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            let { key, amount, roundId } = data;
+            let { key, amount } = data;
             if (!key || !amount || amount <= 0) return;
 
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 10) return;
+            if (now - lastTime < 15) return;
             userRateLimitMap.set(socket.id, now);
 
+            // 👑 सर्वर-ऑथोरिटेटिव राउंड कैलकुलेशन (क्लॉक ड्रिफ्ट समस्या हमेशा के लिए खत्म)
             let currentSec = Math.floor(Date.now() / 1000);
-            let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+            let targetRound = Math.floor(currentSec / ROUND_TIME);
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
             if (timeLeft <= 3) {
@@ -136,13 +136,12 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            let { numbers, amountPerNum, roundId } = data;
+            let { numbers, amountPerNum } = data;
             if (!numbers || !numbers.length || !amountPerNum || amountPerNum <= 0) return;
 
             let totalAmount = amountPerNum * numbers.length;
             let currentSec = Math.floor(Date.now() / 1000);
-            let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+            let targetRound = Math.floor(currentSec / ROUND_TIME);
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
             if (timeLeft <= 3) {

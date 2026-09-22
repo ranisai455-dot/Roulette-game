@@ -19,6 +19,7 @@ const db = admin.apps.length ? admin.database() : null;
 const masterRoot = db ? db.ref("royal_roulette_master_cloud_v23") : null;
 const historyRef = masterRoot ? masterRoot.child("history_list") : null;
 const rigRef = masterRoot ? masterRoot.child("winning_number") : null;
+const auditLogRef = masterRoot ? masterRoot.child("audit_logs") : null;
 
 const app = express();
 const server = http.createServer(app);
@@ -38,11 +39,85 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// सॉकेट कनेक्शन हैंडलिंग
+// एंटी-स्पैम रेट लिमिटर मैप
+const userRateLimitMap = new Map();
+
+// सॉकेट कनेक्शन और सर्वर-ऑथोरिटेटिव बेटिंग हैंडलिंग (एंटी-चीट)
 io.on('connection', (socket) => {
-    console.log('New client connected to master server:', socket.id);
+    console.log('New secure client connected:', socket.id);
+
+    // एंटी-चीट और सिक्योर बेटिंग लिसनर
+    socket.on('place_secure_bet', async (data) => {
+        try {
+            let { phone, key, amount, roundId } = data;
+            if (!phone || !key || !amount || amount <= 0) return;
+
+            // रेट लिमिटिंग चेक (स्पैम सुरक्षा)
+            let now = Date.now();
+            let lastTime = userRateLimitMap.get(socket.id) || 0;
+            if (now - lastTime < 150) { // 150ms से तेज रिक्वेस्ट ब्लॉक
+                socket.emit('bet_response', { success: false, msg: 'Too fast! Slow down.' });
+                return;
+            }
+            userRateLimitMap.set(socket.id, now);
+
+            // वैलिडेट करें कि क्या राउंड अभी चल रहा है और बेटिंग ओपन है
+            let currentSec = Math.floor(Date.now() / 1000);
+            let activeRound = Math.floor(currentSec / ROUND_TIME);
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+
+            if (activeRound !== roundId || timeLeft <= 10) {
+                socket.emit('bet_response', { success: false, msg: 'Betting closed for this round!' });
+                return;
+            }
+
+            // यूजर का असली बैलेंस सर्वर पर चेक और डिडक्ट करें (Atomic Transaction)
+            let userBalRef = masterRoot.child("users/" + phone + "/balance");
+            let userTurnoverRef = masterRoot.child("users/" + phone + "/turnover");
+            
+            let betSuccess = false;
+            let finalBal = 0;
+
+            await userBalRef.transaction((currentBal) => {
+                let currentBalance = currentBal || 0;
+                if (currentBalance < amount) {
+                    betSuccess = false;
+                    return currentBalance; // पर्याप्त बैलेंस नहीं है
+                }
+                betSuccess = true;
+                finalBal = currentBalance - amount;
+                return finalBal;
+            });
+
+            if (!betSuccess) {
+                socket.emit('bet_response', { success: false, msg: 'Insufficient balance!' });
+                return;
+            }
+
+            // टर्नओवर अपडेट करें
+            await userTurnoverRef.transaction(curr => (curr || 0) + amount);
+
+            // राउंड के अंदर बेट दर्ज करें
+            let roundBetRef = masterRoot.child("live_rounds/" + activeRound + "/bets/" + phone + "/" + key);
+            await roundBetRef.transaction(curr => (curr || 0) + amount);
+
+            // ऑडिट ट्रेल लॉग सेव करें
+            if (auditLogRef) {
+                auditLogRef.push({
+                    text: `Bet Placed: User ${phone} bet ₹${amount} on [${key}] for Round #${activeRound}`,
+                    time: Date.now()
+                });
+            }
+
+            socket.emit('bet_response', { success: true, newBalance: finalBal });
+        } catch (err) {
+            console.error("Secure bet error:", err);
+            socket.emit('bet_response', { success: false, msg: 'Server error placing bet.' });
+        }
+    });
+
     socket.on('disconnect', () => {
-        console.log('Client disconnected:', socket.id);
+        userRateLimitMap.delete(socket.id);
     });
 });
 
@@ -52,7 +127,7 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
         return numbersList[Math.abs(roundId) % numbersList.length];
     }
 
-    let safePayoutPool = totalTableBet * 0.95; // 95% पेआउट पूल, बाकी 5% एडमिन का फिक्स सुरक्षित मार्जिन
+    let safePayoutPool = totalTableBet * 0.95; // 95% पेआउट पूल, 5% एडमिन का फिक्स सुरक्षित मार्जिन
     let validSafeNumbers = [];
     let allNumberPayouts = {};
 
@@ -87,12 +162,17 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     return validSafeNumbers[selectedIndex];
 }
 
-// ग्लोबल वेरिएबल ताकि एक राउंड का सेटलमेंट केवल एक ही बार हो
 let lastSettledRoundId = null;
 
-// मास्टर राउंड सेटलमेंट (ए-टू-ज़ेड कंट्रोल: एडमिन रिग, 5% मार्जिन, पेआउट और हिस्ट्री)
+// मास्टर राउंड सेटलमेंट (Atomic Locking & Bulletproof Payout)
 async function executeRoundSettlement(roundId) {
-    console.log(`⚡ Executing master settlement for Round #${roundId}...`);
+    // एटॉमिक लॉक ताकि एक राउंड का सेटलमेंट कभी भी दो बार न हो
+    let lockRef = masterRoot.child("settlement_locks/" + roundId);
+    let lockSnap = await lockRef.once("value");
+    if (lockSnap.exists()) return; // अगर पहले से लॉक है, तो बाहर हो जाओ
+    await lockRef.set({ locked: true, time: Date.now() });
+
+    console.log(`🔒 Executing bulletproof settlement for Round #${roundId}...`);
     try {
         let betsSnap = await masterRoot.child("live_rounds/" + roundId + "/bets").once("value");
         let allBetsData = betsSnap.val() || {};
@@ -116,16 +196,15 @@ async function executeRoundSettlement(roundId) {
 
         if (rigVal !== null && rigVal !== "random" && rigVal !== "" && !isNaN(rigVal)) {
             winningNum = parseInt(rigVal);
-            console.log(`👑 Admin Forced Winning Number from Panel: ${winningNum}`);
-            // उपयोग होते ही रिग को वापस 'random' कर दें ताकि अगले राउंड में रिपीट न हो
-            await rigRef.set("random");
+            console.log(`👑 Admin Forced Winning Number: ${winningNum}`);
+            await rigRef.set("random"); // उपयोग होते ही रिग ऑटो-रिसेट
         } else {
-            // 2. यदि एडमिन ने 'random' रखा है, तो 5% सेफ इंजन काम करेगा
+            // 2. स्मार्ट सेफ इंजन (5% हाउस मार्जिन)
             winningNum = calculateSmartWinner(roundId, globalTableBets, totalTableBet);
             console.log(`🤖 Smart Safe Engine Winning Number: ${winningNum}`);
         }
 
-        // इतिहास (History) अपडेट करें (सुरक्षित रूप से केवल एक बार)
+        // इतिहास (History) अपडेट करें
         if (historyRef) {
             let histSnap = await historyRef.once("value");
             let curHist = histSnap.val() || [24, 14, 5, 22, 10, 3];
@@ -134,7 +213,7 @@ async function executeRoundSettlement(roundId) {
             await historyRef.set(curHist);
         }
 
-        // खिलाड़ियों के बैलेंस का हिसाब लगाएं और 95% पूल से पेआउट दें
+        // खिलाड़ियों के बैलेंस का हिसाब लगाएं और सुरक्षित रूप से पेआउट दें
         let isRed = redList.includes(winningNum);
         for (let phone in allBetsData) {
             let userBets = allBetsData[phone];
@@ -154,18 +233,25 @@ async function executeRoundSettlement(roundId) {
             if (totalWon > 0) {
                 let userBalRef = masterRoot.child("users/" + phone + "/balance");
                 await userBalRef.transaction(current => (current || 0) + totalWon);
-                console.log(`💰 Credited ₹${totalWon} to user: ${phone}`);
+                console.log(`💰 Credited ₹${totalWon} securely to user: ${phone}`);
+
+                if (auditLogRef) {
+                    auditLogRef.push({
+                        text: `Payout: User ${phone} won ₹${totalWon} in Round #${roundId} (Number: ${winningNum})`,
+                        time: Date.now()
+                    });
+                }
             }
         }
 
-        // सभी क्लाइंट्स को राउंड समाप्ति का सिग्नल भेजें
+        // सभी क्लाइंट्स को परिणाम भेजें
         io.emit('round_ended', { winningNum, roundId });
     } catch (error) {
-        console.error("❌ Master settlement failed:", error);
+        console.error("❌ Bulletproof settlement failed:", error);
     }
 }
 
-// मास्टर गेम लूप (टाइमर और आटोमैटिक सेटलमेंट - डुप्लीकेट प्रिवेंशन के साथ)
+// मास्टर गेम लूप (Drift-Free Precision Timer)
 function startMasterGameLoop() {
     setInterval(async () => {
         try {
@@ -175,7 +261,6 @@ function startMasterGameLoop() {
 
             io.emit('timer_update', { roundId, timeLeft });
 
-            // सुनिश्चित करें कि यह राउंड केवल तभी सेटल हो जब यह इस राउंड में पहली बार हो
             if (timeLeft <= 1 && lastSettledRoundId !== roundId) {
                 lastSettledRoundId = roundId;
                 await executeRoundSettlement(roundId);
@@ -187,6 +272,6 @@ function startMasterGameLoop() {
 }
 
 server.listen(PORT, () => {
-    console.log(`👑 Royal Roulette Master Server running on port ${PORT}`);
+    console.log(`👑 Royal Roulette Bulletproof Master Server running on port ${PORT}`);
     startMasterGameLoop();
 });

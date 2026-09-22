@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
 
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 50) return;
+            if (now - lastTime < 30) return;
             userRateLimitMap.set(socket.id, now);
 
             let currentSec = Math.floor(Date.now() / 1000);
@@ -125,6 +125,63 @@ io.on('connection', (socket) => {
         } catch (err) {
             console.error("Bet error:", err);
             socket.emit('bet_response', { success: false, msg: 'Server error placing bet.' });
+        }
+    });
+
+    // 👑 ग्रुप बेट्स के लिए सिंगल बैच रिक्वेस्ट हैंडलर (रेट-लिमिटर से बचने हेतु)
+    socket.on('place_secure_group_bet', async (data) => {
+        try {
+            let verifiedPhone = activeSocketSessions.get(socket.id);
+            if (!verifiedPhone) {
+                socket.emit('group_bet_response', { success: false, msg: 'Session expired! Re-login.' });
+                return;
+            }
+
+            let { numbers, amountPerNum, roundId } = data;
+            if (!numbers || !numbers.length || !amountPerNum || amountPerNum <= 0) return;
+
+            let totalAmount = amountPerNum * numbers.length;
+            let currentSec = Math.floor(Date.now() / 1000);
+            let activeRound = Math.floor(currentSec / ROUND_TIME);
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+
+            if (timeLeft <= 5) {
+                socket.emit('group_bet_response', { success: false, msg: 'Betting closed for this round!' });
+                return;
+            }
+
+            let userBalRef = usersRef.child(verifiedPhone + "/balance");
+            let betSuccess = false;
+            let finalBal = 0;
+
+            await userBalRef.transaction((currentBal) => {
+                let currentBalance = currentBal || 0;
+                if (currentBalance < totalAmount) {
+                    betSuccess = false;
+                    return currentBalance;
+                }
+                betSuccess = true;
+                finalBal = currentBalance - totalAmount;
+                return finalBal;
+            });
+
+            if (!betSuccess) {
+                socket.emit('group_bet_response', { success: false, msg: 'Insufficient balance for group bet!' });
+                return;
+            }
+
+            await recordCoinLedger(verifiedPhone, -totalAmount, 'BET_PLACED', `Group Bet total ₹${totalAmount}`);
+            
+            for (let num of numbers) {
+                let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + verifiedPhone + "/" + num);
+                await roundBetRef.transaction(curr => (curr || 0) + amountPerNum);
+            }
+
+            socket.emit('group_bet_response', { success: true, newBalance: finalBal });
+        } catch (err) {
+            console.error("Group bet error:", err);
+            socket.emit('group_bet_response', { success: false, msg: 'Server error placing group bet.' });
         }
     });
 

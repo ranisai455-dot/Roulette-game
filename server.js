@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 
 // Render के एनवायरनमेंट वेरिएबल से Firebase सुरक्षित रूप से लोड करना
@@ -25,9 +24,9 @@ const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : 
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: { origin: "*" }
-});
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const ROUND_TIME = 120; // 120 सेकंड (2 मिनट)
@@ -35,9 +34,6 @@ const MASTER_ADMIN_PHONE = "8889865182";
 
 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
-
-const activeSocketSessions = new Map();
-const userRateLimitMap = new Map();
 
 async function recordCoinLedger(phone, amount, sourceType, description) {
     try {
@@ -53,128 +49,88 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
-
-    socket.on('authenticate_socket', (data) => {
-        let { phone } = data;
-        if (phone) {
-            activeSocketSessions.set(socket.id, phone);
+// 🟢 1. डायरेक्ट HTTP API: सिक्योर रियल मनी बेटिंग
+app.post('/api/place-bet', async (req, res) => {
+    try {
+        let { phone, key, amount, roundId } = req.body;
+        if (!phone || !key || !amount || amount <= 0) {
+            return res.json({ success: false, msg: 'Invalid parameters.' });
         }
-    });
 
-    // 🟢 रियल मनी सिक्योर बेटिंग (राउंड आईडी फिक्स्ड)
-    socket.on('place_secure_bet', async (data, callback) => {
-        try {
-            let verifiedPhone = activeSocketSessions.get(socket.id);
-            if (!verifiedPhone) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Session expired! Re-login.' });
-                return;
-            }
+        let currentSec = Math.floor(Date.now() / 1000);
+        let activeRound = Math.floor(currentSec / ROUND_TIME);
+        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
 
-            let { key, amount, roundId } = data;
-            if (!key || !amount || amount <= 0) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Invalid bet parameters.' });
-                return;
-            }
-
-            let now = Date.now();
-            let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 50) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Too fast! Slow down.' });
-                return;
-            }
-            userRateLimitMap.set(socket.id, now);
-
-            let currentSec = Math.floor(Date.now() / 1000);
-            let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
-
-            // यदि राउंड आईडी 0 या मिसमैच हो, तो करंट एक्टिव राउंड मान लें
-            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
-
-            if (timeLeft <= 5) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Betting closed for this round!' });
-                return;
-            }
-
-            let userBalRef = usersRef.child(verifiedPhone + "/balance");
-            let betSuccess = false;
-            let finalBal = 0;
-
-            await userBalRef.transaction((currentBal) => {
-                let currentBalance = currentBal || 0;
-                if (currentBalance < amount) {
-                    betSuccess = false;
-                    return currentBalance;
-                }
-                betSuccess = true;
-                finalBal = currentBalance - amount;
-                return finalBal;
-            });
-
-            if (!betSuccess) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Insufficient balance!' });
-                return;
-            }
-
-            await recordCoinLedger(verifiedPhone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
-            let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + verifiedPhone + "/" + key);
-            await roundBetRef.transaction(curr => (curr || 0) + amount);
-
-            if (typeof callback === 'function') {
-                callback({ success: true, newBalance: finalBal, roundId: targetRound });
-            }
-        } catch (err) {
-            console.error("Bet error:", err);
-            if (typeof callback === 'function') callback({ success: false, msg: 'Server error placing bet.' });
+        if (timeLeft <= 5) {
+            return res.json({ success: false, msg: 'Betting closed for this round!' });
         }
-    });
 
-    // 🟢 रियल मनी अंडू / क्लियर (Undo/Refund Handler)
-    socket.on('cancel_secure_bet', async (data, callback) => {
-        try {
-            let verifiedPhone = activeSocketSessions.get(socket.id);
-            if (!verifiedPhone) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Session expired.' });
-                return;
+        let userBalRef = usersRef.child(phone + "/balance");
+        let betSuccess = false;
+        let finalBal = 0;
+
+        await userBalRef.transaction((currentBal) => {
+            let currentBalance = currentBal || 0;
+            if (currentBalance < amount) {
+                betSuccess = false;
+                return currentBalance;
             }
-            let { key, amount, roundId } = data;
-            let currentSec = Math.floor(Date.now() / 1000);
-            let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
-            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+            betSuccess = true;
+            finalBal = currentBalance - amount;
+            return finalBal;
+        });
 
-            if (timeLeft <= 5) {
-                if (typeof callback === 'function') callback({ success: false, msg: 'Cannot clear. Betting closed!' });
-                return;
-            }
-
-            let userBalRef = usersRef.child(verifiedPhone + "/balance");
-            let finalBal = 0;
-            await userBalRef.transaction((currentBal) => {
-                finalBal = (currentBal || 0) + amount;
-                return finalBal;
-            });
-
-            let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + verifiedPhone + "/" + key);
-            await roundBetRef.transaction((curr) => {
-                let val = (curr || 0) - amount;
-                return val > 0 ? val : null;
-            });
-
-            await recordCoinLedger(verifiedPhone, amount, 'BET_CANCELLED', `Cancelled bet on [${key}] for ₹${amount}`);
-
-            if (typeof callback === 'function') callback({ success: true, newBalance: finalBal });
-        } catch(e) {
-            if (typeof callback === 'function') callback({ success: false, msg: 'Error cancelling bet.' });
+        if (!betSuccess) {
+            return res.json({ success: false, msg: 'Insufficient balance!' });
         }
-    });
 
-    socket.on('disconnect', () => {
-        activeSocketSessions.delete(socket.id);
-        userRateLimitMap.delete(socket.id);
-    });
+        await recordCoinLedger(phone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
+        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
+        await roundBetRef.transaction(curr => (curr || 0) + amount);
+
+        return res.json({ success: true, newBalance: finalBal, roundId: targetRound });
+    } catch (err) {
+        console.error("Bet API error:", err);
+        return res.json({ success: false, msg: 'Server error placing bet.' });
+    }
+});
+
+// 🟢 2. डायरेक्ट HTTP API: बेट कैंसिल / अंडू (Undo & Refund)
+app.post('/api/cancel-bet', async (req, res) => {
+    try {
+        let { phone, key, amount, roundId } = req.body;
+        if (!phone || !key || !amount) {
+            return res.json({ success: false, msg: 'Invalid parameters.' });
+        }
+
+        let currentSec = Math.floor(Date.now() / 1000);
+        let activeRound = Math.floor(currentSec / ROUND_TIME);
+        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+
+        if (timeLeft <= 5) {
+            return res.json({ success: false, msg: 'Cannot undo. Betting closed!' });
+        }
+
+        let userBalRef = usersRef.child(phone + "/balance");
+        let finalBal = 0;
+        await userBalRef.transaction((currentBal) => {
+            finalBal = (currentBal || 0) + amount;
+            return finalBal;
+        });
+
+        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
+        await roundBetRef.transaction((curr) => {
+            let val = (curr || 0) - amount;
+            return val > 0 ? val : null;
+        });
+
+        await recordCoinLedger(phone, amount, 'BET_CANCELLED', `Cancelled bet on [${key}] for ₹${amount}`);
+        return res.json({ success: true, newBalance: finalBal });
+    } catch (e) {
+        return res.json({ success: false, msg: 'Error cancelling bet.' });
+    }
 });
 
 function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
@@ -277,7 +233,6 @@ async function executeRoundSettlement(roundId) {
             winningNum: winningNum,
             timestamp: Date.now()
         });
-        io.emit('round_ended', { winningNum, roundId });
 
         setTimeout(async () => {
             if (historyRef) {
@@ -308,8 +263,6 @@ function startMasterGameLoop() {
                 gameStateRef.child("timer").set({ roundId, timeLeft });
             }
 
-            io.emit('timer_update', { roundId, timeLeft });
-
             if (timeLeft <= 1) {
                 await executeRoundSettlement(roundId);
             }
@@ -321,7 +274,7 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 🟢 100% रिस्पॉन्सिव और फिक्स्ड फ्रंटएंड कोड (सभी मोबाइल्स के लिए ऑटो-स्केल्ड)
+// 🟢 100% रिस्पॉन्सिव फ्रंटएंड (डायरेक्ट डेटाबेस और HTTP API)
 const HTML_CONTENT = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -341,22 +294,18 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>ROYAL ROULETTE - 100% RESPONSIVE LIVE CASINO</title>
+    <title>ROYAL ROULETTE - 100% DIRECT CLOUD LIVE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        
         body { 
             background: radial-gradient(circle at center, #011406 0%, #000201 100%); color: #f1c40f; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             text-align: center; display: flex; flex-direction: column; justify-content: space-between; 
             align-items: center; z-index: 1; transform: translateZ(0); 
         }
-
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 300px; height: 300px; border-radius: 50%; border: 8px solid #ffd700; box-shadow: 0 0 80px rgba(255, 215, 0, 0.8); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         #loginWheelCanvasBg { width: 300px; height: 300px; border-radius: 50%; display: block; filter: brightness(1.3); }
-
         @keyframes wheelRotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-around; align-items: center; z-index: 10; 
             padding: 8px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.92) 0%, rgba(0,2,1,0.99) 100%); 
@@ -364,13 +313,10 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .header-container { width: 100%; max-width: 330px; display: flex; flex-direction: column; gap: 3px; align-items: center; }
         .trust-banner { font-size: 7.5px; font-weight: 900; color: #fff; background: rgba(0,50,25,0.9); padding: 2px 5px; border-radius: 4px; border: 1px solid #ffd700; width: 100%; }
         .royal-main-title { font-size: 16px; font-weight: 900; color: #ffd700; text-shadow: 0 0 12px #ffd700; letter-spacing: 1px; }
-        
         .login-card { background: rgba(2, 43, 16, 0.95); border: 2px solid #ffd700; padding: 10px; border-radius: 12px; width: 90%; max-width: 260px; box-shadow: 0 8px 25px rgba(0,0,0,0.9); }
         .login-card input { width: 100%; padding: 6px; margin: 2px 0; background: #000; border: 1.5px solid #ffd700; color: #ffd700; border-radius: 4px; font-size: 10px; text-align: center; font-weight: bold; }
         .login-btn { width: 100%; padding: 7px; margin-top: 3px; background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; border: none; font-weight: 900; border-radius: 4px; cursor: pointer; font-size: 10px; text-transform: uppercase; }
         .login-btn.lobby { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; }
-
-        /* 🟢 STRICTLY FITTED MOBILE LOBBY (NO OVERFLOW) */
         #gameLobbyScreen { 
             display: none; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; 
             background: radial-gradient(circle, #013b12 0%, #001205 100%); 
@@ -380,10 +326,8 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .lobby-header { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 26, 8, 0.95); border: 1.5px solid #ffd700; padding: 2px 6px; border-radius: 5px; width: 100%; max-width: 400px; flex-shrink: 0; }
         .user-profile-widget { display: flex; align-items: center; gap: 3px; background: rgba(0,20,8,0.9); border: 1px solid #ffd700; padding: 2px 5px; border-radius: 6px; cursor: pointer; }
         .user-avatar-circle { width: 22px; height: 22px; border-radius: 50%; background: #ffd700; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #000; }
-        
         .wallet-btn-rect { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; border: 1px solid #ffd700; padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 900; cursor: pointer; text-transform: uppercase; flex-shrink: 0; }
         .wallet-btn-rect.withdraw { background: linear-gradient(135deg, #c0392b, #962d22); }
-
         .timer-strip-center { 
             background: radial-gradient(circle at center, #2c0b0e 0%, #0f0203 100%); 
             color: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #ffd700; 
@@ -391,31 +335,18 @@ const HTML_CONTENT = `<!DOCTYPE html>
         }
         .timer-main-val { font-size: 12px; font-weight: 900; line-height: 1; }
         .timer-sub-val { font-size: 4.5px; color: #ffcccc; font-weight: bold; }
-
         .history-strip-bar { display: flex; justify-content: center; align-items: center; gap: 3px; background: rgba(0, 15, 5, 0.95); border: 1px solid #ffd700; padding: 2px 5px; border-radius: 4px; width: 100%; max-width: 400px; flex-shrink: 0; }
         .history-title { font-size: 7.5px; font-weight: 900; color: #ffd700; margin-right: 2px; }
         .history-ball { width: 16px; height: 16px; border-radius: 50%; font-size: 8.5px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 1px solid #ffd700; flex-shrink: 0; }
         .history-ball.red { background: #b03a2e; }
         .history-ball.black { background: #0b0f15; }
         .history-ball.green { background: #27ae60; }
-
-        /* 🟢 ULTRA COMPACT FLUID WHEEL */
         .lobby-wheel-box { 
-            position: relative; 
-            width: min(38vh, 180px); 
-            height: min(38vh, 180px); 
-            margin: 1px auto; 
-            border: 3px solid #2ecc71; 
-            border-radius: 50%; 
-            background: radial-gradient(circle, #0a2e12 0%, #000 85%); 
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.7); 
-            flex-shrink: 0; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            position: relative; width: min(38vh, 180px); height: min(38vh, 180px); margin: 1px auto; 
+            border: 3px solid #2ecc71; border-radius: 50%; background: radial-gradient(circle, #0a2e12 0%, #000 85%); 
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.7); flex-shrink: 0; display: flex; align-items: center; justify-content: center; 
         }
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; border: 1.5px solid #ffd700; }
-        
         .wheel-center-graphic {
             position: absolute; top: 50%; left: 50%; width: 38px; height: 38px;
             transform: translate(-50%, -50%); background: radial-gradient(circle, #021a08 0%, #000 100%);
@@ -423,52 +354,41 @@ const HTML_CONTENT = `<!DOCTYPE html>
             display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none;
         }
         .hub-text-royal, .hub-text-digital { font-size: 5px; font-weight: 900; color: #ffd700; line-height: 1; }
-
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
         .game-ball-orbit::after { content: ""; position: absolute; top: 3px; left: calc(50% - 4px); width: 8px; height: 8px; background: radial-gradient(circle, #fff 0%, #00ffcc 60%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 8px #fff; }
-
-        /* 🟢 ULTRA COMPACT BETTING BOARD */
         .betting-board-section { background: rgba(1, 35, 12, 0.98); border-radius: 6px; padding: 2px 5px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 1.5px; border: 1.5px solid #ffd700; flex-shrink: 0; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px; }
-        
         .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1px solid #d4af37; color: #e0e0e0; font-size: 9.5px; font-weight: 900; padding: 3px 0; border-radius: 2px; cursor: pointer; text-align: center; position: relative; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 1.5px solid #fff !important; box-shadow: 0 0 8px #f1c40f; }
         .cell-badge { position: absolute; top: -3px; right: -2px; background: #f1c40f; color: #000; font-size: 6px; font-weight: 900; padding: 0.5px 1.5px; border-radius: 50%; z-index: 10; }
-
         .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; width: 100%; }
         .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; width: 100%; }
         .group-btn { background: #07100b; border: 1px solid #d4af37; color: #ffd700; font-size: 8px; font-weight: 900; padding: 2.5px 1px; border-radius: 2px; cursor: pointer; text-transform: uppercase; }
-
         .color-row { display: flex; gap: 1.5px; width: 100%; }
         .color-btn { flex: 1; padding: 2.5px 1px; font-weight: 900; font-size: 8.5px; border-radius: 2px; border: 1px solid #ffd700; cursor: pointer; color: #fff; text-transform: uppercase; }
         .btn-red { background: #962d22; }
         .btn-green { background: #1e8449; }
         .btn-black { background: #1b2631; }
-
         .chip-selector-row { display: flex; justify-content: center; gap: 3px; align-items: center; width: 100%; }
         .chip-item { width: 20px; height: 20px; border-radius: 50%; border: 1px dashed #ffd700; font-weight: 900; font-size: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; }
         .chip-item.selected { border: 1.5px solid #fff; transform: scale(1.1); box-shadow: 0 0 8px #ffd700; }
         .chip-10 { background: #b03a2e; } .chip-50 { background: #2471a3; } .chip-100 { background: #27ae60; } .chip-500 { background: #7d3c98; } .chip-1000 { background: #d4af37; color: #000; }
-
         .transfer-btn-small { background: #2980b9; color: #fff; border: 1px solid #ffd700; padding: 2px 4px; border-radius: 2px; font-size: 7px; font-weight: bold; cursor: pointer; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 2px; width: 100%; }
         .status-msg-box { background: #f1c40f; color: #000; border: 1px solid #fff; padding: 2px 3px; font-size: 7.5px; font-weight: 900; border-radius: 3px; flex-grow: 1; text-align: center; }
         .clear-btn { background: #c0392b; color: #fff; padding: 2px 5px; font-size: 7.5px; font-weight: 900; border-radius: 2px; cursor: pointer; border: 1px solid #ffd700; }
-
         .mode-toggle-bar { display: flex; justify-content: center; gap: 2px; background: #000; border: 1px solid #ffd700; padding: 1px; border-radius: 3px; width: 100%; }
         .mode-btn { flex: 1; padding: 1.5px; font-size: 7.5px; font-weight: bold; border: none; border-radius: 2px; cursor: pointer; background: #111; color: #888; }
         .mode-btn.active-real { background: #27ae60; color: #fff; }
         .mode-btn.active-test { background: #2980b9; color: #fff; }
-
         .wallet-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 30000; align-items: center; justify-content: center; padding: 8px; }
         .wallet-modal-content { background: radial-gradient(circle, #023814 0%, #000 100%); border: 3px solid #ffd700; padding: 12px; border-radius: 12px; width: 100%; max-width: 320px; text-align: center; color: #fff; max-height: 90vh; overflow-y: auto; }
         .withdraw-packages-grid, .deposit-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 5px 0; }
         .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1px solid #ffd700; color: #ffd700; padding: 6px 0; font-weight: bold; font-size: 9.5px; border-radius: 3px; cursor: pointer; }
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #ffd700; color: #000; }
         .wallet-modal-content input { width: 100%; padding: 7px; margin: 3px 0; background: #000; border: 1px solid #ffd700; color: #ffd700; border-radius: 4px; text-align: center; font-weight: bold; font-size: 10.5px; }
-
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #020f06; z-index: 2147483647 !important; padding: 8px; text-align: center; color: #fff; overflow-y: auto; }
         .admin-dashboard-container { max-width: 750px; margin: 0 auto; background: #000; border: 2px solid #ffd700; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
         .admin-section-box { background: rgba(0,0,0,0.8); border: 1px solid rgba(255,215,0,0.3); padding: 8px; border-radius: 6px; font-size: 10px; }
@@ -476,7 +396,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .req-actions button { padding: 3px 6px; font-weight: bold; border-radius: 3px; border: none; cursor: pointer; font-size: 8.5px; }
     </style>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -719,36 +638,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCifZeAzMLHBij4sBZYg8uLW2FnwKKDQ",
-            authDomain: "royal-dijital.firebaseapp.com",
-            databaseURL: "https://royal-dijital-default-rtdb.firebaseio.com",
-            projectId: "royal-dijital",
-            storageBucket: "royal-dijital.appspot.com",
-            messagingSenderId: "440010959117",
-            appId: "1:440010959117:web:12cc701a9bafa37727e844",
-            measurementId: "G-7WKF885TDL"
-        };
-
-        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); } catch(e) {}
-
-        const socket = io({
-            transports: ['polling', 'websocket'],
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000
-        });
-
-        socket.on('connect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🟢 Connected!";
-            if (loggedUserPhone) socket.emit('authenticate_socket', { phone: loggedUserPhone });
-        });
-        socket.on('disconnect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🔴 Disconnected!";
-        });
-
         const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
@@ -770,7 +659,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let loggedUserPhone = "", loggedVipId = "RD001001";
         let isGameSpinning = false;
         let myActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-        let activeRoundId = Math.floor(Date.now() / 1000 / 120); // 🟢 तुरंत सही राउंड आईडी इनिशियलाइज्ड
+        let activeRoundId = Math.floor(Date.now() / 1000 / 120);
         let processedResultRoundId = null;
         let userDepositScreenshotData = "";
 
@@ -874,7 +763,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
             setupGlobalRoundBetsListener(activeRoundId, phone);
         }
 
-        // 🟢 लाइव राउंड बेट्स सिंक लिसनर (रियल मनी बेट्स टेबल पर दिखने के लिए)
         function setupGlobalRoundBetsListener(roundId, phone) {
             if (!roundId || !phone) return;
             masterRoot.child("live_rounds/" + roundId + "/bets/" + phone).on("value", (snapshot) => {
@@ -948,7 +836,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
                     mpin: mpin || data.mpin || "1234", balance: data.balance !== undefined ? data.balance : 0
                 }).then(() => {
                     loggedUserPhone = phone;
-                    socket.emit('authenticate_socket', { phone: phone });
                     bindUserCloudWallet(phone);
                     document.getElementById('fullscreenWheelBg').style.display = 'none';
                     document.getElementById('loginScreenContainer').style.display = 'none';
@@ -985,14 +872,20 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let currentActiveChip = 50;
         window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-        // 🟢 REAL MONEY BETTING FIXED WITH CORRECT ROUND ID
+        // 🟢 DIRECT HTTP API BETTING (NO SOCKETS - 100% RELIABLE)
         window.placeTableBet = function(key, el) {
             if (isGameSpinning) return;
             
             if (activeGameMode === 'real') { 
                 if (realCoins < currentActiveChip) { showCustomAlert("Low Balance!"); return; } 
                 
-                socket.emit('place_secure_bet', { key: key, amount: currentActiveChip, roundId: activeRoundId }, (resp) => {
+                fetch('/api/place-bet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: loggedUserPhone, key: key, amount: currentActiveChip, roundId: activeRoundId })
+                })
+                .then(res => res.json())
+                .then(resp => {
                     if (resp && resp.success) {
                         realCoins = resp.newBalance;
                         if (resp.roundId) activeRoundId = resp.roundId;
@@ -1001,7 +894,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                     } else {
                         showCustomAlert((resp && resp.msg) || "Bet failed!");
                     }
-                });
+                }).catch(e => { showCustomAlert("Network error placing bet."); });
             } else { 
                 if (testCoins < currentActiveChip) testCoins = 10000; 
                 testCoins -= currentActiveChip; 
@@ -1025,7 +918,11 @@ const HTML_CONTENT = `<!DOCTYPE html>
             if (activeGameMode === 'real') {
                 if (realCoins < totalNeeded) { showCustomAlert("Low Balance!"); return; }
                 numbersArray.forEach(num => {
-                    socket.emit('place_secure_bet', { key: num.toString(), amount: currentActiveChip, roundId: activeRoundId });
+                    fetch('/api/place-bet', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone: loggedUserPhone, key: num.toString(), amount: currentActiveChip, roundId: activeRoundId })
+                    });
                 });
                 realCoins -= totalNeeded;
                 updateBalancesDisplay();
@@ -1040,7 +937,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
             if (el) el.classList.add('has-bet');
         };
 
-        // 🟢 100% WORKING UNDO / CLEAR BUTTON FOR BOTH MODES
+        // 🟢 100% WORKING DIRECT HTTP UNDO / CLEAR BUTTON
         window.clearTableBets = function() {
             if (isGameSpinning || betHistoryStack.length === 0) return;
             let last = betHistoryStack.pop();
@@ -1051,7 +948,13 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                 showCustomAlert("Last test bet undone!");
             } else if (last.mode === 'real') {
-                socket.emit('cancel_secure_bet', { key: last.key, amount: last.amount, roundId: activeRoundId }, (resp) => {
+                fetch('/api/cancel-bet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: loggedUserPhone, key: last.key, amount: last.amount, roundId: activeRoundId })
+                })
+                .then(res => res.json())
+                .then(resp => {
                     if (resp && resp.success) {
                         realCoins = resp.newBalance;
                         updateBalancesDisplay();
@@ -1059,7 +962,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                     } else {
                         showCustomAlert((resp && resp.msg) || "Cannot undo bet at this moment.");
                     }
-                });
+                }).catch(e => { showCustomAlert("Network error during undo."); });
             }
         };
 
@@ -1168,8 +1071,6 @@ app.get('/', (req, res) => {
     res.send(HTML_CONTENT);
 });
 
-startMasterGameLoop();
-
 server.listen(PORT, () => {
-    console.log(`👑 Royal Roulette All-in-One Master Server running on port ${PORT}`);
+    console.log(`👑 Royal Roulette Direct-API Master Server running on port ${PORT}`);
 });

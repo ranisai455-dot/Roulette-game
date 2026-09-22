@@ -32,7 +32,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 🟢 नो-कैशे मिडिलवेयर: ब्राउज़र हमेशा लाइव सर्वर से फ्रेश फाइल उठाएगा
+// 🟢 नो-कैशे हेडर ताकि सर्वर हमेशा फ्रेश डेटा लोड करे
 app.use(express.static(path.join(__dirname), {
     etag: false,
     maxAge: 0,
@@ -275,5 +275,5 @@ function startMasterGameLoop() {
 startMasterGameLoop();
 
 server.listen(PORT, () => {
-    console.log(`👑 Royal Roulette Secure Modular Server running on port ${PORT}`);
+    console.log(`👑 Royal Roulette Secure Server running on port ${PORT}`);
 });

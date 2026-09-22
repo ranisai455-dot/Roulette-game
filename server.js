@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 
 // Render के एनवायरनमेंट वेरिएबल से Firebase सुरक्षित रूप से लोड करना
@@ -25,10 +24,9 @@ const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : 
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: { origin: "*" },
-    transports: ['polling', 'websocket']
-});
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const ROUND_TIME = 120; // 120 सेकंड (2 मिनट)
@@ -36,9 +34,6 @@ const MASTER_ADMIN_PHONE = "8889865182";
 
 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
-
-const activeSocketSessions = new Map();
-const userRateLimitMap = new Map();
 
 async function recordCoinLedger(phone, amount, sourceType, description) {
     try {
@@ -54,79 +49,88 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-// 🟢 सॉकेट-बेस्ड मास्टर बेटिंग इंजन (जो पहले पूरी तरह काम कर रहा था)
-io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
-
-    socket.on('authenticate_socket', (data) => {
-        let { phone } = data;
-        if (phone) {
-            activeSocketSessions.set(socket.id, phone);
+// 🟢 1. डायरेक्ट HTTP API: 1 से 36 नंबर और सभी बटनों की अचूक बेटिंग
+app.post('/api/place-bet', async (req, res) => {
+    try {
+        let { phone, key, amount, roundId } = req.body;
+        if (!phone || !key || !amount || amount <= 0) {
+            return res.json({ success: false, msg: 'Invalid parameters.' });
         }
-    });
 
-    // 1 से 36 नंबर, रेड, ब्लैक, ज़ीरो सभी के लिए सिक्योर बेटिंग
-    socket.on('place_secure_bet', async (data) => {
-        try {
-            let verifiedPhone = activeSocketSessions.get(socket.id);
-            if (!verifiedPhone) {
-                socket.emit('bet_response', { success: false, msg: 'Session expired! Re-login.' });
-                return;
-            }
+        let currentSec = Math.floor(Date.now() / 1000);
+        let activeRound = Math.floor(currentSec / ROUND_TIME);
+        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
 
-            let { key, amount, roundId } = data;
-            if (!key || !amount || amount <= 0) return;
-
-            let now = Date.now();
-            let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 50) return;
-            userRateLimitMap.set(socket.id, now);
-
-            let currentSec = Math.floor(Date.now() / 1000);
-            let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
-            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
-
-            if (timeLeft <= 5) {
-                socket.emit('bet_response', { success: false, msg: 'Betting closed for this round!' });
-                return;
-            }
-
-            let userBalRef = usersRef.child(verifiedPhone + "/balance");
-            let betSuccess = false;
-            let finalBal = 0;
-
-            await userBalRef.transaction((currentBal) => {
-                let currentBalance = currentBal || 0;
-                if (currentBalance < amount) {
-                    betSuccess = false;
-                    return currentBalance;
-                }
-                betSuccess = true;
-                finalBal = currentBalance - amount;
-                return finalBal;
-            });
-
-            if (!betSuccess) {
-                socket.emit('bet_response', { success: false, msg: 'Insufficient balance!' });
-                return;
-            }
-
-            await recordCoinLedger(verifiedPhone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
-            let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + verifiedPhone + "/" + key);
-            await roundBetRef.transaction(curr => (curr || 0) + amount);
-
-            socket.emit('bet_response', { success: true, newBalance: finalBal, key: key, amount: amount });
-        } catch (err) {
-            console.error("Bet error:", err);
-            socket.emit('bet_response', { success: false, msg: 'Server error placing bet.' });
+        if (timeLeft <= 5) {
+            return res.json({ success: false, msg: 'Betting closed for this round!' });
         }
-    });
 
-    socket.on('disconnect', () => {
-        activeSocketSessions.delete(socket.id);
-        userRateLimitMap.delete(socket.id);
-    });
+        let userBalRef = usersRef.child(phone + "/balance");
+        let betSuccess = false;
+        let finalBal = 0;
+
+        await userBalRef.transaction((currentBal) => {
+            let currentBalance = currentBal || 0;
+            if (currentBalance < amount) {
+                betSuccess = false;
+                return currentBalance;
+            }
+            betSuccess = true;
+            finalBal = currentBalance - amount;
+            return finalBal;
+        });
+
+        if (!betSuccess) {
+            return res.json({ success: false, msg: 'Insufficient balance!' });
+        }
+
+        await recordCoinLedger(phone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
+        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
+        await roundBetRef.transaction(curr => (curr || 0) + amount);
+
+        return res.json({ success: true, newBalance: finalBal, roundId: targetRound });
+    } catch (err) {
+        console.error("Bet API error:", err);
+        return res.json({ success: false, msg: 'Server error placing bet.' });
+    }
+});
+
+// 🟢 2. डायरेक्ट HTTP API: बेट कैंसिल / अंडू (Undo & Refund)
+app.post('/api/cancel-bet', async (req, res) => {
+    try {
+        let { phone, key, amount, roundId } = req.body;
+        if (!phone || !key || !amount) {
+            return res.json({ success: false, msg: 'Invalid parameters.' });
+        }
+
+        let currentSec = Math.floor(Date.now() / 1000);
+        let activeRound = Math.floor(currentSec / ROUND_TIME);
+        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+
+        if (timeLeft <= 5) {
+            return res.json({ success: false, msg: 'Cannot undo. Betting closed!' });
+        }
+
+        let userBalRef = usersRef.child(phone + "/balance");
+        let finalBal = 0;
+        await userBalRef.transaction((currentBal) => {
+            finalBal = (currentBal || 0) + amount;
+            return finalBal;
+        });
+
+        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
+        await roundBetRef.transaction((curr) => {
+            let val = (curr || 0) - amount;
+            return val > 0 ? val : null;
+        });
+
+        await recordCoinLedger(phone, amount, 'BET_CANCELLED', `Cancelled bet on [${key}] for ₹${amount}`);
+        return res.json({ success: true, newBalance: finalBal });
+    } catch (e) {
+        return res.json({ success: false, msg: 'Error cancelling bet.' });
+    }
 });
 
 function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
@@ -224,15 +228,12 @@ async function executeRoundSettlement(roundId) {
             }
         }
 
-        // 1️⃣ पहले व्हील घुमाने के लिए रिजल्ट ट्रिगर करें
         await activeResultRef.set({
             roundId: roundId,
             winningNum: winningNum,
             timestamp: Date.now()
         });
-        io.emit('round_ended', { winningNum, roundId });
 
-        // 2️⃣ ठीक 5 सेकंड बाद (जब पहिया रुके) तब हिस्ट्री में नंबर जोड़ें
         setTimeout(async () => {
             if (historyRef) {
                 await historyRef.transaction((curHist) => {
@@ -261,7 +262,6 @@ function startMasterGameLoop() {
             if (gameStateRef) {
                 gameStateRef.child("timer").set({ roundId, timeLeft });
             }
-            io.emit('timer_update', { roundId, timeLeft });
 
             if (timeLeft <= 1) {
                 await executeRoundSettlement(roundId);
@@ -274,7 +274,7 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 🟢 पूर्ण रूप से रिस्पॉन्सिव फ्रंटएंड (Socket.io + 1-36 नंबर + अंडू + मोबाइल फिट)
+// 🟢 100% फिक्स्ड फ्रंटएंड (फंक्शन होइस्टिंग और सही बाइंडिंग के साथ)
 const HTML_CONTENT = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,7 +294,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>ROYAL ROULETTE - 100% MASTER LIVE</title>
+    <title>ROYAL ROULETTE - 100% DIRECT CLOUD LIVE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -396,7 +396,6 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .req-actions button { padding: 3px 6px; font-weight: bold; border-radius: 3px; border: none; cursor: pointer; font-size: 8.5px; }
     </style>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -639,6 +638,115 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </div>
 
     <script>
+        // 🟢 फंक्शन्स की सही होइस्टिंग और परिभाषा (ताकि 1-36 नंबर और सभी बटन पहली बार में क्लिक हों)
+        let currentActiveChip = 50;
+        window.selectChip = function(val, el) { 
+            currentActiveChip = val; 
+            document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); 
+            el.classList.add('selected'); 
+        };
+
+        window.placeTableBet = function(key, el) {
+            if (isGameSpinning) return;
+            
+            if (activeGameMode === 'real') { 
+                if (realCoins < currentActiveChip) { showCustomAlert("Low Balance!"); return; } 
+                
+                fetch('/api/place-bet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: loggedUserPhone, key: key, amount: currentActiveChip, roundId: activeRoundId })
+                })
+                .then(res => res.json())
+                .then(resp => {
+                    if (resp && resp.success) {
+                        realCoins = resp.newBalance;
+                        if (resp.roundId) activeRoundId = resp.roundId;
+                        updateBalancesDisplay();
+                        betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
+                        
+                        if (el) {
+                            el.classList.add('has-bet');
+                            let b = el.querySelector('.cell-badge');
+                            if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; el.appendChild(b); }
+                            let curAmt = parseInt(b.innerText) || 0;
+                            b.innerText = curAmt + currentActiveChip;
+                        }
+                    } else {
+                        showCustomAlert((resp && resp.msg) || "Bet failed!");
+                    }
+                }).catch(e => { showCustomAlert("Network error placing bet."); });
+            } else { 
+                if (testCoins < currentActiveChip) testCoins = 10000; 
+                testCoins -= currentActiveChip; 
+                myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
+                currentTotalBet += currentActiveChip;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+
+                betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'test' });
+                if (el) { 
+                    el.classList.add('has-bet'); 
+                    let b = el.querySelector('.cell-badge'); 
+                    if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
+                    b.innerText = myActiveBets[key]; 
+                }
+            }
+        };
+
+        window.placeGroupBet = function(groupKey, numbersArray, el) {
+            if (isGameSpinning) return;
+            let totalNeeded = currentActiveChip * numbersArray.length;
+            if (activeGameMode === 'real') {
+                if (realCoins < totalNeeded) { showCustomAlert("Low Balance!"); return; }
+                numbersArray.forEach(num => {
+                    fetch('/api/place-bet', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone: loggedUserPhone, key: num.toString(), amount: currentActiveChip, roundId: activeRoundId })
+                    });
+                });
+                realCoins -= totalNeeded;
+                updateBalancesDisplay();
+                if (el) el.classList.add('has-bet');
+            } else {
+                if (testCoins < totalNeeded) testCoins = 10000;
+                testCoins -= totalNeeded;
+                numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
+                currentTotalBet += totalNeeded;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                if (el) el.classList.add('has-bet');
+            }
+            betHistoryStack.push({ key: groupKey, amount: totalNeeded, mode: activeGameMode });
+        };
+
+        window.clearTableBets = function() {
+            if (isGameSpinning || betHistoryStack.length === 0) return;
+            let last = betHistoryStack.pop();
+            
+            if (last.mode === 'test') {
+                testCoins += last.amount;
+                currentTotalBet -= last.amount;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                showCustomAlert("Last test bet undone!");
+            } else if (last.mode === 'real') {
+                fetch('/api/cancel-bet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: loggedUserPhone, key: last.key, amount: last.amount, roundId: activeRoundId })
+                })
+                .then(res => res.json())
+                .then(resp => {
+                    if (resp && resp.success) {
+                        realCoins = resp.newBalance;
+                        updateBalancesDisplay();
+                        showCustomAlert("✅ Last real bet undone & refunded!");
+                    } else {
+                        showCustomAlert((resp && resp.msg) || "Cannot undo bet at this moment.");
+                    }
+                }).catch(e => { showCustomAlert("Network error during undo."); });
+            }
+        };
+
         const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
@@ -659,8 +767,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
         let loggedUserPhone = "", loggedVipId = "RD001001";
         let isGameSpinning = false;
-        let myActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-        let activeRoundId = 0;
+        let activeRoundId = Math.floor(Date.now() / 1000 / 120);
         let processedResultRoundId = null;
         let userDepositScreenshotData = "";
 
@@ -761,14 +868,13 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 updateBalancesDisplay();
             });
             loadPlayerPassbook(phone);
+            setupGlobalRoundBetsListener(activeRoundId, phone);
         }
 
-        // 🟢 फायरबेस डेटाबेस से रियल-टाइम बेट्स सिंक लिसनर
         function setupGlobalRoundBetsListener(roundId, phone) {
             if (!roundId || !phone) return;
             masterRoot.child("live_rounds/" + roundId + "/bets/" + phone).on("value", (snapshot) => {
                 let bets = snapshot.val() || {};
-                myActiveBets = bets;
                 currentTotalBet = 0;
                 
                 document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
@@ -877,116 +983,12 @@ const HTML_CONTENT = `<!DOCTYPE html>
             });
         }
 
-        let currentActiveChip = 50;
-        window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
-
-        // 🟢 1 से 36 नंबर, रेड, ब्लैक, ज़ीरो पर अचूक बेटिंग (HTTP API)
-        window.placeTableBet = function(key, el) {
-            if (isGameSpinning) return;
-            
-            if (activeGameMode === 'real') { 
-                if (realCoins < currentActiveChip) { showCustomAlert("Low Balance!"); return; } 
-                
-                fetch('/api/place-bet', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: loggedUserPhone, key: key, amount: currentActiveChip })
-                })
-                .then(res => res.json())
-                .then(resp => {
-                    if (resp && resp.success) {
-                        realCoins = resp.newBalance;
-                        updateBalancesDisplay();
-                        betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
-                        
-                        if (el) {
-                            el.classList.add('has-bet');
-                            let b = el.querySelector('.cell-badge');
-                            if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; el.appendChild(b); }
-                            let curAmt = parseInt(b.innerText) || 0;
-                            b.innerText = curAmt + currentActiveChip;
-                        }
-                    } else {
-                        showCustomAlert((resp && resp.msg) || "Bet failed!");
-                    }
-                }).catch(e => { showCustomAlert("Network error placing bet."); });
-            } else { 
-                if (testCoins < currentActiveChip) testCoins = 10000; 
-                testCoins -= currentActiveChip; 
-                myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                currentTotalBet += currentActiveChip;
-                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-
-                betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'test' });
-                if (el) { 
-                    el.classList.add('has-bet'); 
-                    let b = el.querySelector('.cell-badge'); 
-                    if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
-                    b.innerText = myActiveBets[key]; 
-                }
-            }
-        };
-
-        window.placeGroupBet = function(groupKey, numbersArray, el) {
-            if (isGameSpinning) return;
-            let totalNeeded = currentActiveChip * numbersArray.length;
-            if (activeGameMode === 'real') {
-                if (realCoins < totalNeeded) { showCustomAlert("Low Balance!"); return; }
-                numbersArray.forEach(num => {
-                    fetch('/api/place-bet', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ phone: loggedUserPhone, key: num.toString(), amount: currentActiveChip })
-                    });
-                });
-                realCoins -= totalNeeded;
-                updateBalancesDisplay();
-                if (el) el.classList.add('has-bet');
-            } else {
-                if (testCoins < totalNeeded) testCoins = 10000;
-                testCoins -= totalNeeded;
-                numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
-                currentTotalBet += totalNeeded;
-                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-                if (el) el.classList.add('has-bet');
-            }
-            betHistoryStack.push({ key: groupKey, amount: totalNeeded, mode: activeGameMode });
-        };
-
-        window.clearTableBets = function() {
-            if (isGameSpinning || betHistoryStack.length === 0) return;
-            let last = betHistoryStack.pop();
-            
-            if (last.mode === 'test') {
-                testCoins += last.amount;
-                currentTotalBet -= last.amount;
-                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-                showCustomAlert("Last test bet undone!");
-            } else if (last.mode === 'real') {
-                fetch('/api/cancel-bet', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: loggedUserPhone, key: last.key, amount: last.amount, roundId: activeRoundId })
-                })
-                .then(res => res.json())
-                .then(resp => {
-                    if (resp && resp.success) {
-                        realCoins = resp.newBalance;
-                        updateBalancesDisplay();
-                        showCustomAlert("✅ Last real bet undone & refunded!");
-                    } else {
-                        showCustomAlert((resp && resp.msg) || "Cannot undo bet at this moment.");
-                    }
-                }).catch(e => { showCustomAlert("Network error during undo."); });
-            }
-        };
-
         masterRoot.child("game_state/timer").on("value", (snap) => {
             let timerData = snap.val();
             if (!timerData) return;
             if (timerData.roundId !== activeRoundId) {
                 activeRoundId = timerData.roundId;
-                myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                currentTotalBet = 0; betHistoryStack = [];
                 document.getElementById('lobbyTotalBet').innerText = 0;
                 if (loggedUserPhone) setupGlobalRoundBetsListener(activeRoundId, loggedUserPhone);
             }
@@ -1087,5 +1089,5 @@ app.get('/', (req, res) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`👑 Royal Roulette Direct-API Master Server running on port ${PORT}`);
+    console.log(`👑 Royal Roulette Master Server running on port ${PORT}`);
 });

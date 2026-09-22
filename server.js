@@ -87,6 +87,9 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     return validSafeNumbers[selectedIndex];
 }
 
+// ग्लोबल वेरिएबल ताकि एक राउंड का सेटलमेंट केवल एक ही बार हो
+let lastSettledRoundId = null;
+
 // मास्टर राउंड सेटलमेंट (ए-टू-ज़ेड कंट्रोल: एडमिन रिग, 5% मार्जिन, पेआउट और हिस्ट्री)
 async function executeRoundSettlement(roundId) {
     console.log(`⚡ Executing master settlement for Round #${roundId}...`);
@@ -111,16 +114,18 @@ async function executeRoundSettlement(roundId) {
         let rigVal = rigSnap.val();
         let winningNum;
 
-        if (rigVal !== null && rigVal !== "random" && !isNaN(rigVal)) {
+        if (rigVal !== null && rigVal !== "random" && rigVal !== "" && !isNaN(rigVal)) {
             winningNum = parseInt(rigVal);
             console.log(`👑 Admin Forced Winning Number from Panel: ${winningNum}`);
+            // उपयोग होते ही रिग को वापस 'random' कर दें ताकि अगले राउंड में रिपीट न हो
+            await rigRef.set("random");
         } else {
-            // 2. यदि एडमिन ने 'random' या ऑटोमैटिक रखा है, तो 5% सेफ इंजन काम करेगा
+            // 2. यदि एडमिन ने 'random' रखा है, तो 5% सेफ इंजन काम करेगा
             winningNum = calculateSmartWinner(roundId, globalTableBets, totalTableBet);
             console.log(`🤖 Smart Safe Engine Winning Number: ${winningNum}`);
         }
 
-        // इतिहास (History) अपडेट करें
+        // इतिहास (History) अपडेट करें (सुरक्षित रूप से केवल एक बार)
         if (historyRef) {
             let histSnap = await historyRef.once("value");
             let curHist = histSnap.val() || [24, 14, 5, 22, 10, 3];
@@ -160,7 +165,7 @@ async function executeRoundSettlement(roundId) {
     }
 }
 
-// मास्टर गेम लूप (टाइमर और आटोमैटिक सेटलमेंट)
+// मास्टर गेम लूप (टाइमर और आटोमैटिक सेटलमेंट - डुप्लीकेट प्रिवेंशन के साथ)
 function startMasterGameLoop() {
     setInterval(async () => {
         try {
@@ -170,7 +175,9 @@ function startMasterGameLoop() {
 
             io.emit('timer_update', { roundId, timeLeft });
 
-            if (timeLeft === 1) {
+            // सुनिश्चित करें कि यह राउंड केवल तभी सेटल हो जब यह इस राउंड में पहली बार हो
+            if (timeLeft <= 1 && lastSettledRoundId !== roundId) {
+                lastSettledRoundId = roundId;
                 await executeRoundSettlement(roundId);
             }
         } catch (err) {

@@ -31,6 +31,52 @@
         #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45); }
         @keyframes wheelRotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* 👑 3D ULTRA HD ROYALE COMING SOON MODAL */
+        #comingSoonNoticeModal { 
+            display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); 
+            z-index: 999999; align-items: center; justify-content: center; padding: 15px; 
+        }
+        .coming-soon-card { 
+            background: radial-gradient(circle at center, #063d1a 0%, #011406 70%, #000502 100%); 
+            border: 3.5px solid #ffd700; padding: 26px 20px; border-radius: 22px; width: 100%; max-width: 320px; 
+            text-align: center; color: #fff; 
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), inset 0 0 25px rgba(0, 255, 100, 0.4); 
+            animation: royalPopupAnim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+        }
+        @keyframes royalPopupAnim { 
+            from { transform: scale(0.6) translateY(30px); opacity: 0; } 
+            to { transform: scale(1) translateY(0); opacity: 1; } 
+        }
+        .royal-modal-title { 
+            font-size: 20px; font-weight: 900; color: #ffd700; text-transform: uppercase; 
+            text-shadow: 0 0 15px #ffd700, 0 0 25px #ff8800; letter-spacing: 1px; margin-bottom: 4px; 
+        }
+        .royal-modal-subtitle { 
+            font-size: 10px; color: #a3e4d7; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; 
+        }
+        .royal-badge-strip { 
+            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 11px; font-weight: 900; 
+            padding: 8px; border-radius: 8px; margin-bottom: 14px; text-transform: uppercase; 
+            box-shadow: 0 0 15px rgba(192, 57, 43, 0.8); border: 1px solid #ff7675; 
+            animation: badgeGlowPulse 1.5s infinite alternate; 
+        }
+        @keyframes badgeGlowPulse { 
+            from { box-shadow: 0 0 8px rgba(192, 57, 43, 0.6); } 
+            to { box-shadow: 0 0 20px rgba(255, 107, 107, 1); } 
+        }
+        .royal-enter-btn { 
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #d35400 100%); 
+            color: #000; border: 2px solid #fff; font-weight: 900; border-radius: 10px; cursor: pointer; 
+            font-size: 12.5px; text-transform: uppercase; letter-spacing: 1px; 
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.8); 
+            transition: transform 0.1s ease, box-shadow 0.2s ease; 
+        }
+        .royal-enter-btn:active { 
+            transform: scale(0.96); 
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.5); 
+        }
+
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
             padding: 8px 6px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
@@ -172,12 +218,13 @@
         </div>
     </div>
 
-    <div id="comingSoonNoticeModal" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:70000; align-items:center; justify-content:center;">
-        <div style="background:#0b2d13; border:3px solid #ffd700; padding:16px; border-radius:14px; width:270px; text-align:center; color:#fff;">
-            <h3 style="color:#ffd700; font-size:15px; margin-bottom:4px;">ROYAL CASINO</h3>
-            <p style="font-size:9.5px; color:#fff; font-weight:bold; margin-bottom:5px;">100% SECURE & LIVE</p>
-            <div style="background:#c0392b; color:#fff; font-size:9.5px; font-weight:bold; padding:4px; border-radius:4px; margin-bottom:5px; text-transform:uppercase;">🔥 7 PLAYER LIVE TABLE 🔥</div>
-            <button onclick="closeComingSoonModal(); playMasterAudio();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:7px 18px; border-radius:5px; font-weight:900; font-size:10px; cursor:pointer; text-transform:uppercase;">Enter Lobby</button>
+    <!-- 👑 3D अल्ट्रा एचडी रॉयल वेलकम पॉप-अप (अब बटन 100% क्लिकेबल और खूबसूरत है) -->
+    <div id="comingSoonNoticeModal">
+        <div class="coming-soon-card">
+            <div class="royal-modal-title">ROYAL CASINO</div>
+            <div class="royal-modal-subtitle">100% Secure & Live Platform</div>
+            <div class="royal-badge-strip">🔥 7 Player Live Table 🔥</div>
+            <button onclick="closeComingSoonModal(); playMasterAudio();" class="royal-enter-btn">ENTER LOBBY</button>
         </div>
     </div>
 
@@ -280,7 +327,7 @@
         </div>
     </div>
 
-    <!-- Modals (Profile, Admin, Deposit, Withdraw, Transfer, Result) -->
+    <!-- Modals -->
     <div id="playerProfileModal" class="wallet-modal">
         <div class="wallet-modal-content">
             <h3 style="color:#ffd700; margin-bottom:3px; font-size:13px;">VIP PASSBOOK</h3>
@@ -356,7 +403,7 @@
 
     <div id="transferModalBox" class="wallet-modal">
         <div class="wallet-modal-content">
-            <h3 style="color:#ffd700; margin-bottom:5px; font-size:13px;">TRANSFER COINS</h3>
+            <h3 style="color:#ffd700; font-size:13px; margin-bottom:5px;">TRANSFER COINS</h3>
             <input type="text" id="transferTargetPhone" placeholder="Friend's Mobile">
             <input type="number" id="transferCoinAmt" placeholder="Amount">
             <button onclick="executeCoinTransferCloud()" class="login-btn" style="background:#2980b9; padding:7px; font-size:9.5px; margin-top:4px;">Transfer</button>
@@ -368,7 +415,7 @@
         <div style="background:#034519; border:3px solid #f1c40f; padding:16px; border-radius:14px; width:240px; text-align:center;">
             <h3 style="color:#f1c40f; font-size:13px; margin-bottom:3px;">WINNING NUMBER</h3>
             <div id="popupWinningNumDisplay" style="font-size:32px; font-weight:900; color:#fff; margin:6px 0;">14 RED</div>
-            <div id="popupPayoutDisplay" style="font-size:10px; font-weight:bold; color:#00ffff;">You Won!</div>
+            <div id="popupPayoutDisplay" style="font-size:10.5px; font-weight:bold; color:#00ffff;">You Won!</div>
         </div>
     </div>
 

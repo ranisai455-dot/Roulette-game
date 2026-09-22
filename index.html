@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - SECURE LIVE</title>
+    <title>ROYALTY ELITE ROULETTE - SECURE LIVE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         html, body { 
@@ -19,49 +19,51 @@
             display: flex; flex-direction: column; justify-content: space-between; align-items: center; 
         }
 
-        /* 👑 शाही फरमान (Royal Decree Welcome Modal) */
+        /* 👑 अत्यंत भव्य और शाही (Royal Imperial Proclamation) 3D वेलकम पॉप-अप */
         #comingSoonNoticeModal { 
             display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(0, 0, 0, 0.94); backdrop-filter: blur(12px); 
-            z-index: 999999; align-items: center; justify-content: center; padding: 16px; 
+            background: radial-gradient(circle, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.98) 100%); backdrop-filter: blur(18px); 
+            z-index: 999999; align-items: center; justify-content: center; padding: 18px; 
         }
-        .royal-decree-card { 
-            background: radial-gradient(circle at center, #2a0808 0%, #120202 70%, #050000 100%); 
-            border: 4px double #ffd700; padding: 32px 22px; border-radius: 26px; width: 100%; max-width: 340px; 
+        .royal-imperial-card { 
+            background: radial-gradient(circle at center, #1c0707 0%, #0a0101 70%, #020000 100%); 
+            border: 4px double #ffd700; padding: 38px 25px; border-radius: 30px; width: 100%; max-width: 360px; 
             text-align: center; color: #fff; 
-            box-shadow: 0 0 80px rgba(255, 215, 0, 0.85), inset 0 0 35px rgba(255, 100, 0, 0.4); 
-            animation: royalPopupAnim 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.7), inset 0 0 40px rgba(255, 120, 0, 0.4); 
+            animation: imperialPopupAnim 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
             position: relative;
         }
-        .royal-decree-card::before {
-            content: "👑"; position: absolute; top: -22px; left: calc(50% - 18px);
-            font-size: 30px; background: #120202; padding: 0 8px; border-radius: 50%;
-            border: 2px solid #ffd700; box-shadow: 0 0 15px #ffd700;
+        .royal-imperial-card::before {
+            content: "👑"; position: absolute; top: -28px; left: calc(50% - 22px);
+            font-size: 38px; background: #0a0101; padding: 4px 12px; border-radius: 50%;
+            border: 3px solid #ffd700; box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
         }
-        @keyframes royalPopupAnim { 
-            from { transform: scale(0.4) translateY(50px); opacity: 0; } 
+        @keyframes imperialPopupAnim { 
+            from { transform: scale(0.3) translateY(60px); opacity: 0; } 
             to { transform: scale(1) translateY(0); opacity: 1; } 
         }
-        .royal-decree-title { 
-            font-size: 22px; font-weight: 900; color: #ffd700; text-transform: uppercase; 
-            text-shadow: 0 0 20px #ffd700, 0 0 35px #ff4500; letter-spacing: 2px; margin-top: 12px; margin-bottom: 6px; 
-            font-family: 'Georgia', serif;
+        .royal-imperial-title { 
+            font-size: 25px; font-weight: 900; color: #ffd700; text-transform: uppercase; 
+            text-shadow: 0 0 25px #ffd700, 0 0 45px #ff4500; letter-spacing: 2px; margin-top: 14px; margin-bottom: 6px; 
+            font-family: 'Times New Roman', Times, serif;
         }
-        .royal-decree-subtitle { 
-            font-size: 11px; color: #e2b714; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; 
+        .royal-imperial-subtitle { 
+            font-size: 11px; color: #00ffcc; font-weight: 900; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 20px; 
+            text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
         }
-        .royal-decree-badge { 
-            background: linear-gradient(135deg, #b9770e, #7d6608); color: #fff; font-size: 11.5px; font-weight: 900; 
-            padding: 9px; border-radius: 8px; margin-bottom: 22px; text-transform: uppercase; 
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7); border: 1.5px solid #fff; letter-spacing: 1px;
+        .royal-imperial-badge { 
+            background: linear-gradient(135deg, #b9770e, #5a4405); color: #fff; font-size: 11.5px; font-weight: 900; 
+            padding: 11px; border-radius: 10px; margin-bottom: 26px; text-transform: uppercase; 
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7); border: 1.5px solid #fff; letter-spacing: 1.5px;
         }
-        .royal-decree-btn { 
-            width: 100%; padding: 14px; background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #b8860b 100%); 
-            color: #000; border: 2.5px solid #fff; font-weight: 900; border-radius: 12px; cursor: pointer; 
-            font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; 
-            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.9); 
+        .royal-imperial-btn { 
+            width: 100%; padding: 16px; background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #9a6b0c 100%); 
+            color: #000; border: 2.5px solid #fff; font-weight: 900; border-radius: 14px; cursor: pointer; 
+            font-size: 14px; text-transform: uppercase; letter-spacing: 2px; 
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.9); 
+            transition: transform 0.1s ease, box-shadow 0.2s ease; 
         }
-        .royal-decree-btn:active { transform: scale(0.95); }
+        .royal-imperial-btn:active { transform: scale(0.95); box-shadow: 0 3px 12px rgba(255, 215, 0, 0.5); }
 
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
@@ -151,7 +153,7 @@
         .chip-item.selected { border: 1.5px solid #fff; transform: scale(1.12); box-shadow: 0 0 10px #ffd700; }
         .chip-10 { background: #b03a2e; } .chip-50 { background: #2471a3; } .chip-100 { background: #27ae60; } .chip-500 { background: #7d3c98; } .chip-1000 { background: #d4af37; color: #000; }
 
-        .transfer-btn-small { background: #2980b9; color: #fff; border: 1px solid #ffd700; padding: 3px 6px; border-radius: 3px; font-size: 7.5px; font-weight: bold; cursor: pointer; }
+        .transfer-btn-small { background: #2980b9; color: #fff; border: 1.5px solid #ffd700; padding: 3px 6px; border-radius: 3px; font-size: 7.5px; font-weight: bold; cursor: pointer; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 3px; width: 100%; }
         .status-msg-box { background: #f1c40f; color: #000; border: 1px solid #fff; padding: 3px 5px; font-size: 8px; font-weight: 900; border-radius: 4px; flex-grow: 1; text-align: center; }
         .clear-btn { background: #c0392b; color: #fff; padding: 3px 6px; font-size: 8px; font-weight: 900; border-radius: 3px; cursor: pointer; border: 1px solid #ffd700; }
@@ -200,13 +202,13 @@
         </div>
     </div>
 
-    <!-- 👑 अत्यंत भव्य शाही फरमान (Royal Decree Welcome Modal) -->
+    <!-- 👑 अत्यंत भव्य शाही इम्पीरियल वेलकम पॉप-अप -->
     <div id="comingSoonNoticeModal">
-        <div class="royal-decree-card">
-            <div class="royal-decree-title">शाही दरबार: रॉयल कैसीनो</div>
-            <div class="royal-decree-subtitle">100% सुरक्षित एवं पारदर्शी मंच</div>
-            <div class="royal-decree-badge">⚜️ शाही सदस्यों के लिए विशेष प्रवेश ⚜️</div>
-            <button onclick="closeComingSoonModal(); playMasterAudio();" class="royal-decree-btn">शाही लॉगिन पर जाएं</button>
+        <div class="royal-imperial-card">
+            <div class="royal-imperial-title">IMPERIAL ROYALTY CASINO</div>
+            <div class="royal-imperial-subtitle">SECURE ENCRYPTED LIVE PLATFORM</div>
+            <div class="royal-imperial-badge">⚜️ SOVEREIGN MEMBERS EXCLUSIVE ACCESS ⚜️</div>
+            <button onclick="closeComingSoonModal(); playMasterAudio();" class="royal-imperial-btn">ENTER SOVEREIGN GATEWAY</button>
         </div>
     </div>
 
@@ -328,20 +330,24 @@
         </div>
     </div>
 
+    <!-- 👑 संपूर्णता के साथ एडमिन कंट्रोल पैनल -->
     <div id="secretAdminModal">
         <div class="admin-dashboard-container">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ffd700; padding-bottom:8px;">
-                <h2 style="font-size:14px; color:#ffd700;">ADMIN CONTROL PANEL</h2>
+                <h2 style="font-size:14px; color:#ffd700;">SOVEREIGN ADMIN CONTROL PANEL</h2>
                 <button onclick="document.getElementById('secretAdminModal').style.display='none'" style="background:#e74c3c; color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:10px;">✕ Close</button>
             </div>
+            
             <div class="admin-section-box">
                 <div style="color:#3498db; font-weight:bold; margin-bottom:4px;">🎧 SUPPORT TICKETS</div>
-                <div id="adminSupportTicketsList" style="max-height:100px; overflow-y:auto;">No tickets.</div>
+                <div id="adminSupportTicketsList" style="max-height:80px; overflow-y:auto;">No tickets.</div>
             </div>
+
             <div class="admin-section-box">
-                <div style="color:#2ecc71; font-weight:bold; margin-bottom:4px;">🟢 LIVE PLAYERS</div>
-                <div id="adminLiveOnlinePlayersList" style="max-height:80px; overflow-y:auto;">Waiting...</div>
+                <div style="color:#2ecc71; font-weight:bold; margin-bottom:4px;">🟢 LIVE ONLINE PLAYERS</div>
+                <div id="adminLiveOnlinePlayersList" style="max-height:70px; overflow-y:auto;">Waiting...</div>
             </div>
+
             <div class="admin-section-box">
                 <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">⚙️ RIG WINNING NUMBER</div>
                 <select id="adminRigSelect" style="width:100%; padding:6px; background:#000; color:#ffd700; border:1px solid #ffd700; font-size:10px; margin-bottom:6px;">
@@ -349,13 +355,28 @@
                 </select>
                 <button onclick="saveAdminSettings()" class="login-btn lobby" style="padding:7px; font-size:10px;">Push Rig Number</button>
             </div>
+
             <div class="admin-section-box">
-                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">📥 DEPOSITS</div>
-                <div id="admDepositList" style="max-height:100px; overflow-y:auto;">No deposits.</div>
+                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">💳 DIRECT USER BALANCE MANAGER (ADMIN POWER)</div>
+                <input type="text" id="admTargetUserPhone" placeholder="User Mobile Number" style="width:100%; padding:5px; background:#000; color:#ffd700; border:1px solid #ffd700; font-size:10px; margin-bottom:3px;">
+                <input type="number" id="admTargetUserCoins" placeholder="Coins to Add (+ / -)" style="width:100%; padding:5px; background:#000; color:#ffd700; border:1px solid #ffd700; font-size:10px; margin-bottom:3px;">
+                <button onclick="adminModifyUserBalance()" class="login-btn" style="background:#2980b9; padding:6px; font-size:10px;">Execute Balance Update</button>
             </div>
+
             <div class="admin-section-box">
-                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">📤 WITHDRAWALS</div>
-                <div id="admWithdrawList" style="max-height:100px; overflow-y:auto;">No withdrawals.</div>
+                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">🖼️ DEPOSIT QR CODE MANAGER</div>
+                <input type="text" id="admNewQrUrlInput" placeholder="Enter New QR Image URL" style="width:100%; padding:5px; background:#000; color:#ffd700; border:1px solid #ffd700; font-size:10px; margin-bottom:3px;">
+                <button onclick="adminUpdateQrCode()" class="login-btn lobby" style="padding:6px; font-size:10px;">Update QR Code</button>
+            </div>
+
+            <div class="admin-section-box">
+                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">📥 PENDING DEPOSITS</div>
+                <div id="admDepositList" style="max-height:80px; overflow-y:auto;">No deposits.</div>
+            </div>
+
+            <div class="admin-section-box">
+                <div style="color:#ffd700; font-weight:bold; margin-bottom:4px;">📤 PENDING WITHDRAWALS</div>
+                <div id="admWithdrawList" style="max-height:80px; overflow-y:auto;">No withdrawals.</div>
             </div>
         </div>
     </div>
@@ -401,7 +422,555 @@
         </div>
     </div>
 
-    <!-- Frontend Logic Script Link with Cache Buster -->
-    <script src="/client.js?v=9999"></script>
+    <!-- 🟢 पूर्ण क्लाइंट लॉजिक स्क्रिप्ट (A to Z) -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCifZeAzMLHBij4sBZYg8uLW2FnwKKDQ",
+            authDomain: "royal-dijital.firebaseapp.com",
+            databaseURL: "https://royal-dijital-default-rtdb.firebaseio.com",
+            projectId: "royal-dijital",
+            storageBucket: "royal-dijital.appspot.com",
+            messagingSenderId: "440010959117",
+            appId: "1:440010959117:web:12cc701a9bafa37727e844",
+            measurementId: "G-7WKF885TDL"
+        };
+
+        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); } catch(e) {}
+
+        const socket = io({
+            transports: ['polling', 'websocket'],
+            reconnection: true
+        });
+
+        const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
+        const qrRef = masterRoot.child("qr_url");
+        const rigRef = masterRoot.child("winning_number");
+        const historyRef = masterRoot.child("history_list");
+        const livePlayersRef = masterRoot.child("active_online_players");
+        const usersRef = masterRoot.child("users");
+        const depositsRef = masterRoot.child("deposit_requests");
+        const withdrawsRef = masterRoot.child("withdraw_requests");
+        const activeResultRef = masterRoot.child("current_round_result");
+        const supportTicketsRef = masterRoot.child("support_tickets");
+
+        const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+        const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+        const MASTER_ADMIN_PHONE = "8889865182";
+        const SECURE_ADMIN_PIN = "888651";
+
+        let accumulatedBallRotation = 0;
+        let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
+        let loggedUserPhone = "", loggedVipId = "RD001001";
+        let isGameSpinning = false;
+        let myActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
+        let activeRoundId = Math.floor(Date.now() / 1000 / 120);
+        let processedResultRoundId = null;
+
+        window.globalState = { adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg", historyList: [24, 14, 5, 22, 10, 3] };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            drawCanvasWheel('loginWheelCanvasBg', 50, 13);
+            drawCanvasWheel('lobbyWheelCanvas', 40, 10);
+            
+            const adminSelect = document.getElementById('adminRigSelect');
+            if (adminSelect) {
+                numbersList.forEach(num => { 
+                    let opt = document.createElement('option'); 
+                    opt.value = num; 
+                    opt.innerText = "Rig Number " + num; 
+                    adminSelect.appendChild(opt); 
+                });
+            }
+
+            setInterval(() => {
+                if (loggedUserPhone) {
+                    livePlayersRef.child(loggedUserPhone).set({
+                        phone: loggedUserPhone,
+                        vipId: loggedVipId,
+                        balance: realCoins,
+                        lastSeen: firebase.database.ServerValue.TIMESTAMP
+                    });
+                }
+            }, 3000);
+        });
+
+        qrRef.on("value", (snap) => {
+            if (snap.val()) {
+                window.globalState.adminQrUrl = snap.val();
+                let qrImg = document.getElementById('dynamicPlayerQrImg');
+                if (qrImg) qrImg.src = snap.val();
+            }
+        });
+
+        historyRef.on("value", (snap) => { if (snap.val()) { window.globalState.historyList = snap.val(); renderHistoryBarUI(); } });
+
+        activeResultRef.on("value", (snap) => {
+            let res = snap.val();
+            if (!res || processedResultRoundId === res.roundId) return;
+            processedResultRoundId = res.roundId;
+            executeClientGlobalSpinAnimation(res.winningNum, res.roundId);
+        });
+
+        supportTicketsRef.on("value", (snap) => {
+            let tickets = snap.val() || {}, listEl = document.getElementById('adminSupportTicketsList'), html = "";
+            if (!listEl) return;
+            Object.keys(tickets).forEach(k => {
+                let t = tickets[k];
+                if (t.status === 'Pending') {
+                    html += `<div style="background:#000; padding:4px; border-radius:3px; margin-bottom:2px; font-size:9px;">
+                        <b>${t.phone}</b>: "${t.message}"
+                        <button onclick="supportTicketsRef.child('${k}').update({status:'Resolved'})" style="background:#27ae60; color:#fff; border:none; padding:2px 4px; margin-left:4px; border-radius:2px; cursor:pointer;">Resolve</button>
+                    </div>`;
+                }
+            });
+            listEl.innerHTML = html || "No tickets.";
+        });
+
+        livePlayersRef.on("value", (snap) => {
+            let players = snap.val() || {}, listEl = document.getElementById('adminLiveOnlinePlayersList'), html = "", now = Date.now();
+            if (!listEl) return;
+            Object.values(players).forEach(p => {
+                if (now - p.lastSeen < 4000) {
+                    html += `<div style="font-size:9px; color:#2ecc71;">📱 ${p.phone} (${p.vipId}) - ₹${p.balance}</div>`;
+                }
+            });
+            listEl.innerHTML = html || "No online users.";
+        });
+
+        depositsRef.on("value", (snap) => {
+            let deps = snap.val() || {}, listEl = document.getElementById('admDepositList'), html = "";
+            if (!listEl) return;
+            Object.keys(deps).forEach(key => {
+                let d = deps[key];
+                if (d.status === 'Pending') {
+                    html += `<div class="req-table-row"><span>${d.phone} - ₹${d.amount} (UTR: ${d.utr})</span>
+                    <div><button style="background:#27ae60; color:#fff; padding:3px 6px; border:none; border-radius:3px; font-weight:bold; cursor:pointer;" onclick="approveCloudDeposit('${key}', '${d.phone}', ${d.amount})">Approve</button></div></div>`;
+                }
+            });
+            listEl.innerHTML = html || "No pending deposits.";
+        });
+
+        withdrawsRef.on("value", (snap) => {
+            let wds = snap.val() || {}, listEl = document.getElementById('admWithdrawList'), html = "";
+            if (!listEl) return;
+            Object.keys(wds).forEach(key => {
+                let w = wds[key];
+                if (w.status === 'Pending') {
+                    html += `<div class="req-table-row"><span>${w.phone} - ₹${w.amount}</span>
+                    <div><button style="background:#27ae60; color:#fff; padding:3px 6px; border:none; border-radius:3px; font-weight:bold; cursor:pointer;" onclick="withdrawsRef.child('${key}').update({status:'Approved'})">Pay</button></div></div>`;
+                }
+            });
+            listEl.innerHTML = html || "No pending withdrawals.";
+        });
+
+        window.openSupportModal = function() { document.getElementById('supportUserMessageInput').value = ""; document.getElementById('supportTicketModal').style.display = 'flex'; };
+        window.submitSupportTicket = function() {
+            let msg = document.getElementById('supportUserMessageInput').value.trim();
+            if (!msg || !loggedUserPhone) { showCustomAlert("Enter message & login first!"); return; }
+            supportTicketsRef.push({ phone: loggedUserPhone, vipId: loggedVipId, message: msg, status: 'Pending', timestamp: Date.now() }).then(() => {
+                document.getElementById('supportTicketModal').style.display = 'none';
+                showCustomAlert("✅ Support ticket sent!");
+            });
+        };
+
+        function bindUserCloudWallet(phone) {
+            usersRef.child(phone).on("value", (snap) => {
+                let data = snap.val() || {};
+                realCoins = data.balance || 0;
+                loggedVipId = data.vipId || ("RD00" + phone.slice(-4));
+                updateBalancesDisplay();
+            });
+            loadPlayerPassbook(phone);
+            setupGlobalRoundBetsListener(activeRoundId, phone);
+        }
+
+        function setupGlobalRoundBetsListener(roundId, phone) {
+            if (!roundId || !loggedUserPhone) return;
+            masterRoot.child("live_rounds/" + roundId + "/bets/" + loggedUserPhone).on("value", (snapshot) => {
+                let bets = snapshot.val() || {};
+                myActiveBets = bets;
+                currentTotalBet = 0;
+                
+                document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
+                    c.classList.remove('has-bet');
+                    let b = c.querySelector('.cell-badge');
+                    if (b) b.remove();
+                });
+
+                Object.keys(bets).forEach(key => {
+                    let amt = bets[key];
+                    currentTotalBet += amt;
+                    let cell = null;
+                    if (key === 'red') cell = document.getElementById('btnColorRed');
+                    else if (key === 'black') cell = document.getElementById('btnColorBlack');
+                    else if (key === '0') cell = document.getElementById('btnColorGreen');
+                    else {
+                        cell = Array.from(document.querySelectorAll('.table-cell')).find(el => el.innerText.trim() === key);
+                    }
+
+                    if (cell) {
+                        cell.classList.add('has-bet');
+                        let b = cell.querySelector('.cell-badge');
+                        if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
+                        b.innerText = amt;
+                    }
+                });
+                let totalBetEl = document.getElementById('lobbyTotalBet');
+                if (totalBetEl) totalBetEl.innerText = currentTotalBet;
+            });
+        }
+
+        function loadPlayerPassbook(phone) {
+            if (!phone) return;
+            usersRef.child(phone + "/ledger").limitToLast(20).on("value", (snapshot) => {
+                let ledger = snapshot.val() || {}, container = document.getElementById('playerLedgerListContainer'), html = "";
+                Object.values(ledger).reverse().forEach(item => {
+                    let col = item.amount > 0 ? "#2ecc71" : "#e74c3c";
+                    html += `<div style="font-size:8.5px; border-bottom:1px dashed #333; padding:2px 0;"><b>${item.description || item.sourceType}</b>: <span style="color:${col};">${item.amount > 0 ? '+' : ''}₹${item.amount}</span></div>`;
+                });
+                container.innerHTML = html || "No transactions.";
+            });
+        }
+
+        window.handleProfileClick = function() {
+            document.getElementById('adminDirectAccessBtnWrap').style.display = (loggedUserPhone === MASTER_ADMIN_PHONE) ? 'block' : 'none';
+            document.getElementById('profPhone').innerText = loggedUserPhone;
+            document.getElementById('profVipId').innerText = loggedVipId;
+            document.getElementById('profRealBal').innerText = realCoins;
+            document.getElementById('playerProfileModal').style.display = 'flex';
+        };
+
+        window.openAdminPanelDirectly = function() { document.getElementById('secretAdminModal').style.display = 'flex'; };
+        window.verifyAdminPinCode = function() {
+            if (document.getElementById('adminSecretPassInput').value.trim() === SECURE_ADMIN_PIN) {
+                document.getElementById('adminPinModal').style.display = 'none';
+                document.getElementById('secretAdminModal').style.display = 'flex';
+            } else { showCustomAlert("❌ Wrong PIN!"); }
+        };
+
+        window.playMasterAudio = function() { let bgm = document.getElementById('bgmAudio'); if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => {}); } };
+
+        window.closeComingSoonModal = function() {
+            let modal = document.getElementById('comingSoonNoticeModal');
+            if (modal) modal.style.display = 'none';
+            playMasterAudio();
+        };
+
+        window.verifyCloudWalletLogin = function() {
+            let phone = document.getElementById('inputPhone').value.trim();
+            let mpin = document.getElementById('inputMpin').value.trim();
+            if (phone.length < 10) { showCustomAlert("Enter 10-digit number!"); return; }
+
+            usersRef.child(phone).once("value", (snapshot) => {
+                let data = snapshot.val() || {};
+                if (data.mpin && data.mpin !== mpin) { showCustomAlert("❌ Incorrect MPIN!"); return; }
+
+                usersRef.child(phone).update({
+                    phone: phone, vipId: data.vipId || ("RD00" + phone.slice(-4)),
+                    mpin: mpin || data.mpin || "1234", balance: data.balance !== undefined ? data.balance : 0
+                }).then(() => {
+                    loggedUserPhone = phone;
+                    socket.emit('authenticate_socket', { phone: phone });
+                    bindUserCloudWallet(phone);
+                    document.getElementById('fullscreenWheelBg').style.display = 'none';
+                    document.getElementById('loginScreenContainer').style.display = 'none';
+                    document.getElementById('gameLobbyScreen').style.display = 'flex';
+                });
+            });
+        };
+
+        window.updateBalancesDisplay = function() {
+            document.getElementById('playerRealBal').innerText = "₹" + realCoins;
+            document.getElementById('playerTestBal').innerText = testCoins;
+            document.getElementById('userDisplayPhone').innerText = loggedVipId;
+        };
+
+        window.switchGameMode = function(mode) {
+            activeGameMode = mode;
+            document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
+            document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
+        };
+
+        const gridTableDiv = document.getElementById('gridTableDiv');
+        if(gridTableDiv) {
+            [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
+                row.forEach(num => {
+                    let cell = document.createElement('div');
+                    cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
+                    cell.innerText = num; 
+                    cell.onclick = () => { window.placeTableBet(num.toString(), cell); };
+                    gridTableDiv.appendChild(cell);
+                });
+            });
+        }
+
+        let currentActiveChip = 50;
+        window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
+
+        window.placeTableBet = function(key, el) {
+            if (isGameSpinning) return;
+            
+            if (activeGameMode === 'real') { 
+                if (realCoins < currentActiveChip) { showCustomAlert("Low Balance!"); return; } 
+                
+                socket.emit('place_secure_bet', { key: key, amount: currentActiveChip, roundId: activeRoundId });
+                socket.once('bet_response', (resp) => {
+                    if (resp && resp.success) {
+                        realCoins = resp.newBalance;
+                        updateBalancesDisplay();
+                        betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
+                        
+                        if (el) {
+                            el.classList.add('has-bet');
+                            let b = el.querySelector('.cell-badge');
+                            if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; el.appendChild(b); }
+                            let curAmt = parseInt(b.innerText) || 0;
+                            b.innerText = curAmt + currentActiveChip;
+                        }
+                    } else {
+                        showCustomAlert((resp && resp.msg) || "Bet failed!");
+                    }
+                });
+            } else { 
+                if (testCoins < currentActiveChip) testCoins = 10000; 
+                testCoins -= currentActiveChip; 
+                myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
+                currentTotalBet += currentActiveChip;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+
+                betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'test' });
+                if (el) { 
+                    el.classList.add('has-bet'); 
+                    let b = el.querySelector('.cell-badge'); 
+                    if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
+                    b.innerText = myActiveBets[key]; 
+                }
+            }
+        };
+
+        window.placeGroupBet = function(groupKey, numbersArray, el) {
+            if (isGameSpinning) return;
+            let totalNeeded = currentActiveChip * numbersArray.length;
+            if (activeGameMode === 'real') {
+                if (realCoins < totalNeeded) { showCustomAlert("Low Balance!"); return; }
+                numbersArray.forEach(num => {
+                    socket.emit('place_secure_bet', { key: num.toString(), amount: currentActiveChip, roundId: activeRoundId });
+                });
+                realCoins -= totalNeeded;
+                updateBalancesDisplay();
+                if (el) el.classList.add('has-bet');
+            } else {
+                if (testCoins < totalNeeded) testCoins = 10000;
+                testCoins -= totalNeeded;
+                numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
+                currentTotalBet += totalNeeded;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                if (el) el.classList.add('has-bet');
+            }
+            betHistoryStack.push({ key: groupKey, amount: totalNeeded, mode: activeGameMode });
+        };
+
+        window.clearTableBets = function() {
+            if (isGameSpinning || betHistoryStack.length === 0) return;
+            let last = betHistoryStack.pop();
+            if (last.mode === 'test') {
+                testCoins += last.amount;
+                currentTotalBet -= last.amount;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                showCustomAlert("Last test bet cleared!");
+            } else {
+                showCustomAlert("Real bets are managed live on secure server.");
+            }
+        };
+
+        masterRoot.child("game_state/timer").on("value", (snap) => {
+            let timerData = snap.val();
+            if (!timerData) return;
+            if (timerData.roundId !== activeRoundId) {
+                activeRoundId = timerData.roundId;
+                myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                document.getElementById('lobbyTotalBet').innerText = 0;
+                if (loggedUserPhone) setupGlobalRoundBetsListener(activeRoundId, loggedUserPhone);
+            }
+            let m = Math.floor(timerData.timeLeft / 60), s = timerData.timeLeft % 60;
+            document.getElementById('lobbyTimerMain').innerText = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+            renderHistoryBarUI();
+        });
+
+        function renderHistoryBarUI() {
+            let html = "";
+            if (window.globalState.historyList) {
+                window.globalState.historyList.forEach(num => {
+                    let cls = num === 0 ? 'green' : (redList.includes(num) ? 'red' : 'black');
+                    html += `<div class="history-ball ${cls}">${num}</div>`;
+                });
+            }
+            let cont = document.getElementById('historyBallsContainer');
+            if(cont) cont.innerHTML = html;
+        }
+
+        function executeClientGlobalSpinAnimation(winningNum, endedRoundId) {
+            isGameSpinning = true; 
+            document.getElementById('lobbyStatusMsg').innerText = "Spinning...";
+            let ballRollAudio = document.getElementById('ballRollSfx');
+            if (ballRollAudio) { ballRollAudio.currentTime = 0; ballRollAudio.play().catch(e => {}); }
+
+            let totalPockets = numbersList.length;
+            let targetAngle = numbersList.indexOf(winningNum) * (360 / totalPockets) + ((360 / totalPockets) / 2);
+            accumulatedBallRotation += 1800 + (360 - (accumulatedBallRotation % 360)) + targetAngle;
+            const ballOrbitEl = document.getElementById('rouletteBallOrbit');
+            if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
+
+            setTimeout(() => {
+                if (ballRollAudio) ballRollAudio.pause();
+                let ballDropAudio = document.getElementById('ballDropSfx');
+                if (ballDropAudio) { ballDropAudio.currentTime = 0; ballDropAudio.play().catch(e => {}); }
+
+                let isRed = redList.includes(winningNum);
+                let popup = document.getElementById('cinematicResultPopup');
+                document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'ZERO':(isRed?'RED':'BLACK')})`;
+                updateBalancesDisplay();
+
+                if(popup) {
+                    popup.style.display = 'flex';
+                    setTimeout(() => { popup.style.display = 'none'; isGameSpinning = false; document.getElementById('lobbyStatusMsg').innerText = "Ready!"; }, 2500);
+                } else { isGameSpinning = false; }
+            }, 5000);
+        }
+
+        function drawCanvasWheel(canvasId, radiusSize, fontSize) {
+            const canvas = document.getElementById(canvasId); if (!canvas) return;
+            const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
+            const outerRadius = cx - 2, arcSize = (2 * Math.PI) / numbersList.length;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            numbersList.forEach((num, i) => {
+                const angle = i * arcSize - Math.PI / 2;
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, outerRadius, angle, angle + arcSize);
+                ctx.lineTo(cx, cy); ctx.fillStyle = num === 0 ? '#1b5e20' : (redList.includes(num) ? '#b03a2e' : '#0f171e');
+                ctx.fill(); ctx.lineWidth = 1; ctx.strokeStyle = '#ffd700'; ctx.stroke();
+                ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = `bold ${fontSize || 12}px Arial`;
+                ctx.fillText(num, outerRadius - 8, 3); ctx.restore();
+            });
+        }
+
+        window.saveAdminSettings = function() {
+            let sel = document.getElementById('adminRigSelect').value;
+            rigRef.set(sel).then(() => {
+                showCustomAlert("✅ Rig number saved: " + sel);
+                document.getElementById('secretAdminModal').style.display = 'none';
+            });
+        };
+
+        window.adminModifyUserBalance = function() {
+            let targetPhone = document.getElementById('admTargetUserPhone').value.trim();
+            let delta = parseInt(document.getElementById('admTargetUserCoins').value) || 0;
+            if(targetPhone.length < 10) { showCustomAlert("Enter valid 10-digit phone!"); return; }
+
+            usersRef.child(targetPhone + "/balance").transaction(cur => (cur || 0) + delta, (err, comm) => {
+                if(comm) {
+                    usersRef.child(targetPhone + "/ledger").push({ amount: delta, sourceType: 'ADMIN_ADJUSTMENT', description: `Admin adjusted balance by ₹${delta}`, timestamp: Date.now() });
+                    showCustomAlert("✅ User balance updated successfully!");
+                } else {
+                    showCustomAlert("Failed to update user balance.");
+                }
+            });
+        };
+
+        window.adminUpdateQrCode = function() {
+            let newUrl = document.getElementById('admNewQrUrlInput').value.trim();
+            if(!newUrl) { showCustomAlert("Enter valid QR image URL!"); return; }
+            qrRef.set(newUrl).then(() => {
+                showCustomAlert("✅ Deposit QR Code updated globally!");
+            });
+        };
+
+        window.approveCloudDeposit = function(depKey, userPhone, amount) {
+            usersRef.child(userPhone).once("value", (snap) => {
+                let cur = (snap.val() && snap.val().balance) || 0;
+                usersRef.child(userPhone + "/ledger").push({ amount: amount, sourceType: 'DEPOSIT_APPROVED', description: `Approved Deposit ₹${amount}`, timestamp: Date.now() });
+                usersRef.child(userPhone).update({ balance: cur + amount }).then(() => {
+                    depositsRef.child(depKey).update({ status: 'Approved' });
+                    showCustomAlert("Deposit approved!");
+                });
+            });
+        };
+
+        window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; };
+        window.openWithdrawModal = function() { document.getElementById('withdrawModalBox').style.display = 'flex'; };
+        window.openTransferModal = function() { document.getElementById('transferModalBox').style.display = 'flex'; };
+        window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
+        window.logoutToLogin = function() { location.reload(); };
+        window.requestStrictOtp = function() { document.getElementById('inputOtp').value = Math.floor(100000 + Math.random() * 900000); };
+
+        window.closeCustomAlert = function() { document.getElementById('customAlertModal').style.display = 'none'; };
+        window.showCustomAlert = function(msg) {
+            document.getElementById('customAlertMessage').innerText = msg;
+            document.getElementById('customAlertModal').style.display = 'flex';
+        };
+
+        window.triggerCloudDepositSubmit = function() {
+            let amt = parseInt(document.getElementById('customDepositInput').value) || 0;
+            let utr = document.getElementById('depositUtrInput').value.trim();
+            if(amt <= 0 || !utr) { showCustomAlert("Enter amount and 12-digit UTR!"); return; }
+            depositsRef.push({ phone: loggedUserPhone, vipId: loggedVipId, amount: amt, utr: utr, status: 'Pending', timestamp: Date.now() }).then(() => {
+                document.getElementById('depositModalBox').style.display = 'none';
+                showCustomAlert("✅ Deposit request submitted to Admin!");
+            });
+        };
+
+        window.triggerCloudSubmitWithdraw = function() {
+            let amt = parseInt(document.getElementById('withdrawAmtInput').value) || 0;
+            let upi = document.getElementById('withdrawUpiInput').value.trim();
+            if(amt <= 50 || !upi) { showCustomAlert("Enter valid amount (>50) and UPI ID!"); return; }
+            if(realCoins < amt) { showCustomAlert("Insufficient real balance!"); return; }
+            
+            usersRef.child(loggedUserPhone + "/balance").transaction(cur => ((cur || 0) >= amt) ? cur - amt : cur, (err, committed) => {
+                if(committed) {
+                    withdrawsRef.push({ phone: loggedUserPhone, vipId: loggedVipId, amount: amt, upi: upi, status: 'Pending', timestamp: Date.now() }).then(() => {
+                        usersRef.child(loggedUserPhone + "/ledger").push({ amount: -amt, sourceType: 'WITHDRAW_REQUEST', description: `Withdrawal request of ₹${amt}`, timestamp: Date.now() });
+                        document.getElementById('withdrawModalBox').style.display = 'none';
+                        showCustomAlert("✅ Withdrawal request submitted!");
+                    });
+                } else {
+                    showCustomAlert("Withdrawal failed!");
+                }
+            });
+        };
+
+        window.executeCoinTransferCloud = function() {
+            let targetPhone = document.getElementById('transferTargetPhone').value.trim();
+            let amt = parseInt(document.getElementById('transferCoinAmt').value) || 0;
+            if(targetPhone.length < 10 || amt <= 0) { showCustomAlert("Enter valid mobile and amount!"); return; }
+            if(targetPhone === loggedUserPhone) { showCustomAlert("Cannot transfer to yourself!"); return; }
+            if(realCoins < amt) { showCustomAlert("Insufficient balance!"); return; }
+
+            usersRef.child(targetPhone).once("value", (snap) => {
+                if(!snap.exists()) { showCustomAlert("Target user not found!"); return; }
+                usersRef.child(loggedUserPhone + "/balance").transaction(cur => ((cur || 0) >= amt) ? cur - amt : null, (err, comm) => {
+                    if(comm) {
+                        usersRef.child(targetPhone + "/balance").transaction(tCur => (tCur || 0) + amt);
+                        usersRef.child(loggedUserPhone + "/ledger").push({ amount: -amt, sourceType: 'TRANSFER_OUT', description: `Transferred ₹${amt} to ${targetPhone}`, timestamp: Date.now() });
+                        usersRef.child(targetPhone + "/ledger").push({ amount: amt, sourceType: 'TRANSFER_IN', description: `Received ₹${amt} from ${loggedUserPhone}`, timestamp: Date.now() });
+                        document.getElementById('transferModalBox').style.display = 'none';
+                        showCustomAlert("✅ Transfer successful!");
+                    } else {
+                        showCustomAlert("Transfer failed!");
+                    }
+                });
+            });
+        };
+
+        window.handleDepositScreenshotUpload = function(input) {
+            if(input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('dynamicPlayerQrImg').src = e.target.result;
+                    showCustomAlert("✅ Screenshot attached successfully!");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+    </script>
 </body>
 </html>

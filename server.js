@@ -53,7 +53,7 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-// सॉकेट कनेक्शन और एकनॉलेजमेंट बेटिंग हैंडलिंग
+// सॉकेट कनेक्शन और सिक्योर बेटिंग हैंडलिंग
 io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
 
@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 🟢 रियल मनी सिक्योर बेटिंग विथ सॉकेट एकनॉलेजमेंट (Callback) ताकि 3G/4G पर भी तुरंत काम करे
+    // 🟢 रियल मनी सिक्योर बेटिंग विथ सॉकेट एकनॉलेजमेंट (Callback)
     socket.on('place_secure_bet', async (data, callback) => {
         try {
             let verifiedPhone = activeSocketSessions.get(socket.id);
@@ -129,6 +129,45 @@ io.on('connection', (socket) => {
         }
     });
 
+    // 🟢 रियल मनी बेट कैंसिल / अंडू (Undo/Clear Handler)
+    socket.on('cancel_secure_bet', async (data, callback) => {
+        try {
+            let verifiedPhone = activeSocketSessions.get(socket.id);
+            if (!verifiedPhone) {
+                if (typeof callback === 'function') callback({ success: false, msg: 'Session expired.' });
+                return;
+            }
+            let { key, amount, roundId } = data;
+            let currentSec = Math.floor(Date.now() / 1000);
+            let activeRound = Math.floor(currentSec / ROUND_TIME);
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+
+            if (activeRound !== roundId || timeLeft <= 10) {
+                if (typeof callback === 'function') callback({ success: false, msg: 'Cannot clear. Betting closed!' });
+                return;
+            }
+
+            let userBalRef = usersRef.child(verifiedPhone + "/balance");
+            let finalBal = 0;
+            await userBalRef.transaction((currentBal) => {
+                finalBal = (currentBal || 0) + amount;
+                return finalBal;
+            });
+
+            let roundBetRef = masterRoot.child("live_rounds/" + activeRound + "/bets/" + verifiedPhone + "/" + key);
+            await roundBetRef.transaction((curr) => {
+                let val = (curr || 0) - amount;
+                return val > 0 ? val : null;
+            });
+
+            await recordCoinLedger(verifiedPhone, amount, 'BET_CANCELLED', `Cancelled bet on [${key}] for ₹${amount}`);
+
+            if (typeof callback === 'function') callback({ success: true, newBalance: finalBal });
+        } catch(e) {
+            if (typeof callback === 'function') callback({ success: false, msg: 'Error cancelling bet.' });
+        }
+    });
+
     socket.on('disconnect', () => {
         activeSocketSessions.delete(socket.id);
         userRateLimitMap.delete(socket.id);
@@ -164,7 +203,6 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     return validSafeNumbers[Math.abs(roundId * 17) % validSafeNumbers.length];
 }
 
-// मास्टर सेटलमेंट और 5-सेकंड स्पिन-मैच्ड हिस्ट्री अपडेट
 async function executeRoundSettlement(roundId) {
     let lockRef = masterRoot.child("settlement_locks/" + roundId);
     let acquiredLock = false;
@@ -226,7 +264,6 @@ async function executeRoundSettlement(roundId) {
             }
         }
 
-        // सबसे पहले व्हील घुमाने के लिए रिजल्ट ट्रिगर करें
         await activeResultRef.set({
             roundId: roundId,
             winningNum: winningNum,
@@ -234,7 +271,6 @@ async function executeRoundSettlement(roundId) {
         });
         io.emit('round_ended', { winningNum, roundId });
 
-        // ठीक 5 सेकंड बाद (जब व्हील रुक जाए) तब हिस्ट्री में नंबर जोड़ें
         setTimeout(async () => {
             if (historyRef) {
                 await historyRef.transaction((curHist) => {
@@ -277,7 +313,7 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 🟢 पूर्ण रूप से रिस्पॉन्सिव फ्रंटएंड HTML कोड जो सीधे सर्वर से लोड होगा
+// 🟢 पूर्ण रूप से रिस्पॉन्सिव और फिक्स्ड फ्रंटएंड HTML कोड
 const HTML_CONTENT = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -576,7 +612,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
             </div>
             
             <div class="lobby-action-row">
-                <button class="clear-btn" onclick="clearTableBets()">Clear</button>
+                <button class="clear-btn" onclick="clearTableBets()">Clear / Undo</button>
                 <div class="status-msg-box" id="lobbyStatusMsg">Connecting...</div>
                 <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
             </div>
@@ -826,6 +862,39 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 updateBalancesDisplay();
             });
             loadPlayerPassbook(phone);
+            setupGlobalRoundBetsListener(activeRoundId, phone);
+        }
+
+        // 🟢 लाइव राउंड बेट्स सिंक लिसनर (ताकि रियल मनी बेट्स टेबल पर तुरंत दिखें)
+        function setupGlobalRoundBetsListener(roundId, phone) {
+            if (!roundId || !phone) return;
+            masterRoot.child("live_rounds/" + roundId + "/bets/" + phone).on("value", (snapshot) => {
+                let bets = snapshot.val() || {};
+                myActiveBets = bets;
+                currentTotalBet = 0;
+                
+                // सभी टेबल सेल्स के बैज रीसेट करें
+                document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
+                    c.classList.remove('has-bet');
+                    let b = c.querySelector('.cell-badge');
+                    if (b) b.remove();
+                });
+
+                Object.keys(bets).forEach(key => {
+                    let amt = bets[key];
+                    currentTotalBet += amt;
+                    // सेल पर बैज लगाएं
+                    let cell = Array.from(document.querySelectorAll('.table-cell, .color-btn')).find(el => el.innerText.trim() === key || (key === 'red' && el.id === 'btnColorRed') || (key === 'black' && el.id === 'btnColorBlack') || (key === '0' && el.innerText.includes('ZERO')));
+                    if (cell) {
+                        cell.classList.add('has-bet');
+                        let b = cell.querySelector('.cell-badge');
+                        if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
+                        b.innerText = amt;
+                    }
+                });
+                let totalBetEl = document.getElementById('lobbyTotalBet');
+                if (totalBetEl) totalBetEl.innerText = currentTotalBet;
+            });
         }
 
         function loadPlayerPassbook(phone) {
@@ -909,7 +978,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let currentActiveChip = 50;
         window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-        // 🟢 REAL MONEY BETTING FIXED WITH SOCKET CALLBACK ACKNOWLEDGEMENT
+        // 🟢 REAL MONEY BETTING WITH SOCKET CALLBACK ACKNOWLEDGEMENT
         window.placeTableBet = function(key, el) {
             if (isGameSpinning) return;
             
@@ -920,9 +989,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                     if (resp && resp.success) {
                         realCoins = resp.newBalance;
                         updateBalancesDisplay();
-
-                        betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                        if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
+                        betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
                     } else {
                         showCustomAlert((resp && resp.msg) || "Bet failed!");
                     }
@@ -934,8 +1001,13 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 currentTotalBet += currentActiveChip;
                 document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
-                betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
+                betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'test' });
+                if (el) { 
+                    el.classList.add('has-bet'); 
+                    let b = el.querySelector('.cell-badge'); 
+                    if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
+                    b.innerText = myActiveBets[key]; 
+                }
             }
         };
 
@@ -956,15 +1028,32 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 currentTotalBet += totalNeeded;
                 document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
             }
-            betHistoryStack.push({ key: groupKey, amount: totalNeeded, element: el, mode: activeGameMode });
+            betHistoryStack.push({ key: groupKey, amount: totalNeeded, mode: activeGameMode });
             if (el) el.classList.add('has-bet');
         };
 
+        // 🟢 FULLY FUNCTIONAL CLEAR / UNDO BUTTON (TEST & REAL MODE)
         window.clearTableBets = function() {
             if (isGameSpinning || betHistoryStack.length === 0) return;
             let last = betHistoryStack.pop();
-            if (last.mode === 'test') { testCoins += last.amount; currentTotalBet -= last.amount; }
-            else { showCustomAlert("Placed bets cannot be cleared directly."); }
+            
+            if (last.mode === 'test') {
+                testCoins += last.amount;
+                currentTotalBet -= last.amount;
+                document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                showCustomAlert("Last test bet undone!");
+            } else if (last.mode === 'real') {
+                // सर्वर को रियल मनी बेट कैंसिल/रिफंड करने का अनुरोध भेजें
+                socket.emit('cancel_secure_bet', { key: last.key, amount: last.amount, roundId: activeRoundId }, (resp) => {
+                    if (resp && resp.success) {
+                        realCoins = resp.newBalance;
+                        updateBalancesDisplay();
+                        showCustomAlert("✅ Last real bet undone & refunded!");
+                    } else {
+                        showCustomAlert((resp && resp.msg) || "Cannot undo bet at this moment.");
+                    }
+                });
+            }
         };
 
         masterRoot.child("game_state/timer").on("value", (snap) => {
@@ -974,7 +1063,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 activeRoundId = timerData.roundId;
                 myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
                 document.getElementById('lobbyTotalBet').innerText = 0;
-                document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
+                if (loggedUserPhone) setupGlobalRoundBetsListener(activeRoundId, loggedUserPhone);
             }
             let m = Math.floor(timerData.timeLeft / 60), s = timerData.timeLeft % 60;
             document.getElementById('lobbyTimerMain').innerText = \`\${m<10?'0':''}\${m}:\${s<10?'0':''}\${s}\`;

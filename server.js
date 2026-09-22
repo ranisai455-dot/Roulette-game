@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 
 // Render के एनवायरनमेंट वेरिएबल से Firebase सुरक्षित रूप से लोड करना
@@ -24,9 +25,10 @@ const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : 
 
 const app = express();
 const server = http.createServer(app);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const io = new Server(server, {
+    cors: { origin: "*" },
+    transports: ['polling', 'websocket']
+});
 
 const PORT = process.env.PORT || 3000;
 const ROUND_TIME = 120; // 120 सेकंड (2 मिनट)
@@ -34,6 +36,9 @@ const MASTER_ADMIN_PHONE = "8889865182";
 
 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+
+const activeSocketSessions = new Map();
+const userRateLimitMap = new Map();
 
 async function recordCoinLedger(phone, amount, sourceType, description) {
     try {
@@ -49,88 +54,79 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-// 🟢 1. डायरेक्ट HTTP API: सिक्योर रियल मनी बेटिंग (1 से 36 नंबर, रेड/ब्लैक, जीरो सभी के लिए)
-app.post('/api/place-bet', async (req, res) => {
-    try {
-        let { phone, key, amount, roundId } = req.body;
-        if (!phone || !key || !amount || amount <= 0) {
-            return res.json({ success: false, msg: 'Invalid parameters.' });
+// 🟢 सॉकेट-बेस्ड मास्टर बेटिंग इंजन (जो पहले पूरी तरह काम कर रहा था)
+io.on('connection', (socket) => {
+    console.log('Client connected:', socket.id);
+
+    socket.on('authenticate_socket', (data) => {
+        let { phone } = data;
+        if (phone) {
+            activeSocketSessions.set(socket.id, phone);
         }
+    });
 
-        let currentSec = Math.floor(Date.now() / 1000);
-        let activeRound = Math.floor(currentSec / ROUND_TIME);
-        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
-        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
-
-        if (timeLeft <= 5) {
-            return res.json({ success: false, msg: 'Betting closed for this round!' });
-        }
-
-        let userBalRef = usersRef.child(phone + "/balance");
-        let betSuccess = false;
-        let finalBal = 0;
-
-        await userBalRef.transaction((currentBal) => {
-            let currentBalance = currentBal || 0;
-            if (currentBalance < amount) {
-                betSuccess = false;
-                return currentBalance;
+    // 1 से 36 नंबर, रेड, ब्लैक, ज़ीरो सभी के लिए सिक्योर बेटिंग
+    socket.on('place_secure_bet', async (data) => {
+        try {
+            let verifiedPhone = activeSocketSessions.get(socket.id);
+            if (!verifiedPhone) {
+                socket.emit('bet_response', { success: false, msg: 'Session expired! Re-login.' });
+                return;
             }
-            betSuccess = true;
-            finalBal = currentBalance - amount;
-            return finalBal;
-        });
 
-        if (!betSuccess) {
-            return res.json({ success: false, msg: 'Insufficient balance!' });
+            let { key, amount, roundId } = data;
+            if (!key || !amount || amount <= 0) return;
+
+            let now = Date.now();
+            let lastTime = userRateLimitMap.get(socket.id) || 0;
+            if (now - lastTime < 50) return;
+            userRateLimitMap.set(socket.id, now);
+
+            let currentSec = Math.floor(Date.now() / 1000);
+            let activeRound = Math.floor(currentSec / ROUND_TIME);
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
+            let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+
+            if (timeLeft <= 5) {
+                socket.emit('bet_response', { success: false, msg: 'Betting closed for this round!' });
+                return;
+            }
+
+            let userBalRef = usersRef.child(verifiedPhone + "/balance");
+            let betSuccess = false;
+            let finalBal = 0;
+
+            await userBalRef.transaction((currentBal) => {
+                let currentBalance = currentBal || 0;
+                if (currentBalance < amount) {
+                    betSuccess = false;
+                    return currentBalance;
+                }
+                betSuccess = true;
+                finalBal = currentBalance - amount;
+                return finalBal;
+            });
+
+            if (!betSuccess) {
+                socket.emit('bet_response', { success: false, msg: 'Insufficient balance!' });
+                return;
+            }
+
+            await recordCoinLedger(verifiedPhone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
+            let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + verifiedPhone + "/" + key);
+            await roundBetRef.transaction(curr => (curr || 0) + amount);
+
+            socket.emit('bet_response', { success: true, newBalance: finalBal, key: key, amount: amount });
+        } catch (err) {
+            console.error("Bet error:", err);
+            socket.emit('bet_response', { success: false, msg: 'Server error placing bet.' });
         }
+    });
 
-        await recordCoinLedger(phone, -amount, 'BET_PLACED', `Bet on [${key}] for ₹${amount}`);
-        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
-        await roundBetRef.transaction(curr => (curr || 0) + amount);
-
-        return res.json({ success: true, newBalance: finalBal, roundId: targetRound });
-    } catch (err) {
-        console.error("Bet API error:", err);
-        return res.json({ success: false, msg: 'Server error placing bet.' });
-    }
-});
-
-// 🟢 2. डायरेक्ट HTTP API: बेट कैंसिल / अंडू (Undo & Refund)
-app.post('/api/cancel-bet', async (req, res) => {
-    try {
-        let { phone, key, amount, roundId } = req.body;
-        if (!phone || !key || !amount) {
-            return res.json({ success: false, msg: 'Invalid parameters.' });
-        }
-
-        let currentSec = Math.floor(Date.now() / 1000);
-        let activeRound = Math.floor(currentSec / ROUND_TIME);
-        let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
-        let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
-
-        if (timeLeft <= 5) {
-            return res.json({ success: false, msg: 'Cannot undo. Betting closed!' });
-        }
-
-        let userBalRef = usersRef.child(phone + "/balance");
-        let finalBal = 0;
-        await userBalRef.transaction((currentBal) => {
-            finalBal = (currentBal || 0) + amount;
-            return finalBal;
-        });
-
-        let roundBetRef = masterRoot.child("live_rounds/" + targetRound + "/bets/" + phone + "/" + key);
-        await roundBetRef.transaction((curr) => {
-            let val = (curr || 0) - amount;
-            return val > 0 ? val : null;
-        });
-
-        await recordCoinLedger(phone, amount, 'BET_CANCELLED', `Cancelled bet on [${key}] for ₹${amount}`);
-        return res.json({ success: true, newBalance: finalBal });
-    } catch (e) {
-        return res.json({ success: false, msg: 'Error cancelling bet.' });
-    }
+    socket.on('disconnect', () => {
+        activeSocketSessions.delete(socket.id);
+        userRateLimitMap.delete(socket.id);
+    });
 });
 
 function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
@@ -228,12 +224,15 @@ async function executeRoundSettlement(roundId) {
             }
         }
 
+        // 1️⃣ पहले व्हील घुमाने के लिए रिजल्ट ट्रिगर करें
         await activeResultRef.set({
             roundId: roundId,
             winningNum: winningNum,
             timestamp: Date.now()
         });
+        io.emit('round_ended', { winningNum, roundId });
 
+        // 2️⃣ ठीक 5 सेकंड बाद (जब पहिया रुके) तब हिस्ट्री में नंबर जोड़ें
         setTimeout(async () => {
             if (historyRef) {
                 await historyRef.transaction((curHist) => {
@@ -262,6 +261,7 @@ function startMasterGameLoop() {
             if (gameStateRef) {
                 gameStateRef.child("timer").set({ roundId, timeLeft });
             }
+            io.emit('timer_update', { roundId, timeLeft });
 
             if (timeLeft <= 1) {
                 await executeRoundSettlement(roundId);
@@ -274,7 +274,7 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 🟢 100% रिस्पॉन्सिव फ्रंटएंड (0 से 36 सिंगल बैट्स, ग्रुप बैट्स और अंडू बटन पूरी तरह फिक्स्ड)
+// 🟢 पूर्ण रूप से रिस्पॉन्सिव फ्रंटएंड (Socket.io + 1-36 नंबर + अंडू + मोबाइल फिट)
 const HTML_CONTENT = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,7 +294,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>ROYAL ROULETTE - 100% DIRECT CLOUD LIVE</title>
+    <title>ROYAL ROULETTE - 100% MASTER LIVE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -396,6 +396,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .req-actions button { padding: 3px 6px; font-weight: bold; border-radius: 3px; border: none; cursor: pointer; font-size: 8.5px; }
     </style>
 
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -524,9 +525,9 @@ const HTML_CONTENT = `<!DOCTYPE html>
             </div>
             
             <div class="color-row">
-                <button class="color-btn btn-red" onclick="placeTableBet('red', this)">RED</button>
-                <button class="color-btn btn-green" onclick="placeTableBet('0', this)">ZERO</button>
-                <button class="color-btn btn-black" onclick="placeTableBet('black', this)">BLACK</button>
+                <button class="color-btn btn-red" id="btnColorRed" onclick="placeTableBet('red', this)">RED</button>
+                <button class="color-btn btn-green" id="btnColorGreen" onclick="placeTableBet('0', this)">ZERO</button>
+                <button class="color-btn btn-black" id="btnColorBlack" onclick="placeTableBet('black', this)">BLACK</button>
             </div>
 
             <div class="chip-selector-row">
@@ -659,7 +660,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let loggedUserPhone = "", loggedVipId = "RD001001";
         let isGameSpinning = false;
         let myActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
-        let activeRoundId = Math.floor(Date.now() / 1000 / 120);
+        let activeRoundId = 0;
         let processedResultRoundId = null;
         let userDepositScreenshotData = "";
 
@@ -760,10 +761,9 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 updateBalancesDisplay();
             });
             loadPlayerPassbook(phone);
-            setupGlobalRoundBetsListener(activeRoundId, phone);
         }
 
-        // 🟢 1 से 36 नंबर और सभी सेल्स पर बैट्स सिंक करने का अचूक लिसनर
+        // 🟢 फायरबेस डेटाबेस से रियल-टाइम बेट्स सिंक लिसनर
         function setupGlobalRoundBetsListener(roundId, phone) {
             if (!roundId || !phone) return;
             masterRoot.child("live_rounds/" + roundId + "/bets/" + phone).on("value", (snapshot) => {
@@ -780,7 +780,14 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 Object.keys(bets).forEach(key => {
                     let amt = bets[key];
                     currentTotalBet += amt;
-                    let cell = Array.from(document.querySelectorAll('.table-cell, .color-btn, .group-btn')).find(el => el.innerText.trim() === key || (key === 'red' && el.classList.contains('btn-red')) || (key === 'black' && el.classList.contains('btn-black')) || (key === '0' && el.innerText.includes('ZERO')));
+                    let cell = null;
+                    if (key === 'red') cell = document.getElementById('btnColorRed');
+                    else if (key === 'black') cell = document.getElementById('btnColorBlack');
+                    else if (key === '0') cell = document.getElementById('btnColorGreen');
+                    else {
+                        cell = Array.from(document.querySelectorAll('.table-cell')).find(el => el.innerText.trim() === key);
+                    }
+
                     if (cell) {
                         cell.classList.add('has-bet');
                         let b = cell.querySelector('.cell-badge');
@@ -873,7 +880,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let currentActiveChip = 50;
         window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-        // 🟢 1 से 36 नंबर और सभी सेल्स पर रियल मनी बैटिंग (HTTP API)
+        // 🟢 1 से 36 नंबर, रेड, ब्लैक, ज़ीरो पर अचूक बेटिंग (HTTP API)
         window.placeTableBet = function(key, el) {
             if (isGameSpinning) return;
             
@@ -883,17 +890,15 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 fetch('/api/place-bet', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: loggedUserPhone, key: key, amount: currentActiveChip, roundId: activeRoundId })
+                    body: JSON.stringify({ phone: loggedUserPhone, key: key, amount: currentActiveChip })
                 })
                 .then(res => res.json())
                 .then(resp => {
                     if (resp && resp.success) {
                         realCoins = resp.newBalance;
-                        if (resp.roundId) activeRoundId = resp.roundId;
                         updateBalancesDisplay();
                         betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
                         
-                        // 🟢 तुरंत विजुअल बैज दिखाएं (Instant Feedback)
                         if (el) {
                             el.classList.add('has-bet');
                             let b = el.querySelector('.cell-badge');
@@ -931,7 +936,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                     fetch('/api/place-bet', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ phone: loggedUserPhone, key: num.toString(), amount: currentActiveChip, roundId: activeRoundId })
+                        body: JSON.stringify({ phone: loggedUserPhone, key: num.toString(), amount: currentActiveChip })
                     });
                 });
                 realCoins -= totalNeeded;

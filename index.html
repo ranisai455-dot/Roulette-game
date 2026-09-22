@@ -522,7 +522,7 @@
             
             <div class="lobby-action-row">
                 <button class="clear-btn" onclick="clearTableBets()">Clear</button>
-                <div class="status-msg-box" id="lobbyStatusMsg">Place bets! Ready...</div>
+                <div class="status-msg-box" id="lobbyStatusMsg">Connecting to Server...</div>
                 <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
             </div>
         </div>
@@ -765,7 +765,21 @@
         } catch(e) {}
 
         const SOCKET_SERVER_URL = "https://roulette-game-6cz1.onrender.com";
-        const socket = io(SOCKET_SERVER_URL);
+        const socket = io(SOCKET_SERVER_URL, {
+            transports: ['polling', 'websocket'],
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 1000
+        });
+
+        socket.on('connect', () => {
+            let statusBox = document.getElementById('lobbyStatusMsg');
+            if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
+        });
+        socket.on('disconnect', () => {
+            let statusBox = document.getElementById('lobbyStatusMsg');
+            if(statusBox) statusBox.innerText = "🔴 Disconnected from Server!";
+        });
 
         const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
         const qrRef = masterRoot.child("qr_url");
@@ -1521,7 +1535,7 @@
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
                 };
 
-                window.switchGameMode = function(mode) {
+Storage.prototype.switchGameMode = function(mode) {
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
@@ -1749,7 +1763,7 @@
                                     document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
                                 }, 2500);
                             } else {
-                                isGameSpinning = false; 
+                                isGameSpinning, isGameSpinning = false; 
                                 document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
                             }
                         }, 5000);

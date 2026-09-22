@@ -19,43 +19,50 @@
             display: flex; flex-direction: column; justify-content: space-between; align-items: center; 
         }
 
-        /* 👑 3D ULTRA HD ROYALE COMING SOON MODAL */
+        /* 👑 अति-भव्य शाही फरमान (Royal Decree Welcome Modal) */
         #comingSoonNoticeModal { 
             display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); 
-            z-index: 999999; align-items: center; justify-content: center; padding: 15px; 
+            background: rgba(0, 0, 0, 0.93); backdrop-filter: blur(12px); 
+            z-index: 999999; align-items: center; justify-content: center; padding: 16px; 
         }
-        .coming-soon-card { 
-            background: radial-gradient(circle at center, #063d1a 0%, #011406 70%, #000502 100%); 
-            border: 4px solid #ffd700; padding: 28px 22px; border-radius: 24px; width: 100%; max-width: 330px; 
+        .royal-decree-card { 
+            background: radial-gradient(circle at center, #2a0808 0%, #120202 70%, #050000 100%); 
+            border: 4px double #ffd700; padding: 30px 22px; border-radius: 24px; width: 100%; max-width: 340px; 
             text-align: center; color: #fff; 
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.7), inset 0 0 30px rgba(0, 255, 100, 0.5); 
-            animation: royalPopupAnim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+            box-shadow: 0 0 70px rgba(255, 215, 0, 0.8), inset 0 0 35px rgba(255, 100, 0, 0.4); 
+            animation: royalPopupAnim 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+            position: relative;
+        }
+        .royal-decree-card::before {
+            content: "👑"; position: absolute; top: -20px; left: calc(50% - 16px);
+            font-size: 28px; background: #120202; padding: 0 8px; border-radius: 50%;
+            border: 2px solid #ffd700; box-shadow: 0 0 15px #ffd700;
         }
         @keyframes royalPopupAnim { 
-            from { transform: scale(0.5) translateY(40px); opacity: 0; } 
+            from { transform: scale(0.4) translateY(50px); opacity: 0; } 
             to { transform: scale(1) translateY(0); opacity: 1; } 
         }
-        .royal-modal-title { 
-            font-size: 22px; font-weight: 900; color: #ffd700; text-transform: uppercase; 
-            text-shadow: 0 0 20px #ffd700, 0 0 35px #ff8800; letter-spacing: 1.5px; margin-bottom: 6px; 
+        .royal-decree-title { 
+            font-size: 23px; font-weight: 900; color: #ffd700; text-transform: uppercase; 
+            text-shadow: 0 0 20px #ffd700, 0 0 35px #ff4500; letter-spacing: 2px; margin-top: 10px; margin-bottom: 6px; 
+            font-family: 'Georgia', serif;
         }
-        .royal-modal-subtitle { 
-            font-size: 11px; color: #a3e4d7; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; 
+        .royal-decree-subtitle { 
+            font-size: 11px; color: #e2b714; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; 
         }
-        .royal-badge-strip { 
-            background: linear-gradient(135deg, #c0392b, #8e44ad); color: #fff; font-size: 12px; font-weight: 900; 
-            padding: 9px; border-radius: 8px; margin-bottom: 18px; text-transform: uppercase; 
-            box-shadow: 0 0 20px rgba(192, 57, 43, 0.9); border: 1.5px solid #ff7675; 
+        .royal-decree-badge { 
+            background: linear-gradient(135deg, #b9770e, #7d6608); color: #fff; font-size: 11.5px; font-weight: 900; 
+            padding: 9px; border-radius: 8px; margin-bottom: 20px; text-transform: uppercase; 
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7); border: 1.5px solid #fff; letter-spacing: 1px;
         }
-        .royal-enter-btn { 
-            width: 100%; padding: 13px; background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #d35400 100%); 
+        .royal-decree-btn { 
+            width: 100%; padding: 14px; background: linear-gradient(135deg, #ffd700 0%, #f39c12 50%, #b8860b 100%); 
             color: #000; border: 2.5px solid #fff; font-weight: 900; border-radius: 12px; cursor: pointer; 
-            font-size: 13.5px; text-transform: uppercase; letter-spacing: 1.5px; 
+            font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; 
             box-shadow: 0 6px 25px rgba(255, 215, 0, 0.9); 
             transition: transform 0.1s ease, box-shadow 0.2s ease; 
         }
-        .royal-enter-btn:active { 
+        .royal-decree-btn:active { 
             transform: scale(0.95); box-shadow: 0 2px 10px rgba(255, 215, 0, 0.5); 
         }
 
@@ -66,7 +73,7 @@
 
         #loginScreenContainer { 
             width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; z-index: 10; 
-            padding: 10px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.85) 0%, rgba(0,2,1,0.95) 100%); 
+            padding: 10px; position: absolute; top: 0; left: 0; background: radial-gradient(circle, rgba(1,27,10,0.88) 0%, rgba(0,2,1,0.96) 100%); 
         }
         .header-container { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 3px; align-items: center; margin-top: 6px; }
         .trust-banner { font-size: 8px; font-weight: 900; color: #fff; background: rgba(0,50,25,0.9); padding: 3px 6px; border-radius: 5px; border: 1px solid #ffd700; width: 100%; text-transform: uppercase; }
@@ -196,13 +203,13 @@
         </div>
     </div>
 
-    <!-- 👑 3D अल्ट्रा एचडी रॉयल वेलकम पॉप-अप -->
+    <!-- 👑 अत्यंत भव्य शाही फरमान (Royal Decree Welcome Modal) -->
     <div id="comingSoonNoticeModal">
-        <div class="coming-soon-card">
-            <div class="royal-modal-title">ROYAL CASINO</div>
-            <div class="royal-modal-subtitle">100% Secure & Live Platform</div>
-            <div class="royal-badge-strip">🔥 7 Player Live Table 🔥</div>
-            <button onclick="closeComingSoonModal(); playMasterAudio();" class="royal-enter-btn">ENTER LOBBY</button>
+        <div class="royal-decree-card">
+            <div class="royal-decree-title">शाही दरबार: रॉयल कैसीनो</div>
+            <div class="royal-decree-subtitle">100% सुरक्षित एवं पारदर्शी मंच</div>
+            <div class="royal-decree-badge">⚜️ शाही सदस्यों के लिए विशेष प्रवेश ⚜️</div>
+            <button onclick="closeComingSoonModal(); playMasterAudio();" class="royal-decree-btn">शाही लॉगिन पर जाएं</button>
         </div>
     </div>
 

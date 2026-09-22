@@ -18,6 +18,7 @@ try {
 const db = admin.apps.length ? admin.database() : null;
 const masterRoot = db ? db.ref("royal_roulette_master_cloud_v23") : null;
 const historyRef = masterRoot ? masterRoot.child("history_list") : null;
+const rigRef = masterRoot ? masterRoot.child("winning_number") : null;
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +27,7 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 3000;
-const ROUND_TIME = 120; // 120 सेकंड (2 मिनट)
+const ROUND_TIME = 120; // 120 सेकंड (2 मिनट का मास्टर टाइमर)
 const numbersList = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
 
@@ -45,13 +46,13 @@ io.on('connection', (socket) => {
     });
 });
 
-// स्मार्ट विनर कैलकुलेटर (5% हाउस सेफ गार्ड)
+// 5% हाउस मार्जिन और 95% सेफ पूल स्मार्ट विनर कैलकुलेटर
 function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     if (totalTableBet === 0) {
         return numbersList[Math.abs(roundId) % numbersList.length];
     }
 
-    let safePayoutPool = totalTableBet * 0.95;
+    let safePayoutPool = totalTableBet * 0.95; // 95% पेआउट पूल, बाकी 5% एडमिन का फिक्स सुरक्षित मार्जिन
     let validSafeNumbers = [];
     let allNumberPayouts = {};
 
@@ -86,9 +87,9 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     return validSafeNumbers[selectedIndex];
 }
 
-// राउंड सेटलमेंट और पेआउट फंक्शन
+// मास्टर राउंड सेटलमेंट (ए-टू-ज़ेड कंट्रोल: एडमिन रिग, 5% मार्जिन, पेआउट और हिस्ट्री)
 async function executeRoundSettlement(roundId) {
-    console.log(`⚡ Executing settlement for Round #${roundId}...`);
+    console.log(`⚡ Executing master settlement for Round #${roundId}...`);
     try {
         let betsSnap = await masterRoot.child("live_rounds/" + roundId + "/bets").once("value");
         let allBetsData = betsSnap.val() || {};
@@ -105,8 +106,19 @@ async function executeRoundSettlement(roundId) {
             });
         });
 
-        let winningNum = calculateSmartWinner(roundId, globalTableBets, totalTableBet);
-        console.log(`🏆 Winning Number for Round #${roundId} is: ${winningNum}`);
+        // 1. एडमिन पैनल द्वारा सेट किया गया विनिंग नंबर चेक करें
+        let rigSnap = await rigRef.once("value");
+        let rigVal = rigSnap.val();
+        let winningNum;
+
+        if (rigVal !== null && rigVal !== "random" && !isNaN(rigVal)) {
+            winningNum = parseInt(rigVal);
+            console.log(`👑 Admin Forced Winning Number from Panel: ${winningNum}`);
+        } else {
+            // 2. यदि एडमिन ने 'random' या ऑटोमैटिक रखा है, तो 5% सेफ इंजन काम करेगा
+            winningNum = calculateSmartWinner(roundId, globalTableBets, totalTableBet);
+            console.log(`🤖 Smart Safe Engine Winning Number: ${winningNum}`);
+        }
 
         // इतिहास (History) अपडेट करें
         if (historyRef) {
@@ -117,7 +129,7 @@ async function executeRoundSettlement(roundId) {
             await historyRef.set(curHist);
         }
 
-        // खिलाड़ियों के बैलेंस का हिसाब लगाएं
+        // खिलाड़ियों के बैलेंस का हिसाब लगाएं और 95% पूल से पेआउट दें
         let isRed = redList.includes(winningNum);
         for (let phone in allBetsData) {
             let userBets = allBetsData[phone];
@@ -141,13 +153,14 @@ async function executeRoundSettlement(roundId) {
             }
         }
 
+        // सभी क्लाइंट्स को राउंड समाप्ति का सिग्नल भेजें
         io.emit('round_ended', { winningNum, roundId });
     } catch (error) {
-        console.error("❌ Settlement failed:", error);
+        console.error("❌ Master settlement failed:", error);
     }
 }
 
-// मास्टर गेम लूप (टाइमर)
+// मास्टर गेम लूप (टाइमर और आटोमैटिक सेटलमेंट)
 function startMasterGameLoop() {
     setInterval(async () => {
         try {

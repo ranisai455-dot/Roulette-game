@@ -1483,7 +1483,7 @@
                     });
                 };
 
-                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स (1st 12, 1-18 आदि) सभी को एक साथ परफेक्टली सिंक और हाइलाइट करने वाला लिसनर
+                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स सभी को एक साथ परफेक्टली सिंक और हाइलाइट करने वाला लिसनर
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1706,28 +1706,16 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - सटीक सॉकेट रिस्पॉन्स और कॉइन कटिंग के साथ
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         
-                        myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                        currentTotalBet += currentActiveChip;
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
-                        if (el) { 
-                            el.classList.add('has-bet'); 
-                            let b = el.querySelector('.cell-badge'); 
-                            if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
-                            b.innerText = myActiveBets[key]; 
-                        }
-
                         socket.emit('place_secure_bet', {
                             key: key,
-                            amount: currentActiveChip,
-                            roundId: activeRoundId
+                            amount: currentActiveChip
                         });
 
                         socket.once('bet_response', (resp) => {
@@ -1751,7 +1739,7 @@
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सिंगल बैच रिक्वेस्ट और इंस्टेंट UI अपडेट के साथ
+                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सटीक सॉकेट रिस्पॉन्स और कॉइन कटिंग के साथ
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
@@ -1759,18 +1747,9 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
-                        numbersArray.forEach(num => {
-                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
-                        });
-                        currentTotalBet += totalNeeded;
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
-                        if (el) el.classList.add('has-bet');
-
                         socket.emit('place_secure_group_bet', {
                             numbers: numbersArray,
-                            amountPerNum: currentActiveChip,
-                            roundId: activeRoundId
+                            amountPerNum: currentActiveChip
                         });
 
                         socket.once('group_bet_response', (resp) => {

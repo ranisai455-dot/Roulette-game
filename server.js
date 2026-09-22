@@ -4,7 +4,6 @@ const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 const path = require('path');
 
-// Render के एनवायरनमेंट वेरिएबल से Firebase सुरक्षित रूप से लोड करना
 try {
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
     admin.initializeApp({
@@ -33,8 +32,16 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// स्टैटिक फाइलें (HTML और Client JS) सर्व करना
-app.use(express.static(path.join(__dirname)));
+// 🟢 नो-कैशे मिडिलवेयर: ब्राउज़र हमेशा लाइव सर्वर से फ्रेश फाइल उठाएगा
+app.use(express.static(path.join(__dirname), {
+    etag: false,
+    maxAge: 0,
+    setHeaders: (res, path) => {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+    }
+}));
 
 const PORT = process.env.PORT || 3000;
 const ROUND_TIME = 120; // 120 सेकंड (2 मिनट)
@@ -59,7 +66,6 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-// 🟢 100% सुरक्षित सॉकेट-बेस्ड एंटी-चीट बेटिंग इंजन
 io.on('connection', (socket) => {
     socket.on('authenticate_socket', (data) => {
         let { phone } = data;
@@ -77,7 +83,6 @@ io.on('connection', (socket) => {
             let { key, amount, roundId } = data;
             if (!key || !amount || amount <= 0) return;
 
-            // एंटी-डीडीओएस और एंटी-स्पैम रेट लिमिट (50ms)
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
             if (now - lastTime < 50) return;
@@ -97,7 +102,6 @@ io.on('connection', (socket) => {
             let betSuccess = false;
             let finalBal = 0;
 
-            // एटॉमिक ट्रांजैक्शन (डबल-स्पेंडिंग और हैकिंग से सुरक्षा)
             await userBalRef.transaction((currentBal) => {
                 let currentBalance = currentBal || 0;
                 if (currentBalance < amount) {
@@ -248,7 +252,6 @@ async function executeRoundSettlement(roundId) {
     }
 }
 
-// 🟢 24/7 मास्टर गेम लूप (स्वतंत्र टाइमर इंजन)
 function startMasterGameLoop() {
     setInterval(async () => {
         try {

@@ -32,7 +32,6 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 🟢 नो-कैशे हेडर ताकि सर्वर हमेशा फ्रेश डेटा लोड करे
 app.use(express.static(path.join(__dirname), {
     etag: false,
     maxAge: 0,

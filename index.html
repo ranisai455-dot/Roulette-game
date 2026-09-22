@@ -103,7 +103,7 @@
             display: inline-block; padding: 3px 8px; background: linear-gradient(135deg, #0088cc, #005f99); 
             color: #ffffff; text-decoration: none; font-weight: 900; border-radius: 12px; font-size: 8px; 
             text-transform: uppercase; border: 1.5px solid #00ffcc; box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
-            letter-spacing: 0.5px; margin-bottom: 1px;
+            letter-spacing: 0.5px; margin-bottom: 1px; cursor: pointer;
         }
         .payment-gateways { font-size: 6.5px; color: #ffd700; font-weight: bold; background: rgba(0,0,0,0.85); padding: 2px 4px; border-radius: 4px; border: 1.5px solid rgba(0,255,0,0.5); width: 100%; }
         .trust-badges { font-size: 6.5px; color: #ffd700; font-weight: bold; }
@@ -352,6 +352,17 @@
         </div>
     </div>
 
+    <!-- 🟢 SUPPORT TICKET MODAL FOR PLAYERS -->
+    <div id="supportTicketModal" class="wallet-modal">
+        <div class="wallet-modal-content" style="max-width: 350px;">
+            <h3 style="color:#ffd700; margin-bottom:6px; font-size:15px;">🎧 CUSTOMER SUPPORT DESK</h3>
+            <p style="font-size:9px; color:#ccc; margin-bottom:8px;">Type your issue below. Admin will review it directly.</p>
+            <textarea id="supportUserMessageInput" placeholder="Describe your problem (e.g. Deposit not added, UTR...)" style="width:100%; height:90px; background:#000; color:#ffd700; border:1.5px solid #ffd700; padding:8px; border-radius:6px; font-size:11px; resize:none; margin-bottom:8px;"></textarea>
+            <button onclick="submitSupportTicket()" class="login-btn lobby" style="padding:9px; font-size:11px;">Send Ticket to Admin</button>
+            <button onclick="document.getElementById('supportTicketModal').style.display='none'" style="background:#444; color:#fff; border:none; padding:8px; width:100%; border-radius:6px; margin-top:6px; font-size:10px; font-weight:bold; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
     <script>
         function checkRealNetwork() {
             if (!navigator.onLine) {
@@ -424,7 +435,7 @@
         </div>
 
         <div class="footer-wrap">
-            <a href="https://t.me/+WV5nWEf9lk0yOTA1" target="_blank" class="telegram-support-btn">💬 Support & Suggestions (Telegram)</a>
+            <a onclick="openSupportModal(); event.stopPropagation();" class="telegram-support-btn">🎧 Customer Support Ticket</a>
             <div class="payment-gateways">💳 SECURE: UPI • NETBANKING • VISA</div>
             <div class="trust-badges">🛡️ SSL SECURED • 🔒 RNG CERTIFIED • 🔞 18+</div>
         </div>
@@ -578,6 +589,14 @@
                 <div style="display: flex; gap: 6px;">
                     <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(true)" style="flex: 1; padding: 8px; background: #c0392b; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🔴 Turn ON Maintenance</button>
                     <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(false)" style="flex: 1; padding: 8px; background: #27ae60; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🟢 Turn OFF Maintenance</button>
+                </div>
+            </div>
+
+            <!-- 🟢 LIVE USER SUPPORT TICKETS SECTION IN ADMIN PANEL -->
+            <div style="background: rgba(20,20,40,0.95); padding: 12px; border: 2px solid #3498db; border-radius: 8px;">
+                <div class="admin-section-title"><span style="color:#3498db;">🎧 LIVE USER SUPPORT TICKETS</span></div>
+                <div id="adminSupportTicketsList" style="max-height: 140px; overflow-y: auto; font-size: 11px;">
+                    <div style="color:#888; text-align:center; padding:6px;">No support tickets yet.</div>
                 </div>
             </div>
 
@@ -806,6 +825,7 @@
         const auditLogRef = masterRoot.child("audit_logs");
         const maintenanceRef = masterRoot.child("system_maintenance");
         const activeResultRef = masterRoot.child("current_round_result");
+        const supportTicketsRef = masterRoot.child("support_tickets"); // 🟢 सपोर्ट टिकट रेफरेंस
 
         (function() {
             try {
@@ -826,7 +846,7 @@
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
                 let activeRoundId = 0;
-                let processedResultRoundId = null; // 👑 डुप्लीकेट प्रिवेंशन गार्ड
+                let processedResultRoundId = null;
 
                 let userDepositScreenshotData = "";
                 let userWithdrawQrData = "";
@@ -896,15 +916,88 @@
                     }
                 });
 
-                // 👑 101% परफेक्ट सिंक: Firebase सिंगल सोर्स ऑफ़ ट्रूथ से रिजल्ट सुनना
                 activeResultRef.on("value", (snap) => {
                     let res = snap.val();
                     if (!res) return;
-                    if (processedResultRoundId === res.roundId) return; // अगर इस राउंड का रिजल्ट पहले ही दिखा चुके हैं, तो दोबारा मत दिखाओ
+                    if (processedResultRoundId === res.roundId) return;
                     
                     processedResultRoundId = res.roundId;
                     executeClientGlobalSpinAnimation(res.winningNum, res.roundId);
                 });
+
+                // 🟢 एडमिन पैनल के लिए लाइव सपोर्ट टिकट लिसनर
+                supportTicketsRef.on("value", (snap) => {
+                    let tickets = snap.val() || {};
+                    let listEl = document.getElementById('adminSupportTicketsList');
+                    if (!listEl) return;
+                    let html = "";
+                    let keys = Object.keys(tickets);
+                    let pendingCount = 0;
+
+                    keys.forEach(k => {
+                        let t = tickets[k];
+                        if (t.status === 'Pending') {
+                            pendingCount++;
+                            html += `<div style="background:rgba(0,0,0,0.8); border:1px solid #3498db; padding:6px 10px; border-radius:5px; margin-bottom:5px; text-align:left;">
+                                <div>📱 <b>${t.phone}</b> <span style="color:#ffd700;">(${t.vipId})</span></div>
+                                <div style="color:#fff; font-size:10px; margin:2px 0;">💬 "${t.message}"</div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                                    <span style="font-size:7.5px; color:#aaa;">🕒 ${new Date(t.timestamp).toLocaleTimeString()}</span>
+                                    <button onclick="resolveSupportTicket('${k}')" style="background:#27ae60; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:9px; cursor:pointer;">Resolve / Close</button>
+                                </div>
+                            </div>`;
+                        }
+                    });
+
+                    if (pendingCount === 0) {
+                        html = "<div style='color:#888; text-align:center; padding:6px;'>No pending support tickets.</div>";
+                    }
+                    listEl.innerHTML = html;
+                });
+
+                window.openSupportModal = function() {
+                    document.getElementById('supportUserMessageInput').value = "";
+                    document.getElementById('supportTicketModal').style.display = 'flex';
+                };
+
+                window.submitSupportTicket = function() {
+                    let msg = document.getElementById('supportUserMessageInput').value.trim();
+                    if (!msg) { showCustomAlert("Please enter your message!"); return; }
+                    if (!loggedUserPhone) { showCustomAlert("Please login first to submit ticket!"); return; }
+
+                    supportTicketsRef.push({
+                        phone: loggedUserPhone,
+                        vipId: loggedVipId,
+                        message: msg,
+                        status: 'Pending',
+                        timestamp: Date.now()
+                    }).then(() => {
+                        document.getElementById('supportTicketModal').style.display = 'none';
+                        showCustomAlert("✅ Support ticket sent to Admin successfully!");
+                    });
+                };
+
+                window.resolveSupportTicket = function(ticketKey) {
+                    supportTicketsRef.child(ticketKey).update({ status: 'Resolved' }).then(() => {
+                        showCustomAlert("✅ Ticket marked as resolved!");
+                    });
+                };
+
+                // 📱 डिवाइस फिंगरप्रिंटिंग और मल्टी-अकाउंट प्रोटेक्शन चेकर
+                function checkAndBindDeviceFingerprint(phone) {
+                    try {
+                        let fp = localStorage.getItem('royal_device_fingerprint');
+                        if (!fp) {
+                            fp = 'fp_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+                            localStorage.setItem('royal_device_fingerprint', fp);
+                        }
+                        firebase.database().ref("royal_roulette_master_cloud_v23/devices/" + fp).set({
+                            phone: phone,
+                            lastLogin: Date.now(),
+                            userAgent: navigator.userAgent
+                        });
+                    } catch(e) {}
+                }
 
                 auditLogRef.limitToLast(10).on("value", (snap) => {
                     let logs = snap.val() || {};
@@ -1080,7 +1173,6 @@
                     loadPlayerPassbook(phone);
                 }
 
-                // 🟢 लाइव पासबुक लोड करने का फंक्शन
                 function loadPlayerPassbook(phone) {
                     if (!phone) return;
                     let ledgerRef = usersRef.child(phone + "/ledger");
@@ -1269,7 +1361,6 @@
                             if (newBalance < 0) newBalance = 0;
                         }
 
-                        // लेजर में दर्ज करें
                         usersRef.child(matchedPhone + "/ledger").push({
                             amount: actionType === 'add' ? amount : -amount,
                             sourceType: actionType === 'add' ? 'ADMIN_CREDIT' : 'ADMIN_DEBIT',
@@ -1607,6 +1698,7 @@
                             balance: data.balance !== undefined ? data.balance : 0,
                             adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
                         }).then(() => {
+                            checkAndBindDeviceFingerprint(phone); // 📱 डिवाइस फिंगरप्रिंट बाइंडिंग
                             finalizeLogin(phone, false);
                         });
                     });
@@ -1618,7 +1710,6 @@
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
 
-                    // सॉकेट ऑथेंटिकेशन बाइंडिंग
                     socket.emit('authenticate_socket', { phone: phone });
 
                     bindUserCloudWallet(phone);
@@ -1656,7 +1747,6 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 सर्वर-ऑथोरिटेटिव सिक्योर बेटिंग (एंटी-चीट)
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
@@ -1699,7 +1789,6 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
-                        // ग्रुप बेट के लिए हर नंबर पर अलग से सिक्योर रिक्वेस्ट भेजें
                         numbersArray.forEach(num => {
                             socket.emit('place_secure_bet', { key: num.toString(), amount: currentActiveChip, roundId: activeRoundId });
                         });
@@ -1724,7 +1813,6 @@
                     if (isGameSpinning || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        // सर्वर-साइड बैट के बाद क्लियर करने पर एडमिन से संपर्क करने का नोटिस
                         showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
                     } else {
                         testCoins += last.amount;
@@ -1732,7 +1820,6 @@
                     }
                 };
 
-                // टाइमर अपडेट लिसनर (Firebase Cloud Sync)
                 masterRoot.child("game_state/timer").on("value", (snap) => {
                     let timerData = snap.val();
                     if (!timerData) return;

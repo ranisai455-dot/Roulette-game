@@ -3,10 +3,11 @@ const http = require('http');
 const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 
-// फायरबेस एडमिन इनिशियलाइज़ेशन (डेटाबेस से जुड़ने के लिए)
-// नोट: सुनिश्चित करें कि आपके प्रोजेक्ट में फायरबेस क्रेडेंशियल्स या पर्यावरण चर सेट हैं
+// Render के एनवायरनमेंट वेरिएबल से फायरबेस चाबी सुरक्षित रूप से लोड करना
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
 admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://royal-dijital-default-rtdb.firebaseio.com"
 });
 
@@ -48,7 +49,7 @@ function startMasterGameLoop() {
             let roundId = Math.floor(nowSec / ROUND_TIME);
             let timeLeft = ROUND_TIME - (nowSec % ROUND_TIME);
 
-            // हर सेकंड टाइमर की स्थिति डेटाबेस या सॉकेट पर ब्रॉडकास्ट करें
+            // हर सेकंड टाइमर की स्थिति ब्रॉडकास्ट करें
             io.emit('timer_update', { roundId, timeLeft });
 
             // यदि राउंड खत्म होने वाला है (यानी अंतिम सेकंड में), तो सेटलमेंट प्रक्रिया चलाएं

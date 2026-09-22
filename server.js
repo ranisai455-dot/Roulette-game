@@ -87,7 +87,6 @@ io.on('connection', (socket) => {
             if (now - lastTime < 15) return;
             userRateLimitMap.set(socket.id, now);
 
-            // 👑 सर्वर-ऑथोरिटेटिव राउंड कैलकुलेशन (क्लॉक ड्रिफ्ट समस्या हमेशा के लिए खत्म)
             let currentSec = Math.floor(Date.now() / 1000);
             let targetRound = Math.floor(currentSec / ROUND_TIME);
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);

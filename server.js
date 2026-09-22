@@ -23,7 +23,7 @@ const auditLogRef = masterRoot ? masterRoot.child("audit_logs") : null;
 const usersRef = masterRoot ? masterRoot.child("users") : null;
 const depositsRef = masterRoot ? masterRoot.child("deposit_requests") : null;
 const gameStateRef = masterRoot ? masterRoot.child("game_state") : null;
-const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : null; // 👑 मास्टर सिंगल सोर्स ऑफ़ ट्रूथ
+const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : null;
 
 const app = express();
 const server = http.createServer(app);
@@ -194,7 +194,7 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
     return validSafeNumbers[Math.abs(roundId * 17) % validSafeNumbers.length];
 }
 
-// 👑 101% BULLETPROOF ATOMIC SETTLEMENT & SYNCHRONIZATION ENGINE
+// 👑 101% BULLETPROOF SYNCHRONIZED SETTLEMENT & SPIN-MATCHED HISTORY
 async function executeRoundSettlement(roundId) {
     let lockRef = masterRoot.child("settlement_locks/" + roundId);
     let acquiredLock = false;
@@ -213,7 +213,7 @@ async function executeRoundSettlement(roundId) {
         return;
     }
 
-    console.log(`🔒 Master Engine executing 101% synced settlement for Round #${roundId}...`);
+    console.log(`🔒 Master Engine executing synced settlement for Round #${roundId}...`);
     try {
         let betsSnap = await masterRoot.child("live_rounds/" + roundId + "/bets").once("value");
         let allBetsData = betsSnap.val() || {};
@@ -229,7 +229,7 @@ async function executeRoundSettlement(roundId) {
             });
         });
 
-        // 👑 एटॉमिक रिग फैच और तुरंत डेटाबेस से डिलीट (डबल प्रिंटिंग खत्म)
+        // 👑 एटॉमिक रिग फैच और तुरंत डेटाबेस से डिलीट
         let winningNum = null;
         await rigRef.transaction((currentRig) => {
             if (currentRig !== null && currentRig !== "random" && currentRig !== "" && !isNaN(currentRig)) {
@@ -244,18 +244,6 @@ async function executeRoundSettlement(roundId) {
             console.log(`🤖 Smart Safe Engine Winning Number: ${winningNum}`);
         } else {
             console.log(`👑 Admin Forced Winning Number (Executed & Cleared): ${winningNum}`);
-        }
-
-        // हिस्ट्री में यूनिक और नॉन-डुप्लीकेट एंट्री लॉक
-        if (historyRef) {
-            await historyRef.transaction((curHist) => {
-                let hist = curHist || [24, 14, 5, 22, 10, 3];
-                if (hist[0] !== winningNum) {
-                    hist.unshift(winningNum);
-                    if (hist.length > 8) hist.pop();
-                }
-                return hist;
-            });
         }
 
         // खिलाड़ियों को पेआउट दें
@@ -277,14 +265,28 @@ async function executeRoundSettlement(roundId) {
             }
         }
 
-        // 👑 सबसे बड़ा बदलाव: मास्टर रिजल्ट को सीधे Firebase पर सेट करें (ताकि एडमिन और प्लेयर एक साथ ट्रिगर हों)
+        // 1️⃣ सबसे पहले व्हील घूमने और पॉपअप दिखाने के लिए रिजल्ट ट्रिगर करें
         await activeResultRef.set({
             roundId: roundId,
             winningNum: winningNum,
             timestamp: Date.now()
         });
-
         io.emit('round_ended', { winningNum, roundId });
+
+        // 2️⃣ 🕒 ठीक 5 सेकंड बाद (जब व्हील घूमकर गेंद पूरी तरह रुक जाए और पॉपअप आ जाए), तब हिस्ट्री में नंबर जोड़ें
+        setTimeout(async () => {
+            if (historyRef) {
+                await historyRef.transaction((curHist) => {
+                    let hist = curHist || [24, 14, 5, 22, 10, 3];
+                    if (hist[0] !== winningNum) {
+                        hist.unshift(winningNum);
+                        if (hist.length > 8) hist.pop();
+                    }
+                    return hist;
+                });
+            }
+        }, 5000); // 5000ms = गेंद रुकने का एग्जैक्ट समय
+
     } catch (error) {
         console.error("❌ Settlement failed:", error);
     }
@@ -314,6 +316,6 @@ function startMasterGameLoop() {
 }
 
 server.listen(PORT, () => {
-    console.log(`👑 Royal Roulette 101% Bulletproof Engine running on port ${PORT}`);
+    console.log(`👑 Royal Roulette Spin-Matched Master Engine running on port ${PORT}`);
     startMasterGameLoop();
 });

@@ -39,7 +39,6 @@ let isGameSpinning = false;
 let myActiveBets = {}, currentTotalBet = 0, betHistoryStack = [];
 let activeRoundId = Math.floor(Date.now() / 1000 / 120);
 let processedResultRoundId = null;
-let userDepositScreenshotData = "";
 
 window.globalState = { adminQrUrl: "https://i.ibb.co/3yk54L2/1000532596.jpg", historyList: [24, 14, 5, 22, 10, 3] };
 
@@ -206,6 +205,13 @@ window.verifyAdminPinCode = function() {
 };
 
 window.playMasterAudio = function() { let bgm = document.getElementById('bgmAudio'); if (bgm) { bgm.volume = 0.3; bgm.play().catch(e => {}); } };
+
+// 🟢 शाही फरमान पॉप-अप बंद होकर सीधे लॉगिन स्क्रीन पर ले जाएगा (लॉबी में नहीं)
+window.closeComingSoonModal = function() {
+    let modal = document.getElementById('comingSoonNoticeModal');
+    if (modal) modal.style.display = 'none';
+    playMasterAudio();
+};
 
 window.verifyCloudWalletLogin = function() {
     let phone = document.getElementById('inputPhone').value.trim();
@@ -428,6 +434,5 @@ window.openDepositModal = function() { document.getElementById('depositModalBox'
 window.openWithdrawModal = function() { document.getElementById('withdrawModalBox').style.display = 'flex'; };
 window.openTransferModal = function() { document.getElementById('transferModalBox').style.display = 'flex'; };
 window.closeWalletModals = function() { document.querySelectorAll('.wallet-modal').forEach(m => m.style.display = 'none'); };
-window.closeComingSoonModal = function() { document.getElementById('comingSoonNoticeModal').style.display = 'none'; playMasterAudio(); };
 window.logoutToLogin = function() { location.reload(); };
 window.requestStrictOtp = function() { document.getElementById('inputOtp').value = Math.floor(100000 + Math.random() * 900000); };

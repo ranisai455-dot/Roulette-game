@@ -84,15 +84,15 @@ io.on('connection', (socket) => {
 
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 30) return;
+            if (now - lastTime < 10) return;
             userRateLimitMap.set(socket.id, now);
 
             let currentSec = Math.floor(Date.now() / 1000);
             let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
             let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
-            if (timeLeft <= 5) {
+            if (timeLeft <= 3) {
                 socket.emit('bet_response', { success: false, msg: 'Betting closed for this round!' });
                 return;
             }
@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
             let finalBal = 0;
 
             await userBalRef.transaction((currentBal) => {
-                let currentBalance = currentBal || 0;
+                let currentBalance = currentBal !== undefined ? currentBal : 0;
                 if (currentBalance < amount) {
                     betSuccess = false;
                     return currentBalance;
@@ -128,7 +128,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // 👑 ग्रुप बेट्स के लिए सिंगल बैच रिक्वेस्ट हैंडलर (रेट-लिमिटर से बचने हेतु)
     socket.on('place_secure_group_bet', async (data) => {
         try {
             let verifiedPhone = activeSocketSessions.get(socket.id);
@@ -143,10 +142,10 @@ io.on('connection', (socket) => {
             let totalAmount = amountPerNum * numbers.length;
             let currentSec = Math.floor(Date.now() / 1000);
             let activeRound = Math.floor(currentSec / ROUND_TIME);
-            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
             let targetRound = (roundId && roundId > 0) ? roundId : activeRound;
+            let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
-            if (timeLeft <= 5) {
+            if (timeLeft <= 3) {
                 socket.emit('group_bet_response', { success: false, msg: 'Betting closed for this round!' });
                 return;
             }
@@ -156,7 +155,7 @@ io.on('connection', (socket) => {
             let finalBal = 0;
 
             await userBalRef.transaction((currentBal) => {
-                let currentBalance = currentBal || 0;
+                let currentBalance = currentBal !== undefined ? currentBal : 0;
                 if (currentBalance < totalAmount) {
                     betSuccess = false;
                     return currentBalance;

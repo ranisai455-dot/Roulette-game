@@ -49,7 +49,7 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
-// 🟢 1. डायरेक्ट HTTP API: सिक्योर रियल मनी बेटिंग
+// 🟢 1. डायरेक्ट HTTP API: सिक्योर रियल मनी बेटिंग (1 से 36 नंबर, रेड/ब्लैक, जीरो सभी के लिए)
 app.post('/api/place-bet', async (req, res) => {
     try {
         let { phone, key, amount, roundId } = req.body;
@@ -274,7 +274,7 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 🟢 100% रिस्पॉन्सिव फ्रंटएंड (डायरेक्ट डेटाबेस और HTTP API)
+// 🟢 100% रिस्पॉन्सिव फ्रंटएंड (0 से 36 सिंगल बैट्स, ग्रुप बैट्स और अंडू बटन पूरी तरह फिक्स्ड)
 const HTML_CONTENT = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -388,7 +388,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         .withdraw-packages-grid, .deposit-packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 5px 0; }
         .dep-pkg-btn, .wd-pkg-btn { background: #000; border: 1px solid #ffd700; color: #ffd700; padding: 6px 0; font-weight: bold; font-size: 9.5px; border-radius: 3px; cursor: pointer; }
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: #ffd700; color: #000; }
-        .wallet-modal-content input { width: 100%; padding: 7px; margin: 3px 0; background: #000; border: 1px solid #ffd700; color: #ffd700; border-radius: 4px; text-align: center; font-weight: bold; font-size: 10.5px; }
+        .wallet-modal-content input { width: 100%; padding: 7px; margin: 3px 0; background: #000; border: 1.5px solid #ffd700; color: #ffd700; border-radius: 4px; text-align: center; font-weight: bold; font-size: 10.5px; }
         #secretAdminModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #020f06; z-index: 2147483647 !important; padding: 8px; text-align: center; color: #fff; overflow-y: auto; }
         .admin-dashboard-container { max-width: 750px; margin: 0 auto; background: #000; border: 2px solid #ffd700; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
         .admin-section-box { background: rgba(0,0,0,0.8); border: 1px solid rgba(255,215,0,0.3); padding: 8px; border-radius: 6px; font-size: 10px; }
@@ -763,6 +763,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
             setupGlobalRoundBetsListener(activeRoundId, phone);
         }
 
+        // 🟢 1 से 36 नंबर और सभी सेल्स पर बैट्स सिंक करने का अचूक लिसनर
         function setupGlobalRoundBetsListener(roundId, phone) {
             if (!roundId || !phone) return;
             masterRoot.child("live_rounds/" + roundId + "/bets/" + phone).on("value", (snapshot) => {
@@ -779,7 +780,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 Object.keys(bets).forEach(key => {
                     let amt = bets[key];
                     currentTotalBet += amt;
-                    let cell = Array.from(document.querySelectorAll('.table-cell, .color-btn')).find(el => el.innerText.trim() === key || (key === 'red' && el.id === 'btnColorRed') || (key === 'black' && el.id === 'btnColorBlack') || (key === '0' && el.innerText.includes('ZERO')));
+                    let cell = Array.from(document.querySelectorAll('.table-cell, .color-btn, .group-btn')).find(el => el.innerText.trim() === key || (key === 'red' && el.classList.contains('btn-red')) || (key === 'black' && el.classList.contains('btn-black')) || (key === '0' && el.innerText.includes('ZERO')));
                     if (cell) {
                         cell.classList.add('has-bet');
                         let b = cell.querySelector('.cell-badge');
@@ -872,7 +873,7 @@ const HTML_CONTENT = `<!DOCTYPE html>
         let currentActiveChip = 50;
         window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-        // 🟢 DIRECT HTTP API BETTING (NO SOCKETS - 100% RELIABLE)
+        // 🟢 1 से 36 नंबर और सभी सेल्स पर रियल मनी बैटिंग (HTTP API)
         window.placeTableBet = function(key, el) {
             if (isGameSpinning) return;
             
@@ -891,6 +892,15 @@ const HTML_CONTENT = `<!DOCTYPE html>
                         if (resp.roundId) activeRoundId = resp.roundId;
                         updateBalancesDisplay();
                         betHistoryStack.push({ key: key, amount: currentActiveChip, mode: 'real' });
+                        
+                        // 🟢 तुरंत विजुअल बैज दिखाएं (Instant Feedback)
+                        if (el) {
+                            el.classList.add('has-bet');
+                            let b = el.querySelector('.cell-badge');
+                            if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; el.appendChild(b); }
+                            let curAmt = parseInt(b.innerText) || 0;
+                            b.innerText = curAmt + currentActiveChip;
+                        }
                     } else {
                         showCustomAlert((resp && resp.msg) || "Bet failed!");
                     }
@@ -926,18 +936,18 @@ const HTML_CONTENT = `<!DOCTYPE html>
                 });
                 realCoins -= totalNeeded;
                 updateBalancesDisplay();
+                if (el) el.classList.add('has-bet');
             } else {
                 if (testCoins < totalNeeded) testCoins = 10000;
                 testCoins -= totalNeeded;
                 numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
                 currentTotalBet += totalNeeded;
                 document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                if (el) el.classList.add('has-bet');
             }
             betHistoryStack.push({ key: groupKey, amount: totalNeeded, mode: activeGameMode });
-            if (el) el.classList.add('has-bet');
         };
 
-        // 🟢 100% WORKING DIRECT HTTP UNDO / CLEAR BUTTON
         window.clearTableBets = function() {
             if (isGameSpinning || betHistoryStack.length === 0) return;
             let last = betHistoryStack.pop();

@@ -489,8 +489,8 @@
             </div>
 
             <div class="mode-toggle-bar">
-                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode (Fun)</button>
-                <button class="mode-btn" id="modeBtnReal" onclick="switchGameMode('real')">💎 Real Money</button>
+                <button class="mode-btn active-test" id="modeBtnTest" onclick="window.switchGameMode('test')">🧪 Testing Mode (Fun)</button>
+                <button class="mode-btn" id="modeBtnReal" onclick="window.switchGameMode('real')">💎 Real Money</button>
             </div>
             
             <div class="grid-table" id="gridTableDiv"></div>
@@ -1535,7 +1535,7 @@
                     document.getElementById('userDisplayPhone').innerText = loggedVipId;
                 };
 
-Storage.prototype.switchGameMode = function(mode) {
+                window.switchGameMode = function(mode) {
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
@@ -1763,7 +1763,7 @@ Storage.prototype.switchGameMode = function(mode) {
                                     document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
                                 }, 2500);
                             } else {
-                                isGameSpinning, isGameSpinning = false; 
+                                isGameSpinning = false; 
                                 document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
                             }
                         }, 5000);

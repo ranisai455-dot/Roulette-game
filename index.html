@@ -38,7 +38,6 @@
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
         
-        /* 👑 लॉगिन पेज व्हील: 100% क्रिस्टल क्लियर, शार्प और हाई-क्वालिटी */
         #loginWheelCanvasBg { 
             width: 450px; height: 450px; border-radius: 50%; display: block; 
             filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.5) contrast(1.4); 
@@ -791,7 +790,6 @@
             reconnectionDelay: 1000
         });
 
-        // 👑 सॉकेट रीकनेक्शन ऑथेंटिकेशन फिक्स (सेशन हमेशा लाइव रहेगा)
         socket.on('connect', () => {
             let statusBox = document.getElementById('lobbyStatusMsg');
             if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
@@ -834,7 +832,7 @@
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
-                let activeRoundId = 0;
+                let activeRoundId = Math.floor(Date.now() / 1000 / 120);
                 let processedResultRoundId = null; 
 
                 let userDepositScreenshotData = "";
@@ -1068,7 +1066,7 @@
                     usersRef.child(phone).on("value", (snap) => {
                         let data = snap.val();
                         if (data) {
-                            realCoins = data.balance || 0;
+                            realCoins = data.balance !== undefined ? data.balance : 0;
                             loggedVipId = data.vipId || ("RD00" + phone.slice(-4));
                             totalUserTurnover = data.turnover || 0;
                         } else {
@@ -1485,7 +1483,7 @@
                     });
                 };
 
-                // 👑 लाइव बेट्स लिसनर और UI सिंक (बटन हाइलाइट और बैज रेंडरर)
+                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स (1st 12, 1-18 आदि) सभी को एक साथ परफेक्टली सिंक और हाइलाइट करने वाला लिसनर
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1529,6 +1527,27 @@
                                 let b = cell.querySelector('.cell-badge');
                                 if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
                                 b.innerText = amt;
+                            }
+                        });
+
+                        const groupBtnElements = document.querySelectorAll('.group-btn');
+                        groupBtnElements.forEach(btn => {
+                            let onclickAttr = btn.getAttribute('onclick') || "";
+                            if (onclickAttr.includes('dozen_1')) {
+                                let hasAll = [1,2,3,4,5,6,7,8,9,10,11,12].every(n => myActiveBets[n.toString()] > 0);
+                                if (hasAll) btn.classList.add('has-bet');
+                            } else if (onclickAttr.includes('dozen_2')) {
+                                let hasAll = [13,14,15,16,17,18,19,20,21,22,23,24].every(n => myActiveBets[n.toString()] > 0);
+                                if (hasAll) btn.classList.add('has-bet');
+                            } else if (onclickAttr.includes('dozen_3')) {
+                                let hasAll = [25,26,27,28,29,30,31,32,33,34,35,36].every(n => myActiveBets[n.toString()] > 0);
+                                if (hasAll) btn.classList.add('has-bet');
+                            } else if (onclickAttr.includes('half_1_18')) {
+                                let hasAll = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18].every(n => myActiveBets[n.toString()] > 0);
+                                if (hasAll) btn.classList.add('has-bet');
+                            } else if (onclickAttr.includes('half_19_36')) {
+                                let hasAll = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36].every(n => myActiveBets[n.toString()] > 0);
+                                if (hasAll) btn.classList.add('has-bet');
                             }
                         });
 
@@ -1652,7 +1671,7 @@
                     socket.emit('authenticate_socket', { phone: phone });
 
                     bindUserCloudWallet(phone);
-                    setupGlobalRoundBetsListener(activeRoundId); // 👑 लॉगिन पर तुरंत लिसनर बाइंड हो गया
+                    setupGlobalRoundBetsListener(activeRoundId);
                     startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
                     if (!isAutoLogin) playMasterAudio();
                 }
@@ -1687,13 +1706,24 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड)
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         
+                        myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
+                        currentTotalBet += currentActiveChip;
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                        if (el) { 
+                            el.classList.add('has-bet'); 
+                            let b = el.querySelector('.cell-badge'); 
+                            if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
+                            b.innerText = myActiveBets[key]; 
+                        }
+
                         socket.emit('place_secure_bet', {
                             key: key,
                             amount: currentActiveChip,
@@ -1717,16 +1747,11 @@
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
                         betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                        if (el) { 
-                            el.classList.add('has-bet'); 
-                            let b = el.querySelector('.cell-badge'); 
-                            if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
-                            b.innerText = myActiveBets[key]; 
-                        }
+                        if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = myActiveBets[key]; }
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सिंगल बैच रिक्वेस्ट फिक्स
+                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सिंगल बैच रिक्वेस्ट और इंस्टेंट UI अपडेट के साथ
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
@@ -1734,6 +1759,14 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
+                        numbersArray.forEach(num => {
+                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
+                        });
+                        currentTotalBet += totalNeeded;
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                        if (el) el.classList.add('has-bet');
+
                         socket.emit('place_secure_group_bet', {
                             numbers: numbersArray,
                             amountPerNum: currentActiveChip,
@@ -1752,7 +1785,9 @@
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
-                        numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
+                        numbersArray.forEach(num => {
+                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
+                        });
                         currentTotalBet += totalNeeded;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                         if (el) el.classList.add('has-bet');

@@ -764,7 +764,6 @@
             }
         } catch(e) {}
 
-        // 🌟 Render Master Socket Server Connection (हर यूजर के लिए ग्लोबल सिंक)
         const SOCKET_SERVER_URL = "https://roulette-game-6cz1.onrender.com";
         const socket = io(SOCKET_SERVER_URL);
 
@@ -1545,8 +1544,6 @@
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
                 window.placeTableBet = function(key, el) {
-                    let timeLeftText = document.getElementById('lobbyTimerMain').innerText;
-                    // अगर टाइमर लॉक है या राउंड खत्म होने वाला है तो बेट न लें
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
@@ -1621,7 +1618,6 @@
                     }
                 };
 
-                // 🌟 [ग्लोबल सिंक] Render मास्टर सर्वर से टाइमर अपडेट सुनना
                 socket.on('timer_update', (data) => {
                     if (data.roundId !== activeRoundId) {
                         activeRoundId = data.roundId;
@@ -1663,7 +1659,6 @@
                     renderHistoryBarUI();
                 });
 
-                // 🌟 [ग्लोबल सिंक] Render मास्टर सर्वर से राउंड खत्म होने और रिजल्ट की सूचना सुनना (सभी यूजर्स के लिए एक साथ)
                 socket.on('round_ended', (data) => {
                     executeClientGlobalSpinAnimation(data.winningNum, data.roundId);
                 });
@@ -1697,7 +1692,6 @@
                     const ballOrbitEl = document.getElementById('rouletteBallOrbit');
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
-                    // फायरबेस से उस राउंड की इस यूजर की बेट्स निकालकर विनिंग जोड़ें
                     masterRoot.child("live_rounds/" + endedRoundId + "/bets/" + loggedUserPhone).once("value", (snap) => {
                         let userRoundBets = snap.val() || {};
 

@@ -1734,7 +1734,7 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (इन्स्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ)
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
@@ -1784,7 +1784,7 @@
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12 आदि) (इन्स्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ)
+                // 👑 ग्रुप बेट्स (1st 12 आदि) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;

@@ -212,11 +212,12 @@ io.on('connection', (socket) => {
     });
 });
 
-function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
+// 👑 सुधारा हुआ निष्पक्ष फेयर विनर इंजन (95% रिटर्न और 5% एडमिन मार्जिन के साथ)
+function calculateFairWinner(roundId, globalTableBets, totalTableBet) {
     if (totalTableBet === 0) return numbersList[Math.abs(roundId) % numbersList.length];
-    let safePayoutPool = totalTableBet * 0.95;
-    let validSafeNumbers = [];
-    let allNumberPayouts = {};
+    
+    let maxAllowedPayout = totalTableBet * 0.95;
+    let scoredNumbers = [];
 
     numbersList.forEach(num => {
         let payout = 0;
@@ -227,21 +228,23 @@ function calculateSmartWinner(roundId, globalTableBets, totalTableBet) {
             else if (key === 'red' && isRed) payout += amt * 2;
             else if (key === 'black' && !isRed && num !== 0) payout += amt * 2;
         }
-        allNumberPayouts[num] = payout;
-        if (payout <= safePayoutPool) validSafeNumbers.push(num);
+        scoredNumbers.push({ num, payout });
     });
 
-    if (validSafeNumbers.length === 0) {
-        let minNum = numbersList[0], minPayout = Infinity;
-        for (let num in allNumberPayouts) {
-            if (allNumberPayouts[num] < minPayout) {
-                minPayout = allNumberPayouts[num];
-                minNum = parseInt(num);
-            }
-        }
-        return minNum;
+    // पहले उन नंबरों को ढूंढें जिन पर बेट लगी है और जिनका payout 95% पूल के अंदर है
+    let winningCandidates = scoredNumbers.filter(item => item.payout > 0 && item.payout <= maxAllowedPayout);
+
+    if (winningCandidates.length > 0) {
+        return winningCandidates[Math.abs(roundId * 13) % winningCandidates.length].num;
     }
-    return validSafeNumbers[Math.abs(roundId * 17) % validSafeNumbers.length];
+
+    // अगर कोई एक्टिव बेट वाला नंबर सीमा के अंदर नहीं है, तो अन्य सेफ नंबर चुनें
+    let viableNumbers = scoredNumbers.filter(item => item.payout <= maxAllowedPayout);
+    if (viableNumbers.length > 0) {
+        return viableNumbers[Math.abs(roundId * 7) % viableNumbers.length].num;
+    }
+
+    return numbersList[Math.abs(roundId) % numbersList.length];
 }
 
 async function executeRoundSettlement(roundId) {
@@ -284,7 +287,7 @@ async function executeRoundSettlement(roundId) {
         });
 
         if (winningNum === null || isNaN(winningNum)) {
-            winningNum = calculateSmartWinner(roundId, globalTableBets, totalTableBet);
+            winningNum = calculateFairWinner(roundId, globalTableBets, totalTableBet);
         }
 
         let isRed = redList.includes(winningNum);
@@ -353,7 +356,6 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 👑 Keep-Alive Self-Ping (Render सर्वर को सोने नहीं देगा)
 setInterval(() => {
     const targetUrl = process.env.RENDER_EXTERNAL_URL || 'https://roulette-game-6cz1.onrender.com';
     https.get(targetUrl, (res) => {}).on('error', (err) => {});

@@ -164,8 +164,8 @@
 
         .lobby-wheel-box { 
             position: relative; 
-            width: 360px; 
-            height: 360px; 
+            width: 350px; 
+            height: 350px; 
             margin: 1px auto; 
             border: 4.5px solid #2ecc71; 
             border-radius: 50%; 
@@ -177,8 +177,8 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 82vw; 
-            max-height: 82vw; 
+            max-width: 78vw; 
+            max-height: 78vw; 
         }
 
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 14px rgba(255,215,0,0.95)) brightness(1.25) contrast(1.2); border: 3px solid #ffd700; }
@@ -186,7 +186,7 @@
         .wheel-center-graphic {
             position: absolute;
             top: 50%; left: 50%;
-            width: 72px; height: 72px;
+            width: 70px; height: 70px;
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, #021a08 0%, #000 100%);
             border-radius: 50%;
@@ -198,21 +198,21 @@
             gap: 1.5px;
         }
         .hub-text-royal, .hub-text-digital {
-            font-size: 8.5px;
+            font-size: 8px;
             font-weight: 900;
             font-family: 'Arial Black', Impact, sans-serif;
             color: #ffd700;
             text-shadow: 0 0 8px #ffd700, 0 0 14px #ffea00;
             animation: goldBlinkDimFull 1.6s infinite ease-in-out;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             line-height: 1;
         }
         .hub-stars-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2.5px;
-            font-size: 9.5px;
+            gap: 2px;
+            font-size: 9px;
             color: #ffd700;
             text-shadow: 0 0 10px #ffd700, 0 0 16px #ffea00;
             animation: goldBlinkDimFull 1.6s infinite ease-in-out;
@@ -225,29 +225,29 @@
         }
 
         .game-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: 120; will-change: transform; transition: transform 5.0s cubic-bezier(0.15, 0.85, 0.12, 1.0); }
-        .game-ball-orbit::after { content: ""; position: absolute; top: 6px; left: calc(50% - 8px); width: 16px; height: 16px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; }
+        .game-ball-orbit::after { content: ""; position: absolute; top: 5px; left: calc(50% - 7px); width: 14px; height: 14px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #ff0055 100%); border-radius: 50%; box-shadow: 0 0 20px #fff, 0 0 35px #00ffcc, 0 0 50px #ff0055, inset 0 0 4px #fff; }
 
-        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 8px; padding: 3px 6px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 1px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,255,100,0.2); z-index: 50; gap: 2.5px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
-        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+        .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 8px; padding: 3px 6px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 1px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,255,100,0.2); z-index: 50; gap: 2px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
+        .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5px; }
         
-        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 11px; font-weight: 900; padding: 5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
+        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 4.5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; box-shadow: inset 0 1px 4px rgba(255,100,100,0.4), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; box-shadow: inset 0 1px 3px rgba(200,200,200,0.2), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff !important; box-shadow: 0 0 15px #f1c40f, inset 0 0 8px rgba(255,215,0,0.8); transform: scale(1.02); z-index: 5; }
-        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 7px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
+        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 6.5px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
 
         .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
         .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 100%; }
-        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9.5px; font-weight: 900; padding: 4.5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
+        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 4px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
 
         .color-row { display: flex; gap: 2px; width: 100%; }
-        .color-btn { flex: 1; padding: 4.5px 2px; font-weight: 900; font-size: 9.5px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
+        .color-btn { flex: 1; padding: 4px 2px; font-weight: 900; font-size: 9px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
         .btn-red { background: linear-gradient(135deg, #962d22, #641e16); border-color: #ff4d4d; }
         .btn-green { background: linear-gradient(135deg, #1e8449, #114e2c); border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.4), inset 0 1px 4px rgba(255,255,255,0.3); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); border-color: #777; }
 
-        .chip-selector-row { display: flex; justify-content: center; gap: 5px; align-items: center; width: 100%; margin: 1px 0; }
-        .chip-item { width: 27px; height: 27px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
+        .chip-selector-row { display: flex; justify-content: center; gap: 4px; align-items: center; width: 100%; margin: 1px 0; }
+        .chip-item { width: 25px; height: 25px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9.5px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
         .chip-item.selected { border: 2px solid #fff; transform: scale(1.12); box-shadow: 0 0 15px #f1c40f, inset 0 0 5px #fff; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
@@ -255,13 +255,13 @@
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 6px; border-radius: 4px; font-size: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%; margin-top: 1px; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 3px 6px; font-size: 9px; font-weight: 900; border-radius: 5px; flex-grow: 1; text-align: center; box-shadow: 0 0 6px rgba(255,215,0,0.5); }
-        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 4px 8px; font-size: 9px; font-weight: 900; border-radius: 4px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(192,57,43,0.6); }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 2.5px 5px; font-size: 8.5px; font-weight: 900; border-radius: 5px; flex-grow: 1; text-align: center; box-shadow: 0 0 6px rgba(255,215,0,0.5); }
+        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3.5px 7px; font-size: 8.5px; font-weight: 900; border-radius: 4px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(192,57,43,0.6); }
 
-        .mode-toggle-bar { display: flex; justify-content: center; gap: 2px; background: #000; border: 1.5px solid #ffd700; padding: 1.5px; border-radius: 5px; width: 100%; }
-        .mode-btn { flex: 1; padding: 2.5px; font-size: 8.5px; font-weight: 900; border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-toggle-bar { display: flex; justify-content: center; gap: 2px; background: #000; border: 1.5px solid #ffd700; padding: 1px; border-radius: 5px; width: 100%; }
+        .mode-btn { flex: 1; padding: 2px; font-size: 8px; font-weight: 900; border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
         .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 6px #2ecc71; }
         .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 6px #3498db; }
 
@@ -339,7 +339,7 @@
         <div class="custom-alert-box">
             <h3 style="color:#ffd700; font-size:16px; margin-bottom:8px;">⚠️ NOTICE</h3>
             <p id="customAlertMessage" style="font-size:12px; color:#fff; font-weight:bold; margin-bottom:15px; line-height:1.4;">Alert message here</p>
-            <button onclick="closeCustomAlert()" class="login-btn lobby" style="padding:10px 20px; font-size:11px;">OK</button>
+            <button onclick="window.closeCustomAlert()" class="login-btn lobby" style="padding:10px 20px; font-size:11px;">OK</button>
         </div>
     </div>
 
@@ -350,7 +350,7 @@
             <p style="font-size:10px; color:#ccc; margin-bottom:8px;">Enter 6-Digit Secret Admin Passcode</p>
             <input type="password" id="adminSecretPassInput" placeholder="Enter PIN" maxlength="6" style="width:100%; padding:8px; background:#000; color:#ffd700; border:1.5px solid #ffd700; text-align:center; font-weight:bold; border-radius:5px; margin-bottom:8px;">
             <div style="display:flex; gap:5px;">
-                <button onclick="verifyAdminPinCode()" class="login-btn lobby" style="padding:8px; font-size:10px;">Unlock</button>
+                <button onclick="window.verifyAdminPinCode()" class="login-btn lobby" style="padding:8px; font-size:10px;">Unlock</button>
                 <button onclick="document.getElementById('adminPinModal').style.display='none'" style="background:#c0392b; color:#fff; border:none; padding:8px; border-radius:5px; font-size:10px; font-weight:bold; flex:1; cursor:pointer;">Cancel</button>
             </div>
         </div>
@@ -368,13 +368,13 @@
         setInterval(checkRealNetwork, 500);
         checkRealNetwork();
 
-        function showCustomAlert(msg) {
+        window.showCustomAlert = function(msg) {
             document.getElementById('customAlertMessage').innerText = msg;
             document.getElementById('customAlertModal').style.display = 'flex';
-        }
-        function closeCustomAlert() {
+        };
+        window.closeCustomAlert = function() {
             document.getElementById('customAlertModal').style.display = 'none';
-        }
+        };
     </script>
 
     <div id="globalMaintenanceBanner" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.92); z-index:999999; flex-direction:column; align-items:center; justify-content:center; color:#ffd700; text-align:center; padding:20px;">
@@ -388,7 +388,7 @@
             <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:8px;">100% FAIR PLAY & SECURE</p>
             <div style="background:linear-gradient(135deg, #c0392b, #8e44ad); color:#fff; font-size:11px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:8px; text-transform:uppercase;">🔥 7 PLAYER LIVE TABLE 🔥</div>
             <div style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; font-size:12px; font-weight:900; padding:6px; border-radius:6px; margin-bottom:12px; text-transform:uppercase;">🃏 TEEN PATTI - COMING SOON 🃏</div>
-            <button onclick="closeComingSoonModal(); playMasterAudio();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:10px 24px; border-radius:8px; font-weight:900; font-size:12px; cursor:pointer; text-transform:uppercase; box-shadow:0 0 15px #ffd700;">Enter Royal Roulette</button>
+            <button onclick="window.closeComingSoonModal(); window.playMasterAudio();" style="background:linear-gradient(135deg, #ffd700, #b8860b); color:#000; border:none; padding:10px 24px; border-radius:8px; font-weight:900; font-size:12px; cursor:pointer; text-transform:uppercase; box-shadow:0 0 15px #ffd700;">Enter Royal Roulette</button>
         </div>
     </div>
 
@@ -423,8 +423,8 @@
             <input type="tel" id="inputPhone" placeholder="Mobile Number (10 Digits)" maxlength="10">
             <input type="password" id="inputMpin" placeholder="Enter 4-Digit MPIN" maxlength="4">
             <input type="text" id="inputOtp" placeholder="OTP / Code" maxlength="15">
-            <button class="login-btn" onclick="requestStrictOtp()">GET OTP / SET MPIN</button>
-            <button class="login-btn lobby" onclick="verifyCloudWalletLogin(); playMasterAudio();">ENTER LOBBY</button>
+            <button class="login-btn" onclick="window.requestStrictOtp()">GET OTP / SET MPIN</button>
+            <button class="login-btn lobby" onclick="window.verifyCloudWalletLogin(); window.playMasterAudio();">ENTER LOBBY</button>
         </div>
 
         <div class="footer-wrap">
@@ -436,7 +436,7 @@
 
     <div id="gameLobbyScreen">
         <div class="lobby-header" id="lobbyHeaderEl">
-            <div class="user-profile-widget" onclick="handleProfileClick(); event.stopPropagation();">
+            <div class="user-profile-widget" onclick="window.handleProfileClick(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
                     <div style="font-size:7.5px; font-weight:900; color:#ffd700;" id="userDisplayPhone">RD001001</div>
@@ -444,14 +444,14 @@
                 </div>
             </div>
 
-            <button class="wallet-btn-rect" onclick="openDepositModal(); event.stopPropagation();">DEPOSIT</button>
+            <button class="wallet-btn-rect" onclick="window.openDepositModal(); event.stopPropagation();">DEPOSIT</button>
 
             <div class="timer-strip-center" id="lobbyTimerBox">
                 <span class="timer-main-val" id="lobbyTimerMain">02:00</span>
                 <span class="timer-sub-val" id="lobbyTimerSub">BETTING OPEN</span>
             </div>
 
-            <button class="wallet-btn-rect withdraw" onclick="openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
+            <button class="wallet-btn-rect withdraw" onclick="window.openWithdrawModal(); event.stopPropagation();">WITHDRAW</button>
         </div>
 
         <div class="royal-star-banner">
@@ -470,7 +470,7 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="370" height="370"></canvas>
+            <canvas id="lobbyWheelCanvas" width="350" height="350"></canvas>
             <div class="wheel-center-graphic">
                 <div class="hub-text-royal">ROYAL</div>
                 <div class="hub-stars-row"><span>★</span><span style="font-size:14px; color:#ffd700; text-shadow: 0 0 12px #ffea00; animation: goldBlinkDimFull 1.6s infinite ease-in-out;">★</span><span>★</span></div>
@@ -497,34 +497,34 @@
             <div class="grid-table" id="gridTableDiv"></div>
 
             <div class="group-buttons-row-1">
-                <button class="group-btn" onclick="placeGroupBet('dozen_1', [1,2,3,4,5,6,7,8,9,10,11,12], this)">1st 12 (2x)</button>
-                <button class="group-btn" onclick="placeGroupBet('dozen_2', [13,14,15,16,17,18,19,20,21,22,23,24], this)">2nd 12 (2x)</button>
-                <button class="group-btn" onclick="placeGroupBet('dozen_3', [25,26,27,28,29,30,31,32,33,34,35,36], this)">3rd 12 (2x)</button>
+                <button class="group-btn" onclick="window.placeGroupBet('dozen_1', [1,2,3,4,5,6,7,8,9,10,11,12], this)">1st 12 (2x)</button>
+                <button class="group-btn" onclick="window.placeGroupBet('dozen_2', [13,14,15,16,17,18,19,20,21,22,23,24], this)">2nd 12 (2x)</button>
+                <button class="group-btn" onclick="window.placeGroupBet('dozen_3', [25,26,27,28,29,30,31,32,33,34,35,36], this)">3rd 12 (2x)</button>
             </div>
             <div class="group-buttons-row-2">
-                <button class="group-btn" onclick="placeGroupBet('half_1_18', [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], this)">1 - 18 (1:1)</button>
-                <button class="group-btn" onclick="placeGroupBet('half_19_36', [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36], this)">19 - 36 (1:1)</button>
+                <button class="group-btn" onclick="window.placeGroupBet('half_1_18', [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18], this)">1 - 18 (1:1)</button>
+                <button class="group-btn" onclick="window.placeGroupBet('half_19_36', [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36], this)">19 - 36 (1:1)</button>
             </div>
             
             <div class="color-row">
-                <button class="color-btn btn-red" id="btnColorRed" onclick="placeTableBet('red', this)">RED (2x)</button>
-                <button class="color-btn btn-green" id="btnColorGreen" onclick="placeTableBet('0', this)">GREEN ZERO (35x)</button>
-                <button class="color-btn btn-black" id="btnColorBlack" onclick="placeTableBet('black', this)">BLACK (2x)</button>
+                <button class="color-btn btn-red" id="btnColorRed" onclick="window.placeTableBet('red', this)">RED (2x)</button>
+                <button class="color-btn btn-green" id="btnColorGreen" onclick="window.placeTableBet('0', this)">GREEN ZERO (35x)</button>
+                <button class="color-btn btn-black" id="btnColorBlack" onclick="window.placeTableBet('black', this)">BLACK (2x)</button>
             </div>
 
             <div class="chip-selector-row">
-                <div class="chip-item chip-10" onclick="selectChip(10, this)">10</div>
-                <div class="chip-item chip-50 selected" onclick="selectChip(50, this)">50</div>
-                <div class="chip-item chip-100" onclick="selectChip(100, this)">100</div>
-                <div class="chip-item chip-500" onclick="selectChip(500, this)">500</div>
-                <div class="chip-item chip-1000" onclick="selectChip(1000, this)">1K</div>
-                <button class="transfer-btn-small" onclick="openTransferModal(); event.stopPropagation();">⇄ Transfer</button>
+                <div class="chip-item chip-10" onclick="window.selectChip(10, this)">10</div>
+                <div class="chip-item chip-50 selected" onclick="window.selectChip(50, this)">50</div>
+                <div class="chip-item chip-100" onclick="window.selectChip(100, this)">100</div>
+                <div class="chip-item chip-500" onclick="window.selectChip(500, this)">500</div>
+                <div class="chip-item chip-1000" onclick="window.selectChip(1000, this)">1K</div>
+                <button class="transfer-btn-small" onclick="window.openTransferModal(); event.stopPropagation();">⇄ Transfer</button>
             </div>
             
             <div class="lobby-action-row">
-                <button class="clear-btn" onclick="clearTableBets()">Clear</button>
+                <button class="clear-btn" onclick="window.clearTableBets()">Clear</button>
                 <div class="status-msg-box" id="lobbyStatusMsg">Connecting to Server...</div>
-                <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
+                <button class="clear-btn" style="background:#b03a2e;" onclick="window.logoutToLogin()">Logout</button>
             </div>
         </div>
     </div>
@@ -543,7 +543,7 @@
             </div>
 
             <div id="adminDirectAccessBtnWrap" style="display:none; margin-bottom:6px; flex-shrink: 0;">
-                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanelDirectly();" style="width:100%; padding:8px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase; box-shadow:0 0 10px #ffd700;">👑 Open Master Admin Panel</button>
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; window.openAdminPanelDirectly();" style="width:100%; padding:8px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase; box-shadow:0 0 10px #ffd700;">👑 Open Master Admin Panel</button>
             </div>
 
             <!-- 🟢 LIVE PASSBOOK & LEDGER SECTION -->
@@ -557,7 +557,7 @@
                 </div>
             </div>
 
-            <button onclick="closeWalletModals()" class="login-btn" style="padding:8px; font-size:11px; margin-top:6px; flex-shrink: 0;">Close</button>
+            <button onclick="window.closeWalletModals()" class="login-btn" style="padding:8px; font-size:11px; margin-top:6px; flex-shrink: 0;">Close</button>
         </div>
     </div>
 
@@ -599,7 +599,7 @@
             <div style="background: rgba(0,30,15,0.95); padding: 12px; border: 2px solid #00ffcc; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
                 <p style="color: #00ffcc; font-size: 12px; font-weight: bold;">📱 DEPOSIT QR CODE MANAGER (LIVE PUSH TO ALL USERS)</p>
                 <div style="display: flex; gap: 6px; align-items: center;">
-                    <input type="file" id="adminQrFileInput" accept="image/*" style="display: none;" onchange="handleAdminQrFileUpload(this)" />
+                    <input type="file" id="adminQrFileInput" accept="image/*" style="display: none;" onchange="window.handleAdminQrFileUpload(this)" />
                     <button class="admin-action-btn" onclick="document.getElementById('adminQrFileInput').click()" style="padding: 8px; background: #3498db; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px; font-weight: bold; flex: 1;">📁 Choose/Upload QR File</button>
                     <span id="qrUploadStatus" style="font-size: 10px; color: #ffd700; flex: 1; text-align: left;">No file selected</span>
                 </div>
@@ -635,7 +635,7 @@
                 <div class="admin-section-title"><span style="color: #00ffff;">🔑 Player MPIN Lookup (Cloud)</span></div>
                 <div style="display:flex; gap:6px; margin-bottom:6px;">
                     <input type="text" id="adminSearchPhone" placeholder="Enter Phone Number" style="background:#000; color:#fff; border:1px solid #ffd700; padding:6px; border-radius:5px; flex:1; font-size:10px;">
-                    <button class="admin-action-btn" onclick="lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 10px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer;">Lookup Pin</button>
+                    <button class="admin-action-btn" onclick="window.lookupPlayerMpinAdmin()" style="background:#2980b9; color:#fff; border:none; padding:6px 10px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer;">Lookup Pin</button>
                 </div>
                 <div id="adminMpinResultBox" style="font-size:10px; color:#2ecc71; text-align:left; background:#000; padding:5px; border-radius:4px;">Search phone above.</div>
             </div>
@@ -666,7 +666,7 @@
                 <select id="adminRigSelect" style="margin-bottom: 8px;">
                     <option value="random">Auto 5% House Margin Safe Engine (No Loss)</option>
                 </select>
-                <button class="admin-action-btn" onclick="saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users Live</button>
+                <button class="admin-action-btn" onclick="window.saveAdminSettings()" class="login-btn" style="background:linear-gradient(135deg, #27ae60, #1e8449); color:#fff; padding:10px; font-size:12px;">Push Winning Number to All Users Live</button>
             </div>
         </div>
     </div>
@@ -701,12 +701,12 @@
             <p style="font-size:8.5px; color:#2ecc71; margin-bottom:8px; font-weight:bold;">INSTANT AUTO-SYNC & LIVE QR PUSH</p>
             
             <div class="deposit-packages-grid">
-                <button class="dep-pkg-btn selected" onclick="selectDepositPkg(300, this)">₹300</button>
-                <button class="dep-pkg-btn" onclick="selectDepositPkg(500, this)">₹500</button>
-                <button class="dep-pkg-btn" onclick="selectDepositPkg(1000, this)">₹1000</button>
-                <button class="dep-pkg-btn" onclick="selectDepositPkg(2000, this)">₹2000</button>
-                <button class="dep-pkg-btn" onclick="selectDepositPkg(5000, this)">₹5000</button>
-                <button class="dep-pkg-btn" onclick="selectDepositPkg(10000, this)">₹10000</button>
+                <button class="dep-pkg-btn selected" onclick="window.selectDepositPkg(300, this)">₹300</button>
+                <button class="dep-pkg-btn" onclick="window.selectDepositPkg(500, this)">₹500</button>
+                <button class="dep-pkg-btn" onclick="window.selectDepositPkg(1000, this)">₹1000</button>
+                <button class="dep-pkg-btn" onclick="window.selectDepositPkg(2000, this)">₹2000</button>
+                <button class="dep-pkg-btn" onclick="window.selectDepositPkg(5000, this)">₹5000</button>
+                <button class="dep-pkg-btn" onclick="window.selectDepositPkg(10000, this)">₹10000</button>
             </div>
             
             <input type="number" id="customDepositInput" value="300" placeholder="Enter Deposit Amount">
@@ -719,13 +719,13 @@
             <input type="text" id="depositUtrInput" placeholder="Enter 12-Digit UTR / Reference No">
             
             <div style="margin: 6px 0; display:flex; flex-direction:column; gap:4px;">
-                <input type="file" id="depositProofFileInput" accept="image/*" style="display:none;" onchange="handleDepositScreenshotUpload(this)">
+                <input type="file" id="depositProofFileInput" accept="image/*" style="display:none;" onchange="window.handleDepositScreenshotUpload(this)">
                 <button onclick="document.getElementById('depositProofFileInput').click()" style="width:100%; padding:8px; background:linear-gradient(135deg, #2980b9, #1f618d); color:#fff; border:none; border-radius:6px; font-weight:bold; font-size:10.5px; cursor:pointer; box-shadow:0 0 10px rgba(41,128,185,0.7);">📸 Upload Payment Screenshot Proof</button>
                 <span id="depositProofStatus" style="font-size:9.5px; color:#2ecc71; font-weight:bold;">No screenshot chosen</span>
             </div>
 
-            <button onclick="triggerCloudDepositSubmit();" class="login-btn lobby" style="padding:10px; margin-top:6px; font-size:11.5px;">SUBMIT DEPOSIT REQUEST</button>
-            <button onclick="closeWalletModals();" style="background:#333; color:#ccc; border:none; padding:8px; width:100%; border-radius:6px; margin-top:6px; font-size:10px; font-weight:bold;">Close Window</button>
+            <button onclick="window.triggerCloudDepositSubmit();" class="login-btn lobby" style="padding:10px; margin-top:6px; font-size:11.5px;">SUBMIT DEPOSIT REQUEST</button>
+            <button onclick="window.closeWalletModals();" style="background:#333; color:#ccc; border:none; padding:8px; width:100%; border-radius:6px; margin-top:6px; font-size:10px; font-weight:bold;">Close Window</button>
         </div>
     </div>
 
@@ -735,11 +735,11 @@
             <p style="font-size:8.5px; color:#3498db; margin-bottom:8px; font-weight:bold;">FAST & SECURE PAYOUT TO BANK/UPI</p>
             
             <div class="withdraw-packages-grid">
-                <button class="wd-pkg-btn selected" onclick="selectWithdrawPkg(500, this)">₹500</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(1000, this)">₹1000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(5000, this)">₹5000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(10000, this)">₹10000</button>
-                <button class="wd-pkg-btn" onclick="selectWithdrawPkg(20000, this)">₹20000</button>
+                <button class="wd-pkg-btn selected" onclick="window.selectWithdrawPkg(500, this)">₹500</button>
+                <button class="wd-pkg-btn" onclick="window.selectWithdrawPkg(1000, this)">₹1000</button>
+                <button class="wd-pkg-btn" onclick="window.selectWithdrawPkg(5000, this)">₹5000</button>
+                <button class="wd-pkg-btn" onclick="window.selectWithdrawPkg(10000, this)">₹10000</button>
+                <button class="wd-pkg-btn" onclick="window.selectWithdrawPkg(20000, this)">₹20000</button>
             </div>
             
             <input type="number" id="withdrawAmtInput" value="500" placeholder="Withdrawal Amount">
@@ -748,13 +748,13 @@
             <div style="font-size:9.5px; color:#bbb; margin: 4px 0; font-weight:bold;">-- OR ATTACH YOUR RECEIVER QR --</div>
 
             <div style="background:rgba(0,0,0,0.6); padding:8px; border:1px dashed #ffd700; border-radius:6px; margin-bottom:6px;">
-                <input type="file" id="userWithdrawQrFile" accept="image/*" style="display:none;" onchange="handleUserWithdrawQrUpload(this)">
+                <input type="file" id="userWithdrawQrFile" accept="image/*" style="display:none;" onchange="window.handleUserWithdrawQrUpload(this)">
                 <button onclick="document.getElementById('userWithdrawQrFile').click()" style="width:100%; padding:8px; background:linear-gradient(135deg, #e67e22, #d35400); color:#fff; border:none; border-radius:5px; font-weight:bold; font-size:10px; cursor:pointer;">📷 Upload Receiver QR Code</button>
                 <span id="userWithdrawQrStatus" style="font-size:9.5px; color:#2ecc71; display:block; margin-top:4px; font-weight:bold;">No QR attached</span>
             </div>
 
-            <button onclick="triggerCloudSubmitWithdraw()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:10px; margin-top:4px; font-size:11.5px; box-shadow:0 0 12px rgba(231,76,60,0.8);">REQUEST PRIORITY PAYOUT</button>
-            <button onclick="closeWalletModals()" style="background:#333; color:#ccc; border:none; padding:8px; width:100%; border-radius:6px; margin-top:6px; font-size:10px; font-weight:bold;">Close Window</button>
+            <button onclick="window.triggerCloudSubmitWithdraw()" class="login-btn" style="background:linear-gradient(135deg, #e74c3c, #c0392b); padding:10px; margin-top:4px; font-size:11.5px; box-shadow:0 0 12px rgba(231,76,60,0.8);">REQUEST PRIORITY PAYOUT</button>
+            <button onclick="window.closeWalletModals()" style="background:#333; color:#ccc; border:none; padding:8px; width:100%; border-radius:6px; margin-top:6px; font-size:10px; font-weight:bold;">Close Window</button>
         </div>
     </div>
 
@@ -763,8 +763,8 @@
             <h3 style="color:#f1c40f; margin-bottom:6px; font-size:16px;">TRANSFER REAL COINS</h3>
             <input type="text" id="transferTargetPhone" placeholder="Friend's Mobile Number">
             <input type="number" id="transferCoinAmt" placeholder="Coins to Send">
-            <button onclick="executeCoinTransferCloud()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:10px; margin-top:8px;">Transfer Now</button>
-            <button onclick="closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
+            <button onclick="window.executeCoinTransferCloud()" class="login-btn" style="background:linear-gradient(135deg, #2980b9, #1f618d); padding:10px; margin-top:8px;">Transfer Now</button>
+            <button onclick="window.closeWalletModals()" style="background:#444; color:#fff; border:none; padding:9px; width:100%; border-radius:6px; margin-top:6px;">Close</button>
         </div>
     </div>
 
@@ -797,8 +797,8 @@
         socket.on('connect', () => {
             let statusBox = document.getElementById('lobbyStatusMsg');
             if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
-            if (loggedUserPhone) {
-                socket.emit('authenticate_socket', { phone: loggedUserPhone });
+            if (window.loggedUserPhone) {
+                socket.emit('authenticate_socket', { phone: window.loggedUserPhone });
             }
         });
         socket.on('disconnect', () => {
@@ -829,6 +829,7 @@
                 let accumulatedBallRotation = 0;
                 let realCoins = 0, testCoins = 10000, activeGameMode = 'test';
                 let loggedUserPhone = "", loggedVipId = "RD001001";
+                window.loggedUserPhone = "";
                 let isGameSpinning = false;
                 let globalTableBets = {}; 
                 let myActiveBets = {};   
@@ -877,7 +878,7 @@
                 window.pushMaintenanceStatus = function(isActive) {
                     let msg = document.getElementById('adminMaintenanceMsgInput').value.trim() || "System under maintenance. Please check back soon.";
                     maintenanceRef.set({ active: isActive, message: msg }).then(() => {
-                        showCustomAlert(`✅ Maintenance mode ${isActive ? 'ENABLED' : 'DISABLED'} successfully!`);
+                        window.showCustomAlert(`✅ Maintenance mode ${isActive ? 'ENABLED' : 'DISABLED'} successfully!`);
                     });
                 };
 
@@ -889,7 +890,7 @@
 
                 window.addEventListener('DOMContentLoaded', () => {
                     drawCanvasWheel('loginWheelCanvasBg', 65, 17);
-                    drawCanvasWheel('lobbyWheelCanvas', 58, 14);
+                    drawCanvasWheel('lobbyWheelCanvas', 55, 13);
                     updateActiveQrDisplay();
                     createLoginShowerParticles();
                 });
@@ -993,11 +994,11 @@
                                 <div>
                                     📱 <b>${d.phone || 'Unknown'}</b> <span style="color:#ffd700;">(${displayId})</span><br>
                                     Amt: <span style="color:#2ecc71; font-weight:bold;">₹${d.amount}</span> | UTR: <b style="color:#00ffff;">${d.utr}</b>
-                                    ${d.screenshot ? `<br><button class="btn-view-proof" style="padding:2px 6px; font-size:9px; margin-top:3px;" onclick="viewProofImage('${d.screenshot}', 'Payment Screenshot')">🧾 View Screenshot</button>` : ''}
+                                    ${d.screenshot ? `<br><button class="btn-view-proof" style="padding:2px 6px; font-size:9px; margin-top:3px;" onclick="window.viewProofImage('${d.screenshot}', 'Payment Screenshot')">🧾 View Screenshot</button>` : ''}
                                 </div>
                                 <div class="req-actions">
-                                    <button class="btn-approve" onclick="approveCloudDeposit('${key}', '${d.phone}', ${d.amount})">Approve</button>
-                                    <button class="btn-reject" onclick="rejectCloudDeposit('${key}')">Reject</button>
+                                    <button class="btn-approve" onclick="window.approveCloudDeposit('${key}', '${d.phone}', ${d.amount})">Approve</button>
+                                    <button class="btn-reject" onclick="window.rejectCloudDeposit('${key}')">Reject</button>
                                 </div>
                             </div>`;
                         }
@@ -1033,11 +1034,11 @@
                                 <div>
                                     📱 <b>${w.phone || 'Unknown'}</b> <span style="color:#ffd700;">(${displayId})</span><br>
                                     Amt: <span style="color:#e74c3c; font-weight:bold;">₹${w.amount}</span> | UPI/QR: <b style="color:#00ffff;">${w.upi}</b>
-                                    ${w.qrCode ? `<br><button class="btn-view-proof" style="padding:2px 6px; font-size:9px; margin-top:3px;" onclick="viewProofImage('${w.qrCode}', 'Receiver QR Code')">👁️ View QR</button>` : ''}
+                                    ${w.qrCode ? `<br><button class="btn-view-proof" style="padding:2px 6px; font-size:9px; margin-top:3px;" onclick="window.viewProofImage('${w.qrCode}', 'Receiver QR Code')">👁️ View QR</button>` : ''}
                                 </div>
                                 <div class="req-actions">
-                                    <button class="btn-approve" onclick="approveCloudWithdraw('${key}')">Mark Paid</button>
-                                    <button class="btn-reject" onclick="rejectCloudWithdraw('${key}', '${w.phone}', ${w.amount})">Reject</button>
+                                    <button class="btn-approve" onclick="window.approveCloudWithdraw('${key}')">Mark Paid</button>
+                                    <button class="btn-reject" onclick="window.rejectCloudWithdraw('${key}', '${w.phone}', ${w.amount})">Reject</button>
                                 </div>
                             </div>`;
                         }
@@ -1205,7 +1206,7 @@
                         document.getElementById('admRoundId').innerText = "Round #" + activeRoundId;
                         document.getElementById('secretAdminModal').style.display = 'flex';
                     } else {
-                        showCustomAlert("❌ Incorrect Admin PIN!");
+                        window.showCustomAlert("❌ Incorrect Admin PIN!");
                     }
                 };
 
@@ -1239,12 +1240,12 @@
 
                 window.broadcastMasterQr = function() {
                     let urlInput = document.getElementById('adminQrUrlInput').value.trim();
-                    if (!urlInput) { showCustomAlert("Please enter or select image!"); return; }
+                    if (!urlInput) { window.showCustomAlert("Please enter or select image!"); return; }
                     qrRef.set(urlInput).then(() => {
                         window.globalState.adminQrUrl = urlInput;
                         updateActiveQrDisplay();
-                        showCustomAlert("✅ 1-Click: QR Code pushed online to ALL users!");
-                    }).catch(err => { showCustomAlert("Error: " + err.message); });
+                        window.showCustomAlert("✅ 1-Click: QR Code pushed online to ALL users!");
+                    }).catch(err => { window.showCustomAlert("Error: " + err.message); });
                 };
 
                 window.applyAdminCoinsSecure = function(actionType) {
@@ -1346,7 +1347,7 @@
                         }).then(() => {
                             depositsRef.child(depKey).update({ status: 'Approved' });
                             auditLogRef.push({ text: `Approved Deposit ₹${amount} for ${userPhone}`, time: Date.now() });
-                            showCustomAlert(`✅ Deposit of ₹${amount} approved online for ${userPhone}!`);
+                            window.showCustomAlert(`✅ Deposit of ₹${amount} approved online for ${userPhone}!`);
                         });
                     });
                 };
@@ -1355,14 +1356,14 @@
                     let reason = prompt("Enter reason for rejection (optional):", "Invalid UTR or Screenshot");
                     if (reason !== null) {
                         depositsRef.child(depKey).update({ status: 'Rejected', reason: reason });
-                        showCustomAlert("Deposit rejected successfully.");
+                        window.showCustomAlert("Deposit rejected successfully.");
                     }
                 };
 
                 window.approveCloudWithdraw = function(wdKey) {
                     withdrawsRef.child(wdKey).update({ status: 'Approved' });
                     auditLogRef.push({ text: `Approved Withdrawal Request (${wdKey})`, time: Date.now() });
-                    showCustomAlert("✅ Marked as Paid!");
+                    window.showCustomAlert("✅ Marked as Paid!");
                 };
 
                 window.rejectCloudWithdraw = function(wdKey, userPhone, amount) {
@@ -1383,7 +1384,7 @@
                                 adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
                             }).then(() => {
                                 withdrawsRef.child(wdKey).update({ status: 'Rejected', reason: reason });
-                                showCustomAlert("Withdrawal rejected & coins refunded online to player.");
+                                window.showCustomAlert("Withdrawal rejected & coins refunded online to player.");
                             });
                         });
                     }
@@ -1414,9 +1415,9 @@
                 window.triggerCloudDepositSubmit = function() {
                     let amt = parseInt(document.getElementById('customDepositInput').value);
                     let utr = document.getElementById('depositUtrInput').value.trim();
-                    if (isNaN(amt) || !utr) { showCustomAlert("Enter valid Amount & 12-Digit UTR!"); return; }
-                    if (!userDepositScreenshotData) { showCustomAlert("Payment screenshot proof is mandatory for deposit!"); return; }
-                    closeWalletModals();
+                    if (isNaN(amt) || !utr) { window.showCustomAlert("Enter valid Amount & 12-Digit UTR!"); return; }
+                    if (!userDepositScreenshotData) { window.showCustomAlert("Payment screenshot proof is mandatory for deposit!"); return; }
+                    window.closeWalletModals();
 
                     depositsRef.push({
                         phone: loggedUserPhone,
@@ -1429,18 +1430,18 @@
                     }).then(() => {
                         userDepositScreenshotData = "";
                         document.getElementById('depositProofStatus').innerText = "No screenshot chosen";
-                        showCustomAlert("✅ Deposit submitted online to Admin! Please wait for approval.");
+                        window.showCustomAlert("✅ Deposit submitted online to Admin! Please wait for approval.");
                     });
                 };
 
                 window.triggerCloudSubmitWithdraw = function() {
                     let amt = parseInt(document.getElementById('withdrawAmtInput').value);
                     let upi = document.getElementById('withdrawUpiInput').value.trim();
-                    if (!amt || realCoins < amt) { showCustomAlert("Check your wallet balance!"); return; }
-                    if (!upi && !userWithdrawQrData) { showCustomAlert("Please enter UPI ID OR upload your Receiver QR Code!"); return; }
+                    if (!amt || realCoins < amt) { window.showCustomAlert("Check your wallet balance!"); return; }
+                    if (!upi && !userWithdrawQrData) { window.showCustomAlert("Please enter UPI ID OR upload your Receiver QR Code!"); return; }
                     
                     if (totalUserTurnover < amt) {
-                        showCustomAlert(`⚠️ Wagering Rule: Please play/bet at least ₹${amt} in the game before requesting withdrawal!`);
+                        window.showCustomAlert(`⚠️ Wagering Rule: Please play/bet at least ₹${amt} in the game before requesting withdrawal!`);
                         return;
                     }
 
@@ -1466,18 +1467,18 @@
                         });
                         userWithdrawQrData = "";
                         document.getElementById('userWithdrawQrStatus').innerText = "No QR attached";
-                        closeWalletModals();
-                        showCustomAlert("✅ Withdrawal request submitted online to Admin successfully!");
+                        window.closeWalletModals();
+                        window.showCustomAlert("✅ Withdrawal request submitted online to Admin successfully!");
                     });
                 };
 
                 window.executeCoinTransferCloud = function() {
                     let targetPhone = document.getElementById('transferTargetPhone').value.trim();
                     let amt = parseInt(document.getElementById('transferCoinAmt').value);
-                    if (!targetPhone || !amt || realCoins < amt) { showCustomAlert("Check balance or Target Phone!"); return; }
+                    if (!targetPhone || !amt || realCoins < amt) { window.showCustomAlert("Check balance or Target Phone!"); return; }
                     
                     usersRef.child(targetPhone).once("value", (snap) => {
-                        if (!snap.exists()) { showCustomAlert("Target player does not exist in Cloud!"); return; }
+                        if (!snap.exists()) { window.showCustomAlert("Target player does not exist in Cloud!"); return; }
                         let targetCur = snap.val().balance || 0;
                         
                         usersRef.child(loggedUserPhone + "/ledger").push({ amount: -amt, sourceType: 'TRANSFER_OUT', description: `Transferred to ${targetPhone}`, timestamp: Date.now() });
@@ -1485,8 +1486,8 @@
 
                         usersRef.child(loggedUserPhone).update({ balance: realCoins - amt, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                         usersRef.child(targetPhone).update({ balance: targetCur + amt, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
-                        closeWalletModals();
-                        showCustomAlert(`✅ Online Transfer of ₹${amt} to ${targetPhone} successful!`);
+                        window.closeWalletModals();
+                        window.showCustomAlert(`✅ Online Transfer of ₹${amt} to ${targetPhone} successful!`);
                     });
                 };
 
@@ -1503,7 +1504,6 @@
                     });
                 };
 
-                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स (अमाउंट बैज के साथ) सिंक करने वाला लिसनर
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1608,7 +1608,7 @@
                 function drawCanvasWheel(canvasId, radiusSize, fontSize) {
                     const canvas = document.getElementById(canvasId); if (!canvas) return;
                     const ctx = canvas.getContext('2d'), cx = canvas.width / 2, cy = canvas.height / 2;
-                    const outerRadius = cx - 4, innerRadius = radiusSize || 58, arcSize = (2 * Math.PI) / numbersList.length;
+                    const outerRadius = cx - 4, innerRadius = radiusSize || 55, arcSize = (2 * Math.PI) / numbersList.length;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     
                     numbersList.forEach((num, i) => {
@@ -1619,7 +1619,7 @@
                         ctx.lineWidth = 1.2; ctx.strokeStyle = '#ffd700'; ctx.stroke();
                         ctx.save(); ctx.translate(cx, cy); ctx.rotate(angle + arcSize / 2);
                         ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff'; 
-                        ctx.font = `bold ${fontSize || 14}px Arial`;
+                        ctx.font = `bold ${fontSize || 13}px Arial`;
                         ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
                         ctx.shadowBlur = 6;
                         ctx.fillText(num, outerRadius - 12, 4); ctx.restore();
@@ -1629,7 +1629,7 @@
                 window.closeComingSoonModal = function() { 
                     let modal = document.getElementById('comingSoonNoticeModal');
                     if (modal) modal.style.display = 'none';
-                    playMasterAudio();
+                    window.playMasterAudio();
                 };
 
                 const adminSelect = document.getElementById('adminRigSelect');
@@ -1640,9 +1640,9 @@
                 window.saveAdminSettings = function() {
                     let sel = document.getElementById('adminRigSelect').value;
                     rigRef.set(sel).then(() => {
-                        showCustomAlert(`✅ Winning number '${sel}' pushed online for next round!`);
+                        window.showCustomAlert(`✅ Winning number '${sel}' pushed online for next round!`);
                         document.getElementById('secretAdminModal').style.display = 'none';
-                    }).catch(err => { showCustomAlert("Error: " + err.message); });
+                    }).catch(err => { window.showCustomAlert("Error: " + err.message); });
                 };
 
                 window.logoutToLogin = function() {
@@ -1659,7 +1659,7 @@
                 window.requestStrictOtp = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
                     let mpin = document.getElementById('inputMpin').value.trim();
-                    if (phone.length < 10) { showCustomAlert("Enter 10-digit number!"); return; }
+                    if (phone.length < 10) { window.showCustomAlert("Enter 10-digit number!"); return; }
                     let code = Math.floor(100000 + Math.random() * 900000);
                     document.getElementById('inputOtp').value = code;
                     if (mpin) {
@@ -1670,12 +1670,12 @@
                 window.verifyCloudWalletLogin = function() {
                     let phone = document.getElementById('inputPhone').value.trim();
                     let mpin = document.getElementById('inputMpin').value.trim();
-                    if (phone.length < 10) { showCustomAlert("Enter valid 10-digit number!"); return; }
+                    if (phone.length < 10) { window.showCustomAlert("Enter valid 10-digit number!"); return; }
 
                     usersRef.child(phone).once("value", (snapshot) => {
                         let data = snapshot.val() || {};
                         if (data.mpin && data.mpin !== mpin) {
-                            showCustomAlert("❌ Incorrect MPIN! Please enter correct 4-digit MPIN.");
+                            window.showCustomAlert("❌ Incorrect MPIN! Please enter correct 4-digit MPIN.");
                             return;
                         }
 
@@ -1696,13 +1696,14 @@
                     document.getElementById('loginScreenContainer').style.display = 'none';
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
+                    window.loggedUserPhone = phone;
 
                     socket.emit('authenticate_socket', { phone: phone });
 
                     bindUserCloudWallet(phone);
                     setupGlobalRoundBetsListener(activeRoundId);
                     startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
-                    if (!isAutoLogin) playMasterAudio();
+                    if (!isAutoLogin) window.playMasterAudio();
                 }
 
                 window.updateBalancesDisplay = function() {
@@ -1733,16 +1734,18 @@
                 }
 
                 let currentActiveChip = 50;
-                window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
+                window.selectChip = function(val, el) { 
+                    currentActiveChip = val; 
+                    document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); 
+                    if(el) el.classList.add('selected'); 
+                };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
-                        if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
+                        if (realCoins < currentActiveChip) { window.showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         
-                        // 👑 इंस्टेंट लोकल विजुअल अपडेट (Optimistic UI)
                         realCoins -= currentActiveChip;
                         updateBalancesDisplay();
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
@@ -1774,7 +1777,7 @@
                                 currentTotalBet -= currentActiveChip;
                                 if(totalBetEl) totalBetEl.innerText = currentTotalBet;
                                 updateBalancesDisplay();
-                                showCustomAlert((resp && resp.msg) || "Bet failed!");
+                                window.showCustomAlert((resp && resp.msg) || "Bet failed!");
                             }
                         });
                     } else { 
@@ -1789,15 +1792,13 @@
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12 आदि) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
                     
                     if (activeGameMode === 'real') {
-                        if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
+                        if (realCoins < totalNeeded) { window.showCustomAlert("Low Balance for Group Bet!"); return; }
                         
-                        // 👑 इंस्टेंट लोकल विजुअल अपडेट (Optimistic UI)
                         realCoins -= totalNeeded;
                         updateBalancesDisplay();
                         numbersArray.forEach(num => {
@@ -1828,7 +1829,7 @@
                                 currentTotalBet -= totalNeeded;
                                 if(totalBetEl) totalBetEl.innerText = currentTotalBet;
                                 updateBalancesDisplay();
-                                showCustomAlert((resp && resp.msg) || "Group bet failed!");
+                                window.showCustomAlert((resp && resp.msg) || "Group bet failed!");
                             }
                         });
                     } else {
@@ -1848,7 +1849,7 @@
                     if (isGameSpinning || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
+                        window.showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
                     } else {
                         testCoins += last.amount;
                         currentTotalBet -= last.amount;
@@ -1915,7 +1916,6 @@
                     if(cont) cont.innerHTML = html;
                 }
 
-                // 👑 विनर पॉपअप के साथ यूज़र की VIP ID और जीता हुआ अमाउंट शो करने वाला फंक्शन
                 function executeClientGlobalSpinAnimation(winningNum, endedRoundId) {
                     isGameSpinning = true; 
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";
@@ -1960,7 +1960,6 @@
                             let popup = document.getElementById('cinematicResultPopup');
                             document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
                             
-                            // 👑 विनर पॉपअप में VIP ID और अमाउंट दिखाना
                             if (totalWon > 0) {
                                 document.getElementById('popupPayoutDisplay').innerHTML = `🏆 Winner ID: <b>${loggedVipId}</b><br><span style="color:#2ecc71;">Won ₹${totalWon}!</span>`;
                             } else {

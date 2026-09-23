@@ -212,7 +212,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// 👑 सुधारा हुआ निष्पक्ष फेयर विनर इंजन (95% रिटर्न और 5% एडमिन मार्जिन के साथ)
 function calculateFairWinner(roundId, globalTableBets, totalTableBet) {
     if (totalTableBet === 0) return numbersList[Math.abs(roundId) % numbersList.length];
     
@@ -231,14 +230,11 @@ function calculateFairWinner(roundId, globalTableBets, totalTableBet) {
         scoredNumbers.push({ num, payout });
     });
 
-    // पहले उन नंबरों को ढूंढें जिन पर बेट लगी है और जिनका payout 95% पूल के अंदर है
     let winningCandidates = scoredNumbers.filter(item => item.payout > 0 && item.payout <= maxAllowedPayout);
-
     if (winningCandidates.length > 0) {
         return winningCandidates[Math.abs(roundId * 13) % winningCandidates.length].num;
     }
 
-    // अगर कोई एक्टिव बेट वाला नंबर सीमा के अंदर नहीं है, तो अन्य सेफ नंबर चुनें
     let viableNumbers = scoredNumbers.filter(item => item.payout <= maxAllowedPayout);
     if (viableNumbers.length > 0) {
         return viableNumbers[Math.abs(roundId * 7) % viableNumbers.length].num;

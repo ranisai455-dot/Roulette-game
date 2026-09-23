@@ -328,7 +328,6 @@ function startMasterGameLoop() {
 
 startMasterGameLoop();
 
-// 👑 24/7/365 Keep-Alive Self-Ping (हर 3 मिनट में सर्वर को जगाए रखेगा)
 setInterval(() => {
     const targetUrl = process.env.RENDER_EXTERNAL_URL || 'https://roulette-game-6cz1.onrender.com';
     https.get(targetUrl, (res) => {}).on('error', (err) => {});

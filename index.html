@@ -482,7 +482,7 @@
         <div class="betting-board-section" id="bettingBoardArea">
             <div style="background: rgba(0,0,0,0.85); padding: 2px 5px; border-radius: 5px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 1px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 900; color: #ffd700;">
-                    <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
+                    <span>Real Total: <span id="lobbyRealTotalBet" style="color:#fff;">0</span> | Test Total: <span id="lobbyTestTotalBet" style="color:#fff;">0</span></span>
                     <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 1px 4px; border-radius: 4px;">
                         💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 10.5px;">₹0</span>
                     </span>
@@ -827,7 +827,8 @@
                 let isGameSpinning = false;
                 let globalTableBets = {}; 
                 let myActiveBets = {};   
-                let currentTotalBet = 0; 
+                let realTotalBet = 0; // 👑 रियल मोड टोटल बेट
+                let testTotalBet = 0; // 👑 टेस्ट मोड टोटल बेट
                 let betHistoryStack = [];
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
@@ -1483,28 +1484,34 @@
                     });
                 };
 
-                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स सभी को एक साथ परफेक्टली सिंक और हाइलाइट करने वाला लिसनर
+                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स (अमाउंट बैज के साथ) सिंक करने वाला लिसनर
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
                     globalRoundBetsRef.on("value", (snapshot) => {
                         let allBetsData = snapshot.val() || {};
-                        currentTotalBet = 0;
                         globalTableBets = {};
                         myActiveBets = {};
+                        let computedRealTotal = 0;
 
                         Object.keys(allBetsData).forEach(phone => {
                             let playerBets = allBetsData[phone] || {};
                             Object.keys(playerBets).forEach(key => {
                                 let amt = parseInt(playerBets[key]) || 0;
                                 globalTableBets[key] = (globalTableBets[key] || 0) + amt;
-                                currentTotalBet += amt;
 
                                 if (phone === loggedUserPhone) {
                                     myActiveBets[key] = (myActiveBets[key] || 0) + amt;
+                                    computedRealTotal += amt;
                                 }
                             });
                         });
+
+                        realTotalBet = computedRealTotal;
+                        if (activeGameMode === 'real') {
+                            let realTotalEl = document.getElementById('lobbyRealTotalBet');
+                            if(realTotalEl) realTotalEl.innerText = realTotalBet;
+                        }
 
                         document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
                             c.classList.remove('has-bet');
@@ -1512,6 +1519,7 @@
                             if (b) b.remove();
                         });
 
+                        // 1. व्यक्तिगत नंबर और कलर्स पर बैज और हाइलाइट
                         Object.keys(myActiveBets).forEach(key => {
                             let amt = myActiveBets[key];
                             let cell = null;
@@ -1530,33 +1538,36 @@
                             }
                         });
 
+                        // 2. ग्रुप बटन्स (1st 12, 1-18 आदि) पर हाइलाइट और टोटल कॉइन बैज शो करना
                         const groupBtnElements = document.querySelectorAll('.group-btn');
                         groupBtnElements.forEach(btn => {
                             let onclickAttr = btn.getAttribute('onclick') || "";
-                            if (onclickAttr.includes('dozen_1')) {
-                                let hasAll = [1,2,3,4,5,6,7,8,9,10,11,12].every(n => myActiveBets[n.toString()] > 0);
-                                if (hasAll) btn.classList.add('has-bet');
-                            } else if (onclickAttr.includes('dozen_2')) {
-                                let hasAll = [13,14,15,16,17,18,19,20,21,22,23,24].every(n => myActiveBets[n.toString()] > 0);
-                                if (hasAll) btn.classList.add('has-bet');
-                            } else if (onclickAttr.includes('dozen_3')) {
-                                let hasAll = [25,26,27,28,29,30,31,32,33,34,35,36].every(n => myActiveBets[n.toString()] > 0);
-                                if (hasAll) btn.classList.add('has-bet');
-                            } else if (onclickAttr.includes('half_1_18')) {
-                                let hasAll = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18].every(n => myActiveBets[n.toString()] > 0);
-                                if (hasAll) btn.classList.add('has-bet');
-                            } else if (onclickAttr.includes('half_19_36')) {
-                                let hasAll = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36].every(n => myActiveBets[n.toString()] > 0);
-                                if (hasAll) btn.classList.add('has-bet');
+                            let groupNums = [];
+                            if (onclickAttr.includes('dozen_1')) groupNums = [1,2,3,4,5,6,7,8,9,10,11,12];
+                            else if (onclickAttr.includes('dozen_2')) groupNums = [13,14,15,16,17,18,19,20,21,22,23,24];
+                            else if (onclickAttr.includes('dozen_3')) groupNums = [25,26,27,28,29,30,31,32,33,34,35,36];
+                            else if (onclickAttr.includes('half_1_18')) groupNums = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+                            else if (onclickAttr.includes('half_19_36')) groupNums = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36];
+
+                            if (groupNums.length > 0) {
+                                let groupSum = 0;
+                                groupNums.forEach(n => { groupSum += (myActiveBets[n.toString()] || 0); });
+                                
+                                let badge = btn.querySelector('.cell-badge');
+                                if (groupSum > 0) {
+                                    btn.classList.add('has-bet');
+                                    if (!badge) {
+                                        badge = document.createElement('div');
+                                        badge.className = 'cell-badge';
+                                        btn.appendChild(badge);
+                                    }
+                                    badge.innerText = groupSum;
+                                } else {
+                                    btn.classList.remove('has-bet');
+                                    if (badge) badge.remove();
+                                }
                             }
                         });
-
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if (totalBetEl) {
-                            let mySum = 0;
-                            Object.values(myActiveBets).forEach(v => mySum += v);
-                            totalBetEl.innerText = mySum;
-                        }
                     });
                 }
 
@@ -1688,6 +1699,12 @@
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
+                    
+                    // मोड बदलने पर टोटल बेट डिस्प्ले अपडेट करें
+                    let totalBetEl = document.getElementById('lobbyRealTotalBet');
+                    if (totalBetEl) {
+                        totalBetEl.innerText = (mode === 'real') ? realTotalBet : testTotalBet;
+                    }
                 };
 
                 const gridTableDiv = document.getElementById('gridTableDiv');
@@ -1706,20 +1723,20 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड अलग-अलग टोटल के साथ)
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         
-                        // 👑 इंस्टेंट लोकल विजुअल अपडेट (ताकि क्लिक करते ही तुरंत दिखे और पैसे कटे)
                         realCoins -= currentActiveChip;
                         updateBalancesDisplay();
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                        currentTotalBet += currentActiveChip;
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                        realTotalBet += currentActiveChip;
+                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = realTotalBet;
+                        
                         if (el) { 
                             el.classList.add('has-bet'); 
                             let b = el.querySelector('.cell-badge'); 
@@ -1727,23 +1744,19 @@
                             b.innerText = myActiveBets[key]; 
                         }
 
-                        socket.emit('place_secure_bet', {
-                            key: key,
-                            amount: currentActiveChip
-                        });
+                        socket.emit('place_secure_bet', { key: key, amount: currentActiveChip });
 
                         socket.once('bet_response', (resp) => {
                             if (resp && resp.success) {
                                 totalUserTurnover += currentActiveChip;
-                                realCoins = resp.newBalance; // सर्वर का सटीक बैलेंस सिंक
+                                realCoins = resp.newBalance;
                                 updateBalancesDisplay();
                             } else {
-                                // अगर फेल हो तो कॉइन वापस जोड़ दो
                                 realCoins += currentActiveChip;
                                 myActiveBets[key] -= currentActiveChip;
                                 if(myActiveBets[key] <= 0) delete myActiveBets[key];
-                                currentTotalBet -= currentActiveChip;
-                                if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                                realTotalBet -= currentActiveChip;
+                                if(totalBetEl) totalBetEl.innerText = realTotalBet;
                                 updateBalancesDisplay();
                                 showCustomAlert((resp && resp.msg) || "Bet failed!");
                             }
@@ -1752,15 +1765,15 @@
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                        currentTotalBet += currentActiveChip;
-                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                        testTotalBet += currentActiveChip;
+                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet; // टेस्ट मोड में भी शो हो
 
                         betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
                         if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = myActiveBets[key]; }
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट + सर्वर कॉइन कटिंग
+                // 👑 ग्रुप बेट्स (1st 12 आदि)
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
@@ -1768,21 +1781,17 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
-                        // 👑 इंस्टेंट लोकल विजुअल अपडेट
                         realCoins -= totalNeeded;
                         updateBalancesDisplay();
                         numbersArray.forEach(num => {
                             myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
                         });
-                        currentTotalBet += totalNeeded;
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                        realTotalBet += totalNeeded;
+                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = realTotalBet;
                         if (el) el.classList.add('has-bet');
 
-                        socket.emit('place_secure_group_bet', {
-                            numbers: numbersArray,
-                            amountPerNum: currentActiveChip
-                        });
+                        socket.emit('place_secure_group_bet', { numbers: numbersArray, amountPerNum: currentActiveChip });
 
                         socket.once('group_bet_response', (resp) => {
                             if (resp && resp.success) {
@@ -1795,8 +1804,8 @@
                                     myActiveBets[num.toString()] -= currentActiveChip;
                                     if(myActiveBets[num.toString()] <= 0) delete myActiveBets[num.toString()];
                                 });
-                                currentTotalBet -= totalNeeded;
-                                if(totalBetEl) totalBetEl.innerText = currentTotalBet;
+                                realTotalBet -= totalNeeded;
+                                if(totalBetEl) totalBetEl.innerText = realTotalBet;
                                 updateBalancesDisplay();
                                 showCustomAlert((resp && resp.msg) || "Group bet failed!");
                             }
@@ -1807,8 +1816,8 @@
                         numbersArray.forEach(num => {
                             myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
                         });
-                        currentTotalBet += totalNeeded;
-                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
+                        testTotalBet += totalNeeded;
+                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet;
                         if (el) el.classList.add('has-bet');
                     }
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
@@ -1821,7 +1830,8 @@
                         showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
                     } else {
                         testCoins += last.amount;
-                        currentTotalBet -= last.amount;
+                        testTotalBet -= last.amount;
+                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet;
                     }
                 };
 
@@ -1834,9 +1844,9 @@
 
                     if (roundId !== activeRoundId) {
                         activeRoundId = roundId;
-                        globalTableBets = {}; myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
+                        globalTableBets = {}; myActiveBets = {}; realTotalBet = 0; testTotalBet = 0; betHistoryStack = [];
                         setupGlobalRoundBetsListener(activeRoundId);
-                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
                         if(totalBetEl) totalBetEl.innerText = 0;
                         document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
                     }
@@ -1883,6 +1893,7 @@
                     if(cont) cont.innerHTML = html;
                 }
 
+                // 👑 विनर पॉपअप के साथ यूज़र की VIP ID और जीता हुआ अमाउंट शो करने वाला फंक्शन
                 function executeClientGlobalSpinAnimation(winningNum, endedRoundId) {
                     isGameSpinning = true; 
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";
@@ -1922,15 +1933,19 @@
 
                             if (totalWon > 0 && activeGameMode === 'test') {
                                 testCoins += totalWon; 
-                            } else if (activeGameMode === 'test') {
-                                let myTestSum = 0;
-                                Object.values(userRoundBets).forEach(v => myTestSum += v);
-                                testCoins += myTestSum;
                             }
 
                             let popup = document.getElementById('cinematicResultPopup');
                             document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
-                            document.getElementById('popupPayoutDisplay').innerText = totalWon > 0 ? `You Won 🪙${totalWon}!` : `Round Finished.`;
+                            
+                            // 👑 विनर पॉपअप में VIP ID और अमाउंट दिखाना
+                            if (totalWon > 0) {
+                                document.getElementById('popupPayoutDisplayinnerHTML') = `<span style="color:#ffd700;">🏆 Winner ID: ${loggedVipId}</span><br>You Won 🪙₹${totalWon}!`;
+                                document.getElementById('popupPayoutDisplay').innerHTML = `🏆 Winner ID: <b>${loggedVipId}</b><br><span style="color:#2ecc71;">Won ₹${totalWon}!</span>`;
+                            } else {
+                                document.getElementById('popupPayoutDisplay').innerHTML = `Round Finished. Better luck next time!`;
+                            }
+
                             updateBalancesDisplay();
                             
                             if(popup && document.getElementById('gameLobbyScreen').style.display === 'flex') {
@@ -1939,7 +1954,7 @@
                                     popup.style.display = 'none'; 
                                     isGameSpinning = false; 
                                     document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
-                                }, 2500);
+                                }, 3000);
                             } else {
                                 isGameSpinning = false; 
                                 document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";

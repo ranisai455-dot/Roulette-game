@@ -306,6 +306,7 @@ async function executeRoundSettlement(roundId) {
     }
 }
 
+let lastSettledRound = null;
 function startMasterGameLoop() {
     setInterval(async () => {
         try {
@@ -317,7 +318,8 @@ function startMasterGameLoop() {
                 gameStateRef.child("timer").set({ roundId, timeLeft });
             }
 
-            if (timeLeft <= 1) {
+            if (timeLeft <= 2 && lastSettledRound !== roundId) {
+                lastSettledRound = roundId;
                 await executeRoundSettlement(roundId);
             }
         } catch (err) {

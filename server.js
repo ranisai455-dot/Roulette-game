@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const { Server } = require('socket.io');
 const admin = require('firebase-admin');
 const path = require('path');
@@ -84,7 +85,7 @@ io.on('connection', (socket) => {
 
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 15) return;
+            if (now - lastTime < 10) return;
             userRateLimitMap.set(socket.id, now);
 
             let currentSec = Math.floor(Date.now() / 1000);
@@ -326,6 +327,12 @@ function startMasterGameLoop() {
 }
 
 startMasterGameLoop();
+
+// 👑 24/7/365 Keep-Alive Self-Ping (हर 3 मिनट में सर्वर को जगाए रखेगा)
+setInterval(() => {
+    const targetUrl = process.env.RENDER_EXTERNAL_URL || 'https://roulette-game-6cz1.onrender.com';
+    https.get(targetUrl, (res) => {}).on('error', (err) => {});
+}, 3 * 60 * 1000);
 
 server.listen(PORT, () => {
     console.log(`👑 Royal Roulette Secure Server running on port ${PORT}`);

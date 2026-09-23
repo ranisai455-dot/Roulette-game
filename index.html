@@ -164,8 +164,8 @@
 
         .lobby-wheel-box { 
             position: relative; 
-            width: 350px; 
-            height: 350px; 
+            width: 340px; 
+            height: 340px; 
             margin: 1px auto; 
             border: 4.5px solid #2ecc71; 
             border-radius: 50%; 
@@ -177,8 +177,8 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            max-width: 78vw; 
-            max-height: 78vw; 
+            max-width: 75vw; 
+            max-height: 75vw; 
         }
 
         #lobbyWheelCanvas { width: 100% !important; height: 100% !important; object-fit: contain; border-radius: 50%; display: block; will-change: transform; filter: drop-shadow(0 0 14px rgba(255,215,0,0.95)) brightness(1.25) contrast(1.2); border: 3px solid #ffd700; }
@@ -186,7 +186,7 @@
         .wheel-center-graphic {
             position: absolute;
             top: 50%; left: 50%;
-            width: 70px; height: 70px;
+            width: 68px; height: 68px;
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, #021a08 0%, #000 100%);
             border-radius: 50%;
@@ -230,24 +230,24 @@
         .betting-board-section { background: radial-gradient(circle, #012b0e 0%, #000803 100%); border-radius: 8px; padding: 3px 6px; width: 100%; max-width: 400px; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 1px; box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,255,100,0.2); z-index: 50; gap: 2px; border: 1.5px solid rgba(212, 175, 55, 0.6); flex-shrink: 0; }
         .grid-table { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5px; }
         
-        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10.5px; font-weight: 900; padding: 4.5px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
+        .table-cell { background: linear-gradient(135deg, #042e12, #011506); border: 1.5px solid #d4af37; color: #e0e0e0; font-size: 10px; font-weight: 900; padding: 4px 0; border-radius: 4px; cursor: pointer; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3), 0 2px 4px rgba(0,0,0,0.8); transition: all 0.15s ease; }
         .table-cell.red { background: linear-gradient(135deg, #8a251d, #52130e); border-color: #e74c3c; box-shadow: inset 0 1px 4px rgba(255,100,100,0.4), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.black { background: linear-gradient(135deg, #111822, #06090d); border-color: #555; box-shadow: inset 0 1px 3px rgba(200,200,200,0.2), 0 2px 4px rgba(0,0,0,0.8); }
         .table-cell.has-bet, .color-btn.has-bet, .group-btn.has-bet { border: 2px solid #fff !important; box-shadow: 0 0 15px #f1c40f, inset 0 0 8px rgba(255,215,0,0.8); transform: scale(1.02); z-index: 5; }
-        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 6.5px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
+        .cell-badge { position: absolute; top: -5px; right: -4px; background: #f1c40f; color: #000; font-size: 6px; font-weight: 900; padding: 1px 3px; border-radius: 50%; z-index: 10; box-shadow: 0 0 5px #000; }
 
         .group-buttons-row-1 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
         .group-buttons-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; width: 100%; }
-        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 9px; font-weight: 900; padding: 4px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
+        .group-btn { background: linear-gradient(135deg, #182b22, #07100b); border: 1.5px solid #d4af37; color: #ffd700; font-size: 8.5px; font-weight: 900; padding: 3.5px 2px; border-radius: 4px; cursor: pointer; text-transform: uppercase; text-align: center; position: relative; box-shadow: inset 0 1px 3px rgba(255,215,0,0.3); text-shadow: 0 1px 2px #000; }
 
         .color-row { display: flex; gap: 2px; width: 100%; }
-        .color-btn { flex: 1; padding: 4px 2px; font-weight: 900; font-size: 9px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
+        .color-btn { flex: 1; padding: 3.5px 2px; font-weight: 900; font-size: 8.5px; border-radius: 4px; border: 1.5px solid #d4af37; cursor: pointer; color: #fff; text-transform: uppercase; position: relative; text-shadow: 0 1px 2px #000; box-shadow: inset 0 1px 4px rgba(255,255,255,0.2); }
         .btn-red { background: linear-gradient(135deg, #962d22, #641e16); border-color: #ff4d4d; }
         .btn-green { background: linear-gradient(135deg, #1e8449, #114e2c); border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.4), inset 0 1px 4px rgba(255,255,255,0.3); }
         .btn-black { background: linear-gradient(135deg, #1b2631, #0b0f15); border-color: #777; }
 
         .chip-selector-row { display: flex; justify-content: center; gap: 4px; align-items: center; width: 100%; margin: 1px 0; }
-        .chip-item { width: 25px; height: 25px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9.5px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
+        .chip-item { width: 24px; height: 24px; border-radius: 50%; border: 2px dashed #f1c40f; font-weight: 900; font-size: 9px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; background: #111; box-shadow: 0 3px 6px rgba(0,0,0,0.8); }
         .chip-item.selected { border: 2px solid #fff; transform: scale(1.12); box-shadow: 0 0 15px #f1c40f, inset 0 0 5px #fff; }
         .chip-10 { background: linear-gradient(135deg, #b03a2e, #78281f); } 
         .chip-50 { background: linear-gradient(135deg, #2471a3, #1b4f72); } 
@@ -255,13 +255,13 @@
         .chip-500 { background: linear-gradient(135deg, #7d3c98, #512e5f); } 
         .chip-1000 { background: linear-gradient(135deg, #d4af37, #9a7d0a); color: #000; }
 
-        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 4px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .transfer-btn-small { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; border: 1.5px solid #ffd700; padding: 3px 5px; border-radius: 4px; font-size: 7.5px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
         .lobby-action-row { display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%; margin-top: 1px; }
-        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 2.5px 5px; font-size: 8.5px; font-weight: 900; border-radius: 5px; flex-grow: 1; text-align: center; box-shadow: 0 0 6px rgba(255,215,0,0.5); }
-        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3.5px 7px; font-size: 8.5px; font-weight: 900; border-radius: 4px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(192,57,43,0.6); }
+        .status-msg-box { background: linear-gradient(135deg, #f1c40f, #b8860b); color: #000; border: 1.5px solid #fff; padding: 2px 4px; font-size: 8px; font-weight: 900; border-radius: 5px; flex-grow: 1; text-align: center; box-shadow: 0 0 6px rgba(255,215,0,0.5); }
+        .clear-btn { background: linear-gradient(135deg, #c0392b, #962d22); color: #fff; padding: 3px 6px; font-size: 8px; font-weight: 900; border-radius: 4px; cursor: pointer; border: 1.5px solid #ffd700; box-shadow: 0 0 5px rgba(192,57,43,0.6); }
 
         .mode-toggle-bar { display: flex; justify-content: center; gap: 2px; background: #000; border: 1.5px solid #ffd700; padding: 1px; border-radius: 5px; width: 100%; }
-        .mode-btn { flex: 1; padding: 2px; font-size: 8px; font-weight: 900; border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
+        .mode-btn { flex: 1; padding: 2px; font-size: 7.5px; font-weight: 900; border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; background: #111; color: #888; }
         .mode-btn.active-real { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; box-shadow: 0 0 6px #2ecc71; }
         .mode-btn.active-test { background: linear-gradient(135deg, #2980b9, #1f618d); color: #fff; box-shadow: 0 0 6px #3498db; }
 
@@ -470,7 +470,7 @@
         </div>
 
         <div class="lobby-wheel-box" id="mainWheelContainer">
-            <canvas id="lobbyWheelCanvas" width="350" height="350"></canvas>
+            <canvas id="lobbyWheelCanvas" width="340" height="340"></canvas>
             <div class="wheel-center-graphic">
                 <div class="hub-text-royal">ROYAL</div>
                 <div class="hub-stars-row"><span>★</span><span style="font-size:14px; color:#ffd700; text-shadow: 0 0 12px #ffea00; animation: goldBlinkDimFull 1.6s infinite ease-in-out;">★</span><span>★</span></div>
@@ -494,7 +494,50 @@
                 <button class="mode-btn" id="modeBtnReal" onclick="window.switchGameMode('real')">💎 Real Money</button>
             </div>
             
-            <div class="grid-table" id="gridTableDiv"></div>
+            <!-- 👑 0 से 36 नंबर और ग्रुप बटन्स (सीधे HTML में फिक्स और 100% वर्किंग) -->
+            <div class="grid-table" id="gridTableDiv">
+                <!-- Row 3 -->
+                <div class="table-cell red" onclick="window.placeTableBet('3', this)">3</div>
+                <div class="table-cell black" onclick="window.placeTableBet('6', this)">6</div>
+                <div class="table-cell red" onclick="window.placeTableBet('9', this)">9</div>
+                <div class="table-cell red" onclick="window.placeTableBet('12', this)">12</div>
+                <div class="table-cell black" onclick="window.placeTableBet('15', this)">15</div>
+                <div class="table-cell red" onclick="window.placeTableBet('18', this)">18</div>
+                <div class="table-cell red" onclick="window.placeTableBet('21', this)">21</div>
+                <div class="table-cell black" onclick="window.placeTableBet('24', this)">24</div>
+                <div class="table-cell red" onclick="window.placeTableBet('27', this)">27</div>
+                <div class="table-cell red" onclick="window.placeTableBet('30', this)">30</div>
+                <div class="table-cell black" onclick="window.placeTableBet('33', this)">33</div>
+                <div class="table-cell red" onclick="window.placeTableBet('36', this)">36</div>
+                
+                <!-- Row 2 -->
+                <div class="table-cell black" onclick="window.placeTableBet('2', this)">2</div>
+                <div class="table-cell red" onclick="window.placeTableBet('5', this)">5</div>
+                <div class="table-cell black" onclick="window.placeTableBet('8', this)">8</div>
+                <div class="table-cell black" onclick="window.placeTableBet('11', this)">11</div>
+                <div class="table-cell red" onclick="window.placeTableBet('14', this)">14</div>
+                <div class="table-cell black" onclick="window.placeTableBet('17', this)">17</div>
+                <div class="table-cell black" onclick="window.placeTableBet('20', this)">20</div>
+                <div class="table-cell red" onclick="window.placeTableBet('23', this)">23</div>
+                <div class="table-cell black" onclick="window.placeTableBet('26', this)">26</div>
+                <div class="table-cell black" onclick="window.placeTableBet('29', this)">29</div>
+                <div class="table-cell red" onclick="window.placeTableBet('32', this)">32</div>
+                <div class="table-cell black" onclick="window.placeTableBet('35', this)">35</div>
+
+                <!-- Row 1 -->
+                <div class="table-cell red" onclick="window.placeTableBet('1', this)">1</div>
+                <div class="table-cell black" onclick="window.placeTableBet('4', this)">4</div>
+                <div class="table-cell red" onclick="window.placeTableBet('7', this)">7</div>
+                <div class="table-cell black" onclick="window.placeTableBet('10', this)">10</div>
+                <div class="table-cell black" onclick="window.placeTableBet('13', this)">13</div>
+                <div class="table-cell red" onclick="window.placeTableBet('16', this)">16</div>
+                <div class="table-cell red" onclick="window.placeTableBet('19', this)">19</div>
+                <div class="table-cell black" onclick="window.placeTableBet('22', this)">22</div>
+                <div class="table-cell red" onclick="window.placeTableBet('25', this)">25</div>
+                <div class="table-cell black" onclick="window.placeTableBet('28', this)">28</div>
+                <div class="table-cell black" onclick="window.placeTableBet('31', this)">31</div>
+                <div class="table-cell red" onclick="window.placeTableBet('34', this)">34</div>
+            </div>
 
             <div class="group-buttons-row-1">
                 <button class="group-btn" onclick="window.placeGroupBet('dozen_1', [1,2,3,4,5,6,7,8,9,10,11,12], this)">1st 12 (2x)</button>
@@ -1719,19 +1762,6 @@
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
                 };
-
-                const gridTableDiv = document.getElementById('gridTableDiv');
-                if(gridTableDiv) {
-                    [[3,6,9,12,15,18,21,24,27,30,33,36],[2,5,8,11,14,17,20,23,26,29,32,35],[1,4,7,10,13,16,19,22,25,28,31,34]].forEach(row => {
-                        row.forEach(num => {
-                            let cell = document.createElement('div');
-                            cell.className = 'table-cell ' + (redList.includes(num) ? 'red' : 'black');
-                            cell.innerText = num; 
-                            cell.onclick = () => { window.placeTableBet(num.toString(), cell); };
-                            gridTableDiv.appendChild(cell);
-                        });
-                    });
-                }
 
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { 

@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            let { key, amount } = data;
+            let { key, amount, roundId } = data;
             if (!key || typeof amount !== 'number' || amount <= 0 || amount > 500000) {
                 await logSecurityThreat(verifiedPhone, "MALFORMED_BET", `Invalid amount: ${amount}`);
                 socket.emit('bet_response', { success: false, msg: 'Security Alert: Invalid bet!' });
@@ -107,7 +107,9 @@ io.on('connection', (socket) => {
             userRateLimitMap.set(socket.id, now);
 
             let currentSec = Math.floor(Date.now() / 1000);
-            let targetRound = Math.floor(currentSec / ROUND_TIME);
+            let serverRound = Math.floor(currentSec / ROUND_TIME);
+            // 👑 क्लॉक ड्रिफ्ट और मिसमैच रोकने के लिए क्लाइंट और सर्वर राउंड का सटीक तालमेल
+            let targetRound = (roundId && Math.abs(roundId - serverRound) <= 1) ? roundId : serverRound;
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
             if (timeLeft <= 3) {
@@ -154,7 +156,7 @@ io.on('connection', (socket) => {
                 return;
             }
 
-            let { numbers, amountPerNum } = data;
+            let { numbers, amountPerNum, roundId } = data;
             if (!numbers || !numbers.length || !amountPerNum || amountPerNum <= 0) {
                 socket.emit('group_bet_response', { success: false, msg: 'Invalid group bet!' });
                 return;
@@ -162,7 +164,8 @@ io.on('connection', (socket) => {
 
             let totalAmount = amountPerNum * numbers.length;
             let currentSec = Math.floor(Date.now() / 1000);
-            let targetRound = Math.floor(currentSec / ROUND_TIME);
+            let serverRound = Math.floor(currentSec / ROUND_TIME);
+            let targetRound = (roundId && Math.abs(roundId - serverRound) <= 1) ? roundId : serverRound;
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 
             if (timeLeft <= 3) {

@@ -838,7 +838,7 @@
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
                 let activeRoundId = Math.floor(Date.now() / 1000 / 120);
-                window.currentAuthoritativeRoundId = activeRoundId; // 👑 ग्लोबल ऑथोरिटेटिव राउंड आईडी
+                window.currentAuthoritativeRoundId = activeRoundId;
                 let processedResultRoundId = null; 
 
                 let userDepositScreenshotData = "";
@@ -1735,14 +1735,14 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - सटीक ऑथोरिटेटिव राउंड आईडी के साथ
+                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
                         
-                        // 👑 इंस्टेंट ऑप्टिमिस्टिक UI अपडेट
+                        // 👑 इंस्टेंट लोकल विजुअल अपडेट (Optimistic UI)
                         realCoins -= currentActiveChip;
                         updateBalancesDisplay();
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
@@ -1789,7 +1789,7 @@
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12 आदि) - सटीक ऑथोरिटेटिव राउंड आईडी के साथ
+                // 👑 ग्रुप बेट्स (1st 12 आदि) - इंस्टेंट ऑप्टिमिस्टिक UI अपडेट के साथ
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
@@ -1797,6 +1797,7 @@
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
                         
+                        // 👑 इंस्टेंट लोकल विजुअल अपडेट (Optimistic UI)
                         realCoins -= totalNeeded;
                         updateBalancesDisplay();
                         numbersArray.forEach(num => {
@@ -1861,7 +1862,6 @@
                     let roundId = timerData.roundId;
                     let timeLeft = timerData.timeLeft;
 
-                    // 👑 सर्वर से मिलने वाली ऑथोरिटेटिव राउंड आईडी को यहां कैप्चर करें
                     window.currentAuthoritativeRoundId = roundId;
 
                     if (roundId !== activeRoundId) {

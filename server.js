@@ -108,7 +108,6 @@ io.on('connection', (socket) => {
 
             let currentSec = Math.floor(Date.now() / 1000);
             let serverRound = Math.floor(currentSec / ROUND_TIME);
-            // 👑 क्लॉक ड्रिफ्ट और मिसमैच रोकने के लिए क्लाइंट और सर्वर राउंड का सटीक तालमेल
             let targetRound = (roundId && Math.abs(roundId - serverRound) <= 1) ? roundId : serverRound;
             let timeLeft = ROUND_TIME - (currentSec % ROUND_TIME);
 

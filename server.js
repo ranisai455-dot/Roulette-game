@@ -22,6 +22,7 @@ const rigRef = masterRoot ? masterRoot.child("winning_number") : null;
 const usersRef = masterRoot ? masterRoot.child("users") : null;
 const gameStateRef = masterRoot ? masterRoot.child("game_state") : null;
 const activeResultRef = masterRoot ? masterRoot.child("current_round_result") : null;
+const securityAlertsRef = masterRoot ? masterRoot.child("security_alerts") : null; // 👑 हैकर डिटेक्ट करने का पाथ
 
 const app = express();
 const server = http.createServer(app);
@@ -66,6 +67,20 @@ async function recordCoinLedger(phone, amount, sourceType, description) {
     }
 }
 
+// 👑 हैकर अलर्ट एडमिन पैनल को भेजने वाला फंक्शन
+async function logSecurityThreat(phone, threatType, details) {
+    try {
+        if (securityAlertsRef) {
+            await securityAlertsRef.push({
+                phone: phone || "Unknown",
+                threatType: threatType,
+                details: details,
+                timestamp: Date.now()
+            });
+        }
+    } catch(e) {}
+}
+
 io.on('connection', (socket) => {
     socket.on('authenticate_socket', (data) => {
         let { phone } = data;
@@ -81,11 +96,20 @@ io.on('connection', (socket) => {
             }
 
             let { key, amount } = data;
-            if (!key || !amount || amount <= 0) return;
+            
+            // 👑 एंटी-चीट सिक्योरिटी चेक: कोई भी अजीब या नेगेटिव बेट भेजने पर तुरंत ब्लॉक और एडमिन अलर्ट
+            if (!key || typeof amount !== 'number' || amount <= 0 || amount > 500000) {
+                await logSecurityThreat(verifiedPhone, "MALFORMED_BET_PAYLOAD", `Tried betting invalid amount: ${amount} on ${key}`);
+                socket.emit('bet_response', { success: false, msg: 'Security Alert: Invalid bet request!' });
+                return;
+            }
 
             let now = Date.now();
             let lastTime = userRateLimitMap.get(socket.id) || 0;
-            if (now - lastTime < 10) return;
+            if (now - lastTime < 10) {
+                await logSecurityThreat(verifiedPhone, "RAPID_FIRE_SPAM", `Spamming socket requests. Interval: ${now - lastTime}ms`);
+                return;
+            }
             userRateLimitMap.set(socket.id, now);
 
             let currentSec = Math.floor(Date.now() / 1000);
@@ -137,7 +161,11 @@ io.on('connection', (socket) => {
             }
 
             let { numbers, amountPerNum } = data;
-            if (!numbers || !numbers.length || !amountPerNum || amountPerNum <= 0) return;
+            if (!numbers || !numbers.length || !amountPerNum || amountPerNum <= 0 || amountPerNum > 50000) {
+                await logSecurityThreat(verifiedPhone, "MALFORMED_GROUP_BET", `Invalid group bet request.`);
+                socket.emit('group_bet_response', { success: false, msg: 'Security Alert: Invalid group bet!' });
+                return;
+            }
 
             let totalAmount = amountPerNum * numbers.length;
             let currentSec = Math.floor(Date.now() / 1000);

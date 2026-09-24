@@ -20,7 +20,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>ROYAL ROULETTE - 100% GLOBAL CLOUD MULTI-USER LIVE</title>
+    <title>ROYAL ROULETTE - 100% FIREBASE CLOUD LIVE</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
         
@@ -309,8 +309,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 15px #ffd700; border-color: #fff; }
         .wallet-modal-content input { width: 100%; padding: 9px; margin: 5px 0; background: #000000; border: 1.5px solid #ffd700; color: #ffd700; border-radius: 6px; text-align: center; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 8px rgba(0,0,0,0.8); }
     </style>
-    <!-- Socket.io & Firebase SDKs -->
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
@@ -382,7 +381,8 @@
         <p id="maintenanceReasonText" style="font-size:14px; color:#fff; font-weight:bold; max-width:320px; line-height:1.5;"></p>
     </div>
 
-    <div id="comingSoonNoticeModal">
+    <!-- 👑 कमिंग सून मॉडल (क्लिक करते ही खुलेगा) -->
+    <div id="comingSoonNoticeModal" style="display: flex;">
         <div class="coming-soon-card">
             <h3 style="color:#ffd700; font-size:18px; margin-bottom:6px;">👑 ROYAL CASINO 👑</h3>
             <p style="font-size:11px; color:#fff; font-weight:bold; margin-bottom:8px;">100% FAIR PLAY & SECURE</p>
@@ -436,6 +436,7 @@
 
     <div id="gameLobbyScreen">
         <div class="lobby-header" id="lobbyHeaderEl">
+            <!-- 👑 प्रोफाइल क्लिक करने पर अब प्रोफाइल और पासबुक खुलेगा -->
             <div class="user-profile-widget" onclick="handleProfileClick(); event.stopPropagation();">
                 <div class="user-avatar-circle" id="userAvatarEmoji">😎</div>
                 <div>
@@ -482,19 +483,16 @@
         <div class="betting-board-section" id="bettingBoardArea">
             <div style="background: rgba(0,0,0,0.85); padding: 2px 5px; border-radius: 5px; border: 1.5px solid #ffd700; display: flex; flex-direction: column; gap: 1px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 900; color: #ffd700;">
-                    <span>Real Total: <span id="lobbyRealTotalBet" style="color:#fff;">0</span> | Test Total: <span id="lobbyTestTotalBet" style="color:#fff;">0</span></span>
+                    <span>Total Bet: <span id="lobbyTotalBet" style="color:#fff;">0</span></span>
                     <span style="background: rgba(39, 174, 96, 0.2); border: 1.5px solid #2ecc71; padding: 1px 4px; border-radius: 4px;">
                         💎 REAL: <span id="playerRealBal" style="color:#2ecc71; font-size: 10.5px;">₹0</span>
                     </span>
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; font-size: 7px; color: #3498db; font-weight: bold;">
-                    <span>🧪 Demo Coins: <span id="playerTestBal">10000</span></span>
-                </div>
             </div>
 
             <div class="mode-toggle-bar">
-                <button class="mode-btn active-test" id="modeBtnTest" onclick="window.switchGameMode('test')">🧪 Testing Mode (Fun)</button>
-                <button class="mode-btn" id="modeBtnReal" onclick="window.switchGameMode('real')">💎 Real Money</button>
+                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode (Fun)</button>
+                <button class="mode-btn" id="modeBtnReal" onclick="switchGameMode('real')">💎 Real Money</button>
             </div>
             
             <div class="grid-table" id="gridTableDiv"></div>
@@ -526,7 +524,7 @@
             
             <div class="lobby-action-row">
                 <button class="clear-btn" onclick="clearTableBets()">Clear</button>
-                <div class="status-msg-box" id="lobbyStatusMsg">Connecting to Server...</div>
+                <div class="status-msg-box" id="lobbyStatusMsg">🟢 Firebase Cloud Connected!</div>
                 <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
             </div>
         </div>
@@ -545,6 +543,7 @@
                 <div>🧪 <b>Testing Balance (Fun):</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
             </div>
 
+            <!-- 👑 प्रोफाइल के अंदर मास्टर एडमिन पैनल खोलने का बटन -->
             <div id="adminDirectAccessBtnWrap" style="display:none; margin-bottom:6px; flex-shrink: 0;">
                 <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanelDirectly();" style="width:100%; padding:8px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase; box-shadow:0 0 10px #ffd700;">👑 Open Master Admin Panel</button>
             </div>
@@ -576,9 +575,16 @@
                 🚨 NEW FINANCIAL REQUEST RECEIVED! CHECK DEPOSIT OR WITHDRAWAL!
             </div>
 
+            <div style="background: rgba(80,0,0,0.95); padding: 12px; border: 2px solid #ff3333; border-radius: 8px; margin-bottom: 8px;">
+                <div class="admin-section-title"><span style="color:#ff3333;">🚨 LIVE SECURITY & HACKER THREAT MONITOR</span></div>
+                <div id="adminSecurityThreatsList" style="max-height: 100px; overflow-y: auto; font-size: 10px; color: #fff; background: #000; padding: 6px; border-radius: 4px; text-align: left;">
+                    No security threats or exploits detected. System secure.
+                </div>
+            </div>
+
             <div style="background: rgba(40,20,0,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
                 <p style="color: #ffaa00; font-size: 12px; font-weight: bold;">🛠️ SYSTEM MAINTENANCE BROADCAST MANAGER</p>
-                <input type="text" id="adminMaintenanceMsgInput" placeholder="Enter Maintenance Message (e.g. Under maintenance for 30 mins)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #ffaa00; border-radius: 5px; font-size: 11px;" />
+                <input type="text" id="adminMaintenanceMsgInput" placeholder="Enter Maintenance Message" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #ffaa00; border-radius: 5px; font-size: 11px;" />
                 <div style="display: flex; gap: 6px;">
                     <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(true)" style="flex: 1; padding: 8px; background: #c0392b; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🔴 Turn ON Maintenance</button>
                     <button class="admin-action-btn" onclick="window.pushMaintenanceStatus(false)" style="flex: 1; padding: 8px; background: #27ae60; color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px;">🟢 Turn OFF Maintenance</button>
@@ -599,14 +605,14 @@
                     <button class="admin-action-btn" onclick="document.getElementById('adminQrFileInput').click()" style="padding: 8px; background: #3498db; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 10.5px; font-weight: bold; flex: 1;">📁 Choose/Upload QR File</button>
                     <span id="qrUploadStatus" style="font-size: 10px; color: #ffd700; flex: 1; text-align: left;">No file selected</span>
                 </div>
-                <input type="text" id="adminQrUrlInput" placeholder="Direct Image URL (e.g. https://i.ibb.co/...)" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px;" />
-                <button class="admin-action-btn" onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px; box-shadow: 0 0 10px #27ae60;">⚡ 1-Click Push QR to All Users Live</button>
+                <input type="text" id="adminQrUrlInput" placeholder="Direct Image URL" style="width: 100%; padding: 8px; background: #000; color: #fff; border: 1.5px solid #00ffcc; border-radius: 5px; font-size: 11px;" />
+                <button class="admin-action-btn" onclick="window.broadcastMasterQr()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-size: 11px;">⚡ 1-Click Push QR to All Users Live</button>
             </div>
 
             <div style="background: rgba(30,20,5,0.95); padding: 12px; border: 2px solid #ffaa00; border-radius: 8px;">
                 <p style="color: #ffaa00; font-size: 12px; margin-bottom: 8px; font-weight: bold;">⚡ SECURE COIN MANAGER (ANTI-HACK TOKEN VERIFIED)</p>
-                <input type="text" id="targetMemberPhone" placeholder="Enter Mobile Number (10 Digits) or VIP ID (e.g. RD001001)" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
-                <input type="number" id="targetCoinAmount" placeholder="Coin Amount (e.g. 500)" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <input type="text" id="targetMemberPhone" placeholder="Enter Mobile Number or VIP ID" style="width: 100%; padding: 8px; margin-bottom: 6px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
+                <input type="number" id="targetCoinAmount" placeholder="Coin Amount" style="width: 100%; padding: 8px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px;" />
                 
                 <div style="display: flex; gap: 6px; margin-bottom: 4px;">
                     <button class="admin-action-btn" onclick="window.applyAdminCoinsSecure('add')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">➕ Add Secure Coins</button>
@@ -616,7 +622,7 @@
             </div>
 
             <div class="admin-kpi-grid">
-                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">CLOUD SYNC</div></div>
+                <div class="kpi-card"><div class="kpi-title">Global Status</div><div class="kpi-value" style="color:#00ffcc;">FIREBASE SYNC</div></div>
                 <div class="kpi-card purple"><div class="kpi-title">Round ID</div><div class="kpi-value" id="admRoundId" style="color:#f1c40f;">Round #1</div></div>
                 <div class="kpi-card orange"><div class="kpi-title">Real Profit (5%)</div><div class="kpi-value" id="admProfit" style="color:#ffd700;">₹0</div></div>
                 <div class="kpi-card blue"><div class="kpi-title">Real Pool (95%)</div><div class="kpi-value" id="admPool" style="color:#3498db;">₹0</div></div>
@@ -782,26 +788,6 @@
             }
         } catch(e) {}
 
-        const SOCKET_SERVER_URL = "https://roulette-game-6cz1.onrender.com";
-        const socket = io(SOCKET_SERVER_URL, {
-            transports: ['polling', 'websocket'],
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000
-        });
-
-        socket.on('connect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
-            if (loggedUserPhone) {
-                socket.emit('authenticate_socket', { phone: loggedUserPhone });
-            }
-        });
-        socket.on('disconnect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🔴 Disconnected from Server!";
-        });
-
         const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
         const qrRef = masterRoot.child("qr_url");
         const rigRef = masterRoot.child("winning_number");
@@ -812,6 +798,7 @@
         const withdrawsRef = masterRoot.child("withdraw_requests");
         const auditLogRef = masterRoot.child("audit_logs");
         const maintenanceRef = masterRoot.child("system_maintenance");
+        const gameStateRef = masterRoot.child("game_state");
         const activeResultRef = masterRoot.child("current_round_result");
 
         (function() {
@@ -827,8 +814,7 @@
                 let isGameSpinning = false;
                 let globalTableBets = {}; 
                 let myActiveBets = {};   
-                let realTotalBet = 0; // 👑 रियल मोड टोटल बेट
-                let testTotalBet = 0; // 👑 टेस्ट मोड टोटल बेट
+                let currentTotalBet = 0; 
                 let betHistoryStack = [];
                 let presenceHeartbeatInterval = null;
                 let totalUserTurnover = 0;
@@ -841,6 +827,45 @@
 
                 let lastKnownDepositCount = -1;
                 let lastKnownWithdrawCount = -1;
+
+                // 👑 फायरबेस रियल-टाइम टाइमर इंजन (Termux सर्वर से सीधा जुड़ा हुआ - HTML खुद गिनती नहीं करेगा)
+                const termuxTimeRef = firebase.database().ref("timer/timeLeft");
+                
+                termuxTimeRef.on("value", (snap) => {
+                    let timeLeft = snap.val();
+                    if (timeLeft === null || timeLeft === undefined) return;
+                    
+                    let m = Math.floor(timeLeft / 60);
+                    let s = timeLeft % 60;
+                    let mainEl = document.getElementById('lobbyTimerMain');
+                    let subEl = document.getElementById('lobbyTimerSub');
+                    let boxEl = document.getElementById('lobbyTimerBox');
+                    
+                    if (mainEl) mainEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+                    
+                    if (boxEl) {
+                        if (timeLeft > 30) {
+                            boxEl.className = "timer-strip-center";
+                            if (mainEl) mainEl.style.color = "#2ecc71";
+                            if (subEl) subEl.innerText = "BETTING OPEN";
+                        } else if (timeLeft > 10) {
+                            boxEl.className = "timer-strip-center warning-state";
+                            if (mainEl) mainEl.style.color = "#f1c40f";
+                            if (subEl) subEl.innerText = "HURRY UP!";
+                        } else {
+                            boxEl.className = "timer-strip-center closed-state";
+                            if (mainEl) mainEl.style.color = "#ff3333";
+                            if (subEl) subEl.innerText = "LOCKED";
+                        }
+                    }
+                });
+
+                gameStateRef.on("value", (snap) => {
+                    let timerData = snap.val();
+                    if (timerData && timerData.roundId) {
+                        activeRoundId = timerData.roundId;
+                    }
+                });
 
                 maintenanceRef.on("value", (snap) => {
                     let m = snap.val();
@@ -1484,34 +1509,27 @@
                     });
                 };
 
-                // 👑 मास्टर UI सिंक: नंबर, कलर और ग्रुप बटन्स (अमाउंट बैज के साथ) सिंक करने वाला लिसनर
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
                     globalRoundBetsRef.on("value", (snapshot) => {
                         let allBetsData = snapshot.val() || {};
+                        currentTotalBet = 0;
                         globalTableBets = {};
                         myActiveBets = {};
-                        let computedRealTotal = 0;
 
                         Object.keys(allBetsData).forEach(phone => {
                             let playerBets = allBetsData[phone] || {};
                             Object.keys(playerBets).forEach(key => {
                                 let amt = parseInt(playerBets[key]) || 0;
                                 globalTableBets[key] = (globalTableBets[key] || 0) + amt;
+                                currentTotalBet += amt;
 
                                 if (phone === loggedUserPhone) {
                                     myActiveBets[key] = (myActiveBets[key] || 0) + amt;
-                                    computedRealTotal += amt;
                                 }
                             });
                         });
-
-                        realTotalBet = computedRealTotal;
-                        if (activeGameMode === 'real') {
-                            let realTotalEl = document.getElementById('lobbyRealTotalBet');
-                            if(realTotalEl) realTotalEl.innerText = realTotalBet;
-                        }
 
                         document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
                             c.classList.remove('has-bet');
@@ -1519,7 +1537,6 @@
                             if (b) b.remove();
                         });
 
-                        // 1. व्यक्तिगत नंबर और कलर्स पर बैज और हाइलाइट
                         Object.keys(myActiveBets).forEach(key => {
                             let amt = myActiveBets[key];
                             let cell = null;
@@ -1538,7 +1555,6 @@
                             }
                         });
 
-                        // 2. ग्रुप बटन्स (1st 12, 1-18 आदि) पर हाइलाइट और टोटल कॉइन बैज शो करना
                         const groupBtnElements = document.querySelectorAll('.group-btn');
                         groupBtnElements.forEach(btn => {
                             let onclickAttr = btn.getAttribute('onclick') || "";
@@ -1568,6 +1584,13 @@
                                 }
                             }
                         });
+
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if (totalBetEl) {
+                            let mySum = 0;
+                            Object.values(myActiveBets).forEach(v => mySum += v);
+                            totalBetEl.innerText = mySum;
+                        }
                     });
                 }
 
@@ -1679,8 +1702,6 @@
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
 
-                    socket.emit('authenticate_socket', { phone: phone });
-
                     bindUserCloudWallet(phone);
                     setupGlobalRoundBetsListener(activeRoundId);
                     startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
@@ -1699,12 +1720,6 @@
                     activeGameMode = mode;
                     document.getElementById('modeBtnTest').className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
                     document.getElementById('modeBtnReal').className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
-                    
-                    // मोड बदलने पर टोटल बेट डिस्प्ले अपडेट करें
-                    let totalBetEl = document.getElementById('lobbyRealTotalBet');
-                    if (totalBetEl) {
-                        totalBetEl.innerText = (mode === 'real') ? realTotalBet : testTotalBet;
-                    }
                 };
 
                 const gridTableDiv = document.getElementById('gridTableDiv');
@@ -1723,7 +1738,6 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड अलग-अलग टोटल के साथ)
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
@@ -1733,9 +1747,9 @@
                         realCoins -= currentActiveChip;
                         updateBalancesDisplay();
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                        realTotalBet += currentActiveChip;
-                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = realTotalBet;
+                        currentTotalBet += currentActiveChip;
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
                         
                         if (el) { 
                             el.classList.add('has-bet'); 
@@ -1744,36 +1758,20 @@
                             b.innerText = myActiveBets[key]; 
                         }
 
-                        socket.emit('place_secure_bet', { key: key, amount: currentActiveChip });
-
-                        socket.once('bet_response', (resp) => {
-                            if (resp && resp.success) {
-                                totalUserTurnover += currentActiveChip;
-                                realCoins = resp.newBalance;
-                                updateBalancesDisplay();
-                            } else {
-                                realCoins += currentActiveChip;
-                                myActiveBets[key] -= currentActiveChip;
-                                if(myActiveBets[key] <= 0) delete myActiveBets[key];
-                                realTotalBet -= currentActiveChip;
-                                if(totalBetEl) totalBetEl.innerText = realTotalBet;
-                                updateBalancesDisplay();
-                                showCustomAlert((resp && resp.msg) || "Bet failed!");
-                            }
-                        });
+                        masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone).update(myActiveBets);
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins });
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
-                        testTotalBet += currentActiveChip;
-                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet; // टेस्ट मोड में भी शो हो
+                        currentTotalBet += currentActiveChip;
+                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
 
                         betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
                         if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = myActiveBets[key]; }
                     }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12 आदि)
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
@@ -1786,38 +1784,21 @@
                         numbersArray.forEach(num => {
                             myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
                         });
-                        realTotalBet += totalNeeded;
-                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = realTotalBet;
+                        currentTotalBet += totalNeeded;
+                        let totalBetEl = document.getElementById('lobbyTotalBet');
+                        if(totalBetEl) totalBetEl.innerText = currentTotalBet;
                         if (el) el.classList.add('has-bet');
 
-                        socket.emit('place_secure_group_bet', { numbers: numbersArray, amountPerNum: currentActiveChip });
-
-                        socket.once('group_bet_response', (resp) => {
-                            if (resp && resp.success) {
-                                totalUserTurnover += totalNeeded;
-                                realCoins = resp.newBalance;
-                                updateBalancesDisplay();
-                            } else {
-                                realCoins += totalNeeded;
-                                numbersArray.forEach(num => {
-                                    myActiveBets[num.toString()] -= currentActiveChip;
-                                    if(myActiveBets[num.toString()] <= 0) delete myActiveBets[num.toString()];
-                                });
-                                realTotalBet -= totalNeeded;
-                                if(totalBetEl) totalBetEl.innerText = realTotalBet;
-                                updateBalancesDisplay();
-                                showCustomAlert((resp && resp.msg) || "Group bet failed!");
-                            }
-                        });
+                        masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone).update(myActiveBets);
+                        usersRef.child(loggedUserPhone).update({ balance: realCoins });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
                         numbersArray.forEach(num => {
                             myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
                         });
-                        testTotalBet += totalNeeded;
-                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet;
+                        currentTotalBet += totalNeeded;
+                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                         if (el) el.classList.add('has-bet');
                     }
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
@@ -1827,73 +1808,14 @@
                     if (isGameSpinning || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
+                        showCustomAlert("Cannot clear directly. Use fresh round.");
                     } else {
                         testCoins += last.amount;
-                        testTotalBet -= last.amount;
-                        document.getElementById('lobbyRealTotalBet').innerText = testTotalBet;
+                        currentTotalBet -= last.amount;
+                        document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
                     }
                 };
 
-                masterRoot.child("game_state/timer").on("value", (snap) => {
-                    let timerData = snap.val();
-                    if (!timerData) return;
-
-                    let roundId = timerData.roundId;
-                    let timeLeft = timerData.timeLeft;
-
-                    if (roundId !== activeRoundId) {
-                        activeRoundId = roundId;
-                        globalTableBets = {}; myActiveBets = {}; realTotalBet = 0; testTotalBet = 0; betHistoryStack = [];
-                        setupGlobalRoundBetsListener(activeRoundId);
-                        let totalBetEl = document.getElementById('lobbyRealTotalBet');
-                        if(totalBetEl) totalBetEl.innerText = 0;
-                        document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
-                    }
-
-                    let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-                    let mainEl = document.getElementById('lobbyTimerMain');
-                    let subEl = document.getElementById('lobbyTimerSub');
-                    let boxEl = document.getElementById('lobbyTimerBox');
-                    
-                    if (mainEl) mainEl.innerText = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-                    
-                    if (boxEl) {
-                        if (timeLeft > 30) {
-                            boxEl.className = "timer-strip-center";
-                            if (mainEl) mainEl.style.color = "#2ecc71";
-                            if (subEl) subEl.innerText = "BETTING OPEN";
-                        } else if (timeLeft > 10) {
-                            boxEl.className = "timer-strip-center warning-state";
-                            if (mainEl) mainEl.style.color = "#f1c40f";
-                            if (subEl) subEl.innerText = "HURRY UP!";
-                        } else {
-                            boxEl.className = "timer-strip-center closed-state";
-                            if (mainEl) mainEl.style.color = "#ff3333";
-                            if (subEl) subEl.innerText = "LOCKED";
-                            if (timeLeft === 10) {
-                                let sfx = document.getElementById('betClosedSfx');
-                                if(sfx) sfx.play().catch(e => {});
-                                if (navigator.vibrate) navigator.vibrate(400);
-                            }
-                        }
-                    }
-                    renderHistoryBarUI();
-                });
-
-                function renderHistoryBarUI() {
-                    let html = "";
-                    if (window.globalState.historyList) {
-                        window.globalState.historyList.forEach(num => {
-                            let cls = num === 0 ? 'green' : (redList.includes(num) ? 'red' : 'black');
-                            html += `<div class="history-ball ${cls}">${num}</div>`;
-                        });
-                    }
-                    let cont = document.getElementById('historyBallsContainer');
-                    if(cont) cont.innerHTML = html;
-                }
-
-                // 👑 विनर पॉपअप के साथ यूज़र की VIP ID और जीता हुआ अमाउंट शो करने वाला फंक्शन
                 function executeClientGlobalSpinAnimation(winningNum, endedRoundId) {
                     isGameSpinning = true; 
                     document.getElementById('lobbyStatusMsg').innerText = "Wheel Spinning...";
@@ -1911,56 +1833,55 @@
                     const ballOrbitEl = document.getElementById('rouletteBallOrbit');
                     if(ballOrbitEl) ballOrbitEl.style.transform = `rotate(${accumulatedBallRotation}deg)`;
 
-                    masterRoot.child("live_rounds/" + endedRoundId + "/bets/" + loggedUserPhone).once("value", (snap) => {
-                        let userRoundBets = snap.val() || {};
+                    setTimeout(() => {
+                        if (ballRollAudio) ballRollAudio.pause();
+                        let ballDropAudio = document.getElementById('ballDropSfx');
+                        if (ballDropAudio) {
+                            ballDropAudio.currentTime = 0;
+                            ballDropAudio.volume = 1.0;
+                            ballDropAudio.play().catch(e => {});
+                        }
 
-                        setTimeout(() => {
-                            if (ballRollAudio) ballRollAudio.pause();
-                            let ballDropAudio = document.getElementById('ballDropSfx');
-                            if (ballDropAudio) {
-                                ballDropAudio.currentTime = 0;
-                                ballDropAudio.volume = 1.0;
-                                ballDropAudio.play().catch(e => {});
-                            }
+                        let totalWon = 0, isRed = redList.includes(winningNum);
+                        for (let key in myActiveBets) {
+                            let amt = myActiveBets[key];
+                            if (key === winningNum.toString()) totalWon += amt * 36;
+                            else if (key === 'red' && isRed) totalWon += amt * 2;
+                            else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
+                        }
 
-                            let totalWon = 0, isRed = redList.includes(winningNum);
-                            for (let key in userRoundBets) {
-                                let amt = userRoundBets[key];
-                                if (key === winningNum.toString()) totalWon += amt * 36;
-                                else if (key === 'red' && isRed) totalWon += amt * 2;
-                                else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
-                            }
-
-                            if (totalWon > 0 && activeGameMode === 'test') {
-                                testCoins += totalWon; 
-                            }
-
-                            let popup = document.getElementById('cinematicResultPopup');
-                            document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
-                            
-                            // 👑 विनर पॉपअप में VIP ID और अमाउंट दिखाना
-                            if (totalWon > 0) {
-                                document.getElementById('popupPayoutDisplayinnerHTML') = `<span style="color:#ffd700;">🏆 Winner ID: ${loggedVipId}</span><br>You Won 🪙₹${totalWon}!`;
-                                document.getElementById('popupPayoutDisplay').innerHTML = `🏆 Winner ID: <b>${loggedVipId}</b><br><span style="color:#2ecc71;">Won ₹${totalWon}!</span>`;
+                        if (totalWon > 0) {
+                            if (activeGameMode === 'test') {
+                                testCoins += totalWon;
                             } else {
-                                document.getElementById('popupPayoutDisplay').innerHTML = `Round Finished. Better luck next time!`;
+                                realCoins += totalWon;
+                                usersRef.child(loggedUserPhone).update({ balance: realCoins });
                             }
+                        }
 
-                            updateBalancesDisplay();
-                            
-                            if(popup && document.getElementById('gameLobbyScreen').style.display === 'flex') {
-                                popup.style.display = 'flex';
-                                setTimeout(() => { 
-                                    popup.style.display = 'none'; 
-                                    isGameSpinning = false; 
-                                    document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
-                                }, 3000);
-                            } else {
+                        let popup = document.getElementById('cinematicResultPopup');
+                        document.getElementById('popupWinningNumDisplay').innerText = `${winningNum} (${winningNum===0?'GREEN':(isRed?'RED':'BLACK')})`;
+                        
+                        if (totalWon > 0) {
+                            document.getElementById('popupPayoutDisplay').innerHTML = `🏆 Winner ID: <b>${loggedVipId}</b><br><span style="color:#2ecc71;">Won ₹${totalWon}!</span>`;
+                        } else {
+                            document.getElementById('popupPayoutDisplay').innerHTML = `Round Finished. Better luck next time!`;
+                        }
+
+                        updateBalancesDisplay();
+                        
+                        if(popup && document.getElementById('gameLobbyScreen').style.display === 'flex') {
+                            popup.style.display = 'flex';
+                            setTimeout(() => { 
+                                popup.style.display = 'none'; 
                                 isGameSpinning = false; 
                                 document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
-                            }
-                        }, 5000);
-                    });
+                            }, 3000);
+                        } else {
+                            isGameSpinning = false; 
+                            document.getElementById('lobbyStatusMsg').innerText = "Place bets! Ready...";
+                        }
+                    }, 5000);
                 }
 
                 window.openDepositModal = function() { document.getElementById('depositModalBox').style.display = 'flex'; updateActiveQrDisplay(); };

@@ -2168,6 +2168,210 @@
 
 })();
         })();
+        // ==========================================================================
+// ROYAL ROULETTE: ULTRA-SMOOTH HIGH-PERFORMANCE MASTER ENGINE
+// (Project: royalroulette-1c50f | Root: royal_roulette_master_cloud)[span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span)
+// ==========================================================================
+
+(function() {
+    'use strict';
+
+    // 1. सुरक्षित फायरबेस इंस्टेंस जाँच
+    if (typeof firebase === 'undefined' || !firebase.database) {
+        console.error("❌ Firebase SDK not detected!");
+        return;
+    }
+
+    const db = firebase.database();
+    const masterRoot = db.ref("royal_roulette_master_cloud");[span_2](start_span)[span_2](end_span)
+    const timerRef = masterRoot.child("game_state/timer");
+    const activeResultRef = masterRoot.child("current_round_result");
+    const historyRef = masterRoot.child("history_list");
+    const usersRef = masterRoot.child("users");
+    const atomicLocksRef = masterRoot.child("atomic_locks");
+
+    // मेमोरी लीक और डुप्लीकेट लिसनर रोकने के लिए पुराने लिसनर हटाएँ
+    timerRef.off();
+    activeResultRef.off();
+
+    let lastProcessedTimer = -1;
+    let currentActiveRound = null;
+
+    console.log("🚀 Royal Roulette High-Performance Engine Initialized Successfully!");
+
+    // ==========================================================================
+    // 2. ज़ीरो-लैग (Zero-Lag) टाइमर और बेटिंग लॉक इंजन
+    // ==========================================================================
+    timerRef.on("value", (snapshot) => {
+        try {
+            let timeLeft = snapshot.val();
+            if (timeLeft === null || timeLeft === undefined) return;
+
+            timeLeft = parseInt(timeLeft, 10);
+            if (isNaN(timeLeft)) return;
+
+            // अगर टाइमर वही है, तो बार-बार DOM रीरेंडर रोककर CPU बचाएं (Performance Booster)
+            if (timeLeft === lastProcessedTimer) return;
+            lastProcessedTimer = timeLeft;
+
+            // मिनट और सेकंड फॉर्मेट कैलकुलेट करें (02:00, 01:59...)
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            let formattedTime = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+
+            // DOM एलिमेंट्स को सुरक्षित तरीके से अपडेट करें
+            let mainEl = document.getElementById('lobbyTimerMain');
+            if (mainEl && mainEl.innerText !== formattedTime) {
+                mainEl.innerText = formattedTime;
+            }
+
+            let subEl = document.getElementById('lobbyTimerSub');
+            let boxEl = document.getElementById('lobbyTimerBox');
+            let bettingBoard = document.getElementById('bettingBoardArea');
+
+            // 10 सेकंड पहले स्ट्रिक्ट बेटिंग लॉक / ओपन सिस्टम
+            if (boxEl && bettingBoard) {
+                if (timeLeft > 10) {
+                    if (boxEl.className !== "timer-strip-center") boxEl.className = "timer-strip-center";
+                    if (mainEl) mainEl.style.color = "#2ecc71";
+                    if (subEl && subEl.innerText !== "BETTING OPEN") subEl.innerText = "BETTING OPEN";
+                    if (bettingBoard.style.opacity !== '1') {
+                        bettingBoard.style.opacity = '1';
+                        bettingBoard.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    if (boxEl.className !== "timer-strip-center closed-state") boxEl.className = "timer-strip-center closed-state";
+                    if (mainEl) mainEl.style.color = "#ff3333";
+                    if (subEl && subEl.innerText !== "LOCKED (10s)") subEl.innerText = "LOCKED (10s)";
+                    if (bettingBoard.style.opacity !== '0.4') {
+                        bettingBoard.style.opacity = '0.4';
+                        bettingBoard.style.pointerEvents = 'none';
+                    }
+                }
+            }
+
+            // जब टाइमर ठीक 00:00 पर पहुंचे, तो बिना अटके रिजल्ट और व्हील ट्रिगर करें
+            if (timeLeft === 0) {
+                triggerRoundResultExecution();
+            }
+
+        } catch (err) {
+            console.error("🔥 Timer Engine Error:", err);
+        }
+    });
+
+    // ==========================================================================
+    // 3. मक्खन की तरह स्मूथ रिजल्ट और व्हील स्पिन ट्रिगर
+    // ==========================================================================
+    let isResultExecuting = false;
+    function triggerRoundResultExecution() {
+        if (isResultExecuting) return;
+        isResultExecuting = true;
+
+        activeResultRef.once("value", (stateSnap) => {
+            try {
+                let state = stateSnap.val();
+                if (state && state.winningNum !== undefined) {
+                    let winningNum = parseInt(state.winningNum, 10);
+                    
+                    // सभी संभावित व्हील फंक्शन के नामों को सेफली हैंडल करें
+                    if (typeof window.spinWheel === 'function') window.spinWheel(winningNum);
+                    else if (typeof window.startWheel === 'function') window.startWheel(winningNum);
+                    else if (typeof window.playRoulette === 'function') window.playRoulette(winningNum);
+
+                    // सिनेमाटिक रिजल्ट पॉपअप मोडल
+                    let modal = document.getElementById('cinematicResultPopup') || document.getElementById('resultModal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        let numEl = document.getElementById('popupWinningNumDisplay') || document.getElementById('winningNumberText');
+                        if (numEl) {
+                            let redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+                            let isRed = redList.includes(winningNum);
+                            numEl.innerText = `${winningNum} (${winningNum === 0 ? 'GREEN' : (isRed ? 'RED' : 'BLACK')})`;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Result Execution Error:", e);
+            } finally {
+                // 5 सेकंड बाद फ्लैग रीसेट ताकि अगला राउंड सुचारू रूप से चले
+                setTimeout(() => { isResultExecuting = false; }, 5000);
+            }
+        });
+    }
+
+    // ==========================================================================
+    // 4. हिस्ट्री बॉल्स ऑटो-सिंक इंजन
+    // ==========================================================================
+    historyRef.on("value", (snap) => {
+        try {
+            let historyData = snap.val();
+            if (!historyData) return;
+            let cont = document.getElementById('historyBallsContainer');
+            if (cont) {
+                let list = Array.isArray(historyData) ? historyData : Object.values(historyData);
+                let redList = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
+                let html = "";
+                list.slice(-10).reverse().forEach(num => {
+                    let cls = num === 0 ? 'green' : (redList.includes(num) ? 'red' : 'black');
+                    html += `<div class="history-ball ${cls}">${num}</div>`;
+                });
+                cont.innerHTML = html;
+            }
+        } catch (e) {
+            console.error("History Sync Error:", e);
+        }
+    });
+
+    // ==========================================================================
+    // 5. रियल और टेस्ट मोड आइसोलेशन इंजन (बिना डेटा आपस में फंसे)
+    // ==========================================================================
+    window.activeGameModeGlobal = window.activeGameModeGlobal || 'test';
+    window.testModeBetsMap = window.testModeBetsMap || {};
+    window.testModeTotalBet = window.testModeTotalBet || 0;
+    window.testCoins = window.testCoins || 10000;
+
+    window.switchGameMode = function(mode) {
+        window.activeGameModeGlobal = mode;
+        let btnTest = document.getElementById('modeBtnTest');
+        let btnReal = document.getElementById('modeBtnReal');
+        if (btnTest) btnTest.className = mode === 'test' ? "mode-btn active-test" : "mode-btn";
+        if (btnReal) btnReal.className = mode === 'real' ? "mode-btn active-real" : "mode-btn";
+
+        let totalBetEl = document.getElementById('lobbyTotalBet');
+        document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
+            c.classList.remove('has-bet');
+            let b = c.querySelector('.cell-badge');
+            if (b) b.remove();
+        });
+
+        if (mode === 'test') {
+            if (totalBetEl) totalBetEl.innerText = window.testModeTotalBet;
+            Object.keys(window.testModeBetsMap).forEach(key => {
+                let amt = window.testModeBetsMap[key];
+                let cell = getCellByKey(key);
+                if (cell) {
+                    cell.classList.add('has-bet');
+                    let b = cell.querySelector('.cell-badge');
+                    if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
+                    b.innerText = amt;
+                }
+            });
+            let testBalEl = document.getElementById('playerTestBal');
+            if (testBalEl) testBalEl.innerText = window.testCoins;
+        } else {
+            if (totalBetEl) totalBetEl.innerText = 0;
+        }
+    };
+
+    function getCellByKey(key) {
+        if (key === 'red') return document.getElementById('btnColorRed');
+        if (key === 'black') return document.getElementById('btnColorBlack');
+        if (key === '0') return document.getElementById('btnColorGreen');
+        return Array.from(document.querySelectorAll('.table-cell')).find(el => el.innerText.trim() === key);
+    }
+
+})();
     </script>
 </body>
 </html>

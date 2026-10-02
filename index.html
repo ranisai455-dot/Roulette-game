@@ -37,13 +37,7 @@
         
         #fullscreenWheelBg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; overflow: hidden; background: radial-gradient(circle, #01220a 0%, #000201 85%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bg-wheel-wrap { position: relative; width: 450px; height: 450px; border-radius: 50%; opacity: 0.99; border: 12px solid #ffd700; box-shadow: 0 0 160px rgba(255, 215, 0, 1), inset 0 0 90px rgba(0, 255, 100, 0.9); animation: wheelRotateBg 35s linear infinite; display: flex; align-items: center; justify-content: center; }
-        
-        /* 👑 लॉगिन पेज व्हील: 100% क्रिस्टल क्लियर, शार्प और हाई-क्वालिटी */
-        #loginWheelCanvasBg { 
-            width: 450px; height: 450px; border-radius: 50%; display: block; 
-            filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.5) contrast(1.4); 
-        }
-
+        #loginWheelCanvasBg { width: 450px; height: 450px; border-radius: 50%; display: block; filter: drop-shadow(0 0 35px rgba(255,215,0,1)) brightness(1.45) contrast(1.35); }
         .bg-ball-orbit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: ballRotateBg 2.5s linear infinite; pointer-events: none; z-index: 4; }
         .bg-ball-orbit::after { content: ""; position: absolute; top: 12px; left: calc(50% - 15px); width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 0%, #00ffcc 50%, #0044ff 100%); border-radius: 50%; box-shadow: 0 0 35px #fff, 0 0 55px #00ffcc, 0 0 90px #ffd700; }
         
@@ -310,6 +304,7 @@
         .dep-pkg-btn.selected, .wd-pkg-btn.selected { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 15px #ffd700; border-color: #fff; }
         .wallet-modal-content input { width: 100%; padding: 9px; margin: 5px 0; background: #000000; border: 1.5px solid #ffd700; color: #ffd700; border-radius: 6px; text-align: center; font-weight: bold; font-size: 12px; box-shadow: inset 0 0 8px rgba(0,0,0,0.8); }
     </style>
+
     <!-- Socket.io & Firebase SDKs -->
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -494,8 +489,8 @@
             </div>
 
             <div class="mode-toggle-bar">
-                <button class="mode-btn active-test" id="modeBtnTest" onclick="window.switchGameMode('test')">🧪 Testing Mode (Fun)</button>
-                <button class="mode-btn" id="modeBtnReal" onclick="window.switchGameMode('real')">💎 Real Money</button>
+                <button class="mode-btn active-test" id="modeBtnTest" onclick="switchGameMode('test')">🧪 Testing Mode (Fun)</button>
+                <button class="mode-btn" id="modeBtnReal" onclick="switchGameMode('real')">💎 Real Money</button>
             </div>
             
             <div class="grid-table" id="gridTableDiv"></div>
@@ -527,41 +522,27 @@
             
             <div class="lobby-action-row">
                 <button class="clear-btn" onclick="clearTableBets()">Clear</button>
-                <div class="status-msg-box" id="lobbyStatusMsg">Connecting to Server...</div>
+                <div class="status-msg-box" id="lobbyStatusMsg">Place bets! Ready...</div>
                 <button class="clear-btn" style="background:#b03a2e;" onclick="logoutToLogin()">Logout</button>
             </div>
         </div>
     </div>
 
-    <!-- PLAYER PROFILE MODAL WITH LIVE PASSBOOK -->
+    <!-- PLAYER PROFILE MODAL -->
     <div id="playerProfileModal" class="wallet-modal">
-        <div class="wallet-modal-content" style="max-width: 420px; max-height: 90vh; display: flex; flex-direction: column;">
-            <h3 style="color:#ffd700; margin-bottom:5px; font-size:15px;">👤 VIP PLAYER PASSBOOK & PROFILE</h3>
-            <div style="font-size:26px; margin:2px 0;" id="profileAvatarLarge">😎</div>
-            
-            <div style="background:#000; border:1.5px solid #ffd700; padding:6px 10px; border-radius:8px; text-align:left; font-size:10.5px; line-height:1.4; margin-bottom:6px; flex-shrink: 0;">
+        <div class="wallet-modal-content" style="max-width: 420px;">
+            <h3 style="color:#ffd700; margin-bottom:5px; font-size:16px;">👤 PLAYER VIP PROFILE & ACTIVITY</h3>
+            <div style="font-size:30px; margin:4px 0;" id="profileAvatarLarge">😎</div>
+            <div style="background:#000; border:1.5px solid #ffd700; padding:8px; border-radius:8px; text-align:left; font-size:11px; line-height:1.5; margin-bottom:8px;">
                 <div>📱 <b>Mobile Number:</b> <span id="profPhone" style="color:#fff;">--</span></div>
                 <div>🆔 <b>VIP Player ID:</b> <span id="profVipId" style="color:#ffd700;">--</span></div>
                 <div>💎 <b>Real Balance:</b> ₹<span id="profRealBal" style="color:#2ecc71; font-weight:bold;">0</span></div>
                 <div>🧪 <b>Testing Balance (Fun):</b> <span id="profTestBal" style="color:#3498db;">10000</span></div>
             </div>
-
-            <div id="adminDirectAccessBtnWrap" style="display:none; margin-bottom:6px; flex-shrink: 0;">
-                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanelDirectly();" style="width:100%; padding:8px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:11px; text-transform:uppercase; box-shadow:0 0 10px #ffd700;">👑 Open Master Admin Panel</button>
+            <div id="adminDirectAccessBtnWrap" style="display:none; margin-bottom:8px;">
+                <button onclick="document.getElementById('playerProfileModal').style.display='none'; openAdminPanelDirectly();" style="width:100%; padding:10px; background:linear-gradient(135deg, #f1c40f, #d4af37); color:#000; font-weight:900; border:none; border-radius:6px; cursor:pointer; font-size:12px; text-transform:uppercase; box-shadow:0 0 12px #ffd700;">👑 Open Master Admin Panel</button>
             </div>
-
-            <!-- 🟢 LIVE PASSBOOK & LEDGER SECTION -->
-            <div style="background: rgba(0,20,8,0.95); border: 1.5px solid #2ecc71; border-radius: 8px; padding: 8px; flex-grow: 1; display: flex; flex-direction: column; min-height: 150px; max-height: 200px; overflow: hidden; text-align: left;">
-                <div style="font-size: 10px; font-weight: 900; color: #2ecc71; border-bottom: 1px dashed #2ecc71; padding-bottom: 4px; margin-bottom: 4px; display: flex; justify-content: space-between;">
-                    <span>📜 ACCOUNT PASSBOOK & LEDGER</span>
-                    <span>(Real-Time Sync)</span>
-                </div>
-                <div id="playerLedgerListContainer" style="overflow-y: auto; flex-grow: 1; font-size: 9.5px; display: flex; flex-direction: column; gap: 4px;">
-                    <div style="color: #888; text-align: center; padding: 10px;">Loading passbook...</div>
-                </div>
-            </div>
-
-            <button onclick="closeWalletModals()" class="login-btn" style="padding:8px; font-size:11px; margin-top:6px; flex-shrink: 0;">Close</button>
+            <button onclick="closeWalletModals()" class="login-btn" style="padding:9px; font-size:11px;">Close</button>
         </div>
     </div>
 
@@ -784,25 +765,7 @@
         } catch(e) {}
 
         const SOCKET_SERVER_URL = "https://roulette-game-6cz1.onrender.com";
-        const socket = io(SOCKET_SERVER_URL, {
-            transports: ['polling', 'websocket'],
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000
-        });
-
-        // 👑 सॉकेट रीकनेक्शन ऑथेंटिकेशन फिक्स (सेशन हमेशा लाइव रहेगा)
-        socket.on('connect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🟢 Connected to Live Server!";
-            if (loggedUserPhone) {
-                socket.emit('authenticate_socket', { phone: loggedUserPhone });
-            }
-        });
-        socket.on('disconnect', () => {
-            let statusBox = document.getElementById('lobbyStatusMsg');
-            if(statusBox) statusBox.innerText = "🔴 Disconnected from Server!";
-        });
+        const socket = io(SOCKET_SERVER_URL);
 
         const masterRoot = firebase.database().ref("royal_roulette_master_cloud_v23");
         const qrRef = masterRoot.child("qr_url");
@@ -814,7 +777,6 @@
         const withdrawsRef = masterRoot.child("withdraw_requests");
         const auditLogRef = masterRoot.child("audit_logs");
         const maintenanceRef = masterRoot.child("system_maintenance");
-        const activeResultRef = masterRoot.child("current_round_result");
 
         (function() {
             try {
@@ -835,7 +797,6 @@
                 let totalUserTurnover = 0;
                 let globalRoundBetsRef = null;
                 let activeRoundId = 0;
-                let processedResultRoundId = null; 
 
                 let userDepositScreenshotData = "";
                 let userWithdrawQrData = "";
@@ -897,21 +858,19 @@
                     }
                 });
 
+                rigRef.on("value", (snap) => {
+                    let val = snap.val();
+                    if (val !== null) {
+                        window.globalState.adminRig = val;
+                    }
+                });
+
                 historyRef.on("value", (snap) => {
                     let val = snap.val();
                     if (val) {
                         window.globalState.historyList = val;
                         renderHistoryBarUI();
                     }
-                });
-
-                activeResultRef.on("value", (snap) => {
-                    let res = snap.val();
-                    if (!res) return;
-                    if (processedResultRoundId === res.roundId) return;
-                    
-                    processedResultRoundId = res.roundId;
-                    executeClientGlobalSpinAnimation(res.winningNum, res.roundId);
                 });
 
                 auditLogRef.limitToLast(10).on("value", (snap) => {
@@ -1085,50 +1044,6 @@
                         }
                         updateBalancesDisplay();
                     });
-                    loadPlayerPassbook(phone);
-                }
-
-                function loadPlayerPassbook(phone) {
-                    if (!phone) return;
-                    let ledgerRef = usersRef.child(phone + "/ledger");
-                    ledgerRef.limitToLast(30).on("value", (snapshot) => {
-                        let ledgerData = snapshot.val() || {};
-                        let container = document.getElementById('playerLedgerListContainer');
-                        if (!container) return;
-
-                        let keys = Object.keys(ledgerData).reverse();
-                        let html = "";
-
-                        keys.forEach(k => {
-                            let item = ledgerData[k];
-                            let timeStr = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                            let dateStr = new Date(item.timestamp).toLocaleDateString();
-                            
-                            let isPositive = item.amount > 0;
-                            let colorStyle = isPositive ? "#2ecc71" : "#e74c3c";
-                            let sign = isPositive ? "+" : "";
-
-                            let badgeBg = "rgba(255,255,255,0.05)";
-                            if (item.sourceType === 'DEPOSIT_APPROVED') badgeBg = "rgba(39, 174, 96, 0.2)";
-                            else if (item.sourceType === 'ROUND_WIN') badgeBg = "rgba(46, 204, 113, 0.25)";
-                            else if (item.sourceType === 'BET_PLACED') badgeBg = "rgba(231, 76, 60, 0.15)";
-
-                            html += `<div style="background:${badgeBg}; border:1px solid rgba(255,215,0,0.2); padding:5px 8px; border-radius:5px; display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-                                <div>
-                                    <div style="font-weight:bold; color:#fff; font-size:9.5px;">${item.description || item.sourceType}</div>
-                                    <div style="font-size:7.5px; color:#aaa;">📅 ${dateStr} ⏰ ${timeStr}</div>
-                                </div>
-                                <div style="font-weight:900; color:${colorStyle}; font-size:11px;">
-                                    ${sign}₹${Math.abs(item.amount)}
-                                </div>
-                            </div>`;
-                        });
-
-                        if (keys.length === 0) {
-                            html = "<div style='color:#888; text-align:center; padding:15px;'>No transaction history found yet.</div>";
-                        }
-                        container.innerHTML = html;
-                    });
                 }
 
                 function startUserLiveHeartbeat(phone, vipId) {
@@ -1257,7 +1172,9 @@
                             }
                         }
 
-                        if (!matchedPhone && inputKey.length >= 10) matchedPhone = inputKey;
+                        if (!matchedPhone && inputKey.length >= 10) {
+                            matchedPhone = inputKey;
+                        }
 
                         if (!matchedPhone) {
                             feedbackEl.innerHTML = "<span style='color:#e74c3c;'>❌ Failed: User ID/Mobile not found in Cloud!</span>";
@@ -1275,13 +1192,6 @@
                             newBalance -= amount;
                             if (newBalance < 0) newBalance = 0;
                         }
-
-                        usersRef.child(matchedPhone + "/ledger").push({
-                            amount: actionType === 'add' ? amount : -amount,
-                            sourceType: actionType === 'add' ? 'ADMIN_CREDIT' : 'ADMIN_DEBIT',
-                            description: `Admin ${actionType.toUpperCase()} ₹${amount}`,
-                            timestamp: Date.now()
-                        });
 
                         usersRef.child(matchedPhone).set({
                             phone: matchedPhone,
@@ -1314,13 +1224,6 @@
                         let existingVipId = (snap.exists() && snap.val().vipId) ? snap.val().vipId : ("RD00" + userPhone.slice(-4));
                         let newTotal = cur + amount;
 
-                        usersRef.child(userPhone + "/ledger").push({
-                            amount: amount,
-                            sourceType: 'DEPOSIT_APPROVED',
-                            description: `Approved Deposit of ₹${amount}`,
-                            timestamp: Date.now()
-                        });
-
                         usersRef.child(userPhone).update({
                             balance: newTotal,
                             vipId: existingVipId,
@@ -1352,14 +1255,6 @@
                     if (reason !== null) {
                         usersRef.child(userPhone).once("value", (snap) => {
                             let cur = (snap.val() && snap.val().balance) || 0;
-
-                            usersRef.child(userPhone + "/ledger").push({
-                                amount: amount,
-                                sourceType: 'WITHDRAW_REFUND',
-                                description: `Refund for rejected withdrawal ₹${amount}`,
-                                timestamp: Date.now()
-                            });
-
                             usersRef.child(userPhone).update({
                                 balance: cur + amount,
                                 adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
@@ -1426,13 +1321,6 @@
                         return;
                     }
 
-                    usersRef.child(loggedUserPhone + "/ledger").push({
-                        amount: -amt,
-                        sourceType: 'WITHDRAW_REQUEST',
-                        description: `Requested Withdrawal of ₹${amt}`,
-                        timestamp: Date.now()
-                    });
-
                     usersRef.child(loggedUserPhone).update({
                         balance: realCoins - amt,
                         adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
@@ -1461,10 +1349,6 @@
                     usersRef.child(targetPhone).once("value", (snap) => {
                         if (!snap.exists()) { showCustomAlert("Target player does not exist in Cloud!"); return; }
                         let targetCur = snap.val().balance || 0;
-                        
-                        usersRef.child(loggedUserPhone + "/ledger").push({ amount: -amt, sourceType: 'TRANSFER_OUT', description: `Transferred to ${targetPhone}`, timestamp: Date.now() });
-                        usersRef.child(targetPhone + "/ledger").push({ amount: amt, sourceType: 'TRANSFER_IN', description: `Received from ${loggedUserPhone}`, timestamp: Date.now() });
-
                         usersRef.child(loggedUserPhone).update({ balance: realCoins - amt, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                         usersRef.child(targetPhone).update({ balance: targetCur + amt, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
                         closeWalletModals();
@@ -1485,7 +1369,6 @@
                     });
                 };
 
-                // 👑 लाइव बेट्स लिसनर और UI सिंक (बटन हाइलाइट और बैज रेंडरर)
                 function setupGlobalRoundBetsListener(roundId) {
                     if (globalRoundBetsRef) globalRoundBetsRef.off();
                     globalRoundBetsRef = masterRoot.child("live_rounds/" + roundId + "/bets");
@@ -1506,30 +1389,6 @@
                                     myActiveBets[key] = (myActiveBets[key] || 0) + amt;
                                 }
                             });
-                        });
-
-                        document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => {
-                            c.classList.remove('has-bet');
-                            let b = c.querySelector('.cell-badge');
-                            if (b) b.remove();
-                        });
-
-                        Object.keys(myActiveBets).forEach(key => {
-                            let amt = myActiveBets[key];
-                            let cell = null;
-                            if (key === 'red') cell = document.getElementById('btnColorRed');
-                            else if (key === 'black') cell = document.getElementById('btnColorBlack');
-                            else if (key === '0') cell = document.getElementById('btnColorGreen');
-                            else {
-                                cell = Array.from(document.querySelectorAll('.table-cell')).find(el => el.innerText.trim() === key);
-                            }
-
-                            if (cell) {
-                                cell.classList.add('has-bet');
-                                let b = cell.querySelector('.cell-badge');
-                                if (!b) { b = document.createElement('div'); b.className = 'cell-badge'; cell.appendChild(b); }
-                                b.innerText = amt;
-                            }
                         });
 
                         let totalBetEl = document.getElementById('lobbyTotalBet');
@@ -1649,10 +1508,7 @@
                     document.getElementById('gameLobbyScreen').style.display = 'flex';
                     loggedUserPhone = phone;
 
-                    socket.emit('authenticate_socket', { phone: phone });
-
                     bindUserCloudWallet(phone);
-                    setupGlobalRoundBetsListener(activeRoundId); // 👑 लॉगिन पर तुरंत लिसनर बाइंड हो गया
                     startUserLiveHeartbeat(phone, "RD00" + phone.slice(-4));
                     if (!isAutoLogin) playMasterAudio();
                 }
@@ -1687,99 +1543,84 @@
                 let currentActiveChip = 50;
                 window.selectChip = function(val, el) { currentActiveChip = val; document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); };
 
-                // 👑 एकल नंबर/कलर बेटिंग (रियल और टेस्ट मोड)
                 window.placeTableBet = function(key, el) {
                     if (isGameSpinning) return;
                     
                     if (activeGameMode === 'real') { 
                         if (realCoins < currentActiveChip) { showCustomAlert("Low Balance! Please deposit real money."); return; } 
-                        
-                        socket.emit('place_secure_bet', {
-                            key: key,
-                            amount: currentActiveChip,
-                            roundId: activeRoundId
-                        });
+                        totalUserTurnover += currentActiveChip;
+                        let newBal = realCoins - currentActiveChip;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
 
-                        socket.once('bet_response', (resp) => {
-                            if (resp && resp.success) {
-                                totalUserTurnover += currentActiveChip;
-                                realCoins = resp.newBalance;
-                                updateBalancesDisplay();
-                            } else {
-                                showCustomAlert((resp && resp.msg) || "Bet failed!");
-                            }
-                        });
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        
+                        let playerRoundBetRef = masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone + "/" + key);
+                        playerRoundBetRef.transaction(current => (current || 0) + currentActiveChip);
                     } else { 
                         if (testCoins < currentActiveChip) testCoins = 10000; 
                         testCoins -= currentActiveChip; 
                         myActiveBets[key] = (myActiveBets[key] || 0) + currentActiveChip;
                         currentTotalBet += currentActiveChip;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-
-                        betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
-                        if (el) { 
-                            el.classList.add('has-bet'); 
-                            let b = el.querySelector('.cell-badge'); 
-                            if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} 
-                            b.innerText = myActiveBets[key]; 
-                        }
                     }
+
+                    betHistoryStack.push({ key: key, amount: currentActiveChip, element: el, mode: activeGameMode });
+                    if (el) { el.classList.add('has-bet'); let b = el.querySelector('.cell-badge'); if(!b){b=document.createElement('div');b.className='cell-badge';el.appendChild(b);} b.innerText = (myActiveBets[key] || currentActiveChip); }
                 };
 
-                // 👑 ग्रुप बेट्स (1st 12, 1-18 आदि) - सिंगल बैच रिक्वेस्ट फिक्स
                 window.placeGroupBet = function(groupKey, numbersArray, el) {
                     if (isGameSpinning) return;
                     let totalNeeded = currentActiveChip * numbersArray.length;
-                    
                     if (activeGameMode === 'real') {
                         if (realCoins < totalNeeded) { showCustomAlert("Low Balance for Group Bet!"); return; }
-                        
-                        socket.emit('place_secure_group_bet', {
-                            numbers: numbersArray,
-                            amountPerNum: currentActiveChip,
-                            roundId: activeRoundId
-                        });
+                        totalUserTurnover += totalNeeded;
+                        let newBal = realCoins - totalNeeded;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, turnover: totalUserTurnover, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
 
-                        socket.once('group_bet_response', (resp) => {
-                            if (resp && resp.success) {
-                                totalUserTurnover += totalNeeded;
-                                realCoins = resp.newBalance;
-                                updateBalancesDisplay();
-                            } else {
-                                showCustomAlert((resp && resp.msg) || "Group bet failed!");
-                            }
+                        numbersArray.forEach(num => {
+                            let playerRoundBetRef = masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone + "/" + num);
+                            playerRoundBetRef.transaction(current => (current || 0) + currentActiveChip);
                         });
                     } else {
                         if (testCoins < totalNeeded) testCoins = 10000;
                         testCoins -= totalNeeded;
-                        numbersArray.forEach(num => { myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip; });
+                        numbersArray.forEach(num => {
+                            myActiveBets[num.toString()] = (myActiveBets[num.toString()] || 0) + currentActiveChip;
+                        });
                         currentTotalBet += totalNeeded;
                         document.getElementById('lobbyTotalBet').innerText = currentTotalBet;
-                        if (el) el.classList.add('has-bet');
                     }
                     betHistoryStack.push({ key: groupKey, amount: totalNeeded, numbers: numbersArray, element: el, mode: activeGameMode });
+                    if (el) el.classList.add('has-bet');
                 };
 
                 window.clearTableBets = function() {
                     if (isGameSpinning || betHistoryStack.length === 0) return;
                     let last = betHistoryStack.pop();
                     if (last.mode === 'real') {
-                        showCustomAlert("Bet already placed on secure server. Cannot clear directly.");
+                        let newBal = realCoins + last.amount;
+                        realCoins = newBal;
+                        updateBalancesDisplay();
+                        usersRef.child(loggedUserPhone).update({ balance: newBal, adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED" });
+                        if (last.numbers) {
+                            last.numbers.forEach(num => {
+                                masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone + "/" + num).transaction(curr => Math.max(0, (curr || 0) - currentActiveChip));
+                            });
+                        } else {
+                            masterRoot.child("live_rounds/" + activeRoundId + "/bets/" + loggedUserPhone + "/" + last.key).transaction(curr => Math.max(0, (curr || 0) - last.amount));
+                        }
                     } else {
                         testCoins += last.amount;
                         currentTotalBet -= last.amount;
                     }
                 };
 
-                masterRoot.child("game_state/timer").on("value", (snap) => {
-                    let timerData = snap.val();
-                    if (!timerData) return;
-
-                    let roundId = timerData.roundId;
-                    let timeLeft = timerData.timeLeft;
-
-                    if (roundId !== activeRoundId) {
-                        activeRoundId = roundId;
+                socket.on('timer_update', (data) => {
+                    if (data.roundId !== activeRoundId) {
+                        activeRoundId = data.roundId;
                         globalTableBets = {}; myActiveBets = {}; currentTotalBet = 0; betHistoryStack = [];
                         setupGlobalRoundBetsListener(activeRoundId);
                         let totalBetEl = document.getElementById('lobbyTotalBet');
@@ -1787,6 +1628,7 @@
                         document.querySelectorAll('.table-cell, .color-btn, .group-btn').forEach(c => { c.classList.remove('has-bet'); let b=c.querySelector('.cell-badge'); if(b)b.remove(); });
                     }
 
+                    let timeLeft = data.timeLeft;
                     let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
                     let mainEl = document.getElementById('lobbyTimerMain');
                     let subEl = document.getElementById('lobbyTimerSub');
@@ -1815,6 +1657,10 @@
                         }
                     }
                     renderHistoryBarUI();
+                });
+
+                socket.on('round_ended', (data) => {
+                    executeClientGlobalSpinAnimation(data.winningNum, data.roundId);
                 });
 
                 function renderHistoryBarUI() {
@@ -1866,8 +1712,24 @@
                                 else if (key === 'black' && !isRed && winningNum !== 0) totalWon += amt * 2;
                             }
 
-                            if (totalWon > 0 && activeGameMode === 'test') {
-                                testCoins += totalWon; 
+                            if (totalWon > 0) { 
+                                if (activeGameMode === 'real' && loggedUserPhone) {
+                                    usersRef.child(loggedUserPhone).once("value", (userSnap) => {
+                                        let currentBal = (userSnap.exists() && userSnap.val().balance) ? parseInt(userSnap.val().balance) : 0;
+                                        let newUpdatedBal = currentBal + totalWon;
+                                        
+                                        usersRef.child(loggedUserPhone).update({ 
+                                            balance: newUpdatedBal,
+                                            turnover: totalUserTurnover,
+                                            adminToken: "SKILL_ADMIN_SECURE_994_VERIFIED"
+                                        }).then(() => {
+                                            realCoins = newUpdatedBal;
+                                            updateBalancesDisplay();
+                                        });
+                                    });
+                                } else {
+                                    testCoins += totalWon; 
+                                }
                             } else if (activeGameMode === 'test') {
                                 let myTestSum = 0;
                                 Object.values(userRoundBets).forEach(v => myTestSum += v);
